@@ -409,6 +409,40 @@
             margin-right: 5px;
         }
         
+        /* M-Pesa Button Styling */
+        .mpesa-btn {
+            display: inline-block;
+            width: 100%;
+            margin-top: 10px;
+            padding: 14px 28px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: #ffffff !important;
+            text-align: center;
+            text-decoration: none !important;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 0.95rem;
+            border-radius: 10px;
+            border: 2px solid #059669;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+            cursor: pointer !important;
+            position: relative;
+            z-index: 100 !important;
+            pointer-events: auto !important;
+        }
+
+        .mpesa-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.6);
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            color: #ffffff !important;
+        }
+
+        .mpesa-btn:active {
+            transform: translateY(0);
+        }
+        
         /* Ensure card body has proper spacing and doesn't block buttons */
         .card__body {
             display: flex;
@@ -1331,6 +1365,9 @@
                                                    rel="noopener noreferrer">
                                                     Buy Now
                                                 </a>
+                                                <button class="mpesa-btn" onclick="openMpesaPayment('trading-course', 500)">
+                                                    <span style="font-size: 1.2em;">📱</span> Pay with M-Pesa (KES 65,000)
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -3339,6 +3376,84 @@
             
             // Default response
             return 'Thanks for your question! 😊\n\nI can help you with:\n• Course information\n• Payment methods\n• Pricing\n• Contact details\n\nTry asking about our courses, payments, or contact info!\n\nFor specific questions, email us at megametahub42@gmail.com';
+        }
+        
+        // M-Pesa Payment Function
+        function openMpesaPayment(productId, priceUSD) {
+            // Convert USD to KES (approximate rate: 1 USD = 130 KES)
+            const priceKES = priceUSD * 130;
+            
+            // Show confirmation dialog
+            const confirmed = confirm(
+                `💳 M-Pesa Payment\n\n` +
+                `Product: ${productId}\n` +
+                `Amount: KES ${priceKES.toLocaleString()}\n\n` +
+                `You will receive an STK push on your phone.\n\n` +
+                `Click OK to proceed with M-Pesa payment.`
+            );
+            
+            if (!confirmed) {
+                return;
+            }
+            
+            // Get phone number
+            const phone = prompt(
+                '📱 Enter your M-Pesa phone number:\n\n' +
+                'Format: 0712345678 or 254712345678'
+            );
+            
+            if (!phone) {
+                return;
+            }
+            
+            // Validate phone number
+            const phoneRegex = /^(0|254)[17]\d{8}$/;
+            if (!phoneRegex.test(phone.replace(/\s/g, ''))) {
+                alert('❌ Invalid phone number format!\n\nPlease use: 0712345678 or 254712345678');
+                return;
+            }
+            
+            // Show loading message
+            alert('⏳ Sending STK push to your phone...\n\nPlease check your phone and enter your M-Pesa PIN.');
+            
+            // Send payment request to backend
+            fetch('http://localhost:5000/api/mpesa/stk-push', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    phone: phone,
+                    amount: priceKES,
+                    productId: productId
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(
+                        '✅ Payment request sent!\n\n' +
+                        'Please check your phone and enter your M-Pesa PIN.\n\n' +
+                        'You will receive a confirmation SMS once payment is complete.'
+                    );
+                } else {
+                    alert(
+                        '❌ Payment request failed!\n\n' +
+                        data.message + '\n\n' +
+                        'Please try again or contact support.'
+                    );
+                }
+            })
+            .catch(error => {
+                console.error('M-Pesa payment error:', error);
+                alert(
+                    '❌ Connection error!\n\n' +
+                    'Could not connect to payment server.\n\n' +
+                    'Please ensure backend is running or contact support:\n' +
+                    'Email: megametahub42@gmail.com\n' +
+                    'Phone: +1 (973)-8197-530'
+                );
+            });
         }
     </script>
     <script src="./fix-clickable-products.js"></script>

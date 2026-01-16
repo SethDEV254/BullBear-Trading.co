@@ -2,6 +2,10 @@
 
 A modern crypto trading education platform with integrated payment systems (M-Pesa, PayPal) and premium content management.
 
+## 🌐 Live Site
+
+**Visit:** [https://sethdev254.github.io/BullBear-Trading.co](https://sethdev254.github.io/BullBear-Trading.co)
+
 ## 🚀 Quick Deploy
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/SethDEV254/BullBear-Trading.co)

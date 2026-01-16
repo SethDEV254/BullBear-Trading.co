@@ -6,10 +6,9 @@ package-lock.json
 .env
 backend/.env
 
-# Credentials and sensitive files
+# Credentials and sensitive files (but allow .example files)
 CREDENTIALS.md
-*credentials*.md
-*CREDENTIALS*.md
+!CREDENTIALS.example.md
 
 # IDE
 .vscode/

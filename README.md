@@ -2,6 +2,12 @@
 
 A modern crypto trading education platform with integrated payment systems (M-Pesa, PayPal) and premium content management.
 
+## 🚀 Quick Deploy
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/SethDEV254/BullBear-Trading.co)
+
+[📖 Deployment Guide](DEPLOY_VERCEL.md)
+
 ## 🚀 Features
 
 - **Trading Education** - Video courses, indicators, and resources

@@ -768,8 +768,301 @@
         }
     </style>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@pine-ds/core@2.1.2/dist/pine-core/pine-core.css">
-    <link rel="stylesheet" href="./mobile-optimizations.css">
     <link rel="stylesheet" href="./fix-clickable-products.css">
+    <style>
+        /* ================================================
+           FUTURISTIC 3D THEME — BullBear Trading
+           ================================================ */
+
+        /* Animated grid background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image:
+                linear-gradient(rgba(99, 102, 241, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(99, 102, 241, 0.04) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: 0;
+            animation: gridScroll 25s linear infinite;
+        }
+
+        @keyframes gridScroll {
+            0% { background-position: 0 0; }
+            100% { background-position: 60px 60px; }
+        }
+
+        /* Floating orbs in background */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 20%;
+            left: 10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.06) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+            animation: orbFloat 12s ease-in-out infinite alternate;
+        }
+
+        @keyframes orbFloat {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(80px, 40px) scale(1.2); }
+        }
+
+        /* Ensure content renders above bg effects */
+        .header, main, footer, .auth-modal, .chat-widget, #live-datetime-widget {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ---- HEADER ---- */
+        .header {
+            background: linear-gradient(135deg, rgba(4, 6, 14, 0.97) 0%, rgba(10, 14, 30, 0.97) 100%) !important;
+            border-bottom: 1px solid transparent !important;
+            background-clip: padding-box !important;
+            box-shadow:
+                0 1px 0 rgba(6, 182, 212, 0.4),
+                0 4px 30px rgba(99, 102, 241, 0.25),
+                0 8px 60px rgba(6, 182, 212, 0.08) !important;
+            backdrop-filter: blur(20px) !important;
+        }
+
+        /* ---- CARDS — 3D + GLASS ---- */
+        .col-4 {
+            perspective: 1200px;
+        }
+
+        .card {
+            border: 1px solid rgba(99, 102, 241, 0.2) !important;
+            background: linear-gradient(145deg,
+                rgba(8, 12, 24, 0.92) 0%,
+                rgba(15, 23, 42, 0.88) 100%) !important;
+            backdrop-filter: blur(24px) !important;
+            box-shadow:
+                0 4px 24px rgba(0, 0, 0, 0.4),
+                0 0 0 1px rgba(99, 102, 241, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+            transform-style: preserve-3d;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease !important;
+            will-change: transform;
+        }
+
+        .card:hover {
+            border-color: rgba(6, 182, 212, 0.6) !important;
+            box-shadow:
+                0 24px 60px rgba(99, 102, 241, 0.35),
+                0 0 40px rgba(6, 182, 212, 0.15),
+                0 0 80px rgba(99, 102, 241, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+            transform: none !important; /* JS handles 3D tilt */
+        }
+
+        /* Glowing top edge on hover */
+        .card::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 10%; right: 10%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.8), transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+            z-index: 2;
+            border-radius: 50%;
+        }
+
+        .card:hover::after {
+            opacity: 1;
+        }
+
+        /* Card body glass refinement */
+        .card__body {
+            background: linear-gradient(180deg,
+                rgba(5, 8, 18, 0.96) 0%,
+                rgba(10, 15, 30, 0.96) 100%) !important;
+            border-top: 1px solid rgba(99, 102, 241, 0.15) !important;
+        }
+
+        /* Card image zoom depth */
+        .card:hover .card__image {
+            transform: scale(1.08) translateZ(0) !important;
+        }
+
+        /* Card title glow on hover */
+        .card:hover .card__title {
+            color: #93c5fd !important;
+            text-shadow: 0 0 15px rgba(147, 197, 253, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        /* Price neon glow */
+        .card__price {
+            animation: priceNeon 4s ease-in-out infinite !important;
+        }
+
+        @keyframes priceNeon {
+            0%, 100% { text-shadow: 0 0 8px rgba(6, 182, 212, 0.4); }
+            50% { text-shadow: 0 0 20px rgba(6, 182, 212, 0.8), 0 0 40px rgba(6, 182, 212, 0.3); }
+        }
+
+        /* ---- FEATURED PRODUCTS HEADING ---- */
+        #block-1577982541036_0 h2 {
+            animation: titlePulse 4s ease-in-out infinite !important;
+            letter-spacing: 1px !important;
+        }
+
+        @keyframes titlePulse {
+            0%, 100% {
+                filter: brightness(1);
+                text-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+            }
+            50% {
+                filter: brightness(1.2);
+                text-shadow: 0 4px 30px rgba(6, 182, 212, 0.6), 0 0 60px rgba(99, 102, 241, 0.3);
+            }
+        }
+
+        /* ---- BUY NOW — SHIMMER SWEEP ---- */
+        .buy-now-btn {
+            background: linear-gradient(135deg, #4f46e5 0%, #0891b2 100%) !important;
+            box-shadow: 0 3px 15px rgba(99, 102, 241, 0.4), inset 0 1px 0 rgba(255,255,255,0.1) !important;
+            overflow: hidden !important;
+            transition: transform 0.2s ease, box-shadow 0.3s ease !important;
+        }
+
+        .buy-now-btn::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -75%;
+            width: 50%;
+            height: 200%;
+            background: linear-gradient(
+                105deg,
+                transparent 30%,
+                rgba(255, 255, 255, 0.18) 50%,
+                transparent 70%
+            );
+            transform: skewX(-20deg);
+            transition: left 0.6s ease;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .buy-now-btn:hover::before {
+            left: 125%;
+        }
+
+        .buy-now-btn:hover {
+            transform: translateY(-3px) !important;
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.6), 0 0 40px rgba(6, 182, 212, 0.2) !important;
+            background: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%) !important;
+        }
+
+        /* ---- M-PESA — PULSE ---- */
+        .mpesa-btn {
+            animation: mpesaPulse 2.5s ease-in-out infinite !important;
+            background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+            box-shadow: 0 3px 12px rgba(16, 185, 129, 0.35) !important;
+            overflow: hidden !important;
+            transition: transform 0.2s ease !important;
+        }
+
+        .mpesa-btn::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -75%;
+            width: 50%;
+            height: 200%;
+            background: linear-gradient(
+                105deg,
+                transparent 30%,
+                rgba(255, 255, 255, 0.15) 50%,
+                transparent 70%
+            );
+            transform: skewX(-20deg);
+            transition: left 0.6s ease;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .mpesa-btn:hover::before {
+            left: 125%;
+        }
+
+        @keyframes mpesaPulse {
+            0%, 100% { box-shadow: 0 3px 12px rgba(16, 185, 129, 0.35); }
+            50% { box-shadow: 0 3px 22px rgba(16, 185, 129, 0.65), 0 0 30px rgba(16, 185, 129, 0.2); }
+        }
+
+        .mpesa-btn:hover {
+            transform: translateY(-3px) !important;
+            box-shadow: 0 8px 22px rgba(16, 185, 129, 0.55) !important;
+            animation: none !important;
+        }
+
+        /* ---- FREE BADGE — GLOW ---- */
+        .free-badge {
+            animation: freeBadgeGlow 2s ease-in-out infinite !important;
+        }
+
+        @keyframes freeBadgeGlow {
+            0%, 100% { box-shadow: 0 4px 15px rgba(16, 185, 129, 0.45); }
+            50% { box-shadow: 0 4px 28px rgba(16, 185, 129, 0.75), 0 0 40px rgba(16, 185, 129, 0.25); }
+        }
+
+        /* ---- AUTH MODAL — CYBER GLASS ---- */
+        .auth-modal-content {
+            background: linear-gradient(145deg, rgba(15, 23, 42, 0.97) 0%, rgba(9, 14, 30, 0.97) 100%) !important;
+            border: 1px solid rgba(6, 182, 212, 0.3) !important;
+            box-shadow:
+                0 25px 80px rgba(0, 0, 0, 0.7),
+                0 0 0 1px rgba(99, 102, 241, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.07) !important;
+            backdrop-filter: blur(30px) !important;
+        }
+
+        /* ---- SECTION BACKGROUND GLOW ---- */
+        #section-1593046178513 {
+            position: relative;
+        }
+
+        #section-1593046178513::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.07) 0%, transparent 65%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        #section-1593046178513::after {
+            content: '';
+            position: absolute;
+            bottom: -100px;
+            left: -100px;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(6, 182, 212, 0.06) 0%, transparent 65%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ---- SCROLLBAR ---- */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #050810; }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #6366f1, #06b6d4);
+            border-radius: 3px;
+        }
+    </style>
     <script type="module"
         src="https://cdn.jsdelivr.net/npm/@pine-ds/core@2.1.2/dist/pine-core/pine-core.esm.js"></script>
     <script nomodule src="https://cdn.jsdelivr.net/npm/@pine-ds/core@2.1.2/dist/pine-core/index.esm.js"></script>
@@ -3440,6 +3733,46 @@
         }
     </script>
     <script src="./fix-clickable-products.js"></script>
+    <script>
+        // 3D Card Tilt Effect
+        (function () {
+            function initTilt() {
+                document.querySelectorAll('.card').forEach(function (card) {
+                    var tiltActive = false;
+
+                    card.addEventListener('mouseenter', function () {
+                        tiltActive = true;
+                        this.style.transition = 'transform 0.1s ease, box-shadow 0.3s ease';
+                    });
+
+                    card.addEventListener('mousemove', function (e) {
+                        if (!tiltActive) return;
+                        var rect = this.getBoundingClientRect();
+                        var x = e.clientX - rect.left;
+                        var y = e.clientY - rect.top;
+                        var cx = rect.width / 2;
+                        var cy = rect.height / 2;
+                        var rotX = ((y - cy) / cy) * -7;
+                        var rotY = ((x - cx) / cx) * 7;
+                        this.style.transform =
+                            'perspective(1000px) rotateX(' + rotX + 'deg) rotateY(' + rotY + 'deg) translateZ(12px) scale(1.02)';
+                    });
+
+                    card.addEventListener('mouseleave', function () {
+                        tiltActive = false;
+                        this.style.transition = 'transform 0.5s ease, box-shadow 0.3s ease';
+                        this.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0) scale(1)';
+                    });
+                });
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initTilt);
+            } else {
+                initTilt();
+            }
+        })();
+    </script>
 </body>
 
 </html>

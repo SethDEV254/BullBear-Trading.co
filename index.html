@@ -318,23 +318,23 @@
 
         /* Buy Now Button Styling - Blue Theme with Better Visibility */
         .buy-now-btn {
-            display: inline-block;
+            display: block;
             width: 100%;
-            margin-top: 10px;
-            padding: 10px 20px;
+            margin-top: 14px;
+            padding: 13px 20px;
             background: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%);
             color: #ffffff !important;
             text-align: center;
             text-decoration: none !important;
             font-family: 'Poppins', sans-serif;
-            font-weight: 600;
-            font-size: 0.85rem;
-            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            border-radius: 10px;
             border: none;
             transition: all 0.3s ease;
-            box-shadow: 0 3px 12px rgba(99, 102, 241, 0.4);
+            box-shadow: 0 4px 16px rgba(99, 102, 241, 0.45);
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
             cursor: pointer !important;
             position: relative;
             z-index: 100 !important;
@@ -407,40 +407,6 @@
         .paypal-btn::before {
             content: '💳 ';
             margin-right: 5px;
-        }
-        
-        /* M-Pesa Button Styling - Compact Design */
-        .mpesa-btn {
-            display: inline-block;
-            width: 100%;
-            margin-top: 8px;
-            padding: 10px 20px;
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            color: #ffffff !important;
-            text-align: center;
-            text-decoration: none !important;
-            font-family: 'Poppins', sans-serif;
-            font-weight: 600;
-            font-size: 0.85rem;
-            border-radius: 8px;
-            border: none;
-            transition: all 0.3s ease;
-            box-shadow: 0 3px 12px rgba(16, 185, 129, 0.3);
-            cursor: pointer !important;
-            position: relative;
-            z-index: 100 !important;
-            pointer-events: auto !important;
-        }
-
-        .mpesa-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 18px rgba(16, 185, 129, 0.5);
-            background: linear-gradient(135deg, #059669 0%, #047857 100%);
-            color: #ffffff !important;
-        }
-
-        .mpesa-btn:active {
-            transform: translateY(0);
         }
         
         /* Ensure card body has proper spacing and doesn't block buttons */
@@ -962,49 +928,6 @@
             background: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%) !important;
         }
 
-        /* ---- M-PESA — PULSE ---- */
-        .mpesa-btn {
-            animation: mpesaPulse 2.5s ease-in-out infinite !important;
-            background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
-            box-shadow: 0 3px 12px rgba(16, 185, 129, 0.35) !important;
-            overflow: hidden !important;
-            transition: transform 0.2s ease !important;
-        }
-
-        .mpesa-btn::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -75%;
-            width: 50%;
-            height: 200%;
-            background: linear-gradient(
-                105deg,
-                transparent 30%,
-                rgba(255, 255, 255, 0.15) 50%,
-                transparent 70%
-            );
-            transform: skewX(-20deg);
-            transition: left 0.6s ease;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .mpesa-btn:hover::before {
-            left: 125%;
-        }
-
-        @keyframes mpesaPulse {
-            0%, 100% { box-shadow: 0 3px 12px rgba(16, 185, 129, 0.35); }
-            50% { box-shadow: 0 3px 22px rgba(16, 185, 129, 0.65), 0 0 30px rgba(16, 185, 129, 0.2); }
-        }
-
-        .mpesa-btn:hover {
-            transform: translateY(-3px) !important;
-            box-shadow: 0 8px 22px rgba(16, 185, 129, 0.55) !important;
-            animation: none !important;
-        }
-
         /* ---- FREE BADGE — GLOW ---- */
         .free-badge {
             animation: freeBadgeGlow 2s ease-in-out infinite !important;
@@ -1061,6 +984,210 @@
         ::-webkit-scrollbar-thumb {
             background: linear-gradient(180deg, #6366f1, #06b6d4);
             border-radius: 3px;
+        }
+
+        /* ================================================
+           HERO SECTION — FUTURISTIC UPGRADE
+           ================================================ */
+
+        /* Hero section background */
+        #section-1593046296756 {
+            background:
+                radial-gradient(ellipse at 20% 60%, rgba(99, 102, 241, 0.18) 0%, transparent 55%),
+                radial-gradient(ellipse at 80% 40%, rgba(6, 182, 212, 0.12) 0%, transparent 55%),
+                radial-gradient(ellipse at 50% 100%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+                linear-gradient(180deg, #020409 0%, #050810 60%, #080d18 100%) !important;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Scan line sweep across hero */
+        #section-1593046296756 .section {
+            position: relative;
+            overflow: hidden;
+        }
+
+        #section-1593046296756 .section::before {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg,
+                transparent 0%,
+                rgba(6, 182, 212, 0.6) 30%,
+                rgba(99, 102, 241, 0.8) 50%,
+                rgba(6, 182, 212, 0.6) 70%,
+                transparent 100%);
+            filter: blur(1px);
+            animation: scanSweep 5s linear infinite;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        @keyframes scanSweep {
+            0%   { top: -4px; opacity: 0; }
+            5%   { opacity: 1; }
+            95%  { opacity: 1; }
+            100% { top: 100%; opacity: 0; }
+        }
+
+        /* Corner accent lines */
+        #section-1593046296756 .block {
+            position: relative;
+        }
+
+        /* Logo — dual-layer glow ring */
+        .hero-logo {
+            filter:
+                drop-shadow(0 0 15px rgba(99, 102, 241, 0.6))
+                drop-shadow(0 0 40px rgba(6, 182, 212, 0.3)) !important;
+            animation: heroFloat 3s ease-in-out infinite, logoGlow 4s ease-in-out infinite !important;
+            max-width: 280px !important;
+        }
+
+        @keyframes logoGlow {
+            0%, 100% {
+                filter:
+                    drop-shadow(0 0 15px rgba(99, 102, 241, 0.6))
+                    drop-shadow(0 0 40px rgba(6, 182, 212, 0.3));
+            }
+            50% {
+                filter:
+                    drop-shadow(0 0 25px rgba(99, 102, 241, 0.9))
+                    drop-shadow(0 0 60px rgba(6, 182, 212, 0.55))
+                    drop-shadow(0 0 90px rgba(251, 191, 36, 0.25));
+            }
+        }
+
+        /* Title — gold shimmer sweep */
+        .hero-title {
+            background: linear-gradient(
+                105deg,
+                #fbbf24 0%,
+                #f59e0b 25%,
+                #ffffff 40%,
+                #fbbf24 55%,
+                #f59e0b 75%,
+                #fbbf24 100%
+            ) !important;
+            background-size: 250% 100% !important;
+            -webkit-background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+            background-clip: text !important;
+            animation: titleShimmer 4s linear infinite !important;
+            letter-spacing: 3px !important;
+            text-transform: uppercase !important;
+            font-size: 3.2rem !important;
+        }
+
+        @keyframes titleShimmer {
+            0%   { background-position: 250% center; }
+            100% { background-position: -250% center; }
+        }
+
+        /* Subtitle — cyan/violet neon glow */
+        .hero-subtitle {
+            background: linear-gradient(135deg, #06b6d4 0%, #8b5cf6 100%) !important;
+            -webkit-background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+            background-clip: text !important;
+            animation: subtitleGlow 3.5s ease-in-out infinite !important;
+            font-weight: 800 !important;
+            letter-spacing: 6px !important;
+            text-transform: uppercase !important;
+            font-size: 1.35rem !important;
+            margin-bottom: 10px !important;
+        }
+
+        @keyframes subtitleGlow {
+            0%, 100% { filter: brightness(1); }
+            50%       { filter: brightness(1.35) drop-shadow(0 0 12px rgba(6, 182, 212, 0.5)); }
+        }
+
+        /* Subtitle underline bar */
+        .hero-subtitle::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 2px;
+            background: linear-gradient(90deg, #6366f1, #06b6d4);
+            margin: 12px auto 0;
+            border-radius: 2px;
+            animation: underlineExpand 3s ease-in-out infinite;
+        }
+
+        @keyframes underlineExpand {
+            0%, 100% { width: 60px; opacity: 0.7; }
+            50%       { width: 140px; opacity: 1; box-shadow: 0 0 12px rgba(6, 182, 212, 0.6); }
+        }
+
+        /* Description */
+        .hero-description {
+            color: rgba(203, 213, 225, 0.85) !important;
+            font-size: 1.05rem !important;
+            line-height: 1.9 !important;
+            border-left: 2px solid rgba(6, 182, 212, 0.5) !important;
+            padding-left: 20px !important;
+            text-align: left !important;
+            max-width: 680px !important;
+            margin: 20px auto 36px !important;
+        }
+
+        /* Stats bar */
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 36px;
+            flex-wrap: wrap;
+        }
+
+        .hero-stat-item {
+            text-align: center;
+            padding: 14px 22px;
+            background: rgba(10, 14, 26, 0.7);
+            border: 1px solid rgba(6, 182, 212, 0.2);
+            border-radius: 12px;
+            backdrop-filter: blur(16px);
+            min-width: 110px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255,255,255,0.04);
+        }
+
+        .hero-stat-item:hover {
+            background: rgba(99, 102, 241, 0.12);
+            border-color: rgba(6, 182, 212, 0.5);
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(99, 102, 241, 0.25), 0 0 20px rgba(6, 182, 212, 0.1);
+        }
+
+        .hero-stat-number {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #06b6d4;
+            font-family: 'Poppins', sans-serif;
+            text-shadow: 0 0 12px rgba(6, 182, 212, 0.5);
+            display: block;
+        }
+
+        .hero-stat-label {
+            font-size: 0.7rem;
+            color: rgba(148, 163, 184, 0.75);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 4px;
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .hero-title { font-size: 2.2rem !important; letter-spacing: 1px !important; }
+            .hero-subtitle { letter-spacing: 3px !important; font-size: 1.1rem !important; }
+            .hero-description { padding-left: 14px !important; }
+            .hero-stats { gap: 12px; }
+            .hero-stat-item { padding: 10px 16px; min-width: 90px; }
+            .hero-stat-number { font-size: 1.3rem; }
         }
     </style>
     <script type="module"
@@ -1421,9 +1548,29 @@
                                         <h1 class="hero-title">BullBear Trading</h1>
                                         <h2 class="hero-subtitle">Master the Markets</h2>
                                         <p class="hero-description">
-                                            Premier crypto and trading education platform designed to help both novice and experienced traders 
+                                            Premier crypto and trading education platform designed to help both novice and experienced traders
                                             master the markets. Elite courses, professional tools, and expert guidance for your trading success.
                                         </p>
+
+                                        <!-- Hero Stats Bar -->
+                                        <div class="hero-stats">
+                                            <div class="hero-stat-item">
+                                                <span class="hero-stat-number" id="stat-traders">2,400+</span>
+                                                <span class="hero-stat-label">Active Traders</span>
+                                            </div>
+                                            <div class="hero-stat-item">
+                                                <span class="hero-stat-number" id="stat-courses">12</span>
+                                                <span class="hero-stat-label">Courses</span>
+                                            </div>
+                                            <div class="hero-stat-item">
+                                                <span class="hero-stat-number" id="stat-winrate">87%</span>
+                                                <span class="hero-stat-label">Win Rate</span>
+                                            </div>
+                                            <div class="hero-stat-item">
+                                                <span class="hero-stat-number" id="stat-countries">40+</span>
+                                                <span class="hero-stat-label">Countries</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -1658,9 +1805,6 @@
                                                    rel="noopener noreferrer">
                                                     Buy Now
                                                 </a>
-                                                <button class="mpesa-btn" onclick="openMpesaPayment('trading-course', 500)">
-                                                    📱 M-Pesa (KES 65,000)
-                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -1937,9 +2081,6 @@
                                                    rel="noopener noreferrer">
                                                     Buy Now
                                                 </a>
-                                                <button class="mpesa-btn" onclick="openMpesaPayment('ledger-nano-s', 250)">
-                                                    📱 M-Pesa (KES 32,500)
-                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -2043,9 +2184,6 @@
                                                    rel="noopener noreferrer">
                                                     Buy Now
                                                 </a>
-                                                <button class="mpesa-btn" onclick="openMpesaPayment('affiliate-marketing', 20)">
-                                                    📱 M-Pesa (KES 2,600)
-                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -2147,9 +2285,6 @@
                                                    rel="noopener noreferrer">
                                                     Buy Now
                                                 </a>
-                                                <button class="mpesa-btn" onclick="openMpesaPayment('crypto-truth-guide', 30)">
-                                                    📱 M-Pesa (KES 3,900)
-                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -2251,9 +2386,6 @@
                                                    rel="noopener noreferrer">
                                                     Buy Now
                                                 </a>
-                                                <button class="mpesa-btn" onclick="openMpesaPayment('ledger-nano-x', 400)">
-                                                    📱 M-Pesa (KES 52,000)
-                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -3237,7 +3369,7 @@
                 
                 card.addEventListener('click', function(e) {
                     // Don't trigger if clicking any button or link
-                    if (e.target.closest('.buy-now-btn') || e.target.closest('.mpesa-btn') || e.target.closest('a') || e.target.closest('button')) {
+                    if (e.target.closest('.buy-now-btn') || e.target.closest('a') || e.target.closest('button')) {
                         return;
                     }
                     
@@ -3654,83 +3786,6 @@
             return 'Thanks for your question! 😊\n\nI can help you with:\n• Course information\n• Payment methods\n• Pricing\n• Contact details\n\nTry asking about our courses, payments, or contact info!\n\nFor specific questions, email us at megametahub42@gmail.com';
         }
         
-        // M-Pesa Payment Function
-        function openMpesaPayment(productId, priceUSD) {
-            // Convert USD to KES (approximate rate: 1 USD = 130 KES)
-            const priceKES = priceUSD * 130;
-            
-            // Show confirmation dialog
-            const confirmed = confirm(
-                `💳 M-Pesa Payment\n\n` +
-                `Product: ${productId}\n` +
-                `Amount: KES ${priceKES.toLocaleString()}\n\n` +
-                `You will receive an STK push on your phone.\n\n` +
-                `Click OK to proceed with M-Pesa payment.`
-            );
-            
-            if (!confirmed) {
-                return;
-            }
-            
-            // Get phone number
-            const phone = prompt(
-                '📱 Enter your M-Pesa phone number:\n\n' +
-                'Format: 0712345678 or 254712345678'
-            );
-            
-            if (!phone) {
-                return;
-            }
-            
-            // Validate phone number
-            const phoneRegex = /^(0|254)[17]\d{8}$/;
-            if (!phoneRegex.test(phone.replace(/\s/g, ''))) {
-                alert('❌ Invalid phone number format!\n\nPlease use: 0712345678 or 254712345678');
-                return;
-            }
-            
-            // Show loading message
-            alert('⏳ Sending STK push to your phone...\n\nPlease check your phone and enter your M-Pesa PIN.');
-            
-            // Send payment request to backend
-            fetch('http://localhost:5000/api/mpesa/stk-push', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    phone: phone,
-                    amount: priceKES,
-                    productId: productId
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert(
-                        '✅ Payment request sent!\n\n' +
-                        'Please check your phone and enter your M-Pesa PIN.\n\n' +
-                        'You will receive a confirmation SMS once payment is complete.'
-                    );
-                } else {
-                    alert(
-                        '❌ Payment request failed!\n\n' +
-                        data.message + '\n\n' +
-                        'Please try again or contact support.'
-                    );
-                }
-            })
-            .catch(error => {
-                console.error('M-Pesa payment error:', error);
-                alert(
-                    '❌ Connection error!\n\n' +
-                    'Could not connect to payment server.\n\n' +
-                    'Please ensure backend is running or contact support:\n' +
-                    'Email: megametahub42@gmail.com\n' +
-                    'Phone: +1 (973)-8197-530'
-                );
-            });
-        }
     </script>
     <script src="./fix-clickable-products.js"></script>
     <script>

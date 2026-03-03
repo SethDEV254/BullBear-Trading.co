@@ -788,6 +788,38 @@
            FUTURISTIC 3D THEME — BullBear Trading
            ================================================ */
 
+        /* ---- DARK THEME — SCROLL PERSISTENCE ---- */
+        html {
+            background-color: #020409;
+            scrollbar-color: #6366f1 #050810;
+        }
+
+        body {
+            background-color: #020409 !important;
+            color: #ffffff !important;
+            min-height: 100vh;
+        }
+
+        /* body class applied by Kajabi */
+        .background-unrecognized {
+            background-color: #020409 !important;
+        }
+
+        /* Force all sections dark */
+        .section,
+        section,
+        .sizer,
+        .container,
+        .background-dark {
+            background-color: transparent !important;
+        }
+
+        /* Overscroll bounce area stays dark */
+        html, body {
+            overscroll-behavior: none;
+            background: #020409 !important;
+        }
+
         /* Animated grid background */
         body::before {
             content: '';
@@ -1032,6 +1064,216 @@
         ::-webkit-scrollbar-thumb {
             background: linear-gradient(180deg, #6366f1, #06b6d4);
             border-radius: 3px;
+        }
+
+        /* ================================================
+           MOBILE — RESPONSIVE POLISH
+           ================================================ */
+
+        /* Header mobile nav */
+        @media (max-width: 767px) {
+            .header {
+                padding: 10px 0 !important;
+            }
+
+            .header__content--mobile {
+                background: rgba(4, 6, 14, 0.98) !important;
+                border-top: 1px solid rgba(6, 182, 212, 0.2) !important;
+                padding: 12px 0 !important;
+            }
+
+            .header__content--mobile .link-list {
+                flex-direction: column !important;
+                gap: 4px !important;
+            }
+
+            .header__content--mobile .link-list__link {
+                padding: 10px 20px !important;
+                font-size: 1rem !important;
+                border-bottom: 1px solid rgba(99, 102, 241, 0.1) !important;
+                display: block !important;
+            }
+
+            /* Library dropdown full width on mobile */
+            .library-dropdown {
+                width: 100% !important;
+            }
+
+            .library-dropdown-content {
+                position: static !important;
+                width: 100% !important;
+                border-radius: 8px !important;
+                margin: 8px 0 !important;
+                border-left: 2px solid rgba(6, 182, 212, 0.4) !important;
+            }
+        }
+
+        /* Hero mobile */
+        @media (max-width: 767px) {
+            .hero-logo {
+                max-width: 160px !important;
+                margin-bottom: 20px !important;
+            }
+
+            .hero-title {
+                font-size: 2rem !important;
+                letter-spacing: 1px !important;
+                margin-bottom: 12px !important;
+            }
+
+            .hero-subtitle {
+                font-size: 0.95rem !important;
+                letter-spacing: 3px !important;
+                margin-bottom: 16px !important;
+            }
+
+            .hero-description {
+                font-size: 0.92rem !important;
+                line-height: 1.7 !important;
+                padding-left: 12px !important;
+                margin: 14px auto 24px !important;
+                text-align: left !important;
+            }
+
+            .hero-stats {
+                gap: 10px !important;
+                margin-top: 24px !important;
+            }
+
+            .hero-stat-item {
+                padding: 10px 14px !important;
+                min-width: 80px !important;
+                flex: 1 1 calc(50% - 10px) !important;
+            }
+
+            .hero-stat-number {
+                font-size: 1.25rem !important;
+            }
+
+            .hero-stat-label {
+                font-size: 0.65rem !important;
+            }
+        }
+
+        /* Product cards mobile */
+        @media (max-width: 767px) {
+            .col-4 {
+                flex: 0 0 100% !important;
+                max-width: 100% !important;
+                padding: 0 8px !important;
+                margin-bottom: 16px !important;
+            }
+
+            .card {
+                min-height: auto !important;
+                max-height: none !important;
+            }
+
+            .card__image {
+                height: 180px !important;
+            }
+
+            .card__body {
+                padding: 14px !important;
+                min-height: auto !important;
+            }
+
+            .card__title {
+                font-size: 1rem !important;
+                min-height: auto !important;
+            }
+
+            .card__text {
+                font-size: 0.82rem !important;
+                min-height: auto !important;
+                -webkit-line-clamp: 3 !important;
+            }
+
+            .card__price {
+                font-size: 1.2rem !important;
+                margin-bottom: 8px !important;
+            }
+
+            .buy-now-btn {
+                padding: 12px !important;
+                font-size: 0.85rem !important;
+            }
+        }
+
+        /* Tablet — 2 column cards */
+        @media (min-width: 576px) and (max-width: 991px) {
+            .col-4 {
+                flex: 0 0 50% !important;
+                max-width: 50% !important;
+            }
+        }
+
+        /* Featured section heading mobile */
+        @media (max-width: 767px) {
+            #block-1577982541036_0 h2 {
+                font-size: 1.6rem !important;
+                margin-bottom: 1rem !important;
+            }
+        }
+
+        /* Auth modal mobile */
+        @media (max-width: 767px) {
+            .auth-modal-content {
+                width: 94% !important;
+                padding: 24px 18px !important;
+                margin: 8% auto !important;
+            }
+
+            .auth-modal-content h2 {
+                font-size: 1.4rem !important;
+            }
+
+            .form-group input {
+                padding: 12px 14px !important;
+                font-size: 0.95rem !important;
+            }
+
+            .auth-btn {
+                padding: 14px !important;
+                font-size: 1rem !important;
+            }
+        }
+
+        /* Chat widget mobile */
+        @media (max-width: 767px) {
+            .chat-widget {
+                bottom: 12px !important;
+                right: 12px !important;
+            }
+
+            .chat-box {
+                width: calc(100vw - 24px) !important;
+                right: 0 !important;
+                bottom: 60px !important;
+                border-radius: 12px !important;
+            }
+        }
+
+        /* Footer mobile */
+        @media (max-width: 767px) {
+            .footer {
+                padding: 16px 0 !important;
+                text-align: center !important;
+            }
+
+            .footer__container {
+                padding: 12px 16px !important;
+            }
+        }
+
+        /* Prevent horizontal overflow */
+        html, body {
+            overflow-x: hidden !important;
+            max-width: 100vw !important;
+        }
+
+        * {
+            box-sizing: border-box !important;
         }
 
         /* ================================================

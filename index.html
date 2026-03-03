@@ -3088,7 +3088,7 @@
                                 <!-- Contact Section -->
                                 <div class="footer-section">
                                     <div class="footer-section-title">📞 Contact Us</div>
-                                    <a class="footer-link" href="https://www.BullBear Trading/contact">Contact Form</a>
+                                    <a class="footer-link" href="https://www.bullbeartrading.com/contact" target="_blank" rel="noopener noreferrer">Contact Form</a>
                                     <a class="footer-link" href="mailto:megametahub42@gmail.com">megametahub42@gmail.com</a>
                                     <a class="footer-link" href="tel:+19738197530">+1 (973)-8197-530</a>
                                 </div>
@@ -3096,16 +3096,16 @@
                                 <!-- Legal Section -->
                                 <div class="footer-section">
                                     <div class="footer-section-title">⚖️ Legal</div>
-                                    <a class="footer-link" href="https://www.BullBear Trading/terms-and-conditions">Terms & Conditions</a>
-                                    <a class="footer-link" href="https://www.BullBear Trading/gdpr-policy">GDPR Privacy Policy</a>
-                                    <a class="footer-link" href="https://www.BullBear Trading/bullbear-disclaimer">Disclaimer</a>
+                                    <a class="footer-link" href="https://www.bullbeartrading.com/terms-and-conditions" target="_blank" rel="noopener noreferrer">Terms & Conditions</a>
+                                    <a class="footer-link" href="https://www.bullbeartrading.com/gdpr-policy" target="_blank" rel="noopener noreferrer">GDPR Privacy Policy</a>
+                                    <a class="footer-link" href="https://www.bullbeartrading.com/bullbear-disclaimer" target="_blank" rel="noopener noreferrer">Disclaimer</a>
                                 </div>
                                 
                                 <!-- Policies Section -->
                                 <div class="footer-section">
                                     <div class="footer-section-title">📋 Policies</div>
-                                    <a class="footer-link" href="https://www.BullBear Trading/purchase-policy">Fulfillment & Refund Policy</a>
-                                    <a class="footer-link" href="https://www.BullBear Trading/affiliate-disclaimer">Affiliate Disclaimer</a>
+                                    <a class="footer-link" href="https://www.bullbeartrading.com/purchase-policy" target="_blank" rel="noopener noreferrer">Fulfillment & Refund Policy</a>
+                                    <a class="footer-link" href="https://www.bullbeartrading.com/affiliate-disclaimer" target="_blank" rel="noopener noreferrer">Affiliate Disclaimer</a>
                                 </div>
                             </div>
                             
@@ -3154,21 +3154,25 @@
                             kjb-settings-id="sections_footer_blocks_1638945666179_settings_social_icons_text_color">
                             <div class="social-icons__icons">
                                 <a class="social-icons__icon social-icons__icon--" href="https://x.com/bullbeartrading"
+                                    target="_blank" rel="noopener noreferrer"
                                     kjb-settings-id="sections_footer_blocks_1638945666179_settings_social_icon_link_twitter">
                                     <i class="fab fa-twitter"></i>
                                 </a>
                                 <a class="social-icons__icon social-icons__icon--"
                                     href="https://www.instagram.com/bullbeartrading"
+                                    target="_blank" rel="noopener noreferrer"
                                     kjb-settings-id="sections_footer_blocks_1638945666179_settings_social_icon_link_instagram">
                                     <i class="fab fa-instagram"></i>
                                 </a>
                                 <a class="social-icons__icon social-icons__icon--"
                                     href="https://tiktok.com/@bullbeartrading"
+                                    target="_blank" rel="noopener noreferrer"
                                     kjb-settings-id="sections_footer_blocks_1638945666179_settings_social_icon_link_tiktok">
                                     <i class="fab fa-tiktok"></i>
                                 </a>
                                 <a class="social-icons__icon social-icons__icon--"
                                     href="https://www.youtube.com/@bullbeartrading"
+                                    target="_blank" rel="noopener noreferrer"
                                     kjb-settings-id="sections_footer_blocks_1638945666179_settings_social_icon_link_youtube">
                                     <i class="fab fa-youtube"></i>
                                 </a>
@@ -3368,13 +3372,15 @@
     <script>
         /* Custom BullBear Trading JS */
         document.addEventListener('DOMContentLoaded', function () {
-            // Add smooth scrolling for better UX
+            // Add smooth scrolling for anchor links (skip bare # links)
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function (e) {
+                    const href = this.getAttribute('href');
+                    if (!href || href === '#') return;
+                    const target = document.querySelector(href);
+                    if (!target) return;
                     e.preventDefault();
-                    document.querySelector(this.getAttribute('href')).scrollIntoView({
-                        behavior: 'smooth'
-                    });
+                    target.scrollIntoView({ behavior: 'smooth' });
                 });
             });
 
@@ -3526,28 +3532,9 @@
             console.log('Checklist downloaded by:', user.email);
         }
 
-        async function sendChecklistEmail(user) {
-            try {
-                const response = await fetch('http://localhost:5000/api/checklist/send-email', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        name: user.name,
-                        email: user.email,
-                        phone: user.phone || 'Not provided'
-                    })
-                });
-
-                if (response.ok) {
-                    console.log('Checklist email sent successfully');
-                } else {
-                    console.error('Failed to send checklist email');
-                }
-            } catch (error) {
-                console.error('Error sending checklist email:', error);
-            }
+        function sendChecklistEmail(user) {
+            // Email delivery requires backend integration
+            console.log('Checklist download by:', user.email);
         }
 
         // Close modal when clicking outside

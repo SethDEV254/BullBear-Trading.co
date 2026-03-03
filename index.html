@@ -1359,7 +1359,7 @@
                                                 <h5 class="card__price"
                                                     style="color: #06b6d4; font-size: 1.5rem; font-weight: 700;">$500.00
                                                     USD</h5>
-                                                <a href="https://metahubacademy.com/checkout" 
+                                                <a href="https://metahubacademy.com/store"
                                                    class="buy-now-btn"
                                                    target="_blank"
                                                    rel="noopener noreferrer">
@@ -1638,12 +1638,15 @@
                                                 <h5 class="card__price"
                                                     style="color: #06b6d4; font-size: 1.5rem; font-weight: 700;">$250.00
                                                     USD</h5>
-                                                <a href="https://metahubacademy.com/ledger-nano-s" 
+                                                <a href="https://metahubacademy.com/checkout?cart_id=cart_01KJTNYZ91Z3TV840M0QF6W10J&lang=en"
                                                    class="buy-now-btn"
                                                    target="_blank"
                                                    rel="noopener noreferrer">
                                                     Buy Now
                                                 </a>
+                                                <button class="mpesa-btn" onclick="openMpesaPayment('ledger-nano-s', 250)">
+                                                    📱 M-Pesa (KES 32,500)
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -1741,12 +1744,15 @@
                                                 <h5 class="card__price"
                                                     style="color: #06b6d4; font-size: 1.5rem; font-weight: 700;">$20.00
                                                     USD</h5>
-                                                <a href="https://metahubacademy.com/proven-steps-to-6-figure-affiliate-marketing" 
+                                                <a href="https://metahubacademy.com/checkout?cart_id=cart_01KJTP3B2AANCFZM9TASVBNTKQ&lang=en"
                                                    class="buy-now-btn"
                                                    target="_blank"
                                                    rel="noopener noreferrer">
                                                     Buy Now
                                                 </a>
+                                                <button class="mpesa-btn" onclick="openMpesaPayment('affiliate-marketing', 20)">
+                                                    📱 M-Pesa (KES 2,600)
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -1842,12 +1848,15 @@
                                                 <h5 class="card__price"
                                                     style="color: #06b6d4; font-size: 1.5rem; font-weight: 700;">$30.00
                                                     USD</h5>
-                                                <a href="https://metahubacademy.com/checkout?cart_id=cart_01K9DK3KRV24EH40SB6C6YA1TQ&lang=en" 
+                                                <a href="https://metahubacademy.com/checkout?cart_id=cart_01KJTP4MAG23WJ9RBCFZ4BETQF&lang=en"
                                                    class="buy-now-btn"
                                                    target="_blank"
                                                    rel="noopener noreferrer">
                                                     Buy Now
                                                 </a>
+                                                <button class="mpesa-btn" onclick="openMpesaPayment('crypto-truth-guide', 30)">
+                                                    📱 M-Pesa (KES 3,900)
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -1943,12 +1952,15 @@
                                                 <h5 class="card__price"
                                                     style="color: #06b6d4; font-size: 1.5rem; font-weight: 700;">$400.00
                                                     USD</h5>
-                                                <a href="https://metahubacademy.com/checkout?cart_id=cart_01K9DK0YFKABH427V5MD95GKA6&lang=en" 
+                                                <a href="https://metahubacademy.com/checkout?cart_id=cart_01KJTNWZGAKAYJC6P58XFRAZB3&lang=en"
                                                    class="buy-now-btn"
                                                    target="_blank"
                                                    rel="noopener noreferrer">
                                                     Buy Now
                                                 </a>
+                                                <button class="mpesa-btn" onclick="openMpesaPayment('ledger-nano-x', 400)">
+                                                    📱 M-Pesa (KES 52,000)
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -2572,36 +2584,7 @@
                 }, true); // Use capture phase
             });
             
-            // Handle card clicks (except when clicking button)
-            const cards = document.querySelectorAll('.card[data-product-url]');
-            console.log('Found ' + cards.length + ' cards');
-            
-            cards.forEach(function(card) {
-                // Add pointer cursor to indicate clickability
-                card.style.cursor = 'pointer';
-                
-                card.addEventListener('click', function(e) {
-                    // Check if click is on button or its children
-                    const clickedButton = e.target.closest('.buy-now-btn');
-                    
-                    // Don't navigate if clicking on the button
-                    if (!clickedButton) {
-                        const url = this.getAttribute('data-product-url');
-                        console.log('Card clicked, navigating to: ' + url);
-                        
-                        if (url) {
-                            // Open MetaHub Academy links in new tab
-                            if (url.includes('metahubacademy.com')) {
-                                window.open(url, '_blank', 'noopener,noreferrer');
-                            } else {
-                                window.location.href = url;
-                            }
-                        }
-                    } else {
-                        console.log('Button clicked, card click ignored');
-                    }
-                });
-            });
+            // Card click handling is done by initializeProductCards() below
 
             // Checklist card click - ensure it's fully clickable
             const checklistCard = document.querySelector('.checklist-card');
@@ -2960,8 +2943,8 @@
                 card.style.cursor = 'pointer';
                 
                 card.addEventListener('click', function(e) {
-                    // Don't trigger if clicking the buy button
-                    if (e.target.closest('.buy-now-btn')) {
+                    // Don't trigger if clicking any button or link
+                    if (e.target.closest('.buy-now-btn') || e.target.closest('.mpesa-btn') || e.target.closest('a') || e.target.closest('button')) {
                         return;
                     }
                     

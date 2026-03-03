@@ -458,22 +458,39 @@
             user-select: none;
         }
 
+        /* Allow dropdown to escape header clipping */
+        .header,
+        .header__wrap,
+        .header__content,
+        .header__content--desktop,
+        .header__container,
+        .header__block--menu,
+        .link-list,
+        .link-list.justify-content-right {
+            overflow: visible !important;
+        }
+
+        #section-header {
+            position: relative;
+            z-index: 10000;
+        }
+
         .library-dropdown-content {
             display: none;
-            position: absolute;
-            top: calc(100% + 10px);
-            right: 0;
-            background: rgba(6, 9, 20, 0.97);
-            border: 1px solid rgba(6, 182, 212, 0.35);
-            min-width: 200px;
+            position: fixed;
+            top: auto;
+            right: auto;
+            background: rgba(6, 9, 20, 0.98);
+            border: 1px solid rgba(6, 182, 212, 0.45);
+            min-width: 210px;
             box-shadow:
-                0 12px 40px rgba(0, 0, 0, 0.6),
-                0 0 0 1px rgba(99, 102, 241, 0.1),
-                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+                0 16px 50px rgba(0, 0, 0, 0.8),
+                0 0 0 1px rgba(99, 102, 241, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.06);
             border-radius: 12px;
-            z-index: 9999;
+            z-index: 99999;
             overflow: hidden;
-            backdrop-filter: blur(20px);
+            backdrop-filter: blur(24px);
         }
 
         .library-dropdown-content .dropdown-view-library {
@@ -3384,11 +3401,32 @@
             const libraryTrigger = document.querySelector('.library-trigger');
             
             if (libraryTrigger && libraryDropdown) {
+                var dropdownContent = libraryDropdown.querySelector('.library-dropdown-content');
+
                 libraryTrigger.addEventListener('click', function(e) {
                     e.preventDefault();
                     e.stopPropagation();
+
+                    var isOpen = libraryDropdown.classList.contains('active');
+
+                    if (!isOpen) {
+                        // Position the fixed dropdown under the trigger
+                        var rect = libraryTrigger.getBoundingClientRect();
+                        dropdownContent.style.top = (rect.bottom + 8) + 'px';
+                        dropdownContent.style.left = Math.max(8, rect.right - 210) + 'px';
+                    }
+
                     libraryDropdown.classList.toggle('active');
                 });
+
+                // Reposition on scroll/resize
+                window.addEventListener('scroll', function() {
+                    if (libraryDropdown.classList.contains('active')) {
+                        var rect = libraryTrigger.getBoundingClientRect();
+                        dropdownContent.style.top = (rect.bottom + 8) + 'px';
+                        dropdownContent.style.left = Math.max(8, rect.right - 210) + 'px';
+                    }
+                }, { passive: true });
 
                 // Close dropdown when clicking outside
                 document.addEventListener('click', function(e) {
@@ -4245,13 +4283,34 @@
         }
     </style>
 
+    <!-- QR Widget (tabbed: Login / Sign Up) -->
+    <style>
+        .qr-tabs { display: flex; gap: 6px; margin-bottom: 14px; }
+        .qr-tab {
+            flex: 1; padding: 7px 10px; border: none; border-radius: 7px;
+            font-family: 'Poppins', sans-serif; font-size: 0.75rem; font-weight: 700;
+            cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px;
+            background: rgba(99,102,241,0.12); color: #94a3b8;
+            border: 1px solid rgba(99,102,241,0.2); transition: all 0.2s ease;
+        }
+        .qr-tab.active {
+            background: linear-gradient(135deg,#6366f1 0%,#06b6d4 100%);
+            color: #fff; border-color: transparent;
+            box-shadow: 0 3px 12px rgba(99,102,241,0.4);
+        }
+    </style>
+
     <div class="qr-widget" id="qrWidget">
         <div class="qr-panel" id="qrPanel">
-            <p class="qr-panel-title">Scan to Visit</p>
+            <div class="qr-tabs">
+                <button class="qr-tab active" onclick="switchQR('login',this)">Login</button>
+                <button class="qr-tab" onclick="switchQR('signup',this)">Sign Up</button>
+            </div>
+            <p class="qr-panel-title" id="qrPanelTitle">Scan to Login</p>
             <div class="qr-code-box" id="qrCodeBox"></div>
             <p class="qr-panel-url">bullbeartrading.com</p>
         </div>
-        <button class="qr-toggle" id="qrToggle" onclick="toggleQR()">
+        <button class="qr-toggle" onclick="toggleQR()">
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                 <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
                 <rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="3" height="3"/>
@@ -4262,23 +4321,37 @@
 
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
     <script>
-        var qrGenerated = false;
+        var qrInstance = null;
+        var currentQRType = 'login';
+
+        var QR_URLS = {
+            login:  'https://www.bullbeartrading.com?modal=login',
+            signup: 'https://www.bullbeartrading.com?modal=signup'
+        };
 
         function toggleQR() {
             var panel = document.getElementById('qrPanel');
             panel.classList.toggle('active');
+            if (panel.classList.contains('active')) renderQR(currentQRType);
+        }
 
-            if (panel.classList.contains('active') && !qrGenerated) {
-                new QRCode(document.getElementById('qrCodeBox'), {
-                    text: 'https://www.bullbeartrading.com',
-                    width: 180,
-                    height: 180,
-                    colorDark: '#000000',
-                    colorLight: '#ffffff',
-                    correctLevel: QRCode.CorrectLevel.H,
-                });
-                qrGenerated = true;
-            }
+        function switchQR(type, btn) {
+            document.querySelectorAll('.qr-tab').forEach(function(t){ t.classList.remove('active'); });
+            btn.classList.add('active');
+            currentQRType = type;
+            document.getElementById('qrPanelTitle').textContent = type === 'login' ? 'Scan to Login' : 'Scan to Sign Up';
+            renderQR(type);
+        }
+
+        function renderQR(type) {
+            var box = document.getElementById('qrCodeBox');
+            box.innerHTML = '';
+            qrInstance = new QRCode(box, {
+                text: QR_URLS[type],
+                width: 180, height: 180,
+                colorDark: '#000000', colorLight: '#ffffff',
+                correctLevel: QRCode.CorrectLevel.H,
+            });
         }
 
         document.addEventListener('click', function(e) {
@@ -4287,6 +4360,288 @@
                 document.getElementById('qrPanel').classList.remove('active');
             }
         });
+
+        // Auto-open modal from URL param (?modal=login or ?modal=signup)
+        (function() {
+            var params = new URLSearchParams(window.location.search);
+            var modal = params.get('modal');
+            if (modal === 'login') {
+                window.addEventListener('DOMContentLoaded', function(){ openModal('loginModal'); });
+            } else if (modal === 'signup') {
+                window.addEventListener('DOMContentLoaded', function(){ openModal('signupModal'); });
+            }
+        })();
+    </script>
+
+    <!-- ================================================
+         ADMIN PANEL (frontend-only, localStorage-based)
+         ================================================ -->
+    <style>
+        #adminPanel {
+            display: none; position: fixed; inset: 0;
+            background: rgba(0,0,0,0.85); z-index: 999999;
+            backdrop-filter: blur(8px); overflow-y: auto;
+        }
+        #adminPanel.open { display: block; }
+        .admin-wrap {
+            max-width: 900px; margin: 40px auto; padding: 0 16px 60px;
+        }
+        .admin-header {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 28px;
+        }
+        .admin-title {
+            font-family: 'Poppins', sans-serif; font-size: 1.5rem; font-weight: 800;
+            background: linear-gradient(135deg,#6366f1 0%,#06b6d4 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .admin-close {
+            background: rgba(99,102,241,0.15); border: 1px solid rgba(99,102,241,0.3);
+            color: #94a3b8; border-radius: 8px; padding: 8px 16px;
+            font-family: 'Poppins', sans-serif; font-size: 0.85rem; cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .admin-close:hover { background: rgba(239,68,68,0.2); border-color: rgba(239,68,68,0.4); color: #f87171; }
+        .admin-stats {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(160px,1fr));
+            gap: 14px; margin-bottom: 28px;
+        }
+        .admin-stat {
+            background: rgba(10,14,26,0.9); border: 1px solid rgba(6,182,212,0.2);
+            border-radius: 12px; padding: 18px; text-align: center;
+            backdrop-filter: blur(16px);
+        }
+        .admin-stat-num {
+            font-family: 'Poppins', sans-serif; font-size: 2rem; font-weight: 800;
+            color: #06b6d4; display: block;
+            text-shadow: 0 0 15px rgba(6,182,212,0.5);
+        }
+        .admin-stat-label {
+            font-size: 0.75rem; color: #64748b; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .admin-section-title {
+            font-family: 'Poppins', sans-serif; font-size: 1rem; font-weight: 700;
+            color: #e2e8f0; margin-bottom: 14px; padding-bottom: 8px;
+            border-bottom: 1px solid rgba(99,102,241,0.2);
+        }
+        .admin-table {
+            width: 100%; border-collapse: collapse; font-size: 0.85rem;
+        }
+        .admin-table th {
+            text-align: left; padding: 10px 14px; font-family: 'Poppins', sans-serif;
+            font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 1px; color: #06b6d4;
+            border-bottom: 1px solid rgba(99,102,241,0.2);
+        }
+        .admin-table td {
+            padding: 12px 14px; color: #cbd5e1;
+            border-bottom: 1px solid rgba(99,102,241,0.08);
+            font-family: 'Inter', sans-serif;
+        }
+        .admin-table tr:hover td { background: rgba(99,102,241,0.05); }
+        .admin-delete-btn {
+            background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.3);
+            color: #f87171; border-radius: 6px; padding: 4px 10px; font-size: 0.75rem;
+            cursor: pointer; transition: all 0.2s ease;
+        }
+        .admin-delete-btn:hover { background: rgba(239,68,68,0.3); }
+        .admin-empty {
+            text-align: center; color: #475569; padding: 40px;
+            font-family: 'Inter', sans-serif; font-size: 0.9rem;
+        }
+        .admin-actions {
+            display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;
+        }
+        .admin-btn {
+            padding: 9px 18px; border-radius: 8px; border: none; cursor: pointer;
+            font-family: 'Poppins', sans-serif; font-size: 0.8rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.2s ease;
+        }
+        .admin-btn-export {
+            background: linear-gradient(135deg,#059669 0%,#047857 100%); color: #fff;
+        }
+        .admin-btn-clear {
+            background: rgba(239,68,68,0.15); color: #f87171;
+            border: 1px solid rgba(239,68,68,0.3);
+        }
+        .admin-btn-clear:hover { background: rgba(239,68,68,0.25); }
+
+        /* Admin auth screen */
+        .admin-auth {
+            max-width: 380px; margin: 120px auto; padding: 36px;
+            background: rgba(6,9,20,0.97); border: 1px solid rgba(6,182,212,0.3);
+            border-radius: 16px; text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+        }
+        .admin-auth h2 {
+            font-family: 'Poppins', sans-serif; color: #fff; margin-bottom: 8px;
+        }
+        .admin-auth p { color: #64748b; font-size: 0.85rem; margin-bottom: 24px; }
+        .admin-auth input {
+            width: 100%; padding: 12px 16px; border-radius: 10px;
+            border: 1px solid rgba(99,102,241,0.3);
+            background: rgba(15,23,42,0.6); color: #fff; font-size: 0.95rem;
+            margin-bottom: 14px; box-sizing: border-box; outline: none;
+        }
+        .admin-auth input:focus { border-color: #06b6d4; }
+        .admin-auth-btn {
+            width: 100%; padding: 13px;
+            background: linear-gradient(135deg,#6366f1 0%,#06b6d4 100%);
+            color: #fff; border: none; border-radius: 10px; font-weight: 700;
+            font-size: 0.95rem; cursor: pointer; text-transform: uppercase;
+        }
+        .admin-auth-error { color: #f87171; font-size: 0.82rem; margin-top: 8px; display: none; }
+    </style>
+
+    <div id="adminPanel">
+        <!-- Auth screen -->
+        <div id="adminAuth" class="admin-auth">
+            <h2>Admin Access</h2>
+            <p>Enter your admin password to continue</p>
+            <input type="password" id="adminPasswordInput" placeholder="Admin password" onkeydown="if(event.key==='Enter')verifyAdmin()">
+            <button class="admin-auth-btn" onclick="verifyAdmin()">Access Panel</button>
+            <p class="admin-auth-error" id="adminAuthError">Incorrect password. Try again.</p>
+        </div>
+
+        <!-- Dashboard (shown after auth) -->
+        <div id="adminDashboard" style="display:none;">
+            <div class="admin-wrap">
+                <div class="admin-header">
+                    <span class="admin-title">Admin Dashboard</span>
+                    <button class="admin-close" onclick="closeAdmin()">Close Panel</button>
+                </div>
+
+                <div class="admin-stats" id="adminStats"></div>
+
+                <div class="admin-actions">
+                    <button class="admin-btn admin-btn-export" onclick="exportUsers()">Export Users JSON</button>
+                    <button class="admin-btn admin-btn-clear" onclick="clearAllUsers()">Clear All Users</button>
+                </div>
+
+                <p class="admin-section-title">Registered Users</p>
+                <div id="adminUsersTable"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var ADMIN_PASSWORD = 'bullbear2024';
+        var adminAuthed = false;
+
+        function openAdmin() {
+            document.getElementById('adminPanel').classList.add('open');
+            document.body.style.overflow = 'hidden';
+            if (!adminAuthed) {
+                document.getElementById('adminAuth').style.display = 'block';
+                document.getElementById('adminDashboard').style.display = 'none';
+            } else {
+                renderAdminDashboard();
+            }
+        }
+
+        function closeAdmin() {
+            document.getElementById('adminPanel').classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        function verifyAdmin() {
+            var pw = document.getElementById('adminPasswordInput').value;
+            if (pw === ADMIN_PASSWORD) {
+                adminAuthed = true;
+                document.getElementById('adminAuth').style.display = 'none';
+                document.getElementById('adminDashboard').style.display = 'block';
+                renderAdminDashboard();
+            } else {
+                document.getElementById('adminAuthError').style.display = 'block';
+                document.getElementById('adminPasswordInput').value = '';
+            }
+        }
+
+        function renderAdminDashboard() {
+            var users = JSON.parse(localStorage.getItem('bullbearUsers') || '[]');
+            var today = new Date().toDateString();
+            var todaySignups = users.filter(function(u){ return new Date(u.createdAt).toDateString() === today; }).length;
+
+            // Stats
+            document.getElementById('adminStats').innerHTML =
+                '<div class="admin-stat"><span class="admin-stat-num">' + users.length + '</span><span class="admin-stat-label">Total Users</span></div>' +
+                '<div class="admin-stat"><span class="admin-stat-num">' + todaySignups + '</span><span class="admin-stat-label">Today\'s Signups</span></div>' +
+                '<div class="admin-stat"><span class="admin-stat-num">' + (localStorage.length) + '</span><span class="admin-stat-label">Storage Keys</span></div>';
+
+            // Users table
+            var tableDiv = document.getElementById('adminUsersTable');
+            if (users.length === 0) {
+                tableDiv.innerHTML = '<p class="admin-empty">No registered users yet.</p>';
+                return;
+            }
+
+            var rows = users.map(function(u, i) {
+                var date = u.createdAt ? new Date(u.createdAt).toLocaleDateString() : '—';
+                return '<tr>' +
+                    '<td>' + (i + 1) + '</td>' +
+                    '<td>' + (u.name || '—') + '</td>' +
+                    '<td>' + (u.email || '—') + '</td>' +
+                    '<td>' + (u.phone || '—') + '</td>' +
+                    '<td>' + date + '</td>' +
+                    '<td><button class="admin-delete-btn" onclick="deleteUser(' + i + ')">Delete</button></td>' +
+                '</tr>';
+            }).join('');
+
+            tableDiv.innerHTML =
+                '<table class="admin-table">' +
+                '<thead><tr><th>#</th><th>Name</th><th>Email</th><th>Phone</th><th>Joined</th><th>Action</th></tr></thead>' +
+                '<tbody>' + rows + '</tbody></table>';
+        }
+
+        function deleteUser(index) {
+            if (!confirm('Delete this user?')) return;
+            var users = JSON.parse(localStorage.getItem('bullbearUsers') || '[]');
+            users.splice(index, 1);
+            localStorage.setItem('bullbearUsers', JSON.stringify(users));
+            renderAdminDashboard();
+        }
+
+        function exportUsers() {
+            var users = JSON.parse(localStorage.getItem('bullbearUsers') || '[]');
+            var blob = new Blob([JSON.stringify(users, null, 2)], { type: 'application/json' });
+            var a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'bullbear-users-' + new Date().toISOString().slice(0,10) + '.json';
+            a.click();
+        }
+
+        function clearAllUsers() {
+            if (!confirm('Delete ALL users? This cannot be undone.')) return;
+            localStorage.removeItem('bullbearUsers');
+            localStorage.removeItem('bullbearCurrentUser');
+            renderAdminDashboard();
+        }
+
+        // Secret access: click logo 5 times
+        (function() {
+            var logoClicks = 0, logoTimer;
+            document.addEventListener('DOMContentLoaded', function() {
+                var logo = document.querySelector('.logo');
+                if (logo) {
+                    logo.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        logoClicks++;
+                        clearTimeout(logoTimer);
+                        logoTimer = setTimeout(function(){ logoClicks = 0; }, 2000);
+                        if (logoClicks >= 5) {
+                            logoClicks = 0;
+                            openAdmin();
+                        }
+                    });
+                }
+            });
+        })();
+
+        // Also open via URL hash #admin
+        if (window.location.hash === '#admin') {
+            window.addEventListener('DOMContentLoaded', function(){ openAdmin(); });
+        }
     </script>
 
     <script>

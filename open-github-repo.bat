@@ -1,3 +1,0 @@
-@echo off
-echo Opening BullBear Trading GitHub Repository...
-start https://github.com/SethDEV254/BullBear-Trading.co

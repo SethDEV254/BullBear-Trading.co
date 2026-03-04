@@ -2338,7 +2338,7 @@
                                                 <span class="free-badge">FREE</span>
                                                 <h4 class="card__title">Crypto Quickstart Checklist</h4>
                                                 <p class="card__text">5-step guide to start trading crypto with confidence.</p>
-                                                <button class="checklist-dl-btn" onclick="showSignupForChecklist(); event.stopPropagation();">Download Free</button>
+                                                <button class="checklist-dl-btn">Download Free</button>
                                             </div>
                                         </div>
                                     </div>
@@ -3665,8 +3665,18 @@
                         e.preventDefault();
                         window.open(href, this.target || '_blank', 'noopener,noreferrer');
                     }
-                }, true); // capture phase
+                }, true);
             });
+
+            // Capture-phase handler for checklist download button
+            const dlBtn = document.querySelector('.checklist-dl-btn');
+            if (dlBtn) {
+                dlBtn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    showSignupForChecklist();
+                }, true);
+            }
         }
     </script>
 

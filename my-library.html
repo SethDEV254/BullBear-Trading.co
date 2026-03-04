@@ -500,9 +500,9 @@
                     <span class="logo-text">BULLBEAR BLOCKCHAIN</span>
                 </a>
                 <div class="user-info-header" id="headerUserInfo" style="display: none;">
-                    <button onclick="history.back()" class="back-button">
+                    <a href="index.html" class="back-button" style="text-decoration:none;">
                         <span>←</span> Back
-                    </button>
+                    </a>
                     <span class="user-email" id="headerUserEmail"></span>
                     <button onclick="handleLogout()" class="logout-btn-header">Logout</button>
                 </div>
@@ -518,8 +518,9 @@
             <!-- Auth Required -->
             <div class="auth-required" id="authRequired" style="display: none;">
                 <h2>🔒 Login Required</h2>
-                <p style="color: #94a3b8; margin-bottom: 30px;">Please sign in to access your library</p>
-                <a href="index.html" class="auth-btn">Go to Home</a>
+                <p style="color: #94a3b8; margin-bottom: 30px;">Sign in to access your purchased courses</p>
+                <a href="index.html?modal=signup" class="auth-btn">Sign Up</a>
+                <a href="index.html?modal=login" class="auth-btn" style="background: transparent; border: 2px solid #06b6d4; color: #06b6d4;">Login</a>
             </div>
 
             <!-- Library Content -->
@@ -535,45 +536,14 @@
     </main>
 
     <script>
-        const API_URL = 'http://localhost:5000/api';
-
-        const availableCourses = {
-            'crypto-trading': {
-                id: 'crypto-trading',
-                title: 'Crypto Trading Video Course',
-                description: 'Master cryptocurrency trading with our comprehensive video course',
-                image: 'https://images.unsplash.com/photo-1621761191319-c6fb62004040?w=400',
-                price: 500,
-                accessUrl: 'crypto-trading-course.html'
-            },
-            'crypto-spreadsheet': {
-                id: 'crypto-spreadsheet',
-                title: 'Crypto Pull Profit Spreadsheet',
-                description: 'Advanced spreadsheet for tracking crypto profits and portfolio management',
-                image: 'https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down,q=100/cdn-ecommerce/store_01J7DYMSS0NGYTG74SF3YB3TAP/assets/1b9bdcc5-fdd3-4a35-bb16-ada0b23b5843.png',
-                price: 500,
-                accessUrl: '#'
-            },
-            'affiliate-marketing': {
-                id: 'affiliate-marketing',
-                title: 'Proven Steps to 6-Figure Affiliate Marketing',
-                description: 'Complete guide to building a successful affiliate marketing business',
-                image: 'https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=scale-down,q=100/cdn-ecommerce/store_01J7DYMSS0NGYTG74SF3YB3TAP%2Fassets%2F1726139982511-Screenshot%202024-02-20%20at%2009-43-46%20Crypto-%20Truth%20and-2%20comma%20clubAffiliate-Marketing-%20new%20(2).pdf.png',
-                price: 20,
-                accessUrl: '#'
-            }
-        };
-
         document.addEventListener('DOMContentLoaded', function () {
             checkAuth();
         });
 
         function checkAuth() {
-            const currentUser = localStorage.getItem('metahubCurrentUser');
-
-            if (currentUser) {
-                const user = JSON.parse(currentUser);
-                showLibrary(user);
+            const raw = localStorage.getItem('bullbearCurrentUser');
+            if (raw) {
+                showLibrary(JSON.parse(raw));
             } else {
                 showAuthRequired();
             }
@@ -587,41 +557,20 @@
         function showLibrary(user) {
             document.getElementById('authRequired').style.display = 'none';
             document.getElementById('libraryContent').style.display = 'block';
-
             document.getElementById('headerUserInfo').style.display = 'flex';
-            document.getElementById('headerUserEmail').textContent = user.email || user.name;
-
+            document.getElementById('headerUserEmail').textContent = user.name || user.email;
             loadUserCourses(user);
         }
 
-        async function loadUserCourses(user) {
+        function loadUserCourses(user) {
             const coursesGrid = document.getElementById('coursesGrid');
             const emptyLibrary = document.getElementById('emptyLibrary');
 
-            let purchases = [];
-
-            // Try to fetch from backend
-            try {
-                const token = localStorage.getItem('authToken') || user.token;
-                if (token) {
-                    const response = await fetch(API_URL + '/purchases/my-purchases', {
-                        headers: { 'Authorization': 'Bearer ' + token }
-                    });
-
-                    if (response.ok) {
-                        const data = await response.json();
-                        purchases = data.data?.purchases || [];
-                    }
-                }
-            } catch (error) {
-                console.log('Backend unavailable, using localStorage');
-            }
-
-            // Fallback to localStorage
-            if (purchases.length === 0) {
-                const localPurchases = JSON.parse(localStorage.getItem('metahubPurchases') || '[]');
-                purchases = localPurchases.filter(p => p.userEmail === user.email);
-            }
+            // Load from localStorage (keyed by email or flat array)
+            const byEmail = JSON.parse(localStorage.getItem('bullbearPurchases_' + user.email) || '[]');
+            const all = JSON.parse(localStorage.getItem('bullbearPurchases') || '[]');
+            const fromAll = all.filter(p => p.userEmail === user.email || p.email === user.email);
+            const purchases = byEmail.length ? byEmail : fromAll;
 
             if (purchases.length === 0) {
                 coursesGrid.innerHTML = '';
@@ -631,58 +580,45 @@
 
             emptyLibrary.style.display = 'none';
             coursesGrid.innerHTML = '';
-
-            purchases.forEach(purchase => {
-                const courseCard = createPurchaseCard(purchase);
-                coursesGrid.appendChild(courseCard);
-            });
+            purchases.forEach(p => coursesGrid.appendChild(createPurchaseCard(p)));
         }
 
         function createPurchaseCard(purchase) {
             const card = document.createElement('div');
             card.className = 'course-card';
 
-            const date = new Date(purchase.createdAt || purchase.purchaseDate);
-            const formattedDate = date.toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric'
-            });
-
-            const title = purchase.course?.title || purchase.courseTitle || 'Course';
+            const date = new Date(purchase.createdAt || purchase.purchaseDate || Date.now());
+            const formattedDate = date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+            const title = purchase.courseTitle || purchase.course?.title || 'Course';
             const status = purchase.status || 'pending';
 
-            let statusBadge = '';
-            if (status === 'pending') {
-                statusBadge = '<span style="background: rgba(251, 191, 36, 0.2); color: #fbbf24; padding: 4px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: 600;">⏳ Pending Approval</span>';
-            } else if (status === 'approved' || status === 'completed') {
-                statusBadge = '<span style="background: rgba(16, 185, 129, 0.2); color: #10b981; padding: 4px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: 600;">✅ Approved</span>';
-            } else if (status === 'rejected') {
-                statusBadge = '<span style="background: rgba(239, 68, 68, 0.2); color: #ef4444; padding: 4px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: 600;">❌ Rejected</span>';
-            }
+            const badges = {
+                pending: '<span style="background:rgba(251,191,36,0.2);color:#fbbf24;padding:4px 12px;border-radius:6px;font-size:0.8rem;font-weight:600;">⏳ Pending Approval</span>',
+                approved: '<span style="background:rgba(16,185,129,0.2);color:#10b981;padding:4px 12px;border-radius:6px;font-size:0.8rem;font-weight:600;">✅ Approved</span>',
+                completed: '<span style="background:rgba(16,185,129,0.2);color:#10b981;padding:4px 12px;border-radius:6px;font-size:0.8rem;font-weight:600;">✅ Approved</span>',
+                rejected: '<span style="background:rgba(239,68,68,0.2);color:#ef4444;padding:4px 12px;border-radius:6px;font-size:0.8rem;font-weight:600;">❌ Rejected</span>',
+            };
 
             const isApproved = status === 'approved' || status === 'completed';
+            const accessUrl = purchase.accessUrl || 'crypto-trading-course.html';
 
             card.innerHTML = `
                 <img src="https://images.unsplash.com/photo-1621761191319-c6fb62004040?w=400" alt="${title}" class="course-image">
                 <div class="course-content">
                     <h3 class="course-title">${title}</h3>
-                    <p class="course-description">Order ID: ${purchase.orderId || 'N/A'}</p>
-                    <p class="course-description">Amount: $${purchase.amount || 0}</p>
-                    ${statusBadge}
+                    <p class="course-description">Order: ${purchase.orderId || 'N/A'} &nbsp;|&nbsp; $${purchase.amount || 0}</p>
+                    ${badges[status] || badges.pending}
                     <div class="course-meta">
-                        <span class="purchase-date">Purchased: ${formattedDate}</span>
-                        ${isApproved ? '<a href="crypto-trading-course.html" class="access-btn">Access Course</a>' : '<span style="color:#94a3b8;font-size:0.85rem;">Awaiting approval</span>'}
+                        <span class="purchase-date">${formattedDate}</span>
+                        ${isApproved ? `<a href="${accessUrl}" class="access-btn">Access Course</a>` : '<span style="color:#94a3b8;font-size:0.85rem;">Awaiting approval</span>'}
                     </div>
                 </div>
             `;
-
             return card;
         }
 
         function handleLogout() {
-            localStorage.removeItem('metahubCurrentUser');
-            localStorage.removeItem('authToken');
+            localStorage.removeItem('bullbearCurrentUser');
             window.location.href = 'index.html';
         }
     </script>

@@ -2706,6 +2706,11 @@
                             Developed by <a href="https://twitter.com/starico" target="_blank"
                                 style="color: #06b6d4; text-decoration: none; font-weight: 600;">@starico</a>
                         </div>
+                        <div style="margin-top: 6px;">
+                            <a href="#" onclick="openAdmin();return false;"
+                                style="font-size: 0.65rem; color: rgba(255,255,255,0.1); text-decoration: none; letter-spacing: 2px;"
+                                title="Admin">&#9679;&#9679;&#9679;</a>
+                        </div>
                     </div>
 
                     <style>
@@ -3533,29 +3538,30 @@
 
             productCards.forEach(card => {
                 const productUrl = card.getAttribute('data-product-url');
-                const buyButton = card.querySelector('.buy-now-btn');
 
-                // Make the entire card clickable (except the buy button)
                 card.style.cursor = 'pointer';
 
                 card.addEventListener('click', function (e) {
-                    // Don't trigger if clicking any button or link
                     if (e.target.closest('.buy-now-btn') || e.target.closest('a') || e.target.closest('button')) {
                         return;
                     }
-
-                    // Open product page in new tab
                     if (productUrl) {
                         window.open(productUrl, '_blank', 'noopener,noreferrer');
                     }
                 });
+            });
 
-                // Add hover effect to show it's clickable
-                card.addEventListener('mouseenter', function () {
-                    if (!this.querySelector(':hover.buy-now-btn')) {
-                        this.style.cursor = 'pointer';
+            // Capture-phase handlers on buy-now buttons ensure they fire before
+            // any external JS (Kajabi analytics, etc.) can intercept the click.
+            document.querySelectorAll('.buy-now-btn').forEach(btn => {
+                btn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    const href = this.getAttribute('href');
+                    if (href && href !== '#') {
+                        e.preventDefault();
+                        window.open(href, this.target || '_blank', 'noopener,noreferrer');
                     }
-                });
+                }, true); // capture phase
             });
         }
     </script>
@@ -4124,7 +4130,7 @@
             </div>
             <p class="qr-panel-title" id="qrPanelTitle">Scan to Login</p>
             <div class="qr-code-box" id="qrCodeBox"></div>
-            <p class="qr-panel-url">bullbeartrading.com</p>
+            <p class="qr-panel-url">bullbearblockchain.com</p>
         </div>
         <button class="qr-toggle" onclick="toggleQR()">
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"
@@ -4144,8 +4150,8 @@
         var currentQRType = 'login';
 
         var QR_URLS = {
-            login: 'https://www.bullbeartrading.com?modal=login',
-            signup: 'https://www.bullbeartrading.com?modal=signup'
+            login: 'https://www.bullbearblockchain.com?modal=login',
+            signup: 'https://www.bullbearblockchain.com?modal=signup'
         };
 
         function toggleQR() {
@@ -4193,404 +4199,1091 @@
     </script>
 
     <!-- ================================================
-         ADMIN PANEL (frontend-only, localStorage-based)
+         ADMIN PANEL v2 — Command Center
          ================================================ -->
     <style>
-        #adminPanel {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.85);
-            z-index: 999999;
-            backdrop-filter: blur(8px);
-            overflow-y: auto;
-        }
+    /* ========== ADMIN PANEL v2 ========== */
+    #adminPanel {
+        display: none; position: fixed; inset: 0; z-index: 999999;
+        background: #05070f; font-family: 'Inter', sans-serif;
+    }
+    #adminPanel.open { display: flex; flex-direction: column; }
 
-        #adminPanel.open {
-            display: block;
-        }
+    /* Auth Screen */
+    #adminAuth {
+        flex: 1; display: flex; align-items: center; justify-content: center;
+        background: radial-gradient(ellipse at 30% 40%, rgba(99,102,241,0.15) 0%, transparent 60%),
+                    radial-gradient(ellipse at 70% 70%, rgba(6,182,212,0.1) 0%, transparent 60%),
+                    #05070f;
+    }
+    .aauth-box {
+        width: 100%; max-width: 400px; padding: 48px 40px;
+        background: rgba(10,14,26,0.95);
+        border: 1px solid rgba(99,102,241,0.25);
+        border-radius: 20px;
+        box-shadow: 0 30px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(99,102,241,0.1);
+        backdrop-filter: blur(24px);
+        text-align: center;
+    }
+    .aauth-logo { font-size: 2.5rem; margin-bottom: 6px; }
+    .aauth-title {
+        font-family: 'Poppins', sans-serif; font-size: 1.4rem; font-weight: 800;
+        background: linear-gradient(135deg, #fff 0%, #06b6d4 100%);
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        margin-bottom: 4px;
+    }
+    .aauth-sub { color: #475569; font-size: 0.82rem; margin-bottom: 32px; }
+    .aauth-field {
+        width: 100%; padding: 13px 16px; border-radius: 10px; margin-bottom: 12px;
+        border: 1px solid rgba(99,102,241,0.3); background: rgba(15,23,42,0.7);
+        color: #fff; font-size: 0.95rem; outline: none; box-sizing: border-box;
+        transition: border-color 0.2s;
+    }
+    .aauth-field:focus { border-color: #06b6d4; box-shadow: 0 0 0 3px rgba(6,182,212,0.1); }
+    .aauth-btn {
+        width: 100%; padding: 14px; border: none; border-radius: 10px; cursor: pointer;
+        background: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%);
+        color: #fff; font-weight: 700; font-size: 1rem; font-family: 'Poppins', sans-serif;
+        text-transform: uppercase; letter-spacing: 1px;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .aauth-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(99,102,241,0.5); }
+    .aauth-err { color: #f87171; font-size: 0.8rem; margin-top: 10px; display: none; }
+    .aauth-hint { color: #334155; font-size: 0.72rem; margin-top: 16px; }
 
-        .admin-wrap {
-            max-width: 900px;
-            margin: 40px auto;
-            padding: 0 16px 60px;
-        }
+    /* Dashboard Layout */
+    #adminDashboard {
+        display: none; flex: 1; overflow: hidden;
+    }
+    #adminDashboard.active { display: flex; height: 100vh; }
 
-        .admin-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 28px;
-        }
+    /* Sidebar */
+    .ap-sidebar {
+        width: 220px; flex-shrink: 0;
+        background: rgba(8,11,20,0.98);
+        border-right: 1px solid rgba(99,102,241,0.12);
+        display: flex; flex-direction: column;
+        overflow-y: auto;
+    }
+    .ap-sidebar-logo {
+        padding: 24px 20px 20px;
+        border-bottom: 1px solid rgba(99,102,241,0.1);
+    }
+    .ap-sidebar-logo-text {
+        font-family: 'Poppins', sans-serif; font-size: 0.95rem; font-weight: 800;
+        background: linear-gradient(135deg, #6366f1, #06b6d4);
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .ap-sidebar-sub { font-size: 0.68rem; color: #334155; margin-top: 2px; }
+    .ap-nav { flex: 1; padding: 12px 0; }
+    .ap-nav-item {
+        display: flex; align-items: center; gap: 10px;
+        padding: 10px 20px; cursor: pointer; border: none; background: none; width: 100%;
+        color: #475569; font-size: 0.82rem; font-family: 'Inter', sans-serif; font-weight: 500;
+        transition: all 0.15s ease; border-left: 2px solid transparent; text-align: left;
+    }
+    .ap-nav-item:hover { color: #94a3b8; background: rgba(99,102,241,0.05); }
+    .ap-nav-item.active {
+        color: #e2e8f0; background: rgba(99,102,241,0.1);
+        border-left-color: #06b6d4;
+    }
+    .ap-nav-icon { font-size: 1rem; width: 20px; text-align: center; }
+    .ap-sidebar-bottom {
+        padding: 16px 20px;
+        border-top: 1px solid rgba(99,102,241,0.1);
+    }
+    .ap-logout-btn {
+        width: 100%; padding: 9px; border-radius: 8px; border: 1px solid rgba(239,68,68,0.25);
+        background: rgba(239,68,68,0.08); color: #f87171;
+        font-size: 0.78rem; font-weight: 600; cursor: pointer; transition: all 0.2s;
+    }
+    .ap-logout-btn:hover { background: rgba(239,68,68,0.2); }
 
-        .admin-title {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
+    /* Main Content */
+    .ap-main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
 
-        .admin-close {
-            background: rgba(99, 102, 241, 0.15);
-            border: 1px solid rgba(99, 102, 241, 0.3);
-            color: #94a3b8;
-            border-radius: 8px;
-            padding: 8px 16px;
-            font-family: 'Poppins', sans-serif;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
+    /* Topbar */
+    .ap-topbar {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 14px 28px;
+        background: rgba(8,11,20,0.9);
+        border-bottom: 1px solid rgba(99,102,241,0.1);
+        backdrop-filter: blur(20px);
+        flex-shrink: 0;
+    }
+    .ap-topbar-left h2 {
+        font-family: 'Poppins', sans-serif; font-size: 1.05rem; font-weight: 700; color: #e2e8f0; margin: 0;
+    }
+    .ap-topbar-left p { font-size: 0.75rem; color: #475569; margin: 2px 0 0; }
+    .ap-topbar-right { display: flex; align-items: center; gap: 16px; }
+    .ap-location-badge {
+        display: flex; align-items: center; gap: 6px;
+        padding: 6px 12px; border-radius: 20px;
+        background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.2);
+        font-size: 0.75rem; color: #10b981;
+    }
+    .ap-location-dot {
+        width: 6px; height: 6px; border-radius: 50%; background: #10b981;
+        box-shadow: 0 0 6px #10b981;
+        animation: ap-blink 1.5s ease-in-out infinite;
+    }
+    @keyframes ap-blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    .ap-clock {
+        font-family: 'Poppins', sans-serif; font-size: 0.82rem; font-weight: 700;
+        color: #06b6d4; letter-spacing: 1px;
+    }
+    .ap-close-btn {
+        padding: 7px 16px; border-radius: 8px; border: 1px solid rgba(99,102,241,0.3);
+        background: rgba(99,102,241,0.1); color: #94a3b8;
+        font-size: 0.78rem; cursor: pointer; transition: all 0.2s;
+    }
+    .ap-close-btn:hover { background: rgba(239,68,68,0.2); border-color: rgba(239,68,68,0.4); color: #f87171; }
 
-        .admin-close:hover {
-            background: rgba(239, 68, 68, 0.2);
-            border-color: rgba(239, 68, 68, 0.4);
-            color: #f87171;
-        }
+    /* Content area */
+    .ap-content { flex: 1; overflow-y: auto; padding: 24px 28px; }
 
-        .admin-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 14px;
-            margin-bottom: 28px;
-        }
+    /* Section panels */
+    .ap-section { display: none; }
+    .ap-section.active { display: block; }
 
-        .admin-stat {
-            background: rgba(10, 14, 26, 0.9);
-            border: 1px solid rgba(6, 182, 212, 0.2);
-            border-radius: 12px;
-            padding: 18px;
-            text-align: center;
-            backdrop-filter: blur(16px);
-        }
+    /* Cards */
+    .ap-stats-grid {
+        display: grid; grid-template-columns: repeat(auto-fit, minmax(150px,1fr)); gap: 14px; margin-bottom: 24px;
+    }
+    .ap-stat-card {
+        background: rgba(10,14,26,0.8); border: 1px solid rgba(99,102,241,0.15);
+        border-radius: 14px; padding: 20px 18px;
+        backdrop-filter: blur(16px);
+        transition: border-color 0.2s, transform 0.2s;
+    }
+    .ap-stat-card:hover { border-color: rgba(6,182,212,0.35); transform: translateY(-2px); }
+    .ap-stat-icon { font-size: 1.4rem; margin-bottom: 10px; }
+    .ap-stat-val {
+        font-family: 'Poppins', sans-serif; font-size: 1.8rem; font-weight: 800; color: #06b6d4;
+        line-height: 1;
+    }
+    .ap-stat-lbl { font-size: 0.7rem; color: #475569; text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
 
-        .admin-stat-num {
-            font-family: 'Poppins', sans-serif;
-            font-size: 2rem;
-            font-weight: 800;
-            color: #06b6d4;
-            display: block;
-            text-shadow: 0 0 15px rgba(6, 182, 212, 0.5);
-        }
+    /* Table card */
+    .ap-card {
+        background: rgba(10,14,26,0.8); border: 1px solid rgba(99,102,241,0.12);
+        border-radius: 14px; padding: 20px; margin-bottom: 20px;
+        backdrop-filter: blur(16px);
+    }
+    .ap-card-title {
+        font-family: 'Poppins', sans-serif; font-size: 0.85rem; font-weight: 700;
+        color: #94a3b8; text-transform: uppercase; letter-spacing: 1.5px;
+        margin-bottom: 16px; padding-bottom: 10px;
+        border-bottom: 1px solid rgba(99,102,241,0.12);
+        display: flex; align-items: center; justify-content: space-between;
+    }
+    .ap-tbl { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+    .ap-tbl th {
+        text-align: left; padding: 8px 12px;
+        color: #06b6d4; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px;
+        border-bottom: 1px solid rgba(99,102,241,0.15);
+    }
+    .ap-tbl td { padding: 10px 12px; color: #cbd5e1; border-bottom: 1px solid rgba(99,102,241,0.06); }
+    .ap-tbl tr:last-child td { border-bottom: none; }
+    .ap-tbl tr:hover td { background: rgba(99,102,241,0.04); }
+    .ap-empty { text-align: center; color: #334155; padding: 40px 0; font-size: 0.85rem; }
 
-        .admin-stat-label {
-            font-size: 0.75rem;
-            color: #64748b;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
+    /* Buttons */
+    .ap-btn {
+        padding: 8px 16px; border-radius: 8px; border: none; cursor: pointer;
+        font-family: 'Poppins', sans-serif; font-size: 0.75rem; font-weight: 700;
+        text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.2s;
+    }
+    .ap-btn-primary { background: linear-gradient(135deg, #6366f1, #06b6d4); color: #fff; }
+    .ap-btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 15px rgba(99,102,241,0.4); }
+    .ap-btn-green { background: linear-gradient(135deg, #059669, #047857); color: #fff; }
+    .ap-btn-red { background: rgba(239,68,68,0.15); color: #f87171; border: 1px solid rgba(239,68,68,0.3); }
+    .ap-btn-red:hover { background: rgba(239,68,68,0.25); }
+    .ap-btn-ghost { background: rgba(99,102,241,0.1); color: #94a3b8; border: 1px solid rgba(99,102,241,0.2); }
+    .ap-btn-ghost:hover { background: rgba(99,102,241,0.2); color: #e2e8f0; }
+    .ap-btn-sm { padding: 4px 10px; font-size: 0.68rem; }
+    .ap-btn-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
 
-        .admin-section-title {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1rem;
-            font-weight: 700;
-            color: #e2e8f0;
-            margin-bottom: 14px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid rgba(99, 102, 241, 0.2);
-        }
+    /* Forms */
+    .ap-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .ap-form-grid.full { grid-template-columns: 1fr; }
+    .ap-label { font-size: 0.75rem; color: #64748b; font-weight: 600; display: block; margin-bottom: 5px; }
+    .ap-input, .ap-textarea, .ap-select {
+        width: 100%; padding: 10px 13px; border-radius: 8px;
+        border: 1px solid rgba(99,102,241,0.2); background: rgba(5,7,15,0.8);
+        color: #e2e8f0; font-size: 0.85rem; outline: none;
+        box-sizing: border-box; transition: border-color 0.2s;
+        font-family: 'Inter', sans-serif;
+    }
+    .ap-input:focus, .ap-textarea:focus, .ap-select:focus {
+        border-color: #06b6d4; box-shadow: 0 0 0 2px rgba(6,182,212,0.1);
+    }
+    .ap-textarea { resize: vertical; min-height: 90px; }
+    .ap-select option { background: #0f172a; }
+    .ap-form-row { margin-bottom: 14px; }
 
-        .admin-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.85rem;
-        }
+    /* Status badges */
+    .ap-badge {
+        display: inline-block; padding: 2px 10px; border-radius: 20px;
+        font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .ap-badge-pending { background: rgba(251,191,36,0.15); color: #fbbf24; }
+    .ap-badge-approved { background: rgba(16,185,129,0.15); color: #10b981; }
+    .ap-badge-rejected { background: rgba(239,68,68,0.15); color: #f87171; }
+    .ap-badge-sent { background: rgba(99,102,241,0.15); color: #818cf8; }
+    .ap-badge-video { background: rgba(239,68,68,0.15); color: #f87171; }
+    .ap-badge-doc { background: rgba(6,182,212,0.15); color: #06b6d4; }
+    .ap-badge-link { background: rgba(16,185,129,0.15); color: #10b981; }
 
-        .admin-table th {
-            text-align: left;
-            padding: 10px 14px;
-            font-family: 'Poppins', sans-serif;
-            font-size: 0.72rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #06b6d4;
-            border-bottom: 1px solid rgba(99, 102, 241, 0.2);
-        }
+    /* Location card */
+    .ap-location-card {
+        background: linear-gradient(135deg, rgba(16,185,129,0.08), rgba(6,182,212,0.05));
+        border: 1px solid rgba(16,185,129,0.2); border-radius: 14px; padding: 18px 20px;
+        display: flex; align-items: center; gap: 16px; margin-bottom: 20px;
+    }
+    .ap-location-map-icon { font-size: 2.2rem; }
+    .ap-location-info p { margin: 0; }
+    .ap-location-info .ap-loc-label { font-size: 0.68rem; color: #475569; text-transform: uppercase; letter-spacing: 1px; }
+    .ap-location-info .ap-loc-val { font-size: 0.95rem; color: #10b981; font-weight: 600; margin-top: 2px; }
+    .ap-location-info .ap-loc-ip { font-size: 0.72rem; color: #334155; margin-top: 2px; }
 
-        .admin-table td {
-            padding: 12px 14px;
-            color: #cbd5e1;
-            border-bottom: 1px solid rgba(99, 102, 241, 0.08);
-            font-family: 'Inter', sans-serif;
-        }
+    /* Search */
+    .ap-search { position: relative; margin-bottom: 14px; }
+    .ap-search input {
+        width: 100%; padding: 9px 13px 9px 36px; border-radius: 8px; box-sizing: border-box;
+        border: 1px solid rgba(99,102,241,0.2); background: rgba(5,7,15,0.8);
+        color: #e2e8f0; font-size: 0.82rem; outline: none;
+    }
+    .ap-search input:focus { border-color: #06b6d4; }
+    .ap-search::before { content:'🔍'; position:absolute; left:10px; top:50%; transform:translateY(-50%); font-size:0.8rem; }
 
-        .admin-table tr:hover td {
-            background: rgba(99, 102, 241, 0.05);
-        }
+    /* Message broadcast card */
+    .ap-msg-item {
+        padding: 14px 16px; border-radius: 10px; margin-bottom: 10px;
+        background: rgba(99,102,241,0.06); border: 1px solid rgba(99,102,241,0.1);
+    }
+    .ap-msg-title { font-weight: 700; color: #e2e8f0; font-size: 0.85rem; margin-bottom: 4px; }
+    .ap-msg-body { color: #94a3b8; font-size: 0.8rem; line-height: 1.5; }
+    .ap-msg-meta { font-size: 0.68rem; color: #475569; margin-top: 6px; }
 
-        .admin-delete-btn {
-            background: rgba(239, 68, 68, 0.15);
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            color: #f87171;
-            border-radius: 6px;
-            padding: 4px 10px;
-            font-size: 0.75rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
+    /* Doc item */
+    .ap-doc-item {
+        display: flex; align-items: center; gap: 12px; padding: 12px 14px;
+        border-radius: 10px; margin-bottom: 8px;
+        background: rgba(10,14,26,0.5); border: 1px solid rgba(99,102,241,0.1);
+        transition: border-color 0.2s;
+    }
+    .ap-doc-item:hover { border-color: rgba(99,102,241,0.25); }
+    .ap-doc-icon { font-size: 1.4rem; flex-shrink: 0; }
+    .ap-doc-info { flex: 1; min-width: 0; }
+    .ap-doc-name { font-size: 0.82rem; font-weight: 600; color: #e2e8f0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .ap-doc-url { font-size: 0.7rem; color: #475569; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-        .admin-delete-btn:hover {
-            background: rgba(239, 68, 68, 0.3);
-        }
+    /* Meeting item */
+    .ap-meet-item {
+        padding: 14px 16px; border-radius: 12px; margin-bottom: 10px;
+        background: rgba(99,102,241,0.05); border: 1px solid rgba(99,102,241,0.12);
+        display: flex; gap: 14px; align-items: flex-start;
+    }
+    .ap-meet-date-box {
+        flex-shrink: 0; width: 48px; height: 52px; border-radius: 10px;
+        background: linear-gradient(135deg, #6366f1, #06b6d4);
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .ap-meet-day { font-size: 1.2rem; font-weight: 800; color: #fff; line-height: 1; }
+    .ap-meet-mon { font-size: 0.55rem; color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 1px; }
+    .ap-meet-info { flex: 1; }
+    .ap-meet-title { font-weight: 700; color: #e2e8f0; font-size: 0.88rem; }
+    .ap-meet-time { font-size: 0.75rem; color: #06b6d4; margin-top: 2px; }
+    .ap-meet-link { font-size: 0.72rem; color: #6366f1; margin-top: 4px; }
+    .ap-meet-notes { font-size: 0.75rem; color: #64748b; margin-top: 4px; }
 
-        .admin-empty {
-            text-align: center;
-            color: #475569;
-            padding: 40px;
-            font-family: 'Inter', sans-serif;
-            font-size: 0.9rem;
-        }
+    /* Scrollbar */
+    .ap-content::-webkit-scrollbar,
+    .ap-sidebar::-webkit-scrollbar { width: 4px; }
+    .ap-content::-webkit-scrollbar-track,
+    .ap-sidebar::-webkit-scrollbar-track { background: transparent; }
+    .ap-content::-webkit-scrollbar-thumb { background: rgba(99,102,241,0.3); border-radius: 2px; }
 
-        .admin-actions {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .admin-btn {
-            padding: 9px 18px;
-            border-radius: 8px;
-            border: none;
-            cursor: pointer;
-            font-family: 'Poppins', sans-serif;
-            font-size: 0.8rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            transition: all 0.2s ease;
-        }
-
-        .admin-btn-export {
-            background: linear-gradient(135deg, #059669 0%, #047857 100%);
-            color: #fff;
-        }
-
-        .admin-btn-clear {
-            background: rgba(239, 68, 68, 0.15);
-            color: #f87171;
-            border: 1px solid rgba(239, 68, 68, 0.3);
-        }
-
-        .admin-btn-clear:hover {
-            background: rgba(239, 68, 68, 0.25);
-        }
-
-        /* Admin auth screen */
-        .admin-auth {
-            max-width: 380px;
-            margin: 120px auto;
-            padding: 36px;
-            background: rgba(6, 9, 20, 0.97);
-            border: 1px solid rgba(6, 182, 212, 0.3);
-            border-radius: 16px;
-            text-align: center;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
-        }
-
-        .admin-auth h2 {
-            font-family: 'Poppins', sans-serif;
-            color: #fff;
-            margin-bottom: 8px;
-        }
-
-        .admin-auth p {
-            color: #64748b;
-            font-size: 0.85rem;
-            margin-bottom: 24px;
-        }
-
-        .admin-auth input {
-            width: 100%;
-            padding: 12px 16px;
-            border-radius: 10px;
-            border: 1px solid rgba(99, 102, 241, 0.3);
-            background: rgba(15, 23, 42, 0.6);
-            color: #fff;
-            font-size: 0.95rem;
-            margin-bottom: 14px;
-            box-sizing: border-box;
-            outline: none;
-        }
-
-        .admin-auth input:focus {
-            border-color: #06b6d4;
-        }
-
-        .admin-auth-btn {
-            width: 100%;
-            padding: 13px;
-            background: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%);
-            color: #fff;
-            border: none;
-            border-radius: 10px;
-            font-weight: 700;
-            font-size: 0.95rem;
-            cursor: pointer;
-            text-transform: uppercase;
-        }
-
-        .admin-auth-error {
-            color: #f87171;
-            font-size: 0.82rem;
-            margin-top: 8px;
-            display: none;
-        }
+    /* Responsive */
+    @media (max-width: 680px) {
+        .ap-sidebar { width: 56px; }
+        .ap-nav-item span:not(.ap-nav-icon) { display: none; }
+        .ap-sidebar-logo-text, .ap-sidebar-sub, .ap-sidebar-bottom { display: none; }
+        .ap-content { padding: 16px; }
+        .ap-topbar { padding: 10px 16px; }
+        .ap-form-grid { grid-template-columns: 1fr; }
+    }
     </style>
 
     <div id="adminPanel">
-        <!-- Auth screen -->
-        <div id="adminAuth" class="admin-auth">
-            <h2>Admin Access</h2>
-            <p>Enter your admin password to continue</p>
-            <input type="password" id="adminPasswordInput" placeholder="Admin password"
-                onkeydown="if(event.key==='Enter')verifyAdmin()">
-            <button class="admin-auth-btn" onclick="verifyAdmin()">Access Panel</button>
-            <p class="admin-auth-error" id="adminAuthError">Incorrect password. Try again.</p>
-        </div>
-
-        <!-- Dashboard (shown after auth) -->
-        <div id="adminDashboard" style="display:none;">
-            <div class="admin-wrap">
-                <div class="admin-header">
-                    <span class="admin-title">Admin Dashboard</span>
-                    <button class="admin-close" onclick="closeAdmin()">Close Panel</button>
-                </div>
-
-                <div class="admin-stats" id="adminStats"></div>
-
-                <div class="admin-actions">
-                    <button class="admin-btn admin-btn-export" onclick="exportUsers()">Export Users JSON</button>
-                    <button class="admin-btn admin-btn-clear" onclick="clearAllUsers()">Clear All Users</button>
-                </div>
-
-                <p class="admin-section-title">Registered Users</p>
-                <div id="adminUsersTable"></div>
+        <!-- Auth Screen -->
+        <div id="adminAuth">
+            <div class="aauth-box">
+                <div class="aauth-logo">🐂🐻</div>
+                <div class="aauth-title">Command Center</div>
+                <div class="aauth-sub">BullBear Blockchain · Admin Access</div>
+                <input type="password" id="adminPasswordInput" class="aauth-field"
+                    placeholder="Enter admin password"
+                    onkeydown="if(event.key==='Enter')verifyAdmin()">
+                <button class="aauth-btn" onclick="verifyAdmin()">Access Dashboard</button>
+                <p class="aauth-err" id="adminAuthError">Incorrect password. Try again.</p>
+                <p class="aauth-hint">Press Ctrl+Shift+A anytime to open this panel</p>
             </div>
         </div>
-    </div>
+
+        <!-- Dashboard -->
+        <div id="adminDashboard">
+            <!-- Sidebar -->
+            <aside class="ap-sidebar">
+                <div class="ap-sidebar-logo">
+                    <div class="ap-sidebar-logo-text">BullBear</div>
+                    <div class="ap-sidebar-sub">Command Center</div>
+                </div>
+                <nav class="ap-nav">
+                    <button class="ap-nav-item active" onclick="apNav('overview',this)"><span class="ap-nav-icon">🏠</span><span>Overview</span></button>
+                    <button class="ap-nav-item" onclick="apNav('users',this)"><span class="ap-nav-icon">👥</span><span>Users</span></button>
+                    <button class="ap-nav-item" onclick="apNav('checklist',this)"><span class="ap-nav-icon">📋</span><span>Checklist</span></button>
+                    <button class="ap-nav-item" onclick="apNav('purchases',this)"><span class="ap-nav-icon">🛒</span><span>Purchases</span></button>
+                    <button class="ap-nav-item" onclick="apNav('broadcast',this)"><span class="ap-nav-icon">📣</span><span>Bulk Message</span></button>
+                    <button class="ap-nav-item" onclick="apNav('docs',this)"><span class="ap-nav-icon">📁</span><span>Documents</span></button>
+                    <button class="ap-nav-item" onclick="apNav('meetings',this)"><span class="ap-nav-icon">📅</span><span>Meetings</span></button>
+                    <button class="ap-nav-item" onclick="apNav('analytics',this)"><span class="ap-nav-icon">📊</span><span>Analytics</span></button>
+                </nav>
+                <div class="ap-sidebar-bottom">
+                    <button class="ap-logout-btn" onclick="closeAdmin()">✕ Close Panel</button>
+                </div>
+            </aside>
+
+            <!-- Main -->
+            <div class="ap-main">
+                <!-- Topbar -->
+                <div class="ap-topbar">
+                    <div class="ap-topbar-left">
+                        <h2 id="apPageTitle">Overview</h2>
+                        <p id="apPageSub">Welcome back, Admin</p>
+                    </div>
+                    <div class="ap-topbar-right">
+                        <div class="ap-location-badge">
+                            <div class="ap-location-dot"></div>
+                            <span id="apTopLocation">Detecting...</span>
+                        </div>
+                        <div class="ap-clock" id="apClock">00:00:00</div>
+                        <button class="ap-close-btn" onclick="closeAdmin()">✕ Close</button>
+                    </div>
+                </div>
+
+                <!-- Content -->
+                <div class="ap-content">
+
+                    <!-- OVERVIEW -->
+                    <div id="apSec-overview" class="ap-section active">
+                        <div class="ap-stats-grid" id="apStatCards"></div>
+                        <div class="ap-location-card" id="apLocationCard">
+                            <div class="ap-location-map-icon">📍</div>
+                            <div class="ap-location-info">
+                                <p class="ap-loc-label">Admin Login Location</p>
+                                <p class="ap-loc-val" id="apLocCity">Detecting your location...</p>
+                                <p class="ap-loc-ip" id="apLocIP"></p>
+                            </div>
+                        </div>
+                        <div class="ap-card">
+                            <div class="ap-card-title">Recent Activity</div>
+                            <div id="apRecentActivity"><p class="ap-empty">No recent activity</p></div>
+                        </div>
+                    </div>
+
+                    <!-- USERS -->
+                    <div id="apSec-users" class="ap-section">
+                        <div class="ap-btn-row">
+                            <button class="ap-btn ap-btn-green" onclick="exportUsers()">↓ Export JSON</button>
+                            <button class="ap-btn ap-btn-red" onclick="clearAllUsers()">🗑 Clear All</button>
+                        </div>
+                        <div class="ap-card">
+                            <div class="ap-card-title">
+                                <span>Registered Users</span>
+                                <span id="apUserCount" style="color:#06b6d4;font-size:1.1rem;font-weight:800;">0</span>
+                            </div>
+                            <div class="ap-search"><input type="text" placeholder="Search by name or email..." oninput="filterUsers(this.value)"></div>
+                            <div id="apUsersTable"></div>
+                        </div>
+                    </div>
+
+                    <!-- CHECKLIST -->
+                    <div id="apSec-checklist" class="ap-section">
+                        <div class="ap-card">
+                            <div class="ap-card-title">
+                                <span>Checklist Signups</span>
+                                <button class="ap-btn ap-btn-ghost ap-btn-sm" onclick="exportChecklistCSV()">↓ CSV</button>
+                            </div>
+                            <div id="apChecklistTable"></div>
+                        </div>
+                    </div>
+
+                    <!-- PURCHASES -->
+                    <div id="apSec-purchases" class="ap-section">
+                        <div class="ap-card">
+                            <div class="ap-card-title">
+                                <span>All Purchases</span>
+                                <span id="apRevTotal" style="color:#10b981;font-weight:800;">$0</span>
+                            </div>
+                            <div id="apPurchasesTable"></div>
+                        </div>
+                    </div>
+
+                    <!-- BULK MESSAGE -->
+                    <div id="apSec-broadcast" class="ap-section">
+                        <div class="ap-card" style="margin-bottom:20px;">
+                            <div class="ap-card-title">Compose Broadcast</div>
+                            <div class="ap-form-row">
+                                <label class="ap-label">Message Title</label>
+                                <input type="text" id="bcTitle" class="ap-input" placeholder="e.g. New Course Alert 🚀">
+                            </div>
+                            <div class="ap-form-row">
+                                <label class="ap-label">Message</label>
+                                <textarea id="bcBody" class="ap-textarea" placeholder="Write your message to all users..."></textarea>
+                            </div>
+                            <div class="ap-form-row">
+                                <label class="ap-label">Recipients</label>
+                                <select id="bcTarget" class="ap-select">
+                                    <option value="all">All Users</option>
+                                    <option value="checklist">Checklist Signups Only</option>
+                                </select>
+                            </div>
+                            <div class="ap-form-row">
+                                <label class="ap-label">Optional Link (e.g. course URL)</label>
+                                <input type="url" id="bcLink" class="ap-input" placeholder="https://...">
+                            </div>
+                            <button class="ap-btn ap-btn-primary" onclick="sendBroadcast()" style="margin-top:4px;">📣 Send Broadcast</button>
+                        </div>
+                        <div class="ap-card">
+                            <div class="ap-card-title">
+                                <span>Sent Messages</span>
+                                <button class="ap-btn ap-btn-red ap-btn-sm" onclick="clearBroadcasts()">Clear All</button>
+                            </div>
+                            <div id="apBroadcastList"><p class="ap-empty">No messages sent yet</p></div>
+                        </div>
+                    </div>
+
+                    <!-- DOCUMENTS -->
+                    <div id="apSec-docs" class="ap-section">
+                        <div class="ap-card" style="margin-bottom:20px;">
+                            <div class="ap-card-title">Add Document / Video</div>
+                            <div class="ap-form-grid">
+                                <div class="ap-form-row">
+                                    <label class="ap-label">Title</label>
+                                    <input type="text" id="docTitle" class="ap-input" placeholder="e.g. Trading Strategy PDF">
+                                </div>
+                                <div class="ap-form-row">
+                                    <label class="ap-label">Type</label>
+                                    <select id="docType" class="ap-select">
+                                        <option value="doc">📄 Document / PDF</option>
+                                        <option value="video">🎬 Video (YouTube/Vimeo)</option>
+                                        <option value="link">🔗 External Link</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="ap-form-row">
+                                <label class="ap-label">URL</label>
+                                <input type="url" id="docUrl" class="ap-input" placeholder="https://...">
+                            </div>
+                            <div class="ap-form-row">
+                                <label class="ap-label">Notes (optional)</label>
+                                <input type="text" id="docNotes" class="ap-input" placeholder="Brief description...">
+                            </div>
+                            <button class="ap-btn ap-btn-primary" onclick="addDoc()">+ Add</button>
+                        </div>
+                        <div class="ap-card">
+                            <div class="ap-card-title">
+                                <span>Content Library</span>
+                                <span id="apDocCount" style="color:#06b6d4;font-weight:800;">0 items</span>
+                            </div>
+                            <div id="apDocList"><p class="ap-empty">No documents added yet</p></div>
+                        </div>
+                    </div>
+
+                    <!-- MEETINGS -->
+                    <div id="apSec-meetings" class="ap-section">
+                        <div class="ap-card" style="margin-bottom:20px;">
+                            <div class="ap-card-title">Schedule a Meeting</div>
+                            <div class="ap-form-grid">
+                                <div class="ap-form-row">
+                                    <label class="ap-label">Meeting Title</label>
+                                    <input type="text" id="mtTitle" class="ap-input" placeholder="e.g. Crypto Masterclass">
+                                </div>
+                                <div class="ap-form-row">
+                                    <label class="ap-label">Date</label>
+                                    <input type="date" id="mtDate" class="ap-input">
+                                </div>
+                                <div class="ap-form-row">
+                                    <label class="ap-label">Time</label>
+                                    <input type="time" id="mtTime" class="ap-input">
+                                </div>
+                                <div class="ap-form-row">
+                                    <label class="ap-label">Platform</label>
+                                    <select id="mtPlatform" class="ap-select">
+                                        <option value="zoom">Zoom</option>
+                                        <option value="meet">Google Meet</option>
+                                        <option value="teams">Microsoft Teams</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="ap-form-row">
+                                <label class="ap-label">Meeting Link</label>
+                                <input type="url" id="mtLink" class="ap-input" placeholder="https://zoom.us/j/...">
+                            </div>
+                            <div class="ap-form-row">
+                                <label class="ap-label">Notes / Agenda</label>
+                                <textarea id="mtNotes" class="ap-textarea" placeholder="What will be covered..."></textarea>
+                            </div>
+                            <button class="ap-btn ap-btn-primary" onclick="scheduleMeeting()">📅 Schedule</button>
+                        </div>
+                        <div class="ap-card">
+                            <div class="ap-card-title">
+                                <span>Upcoming Meetings</span>
+                                <button class="ap-btn ap-btn-ghost ap-btn-sm" onclick="clearPastMeetings()">Clear Past</button>
+                            </div>
+                            <div id="apMeetingList"><p class="ap-empty">No meetings scheduled</p></div>
+                        </div>
+                    </div>
+
+                    <!-- ANALYTICS -->
+                    <div id="apSec-analytics" class="ap-section">
+                        <div class="ap-stats-grid" id="apAnalyticsCards"></div>
+                        <div class="ap-card">
+                            <div class="ap-card-title">Storage Usage</div>
+                            <div id="apStorageInfo"></div>
+                        </div>
+                        <div class="ap-card" style="margin-top:16px;">
+                            <div class="ap-card-title">Data Breakdown</div>
+                            <div id="apDataBreakdown"></div>
+                        </div>
+                    </div>
+
+                </div><!-- /ap-content -->
+            </div><!-- /ap-main -->
+        </div><!-- /adminDashboard -->
+    </div><!-- /adminPanel -->
 
     <script>
-        var ADMIN_PASSWORD = 'bullbear2024';
+    (function() {
+        var ADMIN_PW = 'bullbear2024';
         var adminAuthed = false;
+        var apClockTimer = null;
+        var allUsersCache = [];
 
-        function openAdmin() {
-            document.getElementById('adminPanel').classList.add('open');
+        /* ---- Open / Close ---- */
+        window.openAdmin = function() {
+            var panel = document.getElementById('adminPanel');
+            panel.classList.add('open');
             document.body.style.overflow = 'hidden';
             if (!adminAuthed) {
-                document.getElementById('adminAuth').style.display = 'block';
-                document.getElementById('adminDashboard').style.display = 'none';
+                document.getElementById('adminAuth').style.display = '';
+                document.getElementById('adminDashboard').classList.remove('active');
             } else {
-                renderAdminDashboard();
+                showAdminDashboard();
             }
-        }
+        };
 
-        function closeAdmin() {
+        window.closeAdmin = function() {
             document.getElementById('adminPanel').classList.remove('open');
             document.body.style.overflow = '';
-        }
+            if (apClockTimer) { clearInterval(apClockTimer); apClockTimer = null; }
+        };
 
-        function verifyAdmin() {
+        window.verifyAdmin = function() {
             var pw = document.getElementById('adminPasswordInput').value;
-            if (pw === ADMIN_PASSWORD) {
+            if (pw === ADMIN_PW) {
                 adminAuthed = true;
                 document.getElementById('adminAuth').style.display = 'none';
-                document.getElementById('adminDashboard').style.display = 'block';
-                renderAdminDashboard();
+                showAdminDashboard();
             } else {
-                document.getElementById('adminAuthError').style.display = 'block';
+                var err = document.getElementById('adminAuthError');
+                err.style.display = 'block';
                 document.getElementById('adminPasswordInput').value = '';
+                setTimeout(function(){ err.style.display='none'; }, 3000);
             }
+        };
+
+        function showAdminDashboard() {
+            document.getElementById('adminDashboard').classList.add('active');
+            startClock();
+            fetchAdminLocation();
+            apNav('overview', document.querySelector('.ap-nav-item'));
         }
 
-        function renderAdminDashboard() {
-            var users = JSON.parse(localStorage.getItem('bullbearUsers') || '[]');
-            var today = new Date().toDateString();
-            var todaySignups = users.filter(function (u) { return new Date(u.createdAt).toDateString() === today; }).length;
-
-            // Stats
-            document.getElementById('adminStats').innerHTML =
-                '<div class="admin-stat"><span class="admin-stat-num">' + users.length + '</span><span class="admin-stat-label">Total Users</span></div>' +
-                '<div class="admin-stat"><span class="admin-stat-num">' + todaySignups + '</span><span class="admin-stat-label">Today\'s Signups</span></div>' +
-                '<div class="admin-stat"><span class="admin-stat-num">' + (localStorage.length) + '</span><span class="admin-stat-label">Storage Keys</span></div>';
-
-            // Users table
-            var tableDiv = document.getElementById('adminUsersTable');
-            if (users.length === 0) {
-                tableDiv.innerHTML = '<p class="admin-empty">No registered users yet.</p>';
-                return;
+        /* ---- Clock ---- */
+        function startClock() {
+            function tick() {
+                var now = new Date();
+                var h = String(now.getHours()).padStart(2,'0');
+                var m = String(now.getMinutes()).padStart(2,'0');
+                var s = String(now.getSeconds()).padStart(2,'0');
+                var el = document.getElementById('apClock');
+                if (el) el.textContent = h+':'+m+':'+s;
             }
+            tick();
+            if (apClockTimer) clearInterval(apClockTimer);
+            apClockTimer = setInterval(tick, 1000);
+        }
 
-            var rows = users.map(function (u, i) {
-                var date = u.createdAt ? new Date(u.createdAt).toLocaleDateString() : '—';
-                return '<tr>' +
-                    '<td>' + (i + 1) + '</td>' +
-                    '<td>' + (u.name || '—') + '</td>' +
-                    '<td>' + (u.email || '—') + '</td>' +
-                    '<td>' + (u.phone || '—') + '</td>' +
-                    '<td>' + date + '</td>' +
-                    '<td><button class="admin-delete-btn" onclick="deleteUser(' + i + ')">Delete</button></td>' +
+        /* ---- Live Location ---- */
+        function fetchAdminLocation() {
+            fetch('https://ipapi.co/json/')
+                .then(function(r){ return r.json(); })
+                .then(function(d) {
+                    var loc = (d.city||'') + (d.city&&d.country_name?', ':'') + (d.country_name||'');
+                    if (!loc) loc = 'Location unavailable';
+                    setLocation(loc, d.ip||'', d.timezone||'');
+                })
+                .catch(function() {
+                    fetch('http://ip-api.com/json/')
+                        .then(function(r){ return r.json(); })
+                        .then(function(d) {
+                            var loc = d.status==='success' ? d.city+', '+d.country : 'Location unavailable';
+                            setLocation(loc, d.query||'', d.timezone||'');
+                        })
+                        .catch(function() { setLocation('Location unavailable','',''); });
+                });
+        }
+
+        function setLocation(city, ip, tz) {
+            var c = document.getElementById('apLocCity');
+            var i = document.getElementById('apLocIP');
+            var t = document.getElementById('apTopLocation');
+            if (c) c.textContent = city;
+            if (i) i.textContent = (ip?'IP: '+ip:'') + (tz?' · '+tz:'');
+            if (t) t.textContent = city;
+        }
+
+        /* ---- Navigation ---- */
+        window.apNav = function(sec, btn) {
+            document.querySelectorAll('.ap-nav-item').forEach(function(b){ b.classList.remove('active'); });
+            if (btn) btn.classList.add('active');
+            document.querySelectorAll('.ap-section').forEach(function(s){ s.classList.remove('active'); });
+            var el = document.getElementById('apSec-'+sec);
+            if (el) el.classList.add('active');
+            var titles = {
+                overview:'Overview', users:'Users', checklist:'Checklist Signups',
+                purchases:'Purchases', broadcast:'Bulk Messaging',
+                docs:'Documents & Videos', meetings:'Scheduled Meetings', analytics:'Analytics'
+            };
+            var subs = {
+                overview:"Your platform at a glance", users:"Manage registered users",
+                checklist:"Track free checklist downloads", purchases:"All purchase records",
+                broadcast:"Send messages to your audience", docs:"Upload and manage content",
+                meetings:"Schedule and track meetings", analytics:"Data and storage insights"
+            };
+            var t = document.getElementById('apPageTitle');
+            var s = document.getElementById('apPageSub');
+            if (t) t.textContent = titles[sec]||sec;
+            if (s) s.textContent = subs[sec]||'';
+            if (sec==='overview') renderOverview();
+            else if (sec==='users') renderUsers();
+            else if (sec==='checklist') renderChecklist();
+            else if (sec==='purchases') renderPurchases();
+            else if (sec==='broadcast') renderBroadcasts();
+            else if (sec==='docs') renderDocs();
+            else if (sec==='meetings') renderMeetings();
+            else if (sec==='analytics') renderAnalytics();
+        };
+
+        /* ---- Data helpers ---- */
+        function getUsers() { return JSON.parse(localStorage.getItem('bullbearUsers')||'[]'); }
+        function saveUsers(u) { localStorage.setItem('bullbearUsers', JSON.stringify(u)); }
+        function getPurchases() {
+            var users = getUsers(), all = [];
+            users.forEach(function(u) {
+                var pp = JSON.parse(localStorage.getItem('metahubPurchases_'+u.email)||'[]');
+                pp.forEach(function(p){ all.push(Object.assign({},p,{userName:u.name,userEmail:u.email})); });
+            });
+            return all.concat(JSON.parse(localStorage.getItem('bullbearPurchases')||'[]'));
+        }
+        function getBroadcasts() { return JSON.parse(localStorage.getItem('bbBroadcasts')||'[]'); }
+        function getDocs() { return JSON.parse(localStorage.getItem('bbDocs')||'[]'); }
+        function getMeetings() { return JSON.parse(localStorage.getItem('bbMeetings')||'[]'); }
+
+        /* ---- Overview ---- */
+        function renderOverview() {
+            var users = getUsers(), purchases = getPurchases();
+            var today = new Date().toDateString();
+            var todaySignups = users.filter(function(u){ return new Date(u.createdAt).toDateString()===today; }).length;
+            var rev = purchases.reduce(function(s,p){ return s+(parseFloat(p.amount)||0); },0);
+            var msgs = getBroadcasts().length;
+            var docs = getDocs().length;
+            document.getElementById('apStatCards').innerHTML =
+                apStatCard('👥', users.length, 'Total Users') +
+                apStatCard('📅', todaySignups, "Today's Signups") +
+                apStatCard('🛒', purchases.length, 'Purchases') +
+                apStatCard('💰', '$'+rev.toFixed(0), 'Revenue') +
+                apStatCard('📣', msgs, 'Broadcasts') +
+                apStatCard('📁', docs, 'Documents');
+
+            // Recent activity
+            var items = [];
+            users.slice(-3).reverse().forEach(function(u){
+                items.push({icon:'👤', text:'<b>'+(u.name||u.email)+'</b> signed up', time:u.createdAt});
+            });
+            purchases.slice(-3).reverse().forEach(function(p){
+                items.push({icon:'🛒', text:'<b>'+(p.userName||p.userEmail||'User')+'</b> purchased '+(p.courseTitle||'a course'), time:p.purchaseDate||p.createdAt});
+            });
+            items.sort(function(a,b){ return new Date(b.time)-new Date(a.time); });
+            var ra = document.getElementById('apRecentActivity');
+            if (items.length===0) { ra.innerHTML='<p class="ap-empty">No recent activity</p>'; return; }
+            ra.innerHTML = items.slice(0,6).map(function(it){
+                var d = it.time ? new Date(it.time).toLocaleString() : '';
+                return '<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid rgba(99,102,241,0.07);">'+
+                    '<span style="font-size:1.2rem;">'+it.icon+'</span>'+
+                    '<span style="font-size:0.82rem;color:#94a3b8;flex:1;">'+it.text+'</span>'+
+                    '<span style="font-size:0.7rem;color:#334155;">'+d+'</span></div>';
+            }).join('');
+        }
+
+        function apStatCard(icon, val, label) {
+            return '<div class="ap-stat-card">'+
+                '<div class="ap-stat-icon">'+icon+'</div>'+
+                '<div class="ap-stat-val">'+val+'</div>'+
+                '<div class="ap-stat-lbl">'+label+'</div></div>';
+        }
+
+        /* ---- Users ---- */
+        function renderUsers() {
+            allUsersCache = getUsers();
+            document.getElementById('apUserCount').textContent = allUsersCache.length;
+            renderUsersFiltered(allUsersCache);
+        }
+
+        function renderUsersFiltered(users) {
+            var div = document.getElementById('apUsersTable');
+            if (users.length===0){ div.innerHTML='<p class="ap-empty">No users found</p>'; return; }
+            var rows = users.map(function(u,i){
+                var d = u.createdAt ? new Date(u.createdAt).toLocaleDateString() : '—';
+                var idx = allUsersCache.indexOf(u);
+                return '<tr>'+
+                    '<td style="color:#475569;">'+(i+1)+'</td>'+
+                    '<td style="font-weight:600;color:#e2e8f0;">'+(u.name||'—')+'</td>'+
+                    '<td>'+(u.email||'—')+'</td>'+
+                    '<td>'+(u.phone||'—')+'</td>'+
+                    '<td style="color:#475569;">'+d+'</td>'+
+                    '<td><button class="ap-btn ap-btn-red ap-btn-sm" onclick="deleteUser('+idx+')">Delete</button></td>'+
                     '</tr>';
             }).join('');
-
-            tableDiv.innerHTML =
-                '<table class="admin-table">' +
-                '<thead><tr><th>#</th><th>Name</th><th>Email</th><th>Phone</th><th>Joined</th><th>Action</th></tr></thead>' +
-                '<tbody>' + rows + '</tbody></table>';
+            div.innerHTML='<table class="ap-tbl"><thead><tr><th>#</th><th>Name</th><th>Email</th><th>Phone</th><th>Joined</th><th></th></tr></thead><tbody>'+rows+'</tbody></table>';
         }
 
-        function deleteUser(index) {
+        window.filterUsers = function(q) {
+            q = q.toLowerCase();
+            var filtered = allUsersCache.filter(function(u){
+                return (u.name||'').toLowerCase().includes(q) || (u.email||'').toLowerCase().includes(q);
+            });
+            renderUsersFiltered(filtered);
+        };
+
+        window.deleteUser = function(i) {
             if (!confirm('Delete this user?')) return;
-            var users = JSON.parse(localStorage.getItem('bullbearUsers') || '[]');
-            users.splice(index, 1);
-            localStorage.setItem('bullbearUsers', JSON.stringify(users));
-            renderAdminDashboard();
-        }
+            var users = getUsers();
+            users.splice(i,1);
+            saveUsers(users);
+            renderUsers();
+        };
 
-        function exportUsers() {
-            var users = JSON.parse(localStorage.getItem('bullbearUsers') || '[]');
-            var blob = new Blob([JSON.stringify(users, null, 2)], { type: 'application/json' });
-            var a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = 'bullbear-users-' + new Date().toISOString().slice(0, 10) + '.json';
-            a.click();
-        }
+        window.exportUsers = function() {
+            var u = getUsers();
+            apDownload(JSON.stringify(u,null,2),'bullbear-users-'+today()+'.json','application/json');
+        };
 
-        function clearAllUsers() {
+        window.clearAllUsers = function() {
             if (!confirm('Delete ALL users? This cannot be undone.')) return;
             localStorage.removeItem('bullbearUsers');
             localStorage.removeItem('bullbearCurrentUser');
-            renderAdminDashboard();
+            renderUsers();
+        };
+
+        /* ---- Checklist ---- */
+        function renderChecklist() {
+            var users = getUsers();
+            var div = document.getElementById('apChecklistTable');
+            if (users.length===0){ div.innerHTML='<p class="ap-empty">No checklist signups yet</p>'; return; }
+            var rows = users.map(function(u,i){
+                var d = u.createdAt ? new Date(u.createdAt).toLocaleDateString() : '—';
+                return '<tr>'+
+                    '<td style="color:#475569;">'+(i+1)+'</td>'+
+                    '<td style="font-weight:600;color:#e2e8f0;">'+(u.name||'—')+'</td>'+
+                    '<td>'+(u.email||'—')+'</td>'+
+                    '<td>'+(u.phone||'—')+'</td>'+
+                    '<td style="color:#475569;">'+d+'</td>'+
+                    '</tr>';
+            }).join('');
+            div.innerHTML='<table class="ap-tbl"><thead><tr><th>#</th><th>Name</th><th>Email</th><th>Phone</th><th>Signed Up</th></tr></thead><tbody>'+rows+'</tbody></table>';
         }
 
-        // Secret access: click logo 5 times
-        (function () {
-            var logoClicks = 0, logoTimer;
-            document.addEventListener('DOMContentLoaded', function () {
-                var logo = document.querySelector('.logo');
-                if (logo) {
-                    logo.addEventListener('click', function (e) {
-                        e.preventDefault();
-                        logoClicks++;
-                        clearTimeout(logoTimer);
-                        logoTimer = setTimeout(function () { logoClicks = 0; }, 2000);
-                        if (logoClicks >= 5) {
-                            logoClicks = 0;
-                            openAdmin();
-                        }
-                    });
+        window.exportChecklistCSV = function() {
+            var users = getUsers();
+            var csv = 'Name,Email,Phone,Joined\n' + users.map(function(u){
+                return [u.name,u.email,u.phone,u.createdAt].join(',');
+            }).join('\n');
+            apDownload(csv,'checklist-signups-'+today()+'.csv','text/csv');
+        };
+
+        /* ---- Purchases ---- */
+        function renderPurchases() {
+            var purchases = getPurchases();
+            var rev = purchases.reduce(function(s,p){ return s+(parseFloat(p.amount)||0); },0);
+            document.getElementById('apRevTotal').textContent = '$'+rev.toFixed(2);
+            var div = document.getElementById('apPurchasesTable');
+            if (purchases.length===0){ div.innerHTML='<p class="ap-empty">No purchases recorded yet</p>'; return; }
+            var rows = purchases.map(function(p){
+                var d = (p.purchaseDate||p.createdAt) ? new Date(p.purchaseDate||p.createdAt).toLocaleDateString() : '—';
+                var st = p.status||'pending';
+                return '<tr>'+
+                    '<td style="font-weight:600;color:#e2e8f0;">'+(p.userName||p.userEmail||'—')+'</td>'+
+                    '<td>'+(p.courseTitle||p.courseId||'—')+'</td>'+
+                    '<td style="color:#10b981;font-weight:600;">$'+(p.amount||0)+'</td>'+
+                    '<td style="color:#475569;">'+d+'</td>'+
+                    '<td><span class="ap-badge ap-badge-'+st+'">'+st+'</span></td>'+
+                    '</tr>';
+            }).join('');
+            div.innerHTML='<table class="ap-tbl"><thead><tr><th>User</th><th>Course</th><th>Amount</th><th>Date</th><th>Status</th></tr></thead><tbody>'+rows+'</tbody></table>';
+        }
+
+        /* ---- Bulk Messaging ---- */
+        window.sendBroadcast = function() {
+            var title = document.getElementById('bcTitle').value.trim();
+            var body = document.getElementById('bcBody').value.trim();
+            var target = document.getElementById('bcTarget').value;
+            var link = document.getElementById('bcLink').value.trim();
+            if (!title || !body) { alert('Please fill in the title and message.'); return; }
+            var msgs = getBroadcasts();
+            msgs.unshift({ id: Date.now(), title:title, body:body, target:target, link:link, sentAt: new Date().toISOString() });
+            localStorage.setItem('bbBroadcasts', JSON.stringify(msgs));
+            // Also save as notification for users
+            localStorage.setItem('bbLatestBroadcast', JSON.stringify(msgs[0]));
+            document.getElementById('bcTitle').value='';
+            document.getElementById('bcBody').value='';
+            document.getElementById('bcLink').value='';
+            renderBroadcasts();
+            alert('✅ Broadcast sent to ' + (target==='all'?'all users':'checklist signups') + '!');
+        };
+
+        function renderBroadcasts() {
+            var msgs = getBroadcasts();
+            var div = document.getElementById('apBroadcastList');
+            if (msgs.length===0){ div.innerHTML='<p class="ap-empty">No messages sent yet</p>'; return; }
+            div.innerHTML = msgs.map(function(m){
+                var d = new Date(m.sentAt).toLocaleString();
+                var recipients = m.target==='all'?'All Users':'Checklist Signups';
+                return '<div class="ap-msg-item">'+
+                    '<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;">'+
+                    '<div class="ap-msg-title">'+escHtml(m.title)+'</div>'+
+                    '<span class="ap-badge ap-badge-sent">'+recipients+'</span></div>'+
+                    '<div class="ap-msg-body">'+escHtml(m.body)+'</div>'+
+                    (m.link?'<div style="margin-top:6px;"><a href="'+escHtml(m.link)+'" target="_blank" style="color:#6366f1;font-size:0.75rem;">🔗 '+escHtml(m.link)+'</a></div>':'')+
+                    '<div class="ap-msg-meta">Sent '+d+'</div></div>';
+            }).join('');
+        }
+
+        window.clearBroadcasts = function() {
+            if (!confirm('Clear all broadcast history?')) return;
+            localStorage.removeItem('bbBroadcasts');
+            renderBroadcasts();
+        };
+
+        /* ---- Documents ---- */
+        window.addDoc = function() {
+            var title = document.getElementById('docTitle').value.trim();
+            var type = document.getElementById('docType').value;
+            var url = document.getElementById('docUrl').value.trim();
+            var notes = document.getElementById('docNotes').value.trim();
+            if (!title || !url) { alert('Title and URL are required.'); return; }
+            var docs = getDocs();
+            docs.unshift({ id:Date.now(), title:title, type:type, url:url, notes:notes, addedAt:new Date().toISOString() });
+            localStorage.setItem('bbDocs', JSON.stringify(docs));
+            document.getElementById('docTitle').value='';
+            document.getElementById('docUrl').value='';
+            document.getElementById('docNotes').value='';
+            renderDocs();
+        };
+
+        function renderDocs() {
+            var docs = getDocs();
+            document.getElementById('apDocCount').textContent = docs.length + ' item'+(docs.length!==1?'s':'');
+            var div = document.getElementById('apDocList');
+            if (docs.length===0){ div.innerHTML='<p class="ap-empty">No documents added yet</p>'; return; }
+            var icons = {doc:'📄', video:'🎬', link:'🔗'};
+            div.innerHTML = docs.map(function(d,i){
+                var badge = '<span class="ap-badge ap-badge-'+d.type+'">'+d.type+'</span>';
+                return '<div class="ap-doc-item">'+
+                    '<div class="ap-doc-icon">'+(icons[d.type]||'📄')+'</div>'+
+                    '<div class="ap-doc-info">'+
+                    '<div class="ap-doc-name">'+escHtml(d.title)+' '+badge+'</div>'+
+                    '<div class="ap-doc-url">'+escHtml(d.url)+'</div>'+
+                    (d.notes?'<div style="font-size:0.7rem;color:#475569;margin-top:2px;">'+escHtml(d.notes)+'</div>':'')+
+                    '</div>'+
+                    '<a href="'+escHtml(d.url)+'" target="_blank" class="ap-btn ap-btn-ghost ap-btn-sm" style="text-decoration:none;white-space:nowrap;">↗ Open</a>'+
+                    '<button class="ap-btn ap-btn-red ap-btn-sm" onclick="deleteDoc('+i+')">✕</button>'+
+                    '</div>';
+            }).join('');
+        }
+
+        window.deleteDoc = function(i) {
+            var docs = getDocs(); docs.splice(i,1);
+            localStorage.setItem('bbDocs', JSON.stringify(docs));
+            renderDocs();
+        };
+
+        /* ---- Meetings ---- */
+        window.scheduleMeeting = function() {
+            var title = document.getElementById('mtTitle').value.trim();
+            var date = document.getElementById('mtDate').value;
+            var time = document.getElementById('mtTime').value;
+            var platform = document.getElementById('mtPlatform').value;
+            var link = document.getElementById('mtLink').value.trim();
+            var notes = document.getElementById('mtNotes').value.trim();
+            if (!title || !date || !time) { alert('Title, date and time are required.'); return; }
+            var meetings = getMeetings();
+            meetings.push({ id:Date.now(), title:title, date:date, time:time, platform:platform, link:link, notes:notes });
+            meetings.sort(function(a,b){ return new Date(a.date+' '+a.time)-new Date(b.date+' '+b.time); });
+            localStorage.setItem('bbMeetings', JSON.stringify(meetings));
+            document.getElementById('mtTitle').value='';
+            document.getElementById('mtDate').value='';
+            document.getElementById('mtTime').value='';
+            document.getElementById('mtLink').value='';
+            document.getElementById('mtNotes').value='';
+            renderMeetings();
+        };
+
+        function renderMeetings() {
+            var meetings = getMeetings();
+            var div = document.getElementById('apMeetingList');
+            if (meetings.length===0){ div.innerHTML='<p class="ap-empty">No meetings scheduled</p>'; return; }
+            var platformIcons = {zoom:'🟦',meet:'🟢',teams:'🟣',other:'📹'};
+            div.innerHTML = meetings.map(function(m,i){
+                var dt = new Date(m.date);
+                var day = dt.getDate();
+                var mon = dt.toLocaleString('en',{month:'short'});
+                var isPast = new Date(m.date+' '+m.time) < new Date();
+                return '<div class="ap-meet-item" style="'+(isPast?'opacity:0.5':'')+'">'+
+                    '<div class="ap-meet-date-box"><div class="ap-meet-day">'+day+'</div><div class="ap-meet-mon">'+mon+'</div></div>'+
+                    '<div class="ap-meet-info">'+
+                    '<div class="ap-meet-title">'+(platformIcons[m.platform]||'📹')+' '+escHtml(m.title)+'</div>'+
+                    '<div class="ap-meet-time">'+m.date+' at '+m.time+'</div>'+
+                    (m.link?'<div class="ap-meet-link"><a href="'+escHtml(m.link)+'" target="_blank" style="color:#6366f1;">🔗 Join '+m.platform+'</a></div>':'')+
+                    (m.notes?'<div class="ap-meet-notes">'+escHtml(m.notes)+'</div>':'')+
+                    '</div>'+
+                    '<button class="ap-btn ap-btn-red ap-btn-sm" onclick="deleteMeeting('+i+')" style="flex-shrink:0;">✕</button>'+
+                    '</div>';
+            }).join('');
+        }
+
+        window.deleteMeeting = function(i) {
+            var m = getMeetings(); m.splice(i,1);
+            localStorage.setItem('bbMeetings', JSON.stringify(m));
+            renderMeetings();
+        };
+
+        window.clearPastMeetings = function() {
+            var now = new Date();
+            var m = getMeetings().filter(function(mt){ return new Date(mt.date+' '+mt.time) >= now; });
+            localStorage.setItem('bbMeetings', JSON.stringify(m));
+            renderMeetings();
+        };
+
+        /* ---- Analytics ---- */
+        function renderAnalytics() {
+            var users = getUsers(), purchases = getPurchases();
+            var broadcasts = getBroadcasts(), docs = getDocs(), meetings = getMeetings();
+            var rev = purchases.reduce(function(s,p){ return s+(parseFloat(p.amount)||0); },0);
+            var today = new Date().toDateString();
+            var todayU = users.filter(function(u){ return new Date(u.createdAt).toDateString()===today; }).length;
+
+            document.getElementById('apAnalyticsCards').innerHTML =
+                apStatCard('👥', users.length, 'Total Users') +
+                apStatCard('💰', '$'+rev.toFixed(2), 'Total Revenue') +
+                apStatCard('📣', broadcasts.length, 'Broadcasts Sent') +
+                apStatCard('📁', docs.length, 'Documents') +
+                apStatCard('📅', meetings.length, 'Meetings') +
+                apStatCard('📋', users.length, 'Checklist DLs');
+
+            // Storage info
+            var keys = [], totalBytes = 0;
+            for (var k in localStorage) {
+                if (localStorage.hasOwnProperty(k)) {
+                    var size = ((localStorage.getItem(k)||'').length + k.length) * 2;
+                    totalBytes += size;
+                    keys.push({k:k, s:size});
                 }
+            }
+            keys.sort(function(a,b){ return b.s-a.s; });
+            var si = document.getElementById('apStorageInfo');
+            var usedKB = (totalBytes/1024).toFixed(1);
+            var maxKB = 5120;
+            var pct = Math.min(100, (totalBytes/1024/maxKB*100)).toFixed(1);
+            si.innerHTML = '<div style="margin-bottom:10px;">'+
+                '<div style="display:flex;justify-content:space-between;font-size:0.78rem;color:#64748b;margin-bottom:6px;">'+
+                '<span>Used: '+usedKB+' KB</span><span>Max: ~5 MB</span></div>'+
+                '<div style="background:rgba(99,102,241,0.1);border-radius:4px;height:6px;overflow:hidden;">'+
+                '<div style="width:'+pct+'%;height:100%;background:linear-gradient(90deg,#6366f1,#06b6d4);border-radius:4px;"></div></div>'+
+                '<div style="text-align:right;font-size:0.7rem;color:#475569;margin-top:4px;">'+pct+'% used</div></div>'+
+                '<div style="font-size:0.78rem;color:#475569;">'+localStorage.length+' keys stored</div>';
+
+            var breakdown = document.getElementById('apDataBreakdown');
+            breakdown.innerHTML = '<table class="ap-tbl" style="font-size:0.8rem;">'+
+                '<thead><tr><th>Key</th><th>Size</th></tr></thead><tbody>'+
+                keys.slice(0,10).map(function(k){
+                    return '<tr><td style="font-family:monospace;color:#6366f1;font-size:0.75rem;">'+k.k+'</td>'+
+                        '<td style="color:#94a3b8;">'+(k.s/1024).toFixed(2)+' KB</td></tr>';
+                }).join('')+'</tbody></table>';
+        }
+
+        /* ---- Export & helpers ---- */
+        window.exportAllData = function() {
+            var data = { users:getUsers(), purchases:getPurchases(), broadcasts:getBroadcasts(),
+                docs:getDocs(), meetings:getMeetings(), exportedAt:new Date().toISOString() };
+            apDownload(JSON.stringify(data,null,2),'bullbear-data-'+today()+'.json','application/json');
+        };
+
+        function apDownload(content, filename, mime) {
+            var blob = new Blob([content], {type:mime});
+            var a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = filename;
+            a.click();
+        }
+
+        function today() { return new Date().toISOString().slice(0,10); }
+
+        function escHtml(s) {
+            return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+        }
+
+        /* ---- Secret triggers ---- */
+        // Click logo 5x
+        (function(){
+            var clicks=0, timer;
+            document.addEventListener('DOMContentLoaded', function(){
+                var logo = document.querySelector('.logo');
+                if (logo) logo.addEventListener('click', function(e){
+                    e.preventDefault();
+                    clicks++;
+                    clearTimeout(timer);
+                    timer = setTimeout(function(){ clicks=0; }, 2000);
+                    if (clicks>=5){ clicks=0; openAdmin(); }
+                });
             });
         })();
 
-        // Also open via URL hash #admin
-        if (window.location.hash === '#admin') {
-            window.addEventListener('DOMContentLoaded', function () { openAdmin(); });
+        // URL hash
+        if (window.location.hash==='#admin') {
+            window.addEventListener('DOMContentLoaded', function(){ openAdmin(); });
         }
+
+        // Keyboard Ctrl+Shift+A
+        document.addEventListener('keydown', function(e){
+            if (e.ctrlKey && e.shiftKey && e.key==='A'){ e.preventDefault(); openAdmin(); }
+        });
+
+    })();
     </script>
 
     <script>

@@ -470,7 +470,7 @@
             : 'https://your-backend-url.com/api';
 
         function checkLoginAndDownload() {
-            const currentUser = localStorage.getItem('metahubCurrentUser');
+            const currentUser = localStorage.getItem('bullbearCurrentUser');
             if (currentUser) {
                 // User is logged in, download the PDF and send email
                 const user = JSON.parse(currentUser);
@@ -607,7 +607,7 @@
             }
 
             // Check if user already exists
-            const users = JSON.parse(localStorage.getItem('metahubUsers') || '[]');
+            const users = JSON.parse(localStorage.getItem('bullbearUsers') || '[]');
             const existingUser = users.find(u => u.email === email);
 
             if (existingUser) {
@@ -627,8 +627,8 @@
             };
 
             users.push(newUser);
-            localStorage.setItem('metahubUsers', JSON.stringify(users));
-            localStorage.setItem('metahubCurrentUser', JSON.stringify(newUser));
+            localStorage.setItem('bullbearUsers', JSON.stringify(users));
+            localStorage.setItem('bullbearCurrentUser', JSON.stringify(newUser));
 
             // Show success and download
             errorDiv.style.display = 'none';
@@ -652,11 +652,11 @@
             const password = document.getElementById('loginPassword').value;
             const errorDiv = document.getElementById('loginError');
 
-            const users = JSON.parse(localStorage.getItem('metahubUsers') || '[]');
+            const users = JSON.parse(localStorage.getItem('bullbearUsers') || '[]');
             const user = users.find(u => (u.email === email || u.phone === email) && u.password === password);
 
             if (user) {
-                localStorage.setItem('metahubCurrentUser', JSON.stringify(user));
+                localStorage.setItem('bullbearCurrentUser', JSON.stringify(user));
                 closeModal('pdfLoginModal');
                 downloadPdfAndSendEmail(user.email, user.name);
             } else {

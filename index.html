@@ -187,16 +187,28 @@
 
         /* Checklist card specific styling */
         .checklist-card {
-            cursor: pointer !important;
             position: relative;
         }
 
-        .checklist-card * {
-            pointer-events: auto !important;
+        .checklist-dl-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            color: #000;
+            font-weight: 700;
+            font-size: 0.95rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 12px;
+            letter-spacing: 0.02em;
         }
 
-        .checklist-card .card__body {
-            pointer-events: auto !important;
+        .checklist-dl-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(251,191,36,0.4);
         }
 
         /* Ensure all cards in a row have same height */
@@ -2319,16 +2331,14 @@
                                     kjb-settings-id="sections_1593046178513_blocks_1593046178513_5_settings_width">
                                     <div class="block box-shadow-none background-light" data-aos="none"
                                         data-aos-delay="0" data-aos-duration="0">
-                                        <div class="card checklist-card" onclick="showSignupForChecklist()">
+                                        <div class="card checklist-card">
                                             <img loading="auto" class="card__image" alt="Crypto Quickstart Checklist"
                                                 src="images/checklist-cover-new.png">
                                             <div class="card__body background-light">
-                                                <span class="free-badge">🎁 FREE DOWNLOAD</span>
+                                                <span class="free-badge">FREE</span>
                                                 <h4 class="card__title">Crypto Quickstart Checklist</h4>
-                                                <p class="card__text">Essential 5-step guide to kickstart your crypto
-                                                    trading journey. Get started with confidence and avoid costly
-                                                    mistakes!</p>
-                                                <p class="signup-required">✨ Click to Get Your Free Copy</p>
+                                                <p class="card__text">5-step guide to start trading crypto with confidence.</p>
+                                                <button class="checklist-dl-btn" onclick="showSignupForChecklist(); event.stopPropagation();">Download Free</button>
                                             </div>
                                         </div>
                                     </div>
@@ -2644,6 +2654,32 @@
                 <button type="submit" class="auth-btn">Sign Up</button>
                 <p class="auth-switch">Already have an account? <a href="javascript:void(0)"
                         onclick="switchModal('signupModal', 'loginModal')">Login</a></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Checklist Signup Modal -->
+    <div id="checklistModal" class="auth-modal">
+        <div class="auth-modal-content" style="max-width:420px;">
+            <span class="auth-modal-close" onclick="closeModal('checklistModal')">&times;</span>
+            <div style="text-align:center; margin-bottom:20px;">
+                <div style="font-size:2.5rem; margin-bottom:8px;">📋</div>
+                <h2 style="margin:0 0 4px;">Get Your Free Checklist</h2>
+                <p style="color:rgba(255,255,255,0.5); font-size:0.85rem; margin:0;">Quick signup — download instantly</p>
+            </div>
+            <form id="checklistForm" onsubmit="return handleChecklistSignup(event)">
+                <div class="form-group">
+                    <input type="text" id="clName" placeholder="Full Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" id="clEmail" placeholder="Email Address" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="clPassword" placeholder="Create Password (min 6 chars)" required minlength="6">
+                </div>
+                <div id="clError" style="color:#f87171; font-size:0.85rem; margin-bottom:10px; display:none;"></div>
+                <button type="submit" class="auth-btn">Download Free</button>
+                <p class="auth-switch">Already have an account? <a href="javascript:void(0)" onclick="switchModal('checklistModal','loginModal')">Login</a></p>
             </form>
         </div>
     </div>
@@ -3300,19 +3336,49 @@
             if (mobileNav) mobileNav.classList.remove('open');
         }
 
-        // Function to handle checklist download (requires signup)
         function showSignupForChecklist() {
-            // Check if user is logged in
-            const currentUser = localStorage.getItem('bullbearCurrentUser');
-
-            if (currentUser) {
-                // User is logged in, allow download
-                const user = JSON.parse(currentUser);
-                downloadChecklist(user);
+            const raw = localStorage.getItem('bullbearCurrentUser');
+            if (raw) {
+                downloadChecklist(JSON.parse(raw));
             } else {
-                // User not logged in, redirect to dedicated signup page
-                window.location.href = 'checklist-signup.html';
+                openModal('checklistModal');
             }
+        }
+
+        function handleChecklistSignup(event) {
+            event.preventDefault();
+            const name = document.getElementById('clName').value.trim();
+            const email = document.getElementById('clEmail').value.trim();
+            const password = document.getElementById('clPassword').value;
+            const errorDiv = document.getElementById('clError');
+
+            const users = JSON.parse(localStorage.getItem('bullbearUsers') || '[]');
+            const existing = users.find(u => u.email === email);
+
+            if (existing) {
+                // Email exists — log them in if password matches
+                if (existing.password !== password) {
+                    errorDiv.textContent = 'Email already registered. Wrong password.';
+                    errorDiv.style.display = 'block';
+                    return false;
+                }
+                localStorage.setItem('bullbearCurrentUser', JSON.stringify(existing));
+                updateAuthNav();
+                closeModal('checklistModal');
+                downloadChecklist(existing);
+                return false;
+            }
+
+            const newUser = { name, email, password, createdAt: new Date().toISOString() };
+            users.push(newUser);
+            localStorage.setItem('bullbearUsers', JSON.stringify(users));
+            localStorage.setItem('bullbearCurrentUser', JSON.stringify(newUser));
+            updateAuthNav();
+            closeModal('checklistModal');
+            document.getElementById('checklistForm').reset();
+            errorDiv.style.display = 'none';
+            downloadChecklist(newUser);
+            return false;
         }
 
         // Function to download the checklist

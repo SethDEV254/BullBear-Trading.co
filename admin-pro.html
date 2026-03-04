@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - BullBear Trading</title>
+    <title>BullBear Blockchain Admin Pro</title>
     <link rel="shortcut icon" href="./images/bullbear-logo.png">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
         * {
@@ -655,7 +657,7 @@
                 margin-left: 70px;
                 width: calc(100% - 70px);
             }
-            
+
             .live-time-widget,
             .location-widget {
                 display: none;
@@ -681,12 +683,12 @@
                 flex-direction: column;
                 gap: 15px;
             }
-            
+
             .header-right {
                 flex-wrap: wrap;
                 justify-content: center;
             }
-            
+
             .live-time-widget,
             .location-widget {
                 display: flex;
@@ -702,12 +704,14 @@
                 font-size: 0.85rem;
             }
 
-            th, td {
+            th,
+            td {
                 padding: 10px;
             }
         }
     </style>
 </head>
+
 <body>
 
     <!-- Login Screen -->
@@ -747,15 +751,23 @@
             </div>
 
             <ul class="sidebar-menu">
-                <li><a href="#" class="active" onclick="showSection('dashboard')"><span class="icon">📊</span><span>Dashboard</span></a></li>
-                <li><a href="#" onclick="showSection('analytics')"><span class="icon">📈</span><span>Analytics</span></a></li>
-                <li><a href="#" onclick="showSection('purchases')"><span class="icon">🛒</span><span>Purchases</span></a></li>
+                <li><a href="#" class="active" onclick="showSection('dashboard')"><span
+                            class="icon">📊</span><span>Dashboard</span></a></li>
+                <li><a href="#" onclick="showSection('analytics')"><span
+                            class="icon">📈</span><span>Analytics</span></a></li>
+                <li><a href="#" onclick="showSection('purchases')"><span
+                            class="icon">🛒</span><span>Purchases</span></a></li>
                 <li><a href="#" onclick="showSection('users')"><span class="icon">👥</span><span>Users</span></a></li>
-                <li><a href="#" onclick="showSection('content')"><span class="icon">📚</span><span>Content</span></a></li>
-                <li><a href="#" onclick="showSection('emails')"><span class="icon">✉️</span><span>Bulk Email</span></a></li>
-                <li><a href="#" onclick="showSection('checklist')"><span class="icon">📋</span><span>Checklist</span></a></li>
-                <li><a href="#" onclick="showSection('settings')"><span class="icon">⚙️</span><span>Settings</span></a></li>
-                <li><a href="#" onclick="showSection('profile')"><span class="icon">👤</span><span>Profile</span></a></li>
+                <li><a href="#" onclick="showSection('content')"><span class="icon">📚</span><span>Content</span></a>
+                </li>
+                <li><a href="#" onclick="showSection('emails')"><span class="icon">✉️</span><span>Bulk Email</span></a>
+                </li>
+                <li><a href="#" onclick="showSection('checklist')"><span
+                            class="icon">📋</span><span>Checklist</span></a></li>
+                <li><a href="#" onclick="showSection('settings')"><span class="icon">⚙️</span><span>Settings</span></a>
+                </li>
+                <li><a href="#" onclick="showSection('profile')"><span class="icon">👤</span><span>Profile</span></a>
+                </li>
             </ul>
         </aside>
 
@@ -857,7 +869,14 @@
                             </tr>
                         </thead>
                         <tbody id="recentPurchasesTable">
-                            <tr><td colspan="5"><div class="empty-state"><div class="empty-state-icon">📦</div><p>No recent purchases</p></div></td></tr>
+                            <tr>
+                                <td colspan="5">
+                                    <div class="empty-state">
+                                        <div class="empty-state-icon">📦</div>
+                                        <p>No recent purchases</p>
+                                    </div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -905,7 +924,14 @@
                             </tr>
                         </thead>
                         <tbody id="purchasesTable">
-                            <tr><td colspan="7"><div class="empty-state"><div class="empty-state-icon">🛒</div><p>No purchases yet</p></div></td></tr>
+                            <tr>
+                                <td colspan="7">
+                                    <div class="empty-state">
+                                        <div class="empty-state-icon">🛒</div>
+                                        <p>No purchases yet</p>
+                                    </div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -930,7 +956,14 @@
                             </tr>
                         </thead>
                         <tbody id="usersTable">
-                            <tr><td colspan="6"><div class="empty-state"><div class="empty-state-icon">👥</div><p>No users yet</p></div></td></tr>
+                            <tr>
+                                <td colspan="6">
+                                    <div class="empty-state">
+                                        <div class="empty-state-icon">👥</div>
+                                        <p>No users yet</p>
+                                    </div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -944,7 +977,8 @@
                     <form onsubmit="return addContent(event)">
                         <div class="form-group">
                             <label>Content Type</label>
-                            <select id="contentType" style="width: 100%; padding: 14px 16px; border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 10px; background: rgba(15, 23, 42, 0.5); color: #ffffff; font-size: 1rem;">
+                            <select id="contentType"
+                                style="width: 100%; padding: 14px 16px; border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 10px; background: rgba(15, 23, 42, 0.5); color: #ffffff; font-size: 1rem;">
                                 <option value="video">🎥 Video</option>
                                 <option value="ebook">📖 eBook</option>
                                 <option value="document">📄 Document</option>
@@ -964,7 +998,8 @@
                         </div>
                         <div class="form-group">
                             <label>Category</label>
-                            <input type="text" id="contentCategory" placeholder="e.g., Trading Basics, Advanced Strategies">
+                            <input type="text" id="contentCategory"
+                                placeholder="e.g., Trading Basics, Advanced Strategies">
                         </div>
                         <div class="form-group">
                             <label>Duration / Pages (optional)</label>
@@ -975,11 +1010,20 @@
                 </div>
 
                 <!-- Content Tabs -->
-                <div style="display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid rgba(99, 102, 241, 0.2);">
-                    <button class="tab active" onclick="filterContent('all')" style="padding: 15px 30px; background: transparent; border: none; color: #94a3b8; cursor: pointer; font-weight: 600; font-size: 1rem; transition: all 0.3s ease; border-bottom: 3px solid transparent;">All Content</button>
-                    <button class="tab" onclick="filterContent('video')" style="padding: 15px 30px; background: transparent; border: none; color: #94a3b8; cursor: pointer; font-weight: 600; font-size: 1rem; transition: all 0.3s ease; border-bottom: 3px solid transparent;">🎥 Videos</button>
-                    <button class="tab" onclick="filterContent('ebook')" style="padding: 15px 30px; background: transparent; border: none; color: #94a3b8; cursor: pointer; font-weight: 600; font-size: 1rem; transition: all 0.3s ease; border-bottom: 3px solid transparent;">📖 eBooks</button>
-                    <button class="tab" onclick="filterContent('document')" style="padding: 15px 30px; background: transparent; border: none; color: #94a3b8; cursor: pointer; font-weight: 600; font-size: 1rem; transition: all 0.3s ease; border-bottom: 3px solid transparent;">📄 Documents</button>
+                <div
+                    style="display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid rgba(99, 102, 241, 0.2);">
+                    <button class="tab active" onclick="filterContent('all')"
+                        style="padding: 15px 30px; background: transparent; border: none; color: #94a3b8; cursor: pointer; font-weight: 600; font-size: 1rem; transition: all 0.3s ease; border-bottom: 3px solid transparent;">All
+                        Content</button>
+                    <button class="tab" onclick="filterContent('video')"
+                        style="padding: 15px 30px; background: transparent; border: none; color: #94a3b8; cursor: pointer; font-weight: 600; font-size: 1rem; transition: all 0.3s ease; border-bottom: 3px solid transparent;">🎥
+                        Videos</button>
+                    <button class="tab" onclick="filterContent('ebook')"
+                        style="padding: 15px 30px; background: transparent; border: none; color: #94a3b8; cursor: pointer; font-weight: 600; font-size: 1rem; transition: all 0.3s ease; border-bottom: 3px solid transparent;">📖
+                        eBooks</button>
+                    <button class="tab" onclick="filterContent('document')"
+                        style="padding: 15px 30px; background: transparent; border: none; color: #94a3b8; cursor: pointer; font-weight: 600; font-size: 1rem; transition: all 0.3s ease; border-bottom: 3px solid transparent;">📄
+                        Documents</button>
                 </div>
 
                 <!-- Content List -->
@@ -1000,7 +1044,14 @@
                             </tr>
                         </thead>
                         <tbody id="contentTable">
-                            <tr><td colspan="6"><div class="empty-state"><div class="empty-state-icon">📚</div><p>No content yet. Add your first video, ebook, or document above!</p></div></td></tr>
+                            <tr>
+                                <td colspan="6">
+                                    <div class="empty-state">
+                                        <div class="empty-state-icon">📚</div>
+                                        <p>No content yet. Add your first video, ebook, or document above!</p>
+                                    </div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -1014,17 +1065,20 @@
                     <form onsubmit="return sendBulkEmail(event)">
                         <div class="form-group">
                             <label>Recipients</label>
-                            <select id="emailRecipients" style="width: 100%; padding: 14px 16px; border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 10px; background: rgba(15, 23, 42, 0.5); color: #ffffff; font-size: 1rem;">
+                            <select id="emailRecipients"
+                                style="width: 100%; padding: 14px 16px; border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 10px; background: rgba(15, 23, 42, 0.5); color: #ffffff; font-size: 1rem;">
                                 <option value="all">📧 All Users</option>
                                 <option value="buyers">🛒 Users with Purchases</option>
                                 <option value="checklist">📋 Checklist Subscribers</option>
                                 <option value="custom">✏️ Custom Email List</option>
                             </select>
                         </div>
-                        
+
                         <div class="form-group" id="customEmailsGroup" style="display: none;">
                             <label>Custom Email Addresses (comma-separated)</label>
-                            <textarea id="customEmails" placeholder="email1@example.com, email2@example.com, email3@example.com" style="width: 100%; padding: 14px 16px; border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 10px; background: rgba(15, 23, 42, 0.5); color: #ffffff; font-size: 1rem; min-height: 80px; resize: vertical;"></textarea>
+                            <textarea id="customEmails"
+                                placeholder="email1@example.com, email2@example.com, email3@example.com"
+                                style="width: 100%; padding: 14px 16px; border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 10px; background: rgba(15, 23, 42, 0.5); color: #ffffff; font-size: 1rem; min-height: 80px; resize: vertical;"></textarea>
                         </div>
 
                         <div class="form-group">
@@ -1034,17 +1088,20 @@
 
                         <div class="form-group">
                             <label>Email Message</label>
-                            <textarea id="emailMessage" placeholder="Write your email message here..." required style="width: 100%; padding: 14px 16px; border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 10px; background: rgba(15, 23, 42, 0.5); color: #ffffff; font-size: 1rem; min-height: 200px; resize: vertical;"></textarea>
+                            <textarea id="emailMessage" placeholder="Write your email message here..." required
+                                style="width: 100%; padding: 14px 16px; border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 10px; background: rgba(15, 23, 42, 0.5); color: #ffffff; font-size: 1rem; min-height: 200px; resize: vertical;"></textarea>
                         </div>
 
                         <div class="form-group">
                             <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
-                                <input type="checkbox" id="includeUnsubscribe" checked style="width: 20px; height: 20px; cursor: pointer;">
+                                <input type="checkbox" id="includeUnsubscribe" checked
+                                    style="width: 20px; height: 20px; cursor: pointer;">
                                 <span>Include unsubscribe link</span>
                             </label>
                         </div>
 
-                        <div style="background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 10px; padding: 15px; margin-bottom: 20px;">
+                        <div
+                            style="background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 10px; padding: 15px; margin-bottom: 20px;">
                             <div style="color: #06b6d4; font-weight: 600; margin-bottom: 5px;">📊 Email Preview</div>
                             <div style="color: #94a3b8; font-size: 0.9rem;">
                                 <div>Recipients: <span id="recipientCount">0</span> users</div>
@@ -1073,7 +1130,14 @@
                             </tr>
                         </thead>
                         <tbody id="emailHistoryTable">
-                            <tr><td colspan="5"><div class="empty-state"><div class="empty-state-icon">✉️</div><p>No emails sent yet</p></div></td></tr>
+                            <tr>
+                                <td colspan="5">
+                                    <div class="empty-state">
+                                        <div class="empty-state-icon">✉️</div>
+                                        <p>No emails sent yet</p>
+                                    </div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -1097,7 +1161,14 @@
                             </tr>
                         </thead>
                         <tbody id="checklistTable">
-                            <tr><td colspan="5"><div class="empty-state"><div class="empty-state-icon">📋</div><p>No downloads yet</p></div></td></tr>
+                            <tr>
+                                <td colspan="5">
+                                    <div class="empty-state">
+                                        <div class="empty-state-icon">📋</div>
+                                        <p>No downloads yet</p>
+                                    </div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -1219,15 +1290,18 @@
                         <form onsubmit="return changePassword(event)">
                             <div class="form-group">
                                 <label>Current Password</label>
-                                <input type="password" id="currentPassword" placeholder="Enter current password" required>
+                                <input type="password" id="currentPassword" placeholder="Enter current password"
+                                    required>
                             </div>
                             <div class="form-group">
                                 <label>New Password</label>
-                                <input type="password" id="newPassword" placeholder="Enter new password" required minlength="6">
+                                <input type="password" id="newPassword" placeholder="Enter new password" required
+                                    minlength="6">
                             </div>
                             <div class="form-group">
                                 <label>Confirm New Password</label>
-                                <input type="password" id="confirmNewPassword" placeholder="Confirm new password" required>
+                                <input type="password" id="confirmNewPassword" placeholder="Confirm new password"
+                                    required>
                             </div>
                             <button type="submit" class="save-btn">Change Password</button>
                         </form>
@@ -1244,7 +1318,7 @@
         let revenueChart, userChart, salesChart, monthlyRevenueChart, statusChart, registrationChart;
 
         // Check authentication on page load - MANUAL LOGIN REQUIRED
-        window.addEventListener('DOMContentLoaded', function() {
+        window.addEventListener('DOMContentLoaded', function () {
             checkAuth();
         });
 
@@ -1261,7 +1335,7 @@
         function showDashboard() {
             document.getElementById('loginScreen').style.display = 'none';
             document.getElementById('dashboard').classList.add('active');
-            
+
             // Set admin info
             const email = currentAdmin.email || 'admin@bullbeartrading.com';
             const initial = email.charAt(0).toUpperCase();
@@ -1276,11 +1350,11 @@
             // Load initial data
             loadDashboardData();
             initCharts();
-            
+
             // Start live time
             updateLiveTime();
             setInterval(updateLiveTime, 1000);
-            
+
             // Get user location
             getUserLocation();
         }
@@ -1288,13 +1362,13 @@
         // Live Time Function
         function updateLiveTime() {
             const now = new Date();
-            
+
             // Format time
             const hours = String(now.getHours()).padStart(2, '0');
             const minutes = String(now.getMinutes()).padStart(2, '0');
             const seconds = String(now.getSeconds()).padStart(2, '0');
             document.getElementById('liveTime').textContent = `${hours}:${minutes}:${seconds}`;
-            
+
             // Format date
             const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
             document.getElementById('liveDate').textContent = now.toLocaleDateString('en-US', options);
@@ -1303,7 +1377,7 @@
         // Get User Location
         function getUserLocation() {
             // Try multiple location APIs for better reliability
-            
+
             // Method 1: ipapi.co
             fetch('https://ipapi.co/json/')
                 .then(response => response.json())
@@ -1311,7 +1385,7 @@
                     if (data.city && data.country_name) {
                         const location = `${data.city}, ${data.country_name}`;
                         document.getElementById('userLocation').textContent = location;
-                        
+
                         // Store location data
                         localStorage.setItem('adminLocation', JSON.stringify({
                             city: data.city,
@@ -1342,7 +1416,7 @@
                     if (data.status === 'success') {
                         const location = `${data.city}, ${data.country}`;
                         document.getElementById('userLocation').textContent = location;
-                        
+
                         localStorage.setItem('adminLocation', JSON.stringify({
                             city: data.city,
                             region: data.regionName,
@@ -1375,7 +1449,7 @@
                                 const city = data.address.city || data.address.town || data.address.village || 'Unknown';
                                 const country = data.address.country || 'Unknown';
                                 document.getElementById('userLocation').textContent = `${city}, ${country}`;
-                                
+
                                 localStorage.setItem('adminLocation', JSON.stringify({
                                     city: city,
                                     country: country,
@@ -1400,7 +1474,7 @@
 
         function handleLogin(event) {
             event.preventDefault();
-            
+
             const email = document.getElementById('loginEmail').value;
             const password = document.getElementById('loginPassword').value;
             const errorDiv = document.getElementById('loginError');
@@ -1412,11 +1486,11 @@
                     token: 'admin-token-' + Date.now(),
                     loginTime: new Date().toISOString()
                 };
-                
+
                 localStorage.setItem('bullbearAdmin', JSON.stringify(adminData));
                 currentAdmin = adminData;
                 authToken = adminData.token;
-                
+
                 showDashboard();
             } else {
                 errorDiv.textContent = '❌ Invalid email or password';
@@ -1508,7 +1582,7 @@
             // Load recent purchases
             const recentPurchases = purchases.slice(-5).reverse();
             const tbody = document.getElementById('recentPurchasesTable');
-            
+
             if (recentPurchases.length === 0) {
                 tbody.innerHTML = '<tr><td colspan="5"><div class="empty-state"><div class="empty-state-icon">📦</div><p>No recent purchases</p></div></td></tr>';
             } else {
@@ -1853,25 +1927,25 @@
                 email: document.getElementById('profileEmailInput').value,
                 phone: document.getElementById('profilePhone').value
             };
-            
+
             // Update current admin
             currentAdmin.email = profile.email;
             currentAdmin.name = profile.fullName;
             currentAdmin.phone = profile.phone;
             localStorage.setItem('bullbearAdmin', JSON.stringify(currentAdmin));
-            
+
             // Update display
             document.getElementById('adminName').textContent = profile.email;
             document.getElementById('profileName').textContent = profile.fullName || profile.email;
             document.getElementById('profileEmail').textContent = profile.email;
-            
+
             alert('✅ Profile updated successfully!');
             return false;
         }
 
         function changePassword(event) {
             event.preventDefault();
-            
+
             const currentPassword = document.getElementById('currentPassword').value;
             const newPassword = document.getElementById('newPassword').value;
             const confirmNewPassword = document.getElementById('confirmNewPassword').value;
@@ -1888,12 +1962,12 @@
 
             // In production, verify current password against stored hash
             alert('✅ Password changed successfully!');
-            
+
             // Clear form
             document.getElementById('currentPassword').value = '';
             document.getElementById('newPassword').value = '';
             document.getElementById('confirmNewPassword').value = '';
-            
+
             return false;
         }
 
@@ -1996,7 +2070,7 @@
 
         function filterContent(type) {
             currentContentFilter = type;
-            
+
             // Update tab styling
             const tabs = document.querySelectorAll('#contentSection .tab');
             tabs.forEach(tab => {
@@ -2014,7 +2088,7 @@
         function viewContent(contentId) {
             const contentList = JSON.parse(localStorage.getItem('bullbearContent') || '[]');
             const content = contentList.find(c => c.id === contentId);
-            
+
             if (content) {
                 const details = `
 📚 Content Details
@@ -2034,7 +2108,7 @@ Added: ${new Date(content.addedDate).toLocaleString()}
         function editContent(contentId) {
             const contentList = JSON.parse(localStorage.getItem('bullbearContent') || '[]');
             const content = contentList.find(c => c.id === contentId);
-            
+
             if (content) {
                 const newTitle = prompt('Edit Title:', content.title);
                 if (newTitle && newTitle !== content.title) {
@@ -2052,7 +2126,7 @@ Added: ${new Date(content.addedDate).toLocaleString()}
             let contentList = JSON.parse(localStorage.getItem('bullbearContent') || '[]');
             contentList = contentList.filter(c => c.id !== contentId);
             localStorage.setItem('bullbearContent', JSON.stringify(contentList));
-            
+
             loadContent();
             alert('🗑️ Content deleted!');
         }
@@ -2063,7 +2137,7 @@ Added: ${new Date(content.addedDate).toLocaleString()}
             loadEmailHistory();
 
             // Show/hide custom emails field
-            document.getElementById('emailRecipients').addEventListener('change', function() {
+            document.getElementById('emailRecipients').addEventListener('change', function () {
                 const customGroup = document.getElementById('customEmailsGroup');
                 if (this.value === 'custom') {
                     customGroup.style.display = 'block';
@@ -2096,7 +2170,7 @@ Added: ${new Date(content.addedDate).toLocaleString()}
             }
 
             document.getElementById('recipientCount').textContent = count;
-            
+
             // Update delivery time estimate
             const deliveryTime = count <= 10 ? 'Instant' : count <= 50 ? '~1 minute' : count <= 100 ? '~2-3 minutes' : '~5 minutes';
             document.getElementById('deliveryTime').textContent = deliveryTime;
@@ -2197,7 +2271,7 @@ Added: ${new Date(content.addedDate).toLocaleString()}
         function viewEmail(emailId) {
             const emailHistory = JSON.parse(localStorage.getItem('bullbearEmailHistory') || '[]');
             const email = emailHistory.find(e => e.id === emailId);
-            
+
             if (email) {
                 const details = `
 📧 Email Details
@@ -2222,7 +2296,7 @@ Unsubscribe Link: ${email.includeUnsubscribe ? 'Yes' : 'No'}
             let emailHistory = JSON.parse(localStorage.getItem('bullbearEmailHistory') || '[]');
             emailHistory = emailHistory.filter(e => e.id !== emailId);
             localStorage.setItem('bullbearEmailHistory', JSON.stringify(emailHistory));
-            
+
             loadEmailHistory();
             alert('🗑️ Email deleted from history!');
         }
@@ -2231,4 +2305,5 @@ Unsubscribe Link: ${email.includeUnsubscribe ? 'Yes' : 'No'}
         setTimeout(loadSettings, 500);
     </script>
 </body>
+
 </html>

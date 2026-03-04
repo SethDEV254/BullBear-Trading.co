@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trading Indicators - BullBear Trading</title>
-    <link rel="shortcut icon" href="./images/bullbear-logo.png">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&family=Quattrocento+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <title>Elite Trading Indicators - BullBear Blockchain</title>
+    <link rel="shortcut icon" href="images/bullbear-logo.png">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&family=Quattrocento+Sans:wght@400;700&display=swap"
+        rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -30,7 +33,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: 
+            background:
                 radial-gradient(circle at 20% 30%, rgba(99, 102, 241, 0.08) 0%, transparent 50%),
                 radial-gradient(circle at 80% 70%, rgba(6, 182, 212, 0.08) 0%, transparent 50%),
                 radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.05) 0%, transparent 50%);
@@ -40,9 +43,12 @@
         }
 
         @keyframes backgroundPulse {
-            0%, 100% {
+
+            0%,
+            100% {
                 opacity: 1;
             }
+
             50% {
                 opacity: 0.6;
             }
@@ -56,7 +62,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: 
+            background-image:
                 linear-gradient(rgba(99, 102, 241, 0.03) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(99, 102, 241, 0.03) 1px, transparent 1px);
             background-size: 50px 50px;
@@ -72,7 +78,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 
+            box-shadow:
                 0 4px 30px rgba(0, 0, 0, 0.5),
                 0 0 0 1px rgba(99, 102, 241, 0.1);
             position: sticky;
@@ -223,10 +229,13 @@
         }
 
         @keyframes heroGlow {
-            0%, 100% {
+
+            0%,
+            100% {
                 opacity: 0.5;
                 transform: translate(-50%, -50%) scale(1);
             }
+
             50% {
                 opacity: 0.8;
                 transform: translate(-50%, -50%) scale(1.1);
@@ -250,9 +259,12 @@
         }
 
         @keyframes titleFloat {
-            0%, 100% {
+
+            0%,
+            100% {
                 transform: translateY(0px);
             }
+
             50% {
                 transform: translateY(-10px);
             }
@@ -285,7 +297,7 @@
             color: #06b6d4;
             letter-spacing: 0.3px;
             font-size: 0.95rem;
-            box-shadow: 
+            box-shadow:
                 0 4px 20px rgba(99, 102, 241, 0.2),
                 inset 0 1px 0 rgba(255, 255, 255, 0.1);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -311,7 +323,7 @@
 
         .badge:hover {
             transform: translateY(-5px) scale(1.05);
-            box-shadow: 
+            box-shadow:
                 0 8px 30px rgba(99, 102, 241, 0.4),
                 inset 0 1px 0 rgba(255, 255, 255, 0.2);
             border-color: rgba(99, 102, 241, 0.5);
@@ -381,7 +393,7 @@
             border: 1px solid rgba(99, 102, 241, 0.2);
             border-radius: 24px;
             padding: 30px;
-            box-shadow: 
+            box-shadow:
                 0 20px 60px rgba(0, 0, 0, 0.4),
                 0 0 0 1px rgba(99, 102, 241, 0.1),
                 inset 0 1px 0 rgba(255, 255, 255, 0.05);
@@ -409,7 +421,7 @@
 
         .chart-card:hover {
             transform: translateY(-10px);
-            box-shadow: 
+            box-shadow:
                 0 30px 80px rgba(99, 102, 241, 0.5),
                 0 0 0 1px rgba(99, 102, 241, 0.3),
                 0 0 60px rgba(99, 102, 241, 0.3),
@@ -424,12 +436,10 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: linear-gradient(
-                45deg,
-                transparent,
-                rgba(99, 102, 241, 0.05),
-                transparent
-            );
+            background: linear-gradient(45deg,
+                    transparent,
+                    rgba(99, 102, 241, 0.05),
+                    transparent);
             transform: rotate(45deg);
             animation: shimmer 4s infinite;
         }
@@ -438,6 +448,7 @@
             0% {
                 transform: translateX(-100%) translateY(-100%) rotate(45deg);
             }
+
             100% {
                 transform: translateX(100%) translateY(100%) rotate(45deg);
             }
@@ -470,20 +481,23 @@
             font-family: 'Quattrocento Sans', sans-serif;
             letter-spacing: 1px;
             text-transform: uppercase;
-            box-shadow: 
+            box-shadow:
                 0 4px 20px rgba(16, 185, 129, 0.4),
                 inset 0 1px 0 rgba(255, 255, 255, 0.3);
             animation: livePulse 2s infinite;
         }
 
         @keyframes livePulse {
-            0%, 100% {
-                box-shadow: 
+
+            0%,
+            100% {
+                box-shadow:
                     0 4px 20px rgba(16, 185, 129, 0.4),
                     inset 0 1px 0 rgba(255, 255, 255, 0.3);
             }
+
             50% {
-                box-shadow: 
+                box-shadow:
                     0 4px 30px rgba(16, 185, 129, 0.7),
                     inset 0 1px 0 rgba(255, 255, 255, 0.3);
             }
@@ -503,7 +517,7 @@
             height: 500px;
             border-radius: 16px;
             overflow: hidden;
-            box-shadow: 
+            box-shadow:
                 inset 0 2px 10px rgba(0, 0, 0, 0.4),
                 0 0 30px rgba(99, 102, 241, 0.2);
             border: 1px solid rgba(99, 102, 241, 0.2);
@@ -527,7 +541,7 @@
             padding: 40px;
             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
-            box-shadow: 
+            box-shadow:
                 0 10px 40px rgba(0, 0, 0, 0.3),
                 inset 0 1px 0 rgba(255, 255, 255, 0.05);
             overflow: hidden;
@@ -551,7 +565,7 @@
 
         .feature-card:hover {
             transform: translateY(-10px) scale(1.02);
-            box-shadow: 
+            box-shadow:
                 0 20px 60px rgba(99, 102, 241, 0.4),
                 0 0 40px rgba(99, 102, 241, 0.3),
                 inset 0 1px 0 rgba(255, 255, 255, 0.1);
@@ -567,9 +581,12 @@
         }
 
         @keyframes iconFloat {
-            0%, 100% {
+
+            0%,
+            100% {
                 transform: translateY(0px) rotate(0deg);
             }
+
             50% {
                 transform: translateY(-15px) rotate(5deg);
             }
@@ -601,7 +618,7 @@
             margin-bottom: 80px;
             position: relative;
             overflow: hidden;
-            box-shadow: 
+            box-shadow:
                 0 20px 60px rgba(99, 102, 241, 0.3),
                 inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
@@ -621,6 +638,7 @@
             0% {
                 transform: rotate(0deg);
             }
+
             100% {
                 transform: rotate(360deg);
             }
@@ -659,7 +677,7 @@
             font-family: 'Quattrocento Sans', sans-serif;
             border-radius: 16px;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 
+            box-shadow:
                 0 10px 40px rgba(99, 102, 241, 0.5),
                 0 0 60px rgba(99, 102, 241, 0.3);
             position: relative;
@@ -687,7 +705,7 @@
 
         .cta-button:hover {
             transform: translateY(-5px) scale(1.05);
-            box-shadow: 
+            box-shadow:
                 0 20px 60px rgba(99, 102, 241, 0.7),
                 0 0 80px rgba(99, 102, 241, 0.5);
             background: linear-gradient(135deg, #8b5cf6 0%, #06b6d4 100%);
@@ -733,7 +751,7 @@
             max-width: 450px;
             width: 100%;
             text-align: center;
-            box-shadow: 
+            box-shadow:
                 0 30px 80px rgba(0, 0, 0, 0.6),
                 0 0 100px rgba(99, 102, 241, 0.3),
                 inset 0 1px 0 rgba(255, 255, 255, 0.1);
@@ -754,8 +772,13 @@
         }
 
         @keyframes rotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
         @keyframes fadeInScale {
@@ -763,6 +786,7 @@
                 opacity: 0;
                 transform: scale(0.95);
             }
+
             to {
                 opacity: 1;
                 transform: scale(1);
@@ -779,9 +803,12 @@
         }
 
         @keyframes lockPulse {
-            0%, 100% {
+
+            0%,
+            100% {
                 transform: scale(1);
             }
+
             50% {
                 transform: scale(1.08);
             }
@@ -984,6 +1011,7 @@
         }
     </style>
 </head>
+
 <body>
 
     <!-- Header -->
@@ -1006,7 +1034,8 @@
     <!-- Hero Section -->
     <div class="hero">
         <h1>Professional Trading Indicators</h1>
-        <p>Access powerful TradingView indicators designed by professional traders. Get real-time signals, advanced analytics, and proven strategies to maximize your trading success.</p>
+        <p>Access powerful TradingView indicators designed by professional traders. Get real-time signals, advanced
+            analytics, and proven strategies to maximize your trading success.</p>
         <div class="hero-badges">
             <span class="badge">Real-Time Signals</span>
             <span class="badge">Advanced Analytics</span>
@@ -1021,7 +1050,7 @@
             <div class="lock-icon-large">🔒</div>
             <h2>Premium Subscription Required</h2>
             <p class="lock-description">Get unlimited access to professional trading indicators and live charts</p>
-            
+
             <div class="subscription-price">
                 <div class="price-amount">$30</div>
                 <div class="price-period">per month</div>
@@ -1058,7 +1087,8 @@
                     <div class="chart-badge">LIVE</div>
                 </div>
                 <div class="chart-description">
-                    Real-time Bitcoin price action with our proprietary trend indicator. Get instant buy/sell signals based on advanced technical analysis.
+                    Real-time Bitcoin price action with our proprietary trend indicator. Get instant buy/sell signals
+                    based on advanced technical analysis.
                 </div>
                 <div class="tradingview-widget-container">
                     <div id="tradingview_btc"></div>
@@ -1072,7 +1102,8 @@
                     <div class="chart-badge">LIVE</div>
                 </div>
                 <div class="chart-description">
-                    Track Ethereum's price movements with momentum indicators and volume analysis for optimal entry and exit points.
+                    Track Ethereum's price movements with momentum indicators and volume analysis for optimal entry and
+                    exit points.
                 </div>
                 <div class="tradingview-widget-container">
                     <div id="tradingview_eth"></div>
@@ -1086,7 +1117,8 @@
                     <div class="chart-badge">LIVE</div>
                 </div>
                 <div class="chart-description">
-                    Monitor the S&P 500 with our multi-timeframe analysis indicator. Perfect for swing traders and day traders.
+                    Monitor the S&P 500 with our multi-timeframe analysis indicator. Perfect for swing traders and day
+                    traders.
                 </div>
                 <div class="tradingview-widget-container">
                     <div id="tradingview_spy"></div>
@@ -1100,7 +1132,8 @@
                     <div class="chart-badge">LIVE</div>
                 </div>
                 <div class="chart-description">
-                    Gold trading with support/resistance levels and trend reversal signals. Ideal for precious metals traders.
+                    Gold trading with support/resistance levels and trend reversal signals. Ideal for precious metals
+                    traders.
                 </div>
                 <div class="tradingview-widget-container">
                     <div id="tradingview_gold"></div>
@@ -1118,7 +1151,8 @@
             <div class="feature-card">
                 <div class="feature-title">Precision Signals</div>
                 <div class="feature-description">
-                    Get highly accurate buy and sell signals based on multiple technical indicators and price action analysis.
+                    Get highly accurate buy and sell signals based on multiple technical indicators and price action
+                    analysis.
                 </div>
             </div>
 
@@ -1132,7 +1166,8 @@
             <div class="feature-card">
                 <div class="feature-title">Multi-Timeframe Analysis</div>
                 <div class="feature-description">
-                    Analyze trends across multiple timeframes to confirm high-probability setups and reduce false signals.
+                    Analyze trends across multiple timeframes to confirm high-probability setups and reduce false
+                    signals.
                 </div>
             </div>
 
@@ -1146,14 +1181,16 @@
             <div class="feature-card">
                 <div class="feature-title">Easy to Use</div>
                 <div class="feature-description">
-                    Simple, clean interface suitable for both beginners and experienced traders. No complex setup required.
+                    Simple, clean interface suitable for both beginners and experienced traders. No complex setup
+                    required.
                 </div>
             </div>
 
             <div class="feature-card">
                 <div class="feature-title">Proven Results</div>
                 <div class="feature-description">
-                    Backtested on years of historical data with consistent profitability across various market conditions.
+                    Backtested on years of historical data with consistent profitability across various market
+                    conditions.
                 </div>
             </div>
         </div>
@@ -1161,14 +1198,19 @@
         <!-- CTA Section -->
         <div class="cta-section">
             <h2>Interactive Trading Charts</h2>
-            <p>All charts above are fully interactive - click any chart to explore live data, change timeframes, add indicators, and analyze markets in real-time!</p>
-            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-top: 30px; position: relative; z-index: 1;">
-                <a href="https://www.tradingview.com/chart/?symbol=BINANCE%3ABTCUSDT&interval=15&theme=dark" target="_blank" rel="noopener noreferrer" class="cta-button" style="display: inline-block;">
+            <p>All charts above are fully interactive - click any chart to explore live data, change timeframes, add
+                indicators, and analyze markets in real-time!</p>
+            <div
+                style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-top: 30px; position: relative; z-index: 1;">
+                <a href="https://www.tradingview.com/chart/?symbol=BINANCE%3ABTCUSDT&interval=15&theme=dark"
+                    target="_blank" rel="noopener noreferrer" class="cta-button" style="display: inline-block;">
                     Open Live Chart with Indicators
                 </a>
             </div>
-            <p style="margin-top: 25px; font-size: 0.9rem; color: rgba(255, 255, 255, 0.6); position: relative; z-index: 1;">
-                <strong style="color: #06b6d4;">Pro Tip:</strong> Search for "sethcryptolord" in the indicators panel to add Seth's custom indicators
+            <p
+                style="margin-top: 25px; font-size: 0.9rem; color: rgba(255, 255, 255, 0.6); position: relative; z-index: 1;">
+                <strong style="color: #06b6d4;">Pro Tip:</strong> Search for "sethcryptolord" in the indicators panel to
+                add Seth's custom indicators
             </p>
         </div>
     </div>
@@ -1176,14 +1218,15 @@
     <!-- Footer -->
     <div class="footer">
         <p>&copy; 2026 BullBear Trading. All rights reserved. | Master the Markets</p>
-        <p style="margin-top: 10px; font-size: 0.85rem;">Developed by <a href="https://twitter.com/starico" target="_blank" style="color: #06b6d4; text-decoration: none; font-weight: 600;">@starico</a></p>
+        <p style="margin-top: 10px; font-size: 0.85rem;">Developed by <a href="https://twitter.com/starico"
+                target="_blank" style="color: #06b6d4; text-decoration: none; font-weight: 600;">@starico</a></p>
     </div>
 
     <!-- TradingView Widget Scripts -->
     <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
     <script type="text/javascript">
         // Initialize TradingView Widgets
-        
+
         // Bitcoin Chart
         new TradingView.widget({
             "width": "100%",
@@ -1285,25 +1328,25 @@
     <!-- Subscription Management Script -->
     <script>
         // Check subscription status on page load
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             checkSubscriptionStatus();
         });
 
         function checkSubscriptionStatus() {
             const subscription = localStorage.getItem('indicatorsSubscription');
-            
+
             if (subscription) {
                 const subData = JSON.parse(subscription);
                 const expiryDate = new Date(subData.expiryDate);
                 const now = new Date();
-                
+
                 // Check if subscription is still valid
                 if (expiryDate > now) {
                     unlockIndicators();
                     return;
                 }
             }
-            
+
             // Show subscription lock if no valid subscription
             showSubscriptionLock();
         }
@@ -1337,7 +1380,7 @@
                 padding: 20px;
                 overflow-y: auto;
             `;
-            
+
             modal.innerHTML = `
                 <div style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); border: 2px solid rgba(99, 102, 241, 0.3); border-radius: 20px; padding: 40px; max-width: 500px; width: 100%; box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8); margin: 20px;">
                     <h2 style="color: #ffffff; font-size: 2rem; margin-bottom: 20px; text-align: center;">Subscribe to Indicators</h2>
@@ -1426,18 +1469,18 @@
                     </form>
                 </div>
             `;
-            
+
             document.body.appendChild(modal);
         }
 
         function togglePaymentInfo() {
             const method = document.getElementById('paymentMethod').value;
-            
+
             // Hide all payment info sections
             document.getElementById('mpesaInfo').style.display = 'none';
             document.getElementById('paypalInfo').style.display = 'none';
             document.getElementById('cardInfo').style.display = 'none';
-            
+
             // Show selected payment info
             if (method === 'mpesa') {
                 document.getElementById('mpesaInfo').style.display = 'block';
@@ -1451,7 +1494,7 @@
         async function initiateMpesaPayment() {
             const phoneNumber = document.getElementById('mpesaPhone').value;
             const email = document.getElementById('subEmail').value;
-            
+
             // Validate phone number
             if (!phoneNumber || phoneNumber.length !== 10) {
                 alert('Please enter a valid 10-digit M-Pesa phone number (e.g., 0712345678)');
@@ -1492,7 +1535,7 @@
                     // Show prompt sent message
                     button.innerHTML = '✅ Prompt Sent!';
                     button.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
-                    
+
                     // Show instruction modal
                     const promptModal = document.createElement('div');
                     promptModal.style.cssText = `
@@ -1510,7 +1553,7 @@
                         box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
                         animation: slideIn 0.3s ease;
                     `;
-                    
+
                     promptModal.innerHTML = `
                         <div style="text-align: center;">
                             <div style="font-size: 3rem; margin-bottom: 15px; animation: pulse 1.5s infinite;">📱</div>
@@ -1538,9 +1581,9 @@
                             </button>
                         </div>
                     `;
-                    
+
                     document.body.appendChild(promptModal);
-                    
+
                     // Reset button after 3 seconds
                     setTimeout(() => {
                         button.innerHTML = originalText;
@@ -1554,7 +1597,7 @@
             } catch (error) {
                 console.error('M-Pesa Error:', error);
                 alert('Failed to send payment prompt. Please try again or contact support.');
-                
+
                 // Reset button
                 button.innerHTML = originalText;
                 button.disabled = false;
@@ -1564,13 +1607,13 @@
 
         function processSubscription(event) {
             event.preventDefault();
-            
+
             const email = document.getElementById('subEmail').value;
-            
+
             // Calculate expiry date (30 days from now)
             const expiryDate = new Date();
             expiryDate.setDate(expiryDate.getDate() + 30);
-            
+
             // Save subscription to localStorage
             const subscription = {
                 email: email,
@@ -1579,18 +1622,19 @@
                 amount: 30,
                 status: 'active'
             };
-            
+
             localStorage.setItem('indicatorsSubscription', JSON.stringify(subscription));
-            
+
             // Show success message
             alert('Subscription activated! You now have full access to all indicators for 30 days.');
-            
+
             // Close modal and unlock content
             event.target.closest('div').parentElement.remove();
             unlockIndicators();
-            
+
             return false;
         }
     </script>
 </body>
+
 </html>

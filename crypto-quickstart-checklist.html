@@ -1,36 +1,192 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>5-Step Crypto Quickstart Checklist - BullBear Trading</title>
+    <title>5-Step Crypto Quickstart Checklist - BullBear Blockchain</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', sans-serif; background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: #fff; min-height: 100vh; }
-        .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
-        .header { text-align: center; margin-bottom: 40px; }
-        .header h1 { font-size: 2.5rem; margin-bottom: 15px; background: linear-gradient(135deg, #6366f1, #06b6d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .header p { color: rgba(255,255,255,0.7); font-size: 1.1rem; max-width: 600px; margin: 0 auto; }
-        .card { background: rgba(255,255,255,0.05); backdrop-filter: blur(20px); border: 1px solid rgba(99,102,241,0.3); border-radius: 20px; padding: 40px; margin-bottom: 30px; }
-        .badge { display: inline-block; background: linear-gradient(135deg, #22c55e, #10b981); color: #fff; padding: 8px 20px; border-radius: 20px; font-size: 0.9rem; font-weight: 600; margin-bottom: 20px; }
-        .features { list-style: none; margin: 25px 0; }
-        .features li { padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; gap: 12px; }
-        .features li:last-child { border-bottom: none; }
-        .features li::before { content: '✓'; background: linear-gradient(135deg, #6366f1, #06b6d4); color: #fff; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; flex-shrink: 0; }
-        .download-btn { display: inline-block; background: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%); color: #fff; padding: 18px 40px; border-radius: 12px; text-decoration: none; font-size: 1.2rem; font-weight: 600; transition: all 0.3s ease; border: none; cursor: pointer; }
-        .download-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(99,102,241,0.4); }
-        .cta-section { text-align: center; margin-top: 30px; }
-        .back-link { display: inline-block; color: #06b6d4; text-decoration: none; margin-top: 20px; font-size: 0.95rem; }
-        .back-link:hover { text-decoration: underline; }
-        .preview { background: rgba(99,102,241,0.1); border: 2px dashed rgba(99,102,241,0.3); border-radius: 15px; padding: 30px; text-align: center; margin: 30px 0; }
-        .preview h3 { color: #fbbf24; margin-bottom: 15px; }
-        .steps { display: grid; gap: 15px; margin: 30px 0; }
-        .step { background: rgba(255,255,255,0.03); border: 1px solid rgba(99,102,241,0.2); border-radius: 12px; padding: 20px; display: flex; align-items: center; gap: 15px; }
-        .step-num { background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #fff; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; }
-        .step-text h4 { color: #fff; margin-bottom: 5px; }
-        .step-text p { color: rgba(255,255,255,0.6); font-size: 0.9rem; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #6366f1, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #22c55e, #10b981);
+            color: #fff;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .features {
+            list-style: none;
+            margin: 25px 0;
+        }
+
+        .features li {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .features li:last-child {
+            border-bottom: none;
+        }
+
+        .features li::before {
+            content: '✓';
+            background: linear-gradient(135deg, #6366f1, #06b6d4);
+            color: #fff;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            flex-shrink: 0;
+        }
+
+        .download-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%);
+            color: #fff;
+            padding: 18px 40px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(99, 102, 241, 0.4);
+        }
+
+        .cta-section {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .back-link {
+            display: inline-block;
+            color: #06b6d4;
+            text-decoration: none;
+            margin-top: 20px;
+            font-size: 0.95rem;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .preview {
+            background: rgba(99, 102, 241, 0.1);
+            border: 2px dashed rgba(99, 102, 241, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .preview h3 {
+            color: #fbbf24;
+            margin-bottom: 15px;
+        }
+
+        .steps {
+            display: grid;
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .step {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .step-num {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: #fff;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .step-text h4 {
+            color: #fff;
+            margin-bottom: 5px;
+        }
+
+        .step-text p {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="header">
@@ -41,8 +197,9 @@
         <div class="card">
             <span class="badge">🎁 FREE DOWNLOAD</span>
             <h2 style="font-size: 1.8rem; margin-bottom: 15px;">What You'll Learn</h2>
-            <p style="color: rgba(255,255,255,0.7); margin-bottom: 20px;">This comprehensive PDF checklist covers everything beginners need to know to start their crypto journey safely and profitably.</p>
-            
+            <p style="color: rgba(255,255,255,0.7); margin-bottom: 20px;">This comprehensive PDF checklist covers
+                everything beginners need to know to start their crypto journey safely and profitably.</p>
+
             <ul class="features">
                 <li>How to choose the right cryptocurrency exchange</li>
                 <li>Setting up secure wallets for your assets</li>
@@ -98,9 +255,10 @@
             <button onclick="checkLoginAndDownload()" class="download-btn">
                 📥 Download Free PDF
             </button>
-            <p style="color: rgba(255,255,255,0.5); margin-top: 15px; font-size: 0.9rem;">Sign up for free to download</p>
+            <p style="color: rgba(255,255,255,0.5); margin-top: 15px; font-size: 0.9rem;">Sign up for free to download
+            </p>
             <br>
-            <a href="index.html" class="back-link">← Back to BullBear Trading</a>
+            <a href="index.html" class="back-link">← Back to BullBear Blockchain</a>
         </div>
     </div>
 
@@ -109,7 +267,8 @@
         <div class="auth-modal-content">
             <span class="auth-modal-close" onclick="closeModal('pdfSignupModal')">&times;</span>
             <h2>Sign Up to Download</h2>
-            <p style="color: rgba(255,255,255,0.7); margin-bottom: 20px; text-align: center;">Create a free account to access your PDF</p>
+            <p style="color: rgba(255,255,255,0.7); margin-bottom: 20px; text-align: center;">Create a free account to
+                access your PDF</p>
             <form id="pdfSignupForm" onsubmit="return handlePdfSignup(event)">
                 <div class="form-group">
                     <label for="signupName">Full Name <span style="color: #ef4444;">*</span></label>
@@ -121,20 +280,26 @@
                 </div>
                 <div class="form-group">
                     <label for="signupPhone">Phone Number <span style="color: #ef4444;">*</span></label>
-                    <input type="tel" id="signupPhone" name="phone" placeholder="Enter your phone number" required pattern="[0-9+\-\s\(\)]{7,20}" title="Please enter a valid phone number">
+                    <input type="tel" id="signupPhone" name="phone" placeholder="Enter your phone number" required
+                        pattern="[0-9+\-\s\(\)]{7,20}" title="Please enter a valid phone number">
                 </div>
                 <div class="form-group">
                     <label for="signupPassword">Password <span style="color: #ef4444;">*</span></label>
-                    <input type="password" id="signupPassword" name="password" placeholder="Create a password" required minlength="6">
+                    <input type="password" id="signupPassword" name="password" placeholder="Create a password" required
+                        minlength="6">
                 </div>
                 <div class="form-group">
                     <label for="signupConfirmPassword">Confirm Password <span style="color: #ef4444;">*</span></label>
-                    <input type="password" id="signupConfirmPassword" name="confirm_password" placeholder="Confirm your password" required>
+                    <input type="password" id="signupConfirmPassword" name="confirm_password"
+                        placeholder="Confirm your password" required>
                 </div>
-                <div id="signupError" style="color: #ef4444; font-size: 0.9rem; margin-bottom: 10px; display: none;"></div>
-                <div id="signupSuccess" style="color: #10b981; font-size: 0.9rem; margin-bottom: 10px; display: none;"></div>
+                <div id="signupError" style="color: #ef4444; font-size: 0.9rem; margin-bottom: 10px; display: none;">
+                </div>
+                <div id="signupSuccess" style="color: #10b981; font-size: 0.9rem; margin-bottom: 10px; display: none;">
+                </div>
                 <button type="submit" class="auth-btn">Sign Up & Download</button>
-                <p class="auth-switch">Already have an account? <a href="javascript:void(0)" onclick="switchToLogin()">Login</a></p>
+                <p class="auth-switch">Already have an account? <a href="javascript:void(0)"
+                        onclick="switchToLogin()">Login</a></p>
             </form>
         </div>
     </div>
@@ -144,7 +309,8 @@
         <div class="auth-modal-content">
             <span class="auth-modal-close" onclick="closeModal('pdfLoginModal')">&times;</span>
             <h2>Login to Download</h2>
-            <p style="color: rgba(255,255,255,0.7); margin-bottom: 20px; text-align: center;">Login to access your free PDF</p>
+            <p style="color: rgba(255,255,255,0.7); margin-bottom: 20px; text-align: center;">Login to access your free
+                PDF</p>
             <form id="pdfLoginForm" onsubmit="return handlePdfLogin(event)">
                 <div class="form-group">
                     <label for="loginEmail">Email or Phone</label>
@@ -152,11 +318,14 @@
                 </div>
                 <div class="form-group">
                     <label for="loginPassword">Password</label>
-                    <input type="password" id="loginPassword" name="password" placeholder="Enter your password" required>
+                    <input type="password" id="loginPassword" name="password" placeholder="Enter your password"
+                        required>
                 </div>
-                <div id="loginError" style="color: #ef4444; font-size: 0.9rem; margin-bottom: 10px; display: none;"></div>
+                <div id="loginError" style="color: #ef4444; font-size: 0.9rem; margin-bottom: 10px; display: none;">
+                </div>
                 <button type="submit" class="auth-btn">Login & Download</button>
-                <p class="auth-switch">Don't have an account? <a href="javascript:void(0)" onclick="switchToSignup()">Sign Up</a></p>
+                <p class="auth-switch">Don't have an account? <a href="javascript:void(0)"
+                        onclick="switchToSignup()">Sign Up</a></p>
             </form>
         </div>
     </div>
@@ -173,6 +342,7 @@
             background-color: rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(5px);
         }
+
         .auth-modal-content {
             background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
             margin: 5% auto;
@@ -186,10 +356,19 @@
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
             animation: slideIn 0.3s ease;
         }
+
         @keyframes slideIn {
-            from { opacity: 0; transform: translateY(-50px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
+
         .auth-modal-close {
             color: #94a3b8;
             float: right;
@@ -198,14 +377,22 @@
             cursor: pointer;
             transition: color 0.3s;
         }
-        .auth-modal-close:hover { color: #06b6d4; }
+
+        .auth-modal-close:hover {
+            color: #06b6d4;
+        }
+
         .auth-modal-content h2 {
             color: #ffffff;
             margin-bottom: 15px;
             font-size: 1.8rem;
             text-align: center;
         }
-        .form-group { margin-bottom: 20px; }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
         .form-group label {
             display: block;
             color: #94a3b8;
@@ -213,6 +400,7 @@
             font-weight: 600;
             font-size: 0.9rem;
         }
+
         .form-group input {
             width: 100%;
             padding: 14px 16px;
@@ -224,12 +412,17 @@
             transition: all 0.3s ease;
             box-sizing: border-box;
         }
+
         .form-group input:focus {
             outline: none;
             border-color: #06b6d4;
             box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
         }
-        .form-group input::placeholder { color: #64748b; }
+
+        .form-group input::placeholder {
+            color: #64748b;
+        }
+
         .auth-btn {
             width: 100%;
             padding: 16px;
@@ -245,29 +438,35 @@
             letter-spacing: 0.5px;
             margin-top: 10px;
         }
+
         .auth-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(99, 102, 241, 0.5);
         }
+
         .auth-switch {
             text-align: center;
             margin-top: 20px;
             color: #94a3b8;
             font-size: 0.9rem;
         }
+
         .auth-switch a {
             color: #06b6d4;
             text-decoration: none;
             font-weight: 600;
             cursor: pointer;
         }
-        .auth-switch a:hover { color: #8b5cf6; }
+
+        .auth-switch a:hover {
+            color: #8b5cf6;
+        }
     </style>
 
     <script>
         // API Base URL - change this to your backend URL
-        const API_BASE_URL = window.location.hostname === 'localhost' 
-            ? 'http://localhost:5000/api' 
+        const API_BASE_URL = window.location.hostname === 'localhost'
+            ? 'http://localhost:5000/api'
             : 'https://your-backend-url.com/api';
 
         function checkLoginAndDownload() {
@@ -300,9 +499,9 @@
                     },
                     body: JSON.stringify({ email, name })
                 });
-                
+
                 const data = await response.json();
-                
+
                 if (data.status === 'success') {
                     showNotification('PDF also sent to your email!', 'success');
                 }
@@ -436,7 +635,7 @@
             successDiv.textContent = 'Account created! Starting download & sending to email...';
             successDiv.style.display = 'block';
 
-            setTimeout(function() {
+            setTimeout(function () {
                 closeModal('pdfSignupModal');
                 downloadPdfAndSendEmail(email, name);
                 document.getElementById('pdfSignupForm').reset();
@@ -469,7 +668,7 @@
         }
 
         // Close modal when clicking outside
-        window.onclick = function(event) {
+        window.onclick = function (event) {
             if (event.target.classList.contains('auth-modal')) {
                 event.target.style.display = 'none';
                 document.body.style.overflow = 'auto';
@@ -479,14 +678,30 @@
 
     <style>
         @keyframes slideInRight {
-            from { opacity: 0; transform: translateX(100px); }
-            to { opacity: 1; transform: translateX(0); }
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
+
         @keyframes slideOutRight {
-            from { opacity: 1; transform: translateX(0); }
-            to { opacity: 0; transform: translateX(100px); }
+            from {
+                opacity: 1;
+                transform: translateX(0);
+            }
+
+            to {
+                opacity: 0;
+                transform: translateX(100px);
+            }
         }
     </style>
 
 </body>
+
 </html>

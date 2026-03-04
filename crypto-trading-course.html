@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crypto Trading Video Course - $500 | Bull Bear Trading</title>
+    <title>Crypto Trading Video Course - $500 | BullBear Blockchain</title>
 
     <style>
         * {
@@ -902,7 +902,7 @@
             border: 2px solid rgba(99, 102, 241, 0.3);
             border-radius: 20px;
             padding: 35px;
-            box-shadow: 
+            box-shadow:
                 0 20px 60px rgba(0, 0, 0, 0.5),
                 0 0 80px rgba(99, 102, 241, 0.3),
                 inset 0 1px 0 rgba(255, 255, 255, 0.1);
@@ -922,10 +922,13 @@
         }
 
         @keyframes lockPulse {
-            0%, 100% {
+
+            0%,
+            100% {
                 transform: scale(1);
                 opacity: 1;
             }
+
             50% {
                 transform: scale(1.1);
                 opacity: 0.8;
@@ -977,7 +980,7 @@
             border: 2px solid rgba(99, 102, 241, 0.3);
             border-radius: 20px;
             padding: 30px;
-            box-shadow: 
+            box-shadow:
                 0 20px 60px rgba(0, 0, 0, 0.5),
                 0 0 80px rgba(99, 102, 241, 0.3),
                 inset 0 1px 0 rgba(255, 255, 255, 0.1);
@@ -1052,7 +1055,7 @@
             cursor: pointer;
         }
 
-        .payment-methods-compact input[type="radio"]:checked + .payment-label {
+        .payment-methods-compact input[type="radio"]:checked+.payment-label {
             border-color: #06b6d4;
             background: rgba(6, 182, 212, 0.15);
             box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
@@ -1172,19 +1175,20 @@
                 grid-template-columns: 1fr;
             }
 
-            .header .container > div {
+            .header .container>div {
                 gap: 10px !important;
             }
-            
-            a[href="my-library.html"], button[onclick="logout()"] {
+
+            a[href="my-library.html"],
+            button[onclick="logout()"] {
                 padding: 10px 16px !important;
                 font-size: 0.85rem !important;
             }
-            
+
             button[onclick="logout()"] span {
                 gap: 6px !important;
             }
-            
+
             button[onclick="logout()"] svg {
                 width: 14px !important;
                 height: 14px !important;
@@ -1197,12 +1201,11 @@
     <header class="header">
         <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
             <a href="index.html" class="logo">
-                <img src="./images/bullbear-logo.png"
-                    alt="Bull Bear Trading Logo" class="logo-image">
+                <img src="./images/bullbear-logo.png" alt="Bull Bear Trading Logo" class="logo-image">
                 <span class="logo-text">BULL BEAR <span>TRADING</span></span>
             </a>
             <div style="display: flex; gap: 15px; align-items: center;">
-                <button onclick="history.back()" 
+                <button onclick="history.back()"
                     style="color: #ffffff; background: rgba(99, 102, 241, 0.2); border: 1px solid rgba(99, 102, 241, 0.4); font-weight: 600; padding: 12px 24px; border-radius: 12px; cursor: pointer; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); font-size: 0.95rem; backdrop-filter: blur(10px); box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3); display: flex; align-items: center; gap: 8px;">
                     <span>←</span> Back
                 </button>
@@ -1213,7 +1216,8 @@
                 <button onclick="logout(this)"
                     style="color: #ffffff; background: linear-gradient(135deg, rgba(239, 68, 68, 0.3) 0%, rgba(220, 38, 38, 0.3) 100%); border: 1px solid rgba(239, 68, 68, 0.4); font-weight: 700; padding: 12px 24px; border-radius: 12px; cursor: pointer; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); font-size: 0.95rem; backdrop-filter: blur(10px); box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1); position: relative; overflow: hidden; letter-spacing: 0.5px; text-transform: uppercase;">
                     <span style="position: relative; z-index: 1; display: flex; align-items: center; gap: 8px;">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
                             <polyline points="16 17 21 12 16 7"></polyline>
                             <line x1="21" y1="12" x2="9" y2="12"></line>
@@ -1260,19 +1264,20 @@
         }
 
         @media (max-width: 768px) {
-            .header .container > div {
+            .header .container>div {
                 gap: 10px !important;
             }
-            
-            a[href="my-library.html"], button[onclick="logout()"] {
+
+            a[href="my-library.html"],
+            button[onclick="logout()"] {
                 padding: 10px 16px !important;
                 font-size: 0.85rem !important;
             }
-            
+
             button[onclick="logout()"] span {
                 gap: 6px !important;
             }
-            
+
             button[onclick="logout()"] svg {
                 width: 14px !important;
                 height: 14px !important;
@@ -1290,16 +1295,16 @@
                 const originalContent = btn.innerHTML;
                 btn.innerHTML = '<span style="position: relative; z-index: 1;">Logging out...</span>';
                 btn.style.pointerEvents = 'none';
-                
+
                 // Simulate logout process
                 setTimeout(() => {
                     // Clear user session
                     localStorage.removeItem('bullbearCurrentUser');
                     localStorage.removeItem('bullbearAdmin');
-                    
+
                     // Show success message
                     alert('✅ Logged out successfully!\n\nYou will be redirected to the homepage.');
-                    
+
                     // Redirect to homepage
                     window.location.href = 'index.html';
                 }, 800);
@@ -1317,10 +1322,10 @@
                     <h2>Crypto Trading Video Course</h2>
                     <div class="price-tag">$500</div>
                 </div>
-                
+
                 <div class="course-card-body">
                     <p class="course-description">Master cryptocurrency trading with our comprehensive video course</p>
-                    
+
                     <div class="course-features-compact">
                         <div class="feature-item">✓ 50+ Video Lessons</div>
                         <div class="feature-item">✓ Lifetime Access</div>
@@ -1335,7 +1340,7 @@
             <!-- Payment Section - Directly Below Card -->
             <div id="paymentSection" class="payment-section-compact">
                 <h3>Complete Your Purchase</h3>
-                
+
                 <form id="checkoutForm" onsubmit="return handleCheckout(event)">
                     <!-- Email -->
                     <div class="form-group">
@@ -1393,12 +1398,11 @@
                     <!-- PayPal Fields -->
                     <div id="paypalFields" style="display: none;">
                         <div class="paypal-info-compact">
-                            <p style="margin-bottom: 15px; font-size: 0.95rem; color: #e2e8f0;">Pay securely with PayPal:</p>
-                            
-                            <a href="https://www.paypal.com/paypalme/megametahub42/500" 
-                               class="paypal-direct-btn-compact"
-                               target="_blank"
-                               rel="noopener noreferrer">
+                            <p style="margin-bottom: 15px; font-size: 0.95rem; color: #e2e8f0;">Pay securely with
+                                PayPal:</p>
+
+                            <a href="https://www.paypal.com/paypalme/megametahub42/500"
+                                class="paypal-direct-btn-compact" target="_blank" rel="noopener noreferrer">
                                 <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white' width='20' height='20'%3E%3Cpath d='M20.067 8.478c.492.88.556 2.014.3 3.327-.74 3.806-3.276 5.12-6.514 5.12h-.5a.805.805 0 00-.794.68l-.04.22-.63 3.993-.032.17a.804.804 0 01-.794.679H7.72a.483.483 0 01-.477-.558L9.22 7.08a.965.965 0 01.952-.814h4.645c.935 0 1.683.094 2.246.298.18.065.35.139.51.224.925.486 1.47 1.314 1.495 2.67z'/%3E%3C/svg%3E"
                                     style="width: 20px; margin-right: 8px;">
                                 Pay $500 with PayPal
@@ -1408,21 +1412,20 @@
 
                     <!-- M-Pesa Fields -->
                     <div id="mpesaFields" style="display: none;">
-                        <div class="paypal-info-compact" style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.2);">
+                        <div class="paypal-info-compact"
+                            style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.2);">
                             <p style="margin-bottom: 15px; font-size: 0.95rem; color: #e2e8f0;">
                                 📱 Pay with M-Pesa (Safaricom)
                             </p>
-                            
+
                             <div class="form-group">
                                 <label for="mpesaPhone">M-Pesa Phone Number *</label>
-                                <input type="tel" 
-                                       id="mpesaPhone" 
-                                       placeholder="254712345678" 
-                                       maxlength="12"
-                                       style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(16, 185, 129, 0.3); color: #ffffff; padding: 12px 16px; border-radius: 8px; width: 100%;">
+                                <input type="tel" id="mpesaPhone" placeholder="254712345678" maxlength="12"
+                                    style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(16, 185, 129, 0.3); color: #ffffff; padding: 12px 16px; border-radius: 8px; width: 100%;">
                             </div>
-                            
-                            <div style="background: rgba(16, 185, 129, 0.1); padding: 12px; border-radius: 8px; margin-top: 15px; font-size: 0.85rem; color: #10b981;">
+
+                            <div
+                                style="background: rgba(16, 185, 129, 0.1); padding: 12px; border-radius: 8px; margin-top: 15px; font-size: 0.85rem; color: #10b981;">
                                 <p style="margin: 0 0 8px 0; font-weight: 600;">How it works:</p>
                                 <ol style="margin: 0; padding-left: 20px; line-height: 1.6;">
                                     <li>Enter your M-Pesa phone number</li>
@@ -1431,15 +1434,14 @@
                                     <li>Enter your M-Pesa PIN to complete</li>
                                 </ol>
                             </div>
-                            
-                            <button type="button" 
-                                    onclick="initiateMpesaPayment()" 
-                                    class="paypal-direct-btn-compact"
-                                    style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); margin-top: 15px; width: 100%;">
+
+                            <button type="button" onclick="initiateMpesaPayment()" class="paypal-direct-btn-compact"
+                                style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); margin-top: 15px; width: 100%;">
                                 📱 Pay KES 50,000 with M-Pesa
                             </button>
-                            
-                            <p style="margin-top: 10px; font-size: 0.8rem; color: rgba(255, 255, 255, 0.5); text-align: center;">
+
+                            <p
+                                style="margin-top: 10px; font-size: 0.8rem; color: rgba(255, 255, 255, 0.5); text-align: center;">
                                 Approximately $500 USD at current rates
                             </p>
                         </div>
@@ -1481,7 +1483,7 @@
                     const paypalFields = document.getElementById('paypalFields');
                     const mpesaFields = document.getElementById('mpesaFields');
                     const cardPaymentBtn = document.getElementById('cardPaymentBtn');
-                    
+
                     if (this.value === 'card') {
                         cardFields.style.display = 'block';
                         paypalFields.style.display = 'none';
@@ -1519,10 +1521,10 @@
             if (currentUser) {
                 const user = JSON.parse(currentUser);
                 const purchases = JSON.parse(localStorage.getItem('metahubPurchases_' + user.email) || '[]');
-                
+
                 // Check if user has purchased this course
                 const hasPurchased = purchases.some(p => p.courseId === 'crypto-trading' && p.status === 'completed');
-                
+
                 if (hasPurchased) {
                     unlockContent();
                     // Hide checkout section for users who already purchased
@@ -1556,9 +1558,9 @@
         function enablePaymentUnlock() {
             const checkoutForm = document.getElementById('checkoutForm');
             const paymentInputs = checkoutForm.querySelectorAll('input');
-            
+
             paymentInputs.forEach(input => {
-                input.addEventListener('focus', function() {
+                input.addEventListener('focus', function () {
                     // Unlock content when user starts filling payment details
                     unlockContent();
                     showUnlockNotification();
@@ -1568,7 +1570,7 @@
             // Also unlock when payment method is selected
             const paymentRadios = document.querySelectorAll('input[name="paymentMethod"]');
             paymentRadios.forEach(radio => {
-                radio.addEventListener('change', function() {
+                radio.addEventListener('change', function () {
                     unlockContent();
                     showUnlockNotification();
                 });
@@ -1578,7 +1580,7 @@
         // Unlock the course content
         function unlockContent() {
             document.body.classList.add('content-unlocked');
-            
+
             // Smooth scroll to show unlocked content
             setTimeout(() => {
                 const coursePreview = document.getElementById('coursePreview');
@@ -1756,9 +1758,11 @@
     </script>
 
     <!-- Footer -->
-    <div style="text-align: center; padding: 40px 20px; margin-top: 60px; border-top: 1px solid rgba(99, 102, 241, 0.15); color: rgba(255, 255, 255, 0.5); background: rgba(10, 14, 26, 0.95);">
-        <p>&copy; 2026 BullBear Trading. All rights reserved. | Master the Markets</p>
-        <p style="margin-top: 10px; font-size: 0.85rem;">Developed by <a href="https://twitter.com/starico" target="_blank" style="color: #06b6d4; text-decoration: none; font-weight: 600;">@starico</a></p>
+    <div
+        style="text-align: center; padding: 40px 20px; margin-top: 60px; border-top: 1px solid rgba(99, 102, 241, 0.15); color: rgba(255, 255, 255, 0.5); background: rgba(10, 14, 26, 0.95);">
+        <p>&copy; 2026 BullBear Blockchain. All rights reserved. | Master the Markets</p>
+        <p style="margin-top: 10px; font-size: 0.85rem;">Developed by <a href="https://twitter.com/starico"
+                target="_blank" style="color: #06b6d4; text-decoration: none; font-weight: 600;">@starico</a></p>
     </div>
 </body>
 

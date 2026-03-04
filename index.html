@@ -31,7 +31,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <!-- Modern Premium Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" media="print" onload="this.onload=null;this.removeAttribute(&#39;media&#39;);"
         href="//fonts.googleapis.com/css?family=Quattrocento+Sans:400,700,400italic,700italic|PT+Serif:400,700,400italic,700italic&amp;display=swap">
     <link rel="stylesheet" media="print" onload="this.onload=null;this.removeAttribute(&#39;media&#39;);"
@@ -102,7 +104,7 @@
             max-height: 450px;
             cursor: pointer;
         }
-        
+
         /* Card Image Container - Fixed Height */
         .card__image {
             width: 100%;
@@ -114,11 +116,11 @@
             cursor: pointer;
             border-radius: 12px 12px 0 0;
         }
-        
+
         .card:hover .card__image {
             transform: scale(1.05);
         }
-        
+
         /* Card Body - Flexible to fill space */
         .card__body {
             padding: 18px;
@@ -133,7 +135,7 @@
             border: none;
             border-radius: 0 0 12px 12px;
         }
-        
+
         /* Card Title - Fixed Height */
         .card__title {
             font-family: 'Poppins', sans-serif;
@@ -149,7 +151,7 @@
             overflow: hidden;
             cursor: pointer;
         }
-        
+
         /* Card Text - Fixed Height */
         .card__text {
             font-family: 'Inter', sans-serif;
@@ -165,7 +167,7 @@
             overflow: hidden;
             cursor: pointer;
         }
-        
+
         /* Card Price */
         .card__price {
             font-family: 'Poppins', sans-serif;
@@ -182,21 +184,21 @@
             transform: translateY(-8px);
             box-shadow: 0 12px 35px rgba(99, 102, 241, 0.3);
         }
-        
+
         /* Checklist card specific styling */
         .checklist-card {
             cursor: pointer !important;
             position: relative;
         }
-        
+
         .checklist-card * {
             pointer-events: auto !important;
         }
-        
+
         .checklist-card .card__body {
             pointer-events: auto !important;
         }
-        
+
         /* Ensure all cards in a row have same height */
         .row {
             display: flex;
@@ -204,32 +206,9 @@
             margin: 0 -10px;
             align-items: stretch;
         }
-        
-        /* Smart positioning for Ledger products - keep them together */
-        #block-1593046178513_6 {
-            order: 3;
-        }
-        
-        #block-1593046178513_3 {
-            order: 4;
-        }
-        
-        #block-1593046178513_7 {
-            order: 5;
-        }
-        
-        #block-1593046178513_1 {
-            order: 6;
-        }
-        
-        #block-1593046178513_4 {
-            order: 1;
-        }
-        
-        #block-1593046178513_5 {
-            order: 2;
-        }
-        
+
+
+
         .col-4 {
             flex: 0 0 33.333333%;
             max-width: 33.333333%;
@@ -237,24 +216,24 @@
             margin-bottom: 15px;
             display: flex;
         }
-        
-        .col-4 > * {
+
+        .col-4>* {
             width: 100%;
         }
-        
+
         @media (max-width: 992px) {
             .col-4 {
                 flex: 0 0 50%;
                 max-width: 50%;
             }
         }
-        
+
         @media (max-width: 576px) {
             .col-4 {
                 flex: 0 0 100%;
                 max-width: 100%;
             }
-            
+
             .card {
                 min-height: auto;
             }
@@ -265,51 +244,58 @@
             background: linear-gradient(135deg, var(--background-dark) 0%, #1e293b 100%);
             padding: 20px 0 !important;
         }
-        
+
         .footer__content {
             padding: 0 !important;
         }
-        
+
         .footer__container {
             padding: 15px 20px !important;
         }
-        
+
         .footer__block {
             margin: 0 !important;
             padding: 0 !important;
         }
-        
+
         .copyright {
             font-size: 0.85rem !important;
             display: block;
             margin-bottom: 5px;
         }
-        
+
         /* Live DateTime Styling */
         #live-datetime-widget {
             animation: fadeIn 1s ease-in;
         }
-        
+
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
-        
+
         @media (max-width: 768px) {
             #live-datetime-widget {
                 bottom: 80px !important;
                 right: 10px !important;
                 padding: 10px 16px !important;
             }
-            
+
             #live-datetime-widget #current-time {
                 font-size: 16px !important;
             }
-            
+
             #live-datetime-widget #current-date {
                 font-size: 10px !important;
             }
-            
+
             .chat-widget {
                 bottom: 10px !important;
                 right: 10px !important;
@@ -340,18 +326,18 @@
             z-index: 100 !important;
             pointer-events: auto !important;
         }
-        
+
         /* Ensure all children of buy button are clickable */
         .buy-now-btn * {
             pointer-events: none;
         }
-        
+
         /* Force card body to not block buttons */
         .card__body {
             position: relative;
             z-index: 1;
         }
-        
+
         /* Ensure buttons are above everything in card */
         .card__body .buy-now-btn {
             position: relative;
@@ -408,7 +394,7 @@
             content: '💳 ';
             margin-right: 5px;
         }
-        
+
         /* Ensure card body has proper spacing and doesn't block buttons */
         .card__body {
             display: flex;
@@ -423,22 +409,22 @@
             flex-direction: column;
             position: relative;
         }
-        
+
         /* Make sure card link doesn't interfere with button */
         .card {
             position: relative;
             cursor: pointer;
         }
-        
+
         /* Ensure block wrappers don't block buttons */
         .block {
             pointer-events: auto;
         }
-        
+
         .block * {
             pointer-events: auto;
         }
-        
+
         /* Make card image and content clickable */
         .card__image,
         .card__title,
@@ -562,8 +548,15 @@
         }
 
         @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-8px); }
-            to   { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(-8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         /* Auth Modal Styling */
@@ -616,6 +609,7 @@
                 opacity: 0;
                 transform: translateY(-50px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -845,7 +839,10 @@
         body::before {
             content: '';
             position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
             background-image:
                 linear-gradient(rgba(99, 102, 241, 0.04) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(99, 102, 241, 0.04) 1px, transparent 1px);
@@ -856,8 +853,13 @@
         }
 
         @keyframes gridScroll {
-            0% { background-position: 0 0; }
-            100% { background-position: 60px 60px; }
+            0% {
+                background-position: 0 0;
+            }
+
+            100% {
+                background-position: 60px 60px;
+            }
         }
 
         /* Floating orbs in background */
@@ -875,12 +877,22 @@
         }
 
         @keyframes orbFloat {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(80px, 40px) scale(1.2); }
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            100% {
+                transform: translate(80px, 40px) scale(1.2);
+            }
         }
 
         /* Ensure content renders above bg effects */
-        .header, main, footer, .auth-modal, .chat-widget, #live-datetime-widget {
+        .header,
+        main,
+        footer,
+        .auth-modal,
+        .chat-widget,
+        #live-datetime-widget {
             position: relative;
             z-index: 1;
         }
@@ -905,8 +917,8 @@
         .card {
             border: 1px solid rgba(99, 102, 241, 0.2) !important;
             background: linear-gradient(145deg,
-                rgba(8, 12, 24, 0.92) 0%,
-                rgba(15, 23, 42, 0.88) 100%) !important;
+                    rgba(8, 12, 24, 0.92) 0%,
+                    rgba(15, 23, 42, 0.88) 100%) !important;
             backdrop-filter: blur(24px) !important;
             box-shadow:
                 0 4px 24px rgba(0, 0, 0, 0.4),
@@ -924,14 +936,17 @@
                 0 0 40px rgba(6, 182, 212, 0.15),
                 0 0 80px rgba(99, 102, 241, 0.08),
                 inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
-            transform: none !important; /* JS handles 3D tilt */
+            transform: none !important;
+            /* JS handles 3D tilt */
         }
 
         /* Glowing top edge on hover */
         .card::after {
             content: '';
             position: absolute;
-            top: 0; left: 10%; right: 10%;
+            top: 0;
+            left: 10%;
+            right: 10%;
             height: 1px;
             background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.8), transparent);
             opacity: 0;
@@ -948,8 +963,8 @@
         /* Card body glass refinement */
         .card__body {
             background: linear-gradient(180deg,
-                rgba(5, 8, 18, 0.96) 0%,
-                rgba(10, 15, 30, 0.96) 100%) !important;
+                    rgba(5, 8, 18, 0.96) 0%,
+                    rgba(10, 15, 30, 0.96) 100%) !important;
             border-top: 1px solid rgba(99, 102, 241, 0.15) !important;
         }
 
@@ -971,8 +986,15 @@
         }
 
         @keyframes priceNeon {
-            0%, 100% { text-shadow: 0 0 8px rgba(6, 182, 212, 0.4); }
-            50% { text-shadow: 0 0 20px rgba(6, 182, 212, 0.8), 0 0 40px rgba(6, 182, 212, 0.3); }
+
+            0%,
+            100% {
+                text-shadow: 0 0 8px rgba(6, 182, 212, 0.4);
+            }
+
+            50% {
+                text-shadow: 0 0 20px rgba(6, 182, 212, 0.8), 0 0 40px rgba(6, 182, 212, 0.3);
+            }
         }
 
         /* ---- FEATURED PRODUCTS HEADING ---- */
@@ -982,10 +1004,13 @@
         }
 
         @keyframes titlePulse {
-            0%, 100% {
+
+            0%,
+            100% {
                 filter: brightness(1);
                 text-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
             }
+
             50% {
                 filter: brightness(1.2);
                 text-shadow: 0 4px 30px rgba(6, 182, 212, 0.6), 0 0 60px rgba(99, 102, 241, 0.3);
@@ -995,7 +1020,7 @@
         /* ---- BUY NOW — SHIMMER SWEEP ---- */
         .buy-now-btn {
             background: linear-gradient(135deg, #4f46e5 0%, #0891b2 100%) !important;
-            box-shadow: 0 3px 15px rgba(99, 102, 241, 0.4), inset 0 1px 0 rgba(255,255,255,0.1) !important;
+            box-shadow: 0 3px 15px rgba(99, 102, 241, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
             overflow: hidden !important;
             transition: transform 0.2s ease, box-shadow 0.3s ease !important;
         }
@@ -1007,12 +1032,10 @@
             left: -75%;
             width: 50%;
             height: 200%;
-            background: linear-gradient(
-                105deg,
-                transparent 30%,
-                rgba(255, 255, 255, 0.18) 50%,
-                transparent 70%
-            );
+            background: linear-gradient(105deg,
+                    transparent 30%,
+                    rgba(255, 255, 255, 0.18) 50%,
+                    transparent 70%);
             transform: skewX(-20deg);
             transition: left 0.6s ease;
             pointer-events: none;
@@ -1035,8 +1058,15 @@
         }
 
         @keyframes freeBadgeGlow {
-            0%, 100% { box-shadow: 0 4px 15px rgba(16, 185, 129, 0.45); }
-            50% { box-shadow: 0 4px 28px rgba(16, 185, 129, 0.75), 0 0 40px rgba(16, 185, 129, 0.25); }
+
+            0%,
+            100% {
+                box-shadow: 0 4px 15px rgba(16, 185, 129, 0.45);
+            }
+
+            50% {
+                box-shadow: 0 4px 28px rgba(16, 185, 129, 0.75), 0 0 40px rgba(16, 185, 129, 0.25);
+            }
         }
 
         /* ---- AUTH MODAL — CYBER GLASS ---- */
@@ -1080,8 +1110,14 @@
         }
 
         /* ---- SCROLLBAR ---- */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #050810; }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #050810;
+        }
+
         ::-webkit-scrollbar-thumb {
             background: linear-gradient(180deg, #6366f1, #06b6d4);
             border-radius: 3px;
@@ -1412,11 +1448,11 @@
             right: 0;
             height: 3px;
             background: linear-gradient(90deg,
-                transparent 0%,
-                rgba(6, 182, 212, 0.6) 30%,
-                rgba(99, 102, 241, 0.8) 50%,
-                rgba(6, 182, 212, 0.6) 70%,
-                transparent 100%);
+                    transparent 0%,
+                    rgba(6, 182, 212, 0.6) 30%,
+                    rgba(99, 102, 241, 0.8) 50%,
+                    rgba(6, 182, 212, 0.6) 70%,
+                    transparent 100%);
             filter: blur(1px);
             animation: scanSweep 5s linear infinite;
             pointer-events: none;
@@ -1424,10 +1460,23 @@
         }
 
         @keyframes scanSweep {
-            0%   { top: -4px; opacity: 0; }
-            5%   { opacity: 1; }
-            95%  { opacity: 1; }
-            100% { top: 100%; opacity: 0; }
+            0% {
+                top: -4px;
+                opacity: 0;
+            }
+
+            5% {
+                opacity: 1;
+            }
+
+            95% {
+                opacity: 1;
+            }
+
+            100% {
+                top: 100%;
+                opacity: 0;
+            }
         }
 
         /* Corner accent lines */
@@ -1438,37 +1487,34 @@
         /* Logo — dual-layer glow ring */
         .hero-logo {
             filter:
-                drop-shadow(0 0 15px rgba(99, 102, 241, 0.6))
-                drop-shadow(0 0 40px rgba(6, 182, 212, 0.3)) !important;
+                drop-shadow(0 0 15px rgba(99, 102, 241, 0.6)) drop-shadow(0 0 40px rgba(6, 182, 212, 0.3)) !important;
             animation: heroFloat 3s ease-in-out infinite, logoGlow 4s ease-in-out infinite !important;
             max-width: 280px !important;
         }
 
         @keyframes logoGlow {
-            0%, 100% {
+
+            0%,
+            100% {
                 filter:
-                    drop-shadow(0 0 15px rgba(99, 102, 241, 0.6))
-                    drop-shadow(0 0 40px rgba(6, 182, 212, 0.3));
+                    drop-shadow(0 0 15px rgba(99, 102, 241, 0.6)) drop-shadow(0 0 40px rgba(6, 182, 212, 0.3));
             }
+
             50% {
                 filter:
-                    drop-shadow(0 0 25px rgba(99, 102, 241, 0.9))
-                    drop-shadow(0 0 60px rgba(6, 182, 212, 0.55))
-                    drop-shadow(0 0 90px rgba(251, 191, 36, 0.25));
+                    drop-shadow(0 0 25px rgba(99, 102, 241, 0.9)) drop-shadow(0 0 60px rgba(6, 182, 212, 0.55)) drop-shadow(0 0 90px rgba(251, 191, 36, 0.25));
             }
         }
 
         /* Title — gold shimmer sweep */
         .hero-title {
-            background: linear-gradient(
-                105deg,
-                #fbbf24 0%,
-                #f59e0b 25%,
-                #ffffff 40%,
-                #fbbf24 55%,
-                #f59e0b 75%,
-                #fbbf24 100%
-            ) !important;
+            background: linear-gradient(105deg,
+                    #fbbf24 0%,
+                    #f59e0b 25%,
+                    #ffffff 40%,
+                    #fbbf24 55%,
+                    #f59e0b 75%,
+                    #fbbf24 100%) !important;
             background-size: 250% 100% !important;
             -webkit-background-clip: text !important;
             -webkit-text-fill-color: transparent !important;
@@ -1480,8 +1526,13 @@
         }
 
         @keyframes titleShimmer {
-            0%   { background-position: 250% center; }
-            100% { background-position: -250% center; }
+            0% {
+                background-position: 250% center;
+            }
+
+            100% {
+                background-position: -250% center;
+            }
         }
 
         /* Subtitle — cyan/violet neon glow */
@@ -1499,8 +1550,15 @@
         }
 
         @keyframes subtitleGlow {
-            0%, 100% { filter: brightness(1); }
-            50%       { filter: brightness(1.35) drop-shadow(0 0 12px rgba(6, 182, 212, 0.5)); }
+
+            0%,
+            100% {
+                filter: brightness(1);
+            }
+
+            50% {
+                filter: brightness(1.35) drop-shadow(0 0 12px rgba(6, 182, 212, 0.5));
+            }
         }
 
         /* Subtitle underline bar */
@@ -1516,8 +1574,18 @@
         }
 
         @keyframes underlineExpand {
-            0%, 100% { width: 60px; opacity: 0.7; }
-            50%       { width: 140px; opacity: 1; box-shadow: 0 0 12px rgba(6, 182, 212, 0.6); }
+
+            0%,
+            100% {
+                width: 60px;
+                opacity: 0.7;
+            }
+
+            50% {
+                width: 140px;
+                opacity: 1;
+                box-shadow: 0 0 12px rgba(6, 182, 212, 0.6);
+            }
         }
 
         /* Description */
@@ -1550,7 +1618,7 @@
             backdrop-filter: blur(16px);
             min-width: 110px;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255,255,255,0.04);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.04);
         }
 
         .hero-stat-item:hover {
@@ -1579,12 +1647,32 @@
         }
 
         @media (max-width: 768px) {
-            .hero-title { font-size: 2.2rem !important; letter-spacing: 1px !important; }
-            .hero-subtitle { letter-spacing: 3px !important; font-size: 1.1rem !important; }
-            .hero-description { padding-left: 14px !important; }
-            .hero-stats { gap: 12px; }
-            .hero-stat-item { padding: 10px 16px; min-width: 90px; }
-            .hero-stat-number { font-size: 1.3rem; }
+            .hero-title {
+                font-size: 2.2rem !important;
+                letter-spacing: 1px !important;
+            }
+
+            .hero-subtitle {
+                letter-spacing: 3px !important;
+                font-size: 1.1rem !important;
+            }
+
+            .hero-description {
+                padding-left: 14px !important;
+            }
+
+            .hero-stats {
+                gap: 12px;
+            }
+
+            .hero-stat-item {
+                padding: 10px 16px;
+                min-width: 90px;
+            }
+
+            .hero-stat-number {
+                font-size: 1.3rem;
+            }
         }
     </style>
     <script type="module"
@@ -1662,21 +1750,29 @@
                             kjb-settings-id="sections_header_blocks_1555988494486_settings_stretch">
                             <style>
                                 #block-1555988494486 {
-                                    line-height: 1
+                                    line-height: 1;
+                                    display: flex;
+                                    align-items: center;
                                 }
 
                                 #block-1555988494486 .logo__image {
                                     display: block;
-                                    width: 180px;
-                                    height: auto;
-                                    max-width: 100%
+                                    height: 55px;
+                                    width: auto;
+                                    max-width: 100%;
+                                    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                                    filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.3));
+                                }
+
+                                #block-1555988494486 .logo__image:hover {
+                                    transform: scale(1.05);
+                                    filter: drop-shadow(0 0 15px rgba(251, 191, 36, 0.6));
                                 }
                             </style>
-                            <a class="logo" href="/">
+                            <a class="logo" href="/" style="display: block; text-decoration: none;">
                                 <img loading="auto" class="logo__image" alt="BullBear Trading Logo"
                                     kjb-settings-id="sections_header_blocks_1555988494486_settings_logo"
-                                    src="./images/bullbear-logo.png" 
-                                    style="height: 50px; width: auto;" />
+                                    src="./images/bullbear-logo.png" />
                             </a>
                         </div>
                         <style>
@@ -1691,14 +1787,17 @@
                             kjb-settings-id="sections_header_blocks_1746648689147_settings_stretch">
                             <div class="link-list justify-content-right"
                                 kjb-settings-id="sections_header_blocks_1746648689147_settings_menu">
-                                <a class="link-list__link" href="https://metahubacademy.com/store" target="_blank" rel="noopener noreferrer">Store</a>
+                                <a class="link-list__link" href="https://metahubacademy.com/store" target="_blank"
+                                    rel="noopener noreferrer">Store</a>
                                 <a class="link-list__link" href="trading-indicators.html">Indicators</a>
                                 <div class="library-dropdown">
                                     <a class="link-list__link library-trigger" href="my-library.html">My Library ▼</a>
                                     <div class="library-dropdown-content">
                                         <a href="my-library.html" class="dropdown-view-library">View Library</a>
-                                        <a href="#" class="dropdown-signup" onclick="showSignupModal(); return false;">Sign Up</a>
-                                        <a href="#" class="dropdown-login" onclick="showLoginModal(); return false;">Login</a>
+                                        <a href="#" class="dropdown-signup"
+                                            onclick="showSignupModal(); return false;">Sign Up</a>
+                                        <a href="#" class="dropdown-login"
+                                            onclick="showLoginModal(); return false;">Login</a>
                                     </div>
                                 </div>
                             </div>
@@ -1753,13 +1852,16 @@
                 <div class="header__content header__content--mobile" id="mobileNav">
                     <div class="header__switch-content header__spacer"></div>
                     <nav class="mobile-nav-links">
-                        <a href="https://metahubacademy.com/store" target="_blank" rel="noopener noreferrer" class="mobile-nav-link">Store</a>
+                        <a href="https://metahubacademy.com/store" target="_blank" rel="noopener noreferrer"
+                            class="mobile-nav-link">Store</a>
                         <a href="trading-indicators.html" class="mobile-nav-link">Indicators</a>
                         <a href="my-library.html" class="mobile-nav-link">My Library</a>
                         <a href="crypto-trading-course.html" class="mobile-nav-link">Crypto Trading Course</a>
                         <div class="mobile-nav-auth">
-                            <a href="#" class="mobile-nav-signup" onclick="showSignupModal(); closeMobileNav(); return false;">Sign Up</a>
-                            <a href="#" class="mobile-nav-login" onclick="showLoginModal(); closeMobileNav(); return false;">Login</a>
+                            <a href="#" class="mobile-nav-signup"
+                                onclick="showSignupModal(); closeMobileNav(); return false;">Sign Up</a>
+                            <a href="#" class="mobile-nav-login"
+                                onclick="showLoginModal(); closeMobileNav(); return false;">Login</a>
                         </div>
                     </nav>
                 </div>
@@ -1776,7 +1878,7 @@
                         position: relative;
                         overflow: hidden;
                     }
-                    
+
                     #section-1593046296756::before {
                         content: '';
                         position: absolute;
@@ -1883,7 +1985,7 @@
                                             #block-1577982541036_0 .btn {
                                                 margin-top: 1rem
                                             }
-                                            
+
                                             .hero-logo {
                                                 max-width: 300px;
                                                 width: 100%;
@@ -1893,16 +1995,19 @@
                                                 filter: drop-shadow(0 10px 30px rgba(99, 102, 241, 0.3));
                                                 animation: heroFloat 3s ease-in-out infinite;
                                             }
-                                            
+
                                             @keyframes heroFloat {
-                                                0%, 100% {
+
+                                                0%,
+                                                100% {
                                                     transform: translateY(0px);
                                                 }
+
                                                 50% {
                                                     transform: translateY(-10px);
                                                 }
                                             }
-                                            
+
                                             .hero-title {
                                                 font-size: 3rem;
                                                 font-weight: 800;
@@ -1913,14 +2018,14 @@
                                                 margin-bottom: 20px;
                                                 text-shadow: 0 4px 20px rgba(99, 102, 241, 0.3);
                                             }
-                                            
+
                                             .hero-subtitle {
                                                 font-size: 1.5rem;
                                                 color: #fbbf24;
                                                 margin-bottom: 30px;
                                                 font-weight: 600;
                                             }
-                                            
+
                                             .hero-description {
                                                 font-size: 1.1rem;
                                                 color: #ffffff;
@@ -1928,35 +2033,37 @@
                                                 margin: 0 auto 40px;
                                                 line-height: 1.8;
                                             }
-                                            
+
                                             @media (max-width: 768px) {
                                                 .hero-logo {
                                                     max-width: 200px;
                                                 }
-                                                
+
                                                 .hero-title {
                                                     font-size: 2rem;
                                                 }
-                                                
+
                                                 .hero-subtitle {
                                                     font-size: 1.2rem;
                                                 }
-                                                
+
                                                 .hero-description {
                                                     font-size: 1rem;
                                                 }
                                             }
                                         </style>
-                                        
+
                                         <!-- Hero Logo -->
                                         <img src="./images/bullbear-logo.png" alt="BullBear Trading" class="hero-logo">
-                                        
+
                                         <!-- Hero Content -->
                                         <h1 class="hero-title">BullBear Trading</h1>
                                         <h2 class="hero-subtitle">Master the Markets</h2>
                                         <p class="hero-description">
-                                            Premier crypto and trading education platform designed to help both novice and experienced traders
-                                            master the markets. Elite courses, professional tools, and expert guidance for your trading success.
+                                            Premier crypto and trading education platform designed to help both novice
+                                            and experienced traders
+                                            master the markets. Elite courses, professional tools, and expert guidance
+                                            for your trading success.
                                         </p>
 
                                         <!-- Hero Stats Bar -->
@@ -2105,6 +2212,7 @@
                                             Featured Products</h2>
                                     </div>
                                 </div>
+                                <!-- (Keep _4 Membership first) -->
                                 <style>
                                     #block-1593046178513_4,
                                     [data-slick-id="1593046178513_4"] {
@@ -2119,14 +2227,7 @@
                                         border: none;
                                         border-radius: 12px;
                                         background-color: transparent;
-                                        padding: 20px;
-                                        padding: 20px;
-                                        padding: 20px;
                                         padding: 0;
-                                        padding-top: 0;
-                                        padding-right: 0;
-                                        padding-bottom: 0;
-                                        padding-left: 0;
                                         transition: all .3s ease
                                     }
 
@@ -2147,13 +2248,7 @@
 
                                         #block-1593046178513_4 .block,
                                         [data-slick-id="1593046178513_4"] .block {
-                                            padding: 30px;
-                                            padding: 30px;
-                                            padding: 0;
-                                            padding-top: 0;
-                                            padding-right: 0;
-                                            padding-bottom: 0;
-                                            padding-left: 0
+                                            padding: 0
                                         }
                                     }
 
@@ -2170,34 +2265,8 @@
                                     kjb-settings-id="sections_1593046178513_blocks_1593046178513_4_settings_width">
                                     <div class="block box-shadow-medium background-light" data-aos="none"
                                         data-aos-delay="0" data-aos-duration="0">
-                                        <style>
-                                            #block-1593046178513_4 .cta__wrapper {
-                                                margin-top: 1.5rem;
-                                                display: flex;
-                                                justify-content: center;
-                                                align-items: center
-                                            }
-
-                                            #block-1593046178513_4 .btn {
-                                                border-color: #06b6d4;
-                                                border-radius: 8px;
-                                                background: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%);
-                                                color: #fff;
-                                                margin: 0;
-                                                transition: all .3s ease
-                                            }
-
-                                            #block-1593046178513_4 .btn:hover {
-                                                transform: translateY(-2px);
-                                                box-shadow: 0 8px 25px rgba(99, 102, 241, .4)
-                                            }
-
-                                            #block-1593046178513_4 .btn--outline {
-                                                background: transparent;
-                                                color: #06b6d4
-                                            }
-                                        </style>
-                                        <div class="card" data-product-url="https://metahubacademy.com/available-courses-and-ebooks">
+                                        <div class="card"
+                                            data-product-url="https://metahubacademy.com/available-courses-and-ebooks">
                                             <img loading="auto" class="card__image" alt="Membership and Online Coaching"
                                                 src="https://cdn.zyrosite.com/cdn-ecommerce/store_01J7DYMSS0NGYTG74SF3YB3TAP%2Fassets%2F1726686491837-profit-crypto-main.jpg">
                                             <div class="card__body background-light">
@@ -2206,16 +2275,16 @@
                                                 <h5 class="card__price"
                                                     style="color: #06b6d4; font-size: 1.5rem; font-weight: 700;">$500.00
                                                     USD</h5>
-                                                <a href="https://metahubacademy.com/store"
-                                                   class="buy-now-btn"
-                                                   target="_blank"
-                                                   rel="noopener noreferrer">
+                                                <a href="https://metahubacademy.com/store" class="buy-now-btn"
+                                                    target="_blank" rel="noopener noreferrer">
                                                     Buy Now
                                                 </a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+
+                                <!-- (Keep _5 Checklist second) -->
                                 <style>
                                     #block-1593046178513_5,
                                     [data-slick-id="1593046178513_5"] {
@@ -2230,7 +2299,6 @@
                                         border: none;
                                         border-radius: 12px;
                                         background-color: transparent;
-                                        padding: 20px;
                                         padding: 0;
                                         transition: all .3s ease
                                     }
@@ -2239,463 +2307,74 @@
                                         transform: translateY(-5px);
                                         box-shadow: 0 15px 35px rgba(99, 102, 241, .2)
                                     }
-
-                                    @media (min-width:768px) {
-
-                                        #block-1593046178513_5,
-                                        [data-slick-id="1593046178513_5"] {
-                                            margin-top: 0;
-                                            margin-right: 0;
-                                            margin-bottom: 0;
-                                            margin-left: 0
-                                        }
-
-                                        #block-1593046178513_5 .block,
-                                        [data-slick-id="1593046178513_5"] .block {
-                                            padding: 30px;
-                                            padding: 0
-                                        }
-                                    }
-
-                                    @media (max-width:767px) {
-
-                                        #block-1593046178513_5,
-                                        [data-slick-id="1593046178513_5"] {
-                                            text-align: left
-                                        }
-                                    }
                                 </style>
                                 <div id="block-1593046178513_5" class="block-type--offer text- col-4"
                                     data-reveal-event="" data-reveal-offset="" data-reveal-units="seconds"
                                     kjb-settings-id="sections_1593046178513_blocks_1593046178513_5_settings_width">
                                     <div class="block box-shadow-none background-light" data-aos="none"
                                         data-aos-delay="0" data-aos-duration="0">
-                                        <style>
-                                            #block-1593046178513_5 .cta__wrapper {
-                                                margin-top: 1.5rem;
-                                                display: flex;
-                                                justify-content: center;
-                                                align-items: center
-                                            }
-
-                                            #block-1593046178513_5 .btn {
-                                                border-color: #06b6d4;
-                                                border-radius: 8px;
-                                                background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-                                                color: #000;
-                                                margin: 0;
-                                                transition: all .3s ease;
-                                                font-weight: 700;
-                                            }
-
-                                            #block-1593046178513_5 .btn:hover {
-                                                transform: translateY(-2px);
-                                                box-shadow: 0 8px 25px rgba(99, 102, 241, .6)
-                                            }
-
-                                            #block-1593046178513_5 .btn--outline {
-                                                background: transparent;
-                                                color: #fbbf24;
-                                                border: 2px solid #fbbf24;
-                                            }
-                                            
-                                            .checklist-card {
-                                                cursor: pointer !important;
-                                                position: relative;
-                                                overflow: hidden;
-                                                pointer-events: auto !important;
-                                            }
-                                            
-                                            .checklist-card * {
-                                                cursor: pointer !important;
-                                                pointer-events: auto !important;
-                                            }
-                                            
-                                            .checklist-card .card__image {
-                                                position: relative;
-                                                overflow: hidden;
-                                            }
-                                            
-                                            .checklist-card .card__image::after {
-                                                content: '';
-                                                position: absolute;
-                                                top: 0;
-                                                left: 0;
-                                                right: 0;
-                                                bottom: 0;
-                                                background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.3) 100%);
-                                                pointer-events: none;
-                                            }
-                                            
-                                            .free-badge {
-                                                display: inline-block;
-                                                background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-                                                color: white;
-                                                padding: 10px 20px;
-                                                border-radius: 25px;
-                                                font-size: 0.95rem;
-                                                font-weight: 800;
-                                                margin-bottom: 12px;
-                                                box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5);
-                                                animation: pulse 2s infinite;
-                                                position: relative;
-                                                z-index: 2;
-                                                text-transform: uppercase;
-                                                letter-spacing: 0.5px;
-                                            }
-                                            
-                                            @keyframes pulse {
-                                                0%, 100% {
-                                                    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5);
-                                                }
-                                                50% {
-                                                    box-shadow: 0 8px 30px rgba(16, 185, 129, 0.7);
-                                                }
-                                            }
-                                            
-                                            .signup-required {
-                                                font-size: 0.9rem;
-                                                color: #10b981;
-                                                font-weight: 600;
-                                                margin-top: auto;
-                                                padding: 12px;
-                                                background: rgba(16, 185, 129, 0.1);
-                                                border-radius: 8px;
-                                                border: 1px solid rgba(16, 185, 129, 0.3);
-                                                text-align: center;
-                                                position: relative;
-                                                z-index: 2;
-                                            }
-                                            
-                                            .checklist-card .card__title {
-                                                color: #10b981;
-                                                font-size: 1.2rem;
-                                                position: relative;
-                                                z-index: 2;
-                                            }
-                                            
-                                            .checklist-card .card__text {
-                                                position: relative;
-                                                z-index: 2;
-                                            }
-                                        </style>
                                         <div class="card checklist-card" onclick="showSignupForChecklist()">
                                             <img loading="auto" class="card__image" alt="Crypto Quickstart Checklist"
                                                 src="./images/checklist-cover-new.png">
                                             <div class="card__body background-light">
                                                 <span class="free-badge">🎁 FREE DOWNLOAD</span>
                                                 <h4 class="card__title">Crypto Quickstart Checklist</h4>
-                                                <p class="card__text">Essential 5-step guide to kickstart your crypto trading journey. Get started with confidence and avoid costly mistakes!</p>
+                                                <p class="card__text">Essential 5-step guide to kickstart your crypto
+                                                    trading journey. Get started with confidence and avoid costly
+                                                    mistakes!</p>
                                                 <p class="signup-required">✨ Click to Get Your Free Copy</p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+
+                                <!-- Crypto Trading Course card (third) -->
                                 <style>
-                                    #block-1593046178513_6,
-                                    [data-slick-id="1593046178513_6"] {
+                                    #block-crypto-course,
+                                    [data-slick-id="crypto-course"] {
                                         margin-top: 0;
                                         margin-right: 0;
                                         margin-bottom: 0;
                                         margin-left: 0
                                     }
 
-                                    #block-1593046178513_6 .block,
-                                    [data-slick-id="1593046178513_6"] .block {
+                                    #block-crypto-course .block,
+                                    [data-slick-id="crypto-course"] .block {
                                         border: none;
                                         border-radius: 12px;
                                         background-color: transparent;
-                                        padding: 20px;
                                         padding: 0;
                                         transition: all .3s ease
                                     }
 
-                                    #block-1593046178513_6 .block:hover {
+                                    #block-crypto-course .block:hover {
                                         transform: translateY(-5px);
                                         box-shadow: 0 15px 35px rgba(99, 102, 241, .2)
                                     }
-
-                                    @media (min-width:768px) {
-
-                                        #block-1593046178513_6,
-                                        [data-slick-id="1593046178513_6"] {
-                                            margin-top: 0;
-                                            margin-right: 0;
-                                            margin-bottom: 0;
-                                            margin-left: 0
-                                        }
-
-                                        #block-1593046178513_6 .block,
-                                        [data-slick-id="1593046178513_6"] .block {
-                                            padding: 30px;
-                                            padding: 0
-                                        }
-                                    }
-
-                                    @media (max-width:767px) {
-
-                                        #block-1593046178513_6,
-                                        [data-slick-id="1593046178513_6"] {
-                                            text-align: left
-                                        }
-                                    }
                                 </style>
-                                <div id="block-1593046178513_6" class="block-type--offer text- col-4"
-                                    data-reveal-event="" data-reveal-offset="" data-reveal-units="seconds"
-                                    kjb-settings-id="sections_1593046178513_blocks_1593046178513_6_settings_width">
+                                <div id="block-crypto-course" class="block-type--offer text- col-4"
+                                    data-reveal-event="" data-reveal-offset="" data-reveal-units="seconds">
                                     <div class="block box-shadow-none background-light" data-aos="none"
                                         data-aos-delay="0" data-aos-duration="0">
-                                        <style>
-                                            #block-1593046178513_6 .cta__wrapper {
-                                                margin-top: 1.5rem;
-                                                display: flex;
-                                                justify-content: center;
-                                                align-items: center
-                                            }
-
-                                            #block-1593046178513_6 .btn {
-                                                border-color: #06b6d4;
-                                                border-radius: 8px;
-                                                background: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%);
-                                                color: #fff;
-                                                margin: 0;
-                                                transition: all .3s ease
-                                            }
-
-                                            #block-1593046178513_6 .btn:hover {
-                                                transform: translateY(-2px);
-                                                box-shadow: 0 8px 25px rgba(99, 102, 241, .4)
-                                            }
-
-                                            #block-1593046178513_6 .btn--outline {
-                                                background: transparent;
-                                                color: #06b6d4
-                                            }
-                                        </style>
-                                        <div class="card" data-product-url="https://metahubacademy.com/ledger-nano-s">
-                                            <img loading="auto" class="card__image" alt="Ledger Nano S"
-                                                src="https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=1024,fit=scale-down/cdn-ecommerce/store_01J7DYMSS0NGYTG74SF3YB3TAP%2Fassets%2F1726141375274-nano%20s.jfif">
+                                        <div class="card" data-product-url="crypto-trading-course.html">
+                                            <img loading="auto" class="card__image" alt="Crypto Trading Video Course"
+                                                src="https://cdn.zyrosite.com/cdn-ecommerce/store_01J7DYMSS0NGYTG74SF3YB3TAP%2Fassets%2F1726686491837-profit-crypto-main.jpg">
                                             <div class="card__body background-light">
-                                                <h4 class="card__title">Ledger Nano S</h4>
-                                                <p class="card__text">Essential hardware wallet cold storage for
-                                                    long-term crypto security.</p>
+                                                <h4 class="card__title">Crypto Trading Video Course</h4>
+                                                <p class="card__text">Complete video course covering technical analysis, chart reading, and profitable trading strategies.</p>
                                                 <h5 class="card__price"
-                                                    style="color: #06b6d4; font-size: 1.5rem; font-weight: 700;">$250.00
+                                                    style="color: #06b6d4; font-size: 1.5rem; font-weight: 700;">$500.00
                                                     USD</h5>
-                                                <a href="https://metahubacademy.com/checkout?cart_id=cart_01KJTNYZ91Z3TV840M0QF6W10J&lang=en"
-                                                   class="buy-now-btn"
-                                                   target="_blank"
-                                                   rel="noopener noreferrer">
+                                                <a href="crypto-trading-course.html" class="buy-now-btn"
+                                                    target="_blank" rel="noopener noreferrer">
                                                     Buy Now
                                                 </a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <style>
-                                    #block-1593046178513_7,
-                                    [data-slick-id="1593046178513_7"] {
-                                        margin-top: 0;
-                                        margin-right: 0;
-                                        margin-bottom: 0;
-                                        margin-left: 0
-                                    }
 
-                                    #block-1593046178513_7 .block,
-                                    [data-slick-id="1593046178513_7"] .block {
-                                        border: none;
-                                        border-radius: 12px;
-                                        background-color: transparent;
-                                        padding: 20px;
-                                        padding: 0;
-                                        transition: all .3s ease
-                                    }
-
-                                    #block-1593046178513_7 .block:hover {
-                                        transform: translateY(-5px);
-                                        box-shadow: 0 15px 35px rgba(99, 102, 241, .2)
-                                    }
-
-                                    @media (min-width:768px) {
-
-                                        #block-1593046178513_7,
-                                        [data-slick-id="1593046178513_7"] {
-                                            margin-top: 0;
-                                            margin-right: 0;
-                                            margin-bottom: 0;
-                                            margin-left: 0
-                                        }
-
-                                        #block-1593046178513_7 .block,
-                                        [data-slick-id="1593046178513_7"] .block {
-                                            padding: 30px;
-                                            padding: 0
-                                        }
-                                    }
-
-                                    @media (max-width:767px) {
-
-                                        #block-1593046178513_7,
-                                        [data-slick-id="1593046178513_7"] {
-                                            text-align: left
-                                        }
-                                    }
-                                </style>
-                                <div id="block-1593046178513_7" class="block-type--offer text- col-4"
-                                    data-reveal-event="" data-reveal-offset="" data-reveal-units="seconds"
-                                    kjb-settings-id="sections_1593046178513_blocks_1593046178513_7_settings_width">
-                                    <div class="block box-shadow-none background-light" data-aos="none"
-                                        data-aos-delay="0" data-aos-duration="0">
-                                        <style>
-                                            #block-1593046178513_7 .cta__wrapper {
-                                                margin-top: 1.5rem;
-                                                display: flex;
-                                                justify-content: center;
-                                                align-items: center
-                                            }
-
-                                            #block-1593046178513_7 .btn {
-                                                border-color: #06b6d4;
-                                                border-radius: 8px;
-                                                background: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%);
-                                                color: #fff;
-                                                margin: 0;
-                                                transition: all .3s ease
-                                            }
-
-                                            #block-1593046178513_7 .btn:hover {
-                                                transform: translateY(-2px);
-                                                box-shadow: 0 8px 25px rgba(99, 102, 241, .4)
-                                            }
-
-                                            #block-1593046178513_7 .btn--outline {
-                                                background: transparent;
-                                                color: #06b6d4
-                                            }
-                                        </style>
-                                        <div class="card" data-product-url="https://metahubacademy.com/proven-steps-to-6-figure-affiliate-marketing">
-                                            <img loading="auto" class="card__image"
-                                                alt="Proven Steps to 6-Figure Affiliate Marketing"
-                                                src="https://cdn.zyrosite.com/cdn-ecommerce/store_01J7DYMSS0NGYTG74SF3YB3TAP%2Fassets%2F1726139982511-Screenshot%202024-02-20%20at%2009-43-46%20Crypto-%20Truth%20and-2%20comma%20clubAffiliate-Marketing-%20new%20(2).pdf.png">
-                                            <div class="card__body background-light">
-                                                <h4 class="card__title">Proven Steps to 6-Figure Affiliate Marketing
-                                                </h4>
-                                                <p class="card__text">Step-by-step roadmap to start, scale, and optimize
-                                                    affiliate income streams.</p>
-                                                <h5 class="card__price"
-                                                    style="color: #06b6d4; font-size: 1.5rem; font-weight: 700;">$20.00
-                                                    USD</h5>
-                                                <a href="https://metahubacademy.com/checkout?cart_id=cart_01KJTP3B2AANCFZM9TASVBNTKQ&lang=en"
-                                                   class="buy-now-btn"
-                                                   target="_blank"
-                                                   rel="noopener noreferrer">
-                                                    Buy Now
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <style>
-                                    #block-1593046178513_1,
-                                    [data-slick-id="1593046178513_1"] {
-                                        margin-top: 0;
-                                        margin-right: 0;
-                                        margin-bottom: 0;
-                                        margin-left: 0
-                                    }
-
-                                    #block-1593046178513_1 .block,
-                                    [data-slick-id="1593046178513_1"] .block {
-                                        border: none;
-                                        border-radius: 12px;
-                                        background-color: transparent;
-                                        padding: 20px;
-                                        padding: 0;
-                                        transition: all .3s ease
-                                    }
-
-                                    #block-1593046178513_1 .block:hover {
-                                        transform: translateY(-5px);
-                                        box-shadow: 0 15px 35px rgba(99, 102, 241, .2)
-                                    }
-
-                                    @media (min-width:768px) {
-
-                                        #block-1593046178513_1,
-                                        [data-slick-id="1593046178513_1"] {
-                                            margin-top: 0;
-                                            margin-right: 0;
-                                            margin-bottom: 0;
-                                            margin-left: 0
-                                        }
-
-                                        #block-1593046178513_1 .block,
-                                        [data-slick-id="1593046178513_1"] .block {
-                                            padding: 30px;
-                                            padding: 0
-                                        }
-                                    }
-
-                                    @media (max-width:767px) {
-
-                                        #block-1593046178513_1,
-                                        [data-slick-id="1593046178513_1"] {
-                                            text-align: left
-                                        }
-                                    }
-                                </style>
-                                <div id="block-1593046178513_1" class="block-type--offer text- col-4"
-                                    data-reveal-event="" data-reveal-offset="" data-reveal-units="seconds"
-                                    kjb-settings-id="sections_1593046178513_blocks_1593046178513_1_settings_width">
-                                    <div class="block box-shadow-none background-light" data-aos="none"
-                                        data-aos-delay="0" data-aos-duration="0">
-                                        <style>
-                                            #block-1593046178513_1 .cta__wrapper {
-                                                margin-top: 1.5rem;
-                                                display: flex;
-                                                justify-content: center;
-                                                align-items: center
-                                            }
-
-                                            #block-1593046178513_1 .btn {
-                                                border-color: #06b6d4;
-                                                border-radius: 8px;
-                                                background: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%);
-                                                color: #fff;
-                                                margin: 0;
-                                                transition: all .3s ease
-                                            }
-
-                                            #block-1593046178513_1 .btn:hover {
-                                                transform: translateY(-2px);
-                                                box-shadow: 0 8px 25px rgba(99, 102, 241, .4)
-                                            }
-
-                                            #block-1593046178513_1 .btn--outline {
-                                                background: transparent;
-                                                color: #06b6d4
-                                            }
-                                        </style>
-                                        <div class="card" data-product-url="https://metahubacademy.com/crypto-truth-guide">
-                                            <img loading="auto" class="card__image" alt="Crypto Truth Guide"
-                                                src="https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=1024,fit=scale-down/cdn-ecommerce/store_01J7DYMSS0NGYTG74SF3YB3TAP/assets/ce62dbb6-951a-401c-bfc5-67c00d937106.jpg">
-                                            <div class="card__body background-light">
-                                                <h4 class="card__title">Crypto Truth Guide</h4>
-                                                <p class="card__text">A practical guide cutting through hype to help you
-                                                    navigate crypto safely and smartly.</p>
-                                                <h5 class="card__price"
-                                                    style="color: #06b6d4; font-size: 1.5rem; font-weight: 700;">$30.00
-                                                    USD</h5>
-                                                <a href="https://metahubacademy.com/checkout?cart_id=cart_01KJTP4MAG23WJ9RBCFZ4BETQF&lang=en"
-                                                   class="buy-now-btn"
-                                                   target="_blank"
-                                                   rel="noopener noreferrer">
-                                                    Buy Now
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                <!-- Move _3 Ledger Nano X to fourth -->
                                 <style>
                                     #block-1593046178513_3,
                                     [data-slick-id="1593046178513_3"] {
@@ -2710,7 +2389,6 @@
                                         border: none;
                                         border-radius: 12px;
                                         background-color: transparent;
-                                        padding: 20px;
                                         padding: 0;
                                         transition: all .3s ease
                                     }
@@ -2719,64 +2397,12 @@
                                         transform: translateY(-5px);
                                         box-shadow: 0 15px 35px rgba(99, 102, 241, .2)
                                     }
-
-                                    @media (min-width:768px) {
-
-                                        #block-1593046178513_3,
-                                        [data-slick-id="1593046178513_3"] {
-                                            margin-top: 0;
-                                            margin-right: 0;
-                                            margin-bottom: 0;
-                                            margin-left: 0
-                                        }
-
-                                        #block-1593046178513_3 .block,
-                                        [data-slick-id="1593046178513_3"] .block {
-                                            padding: 30px;
-                                            padding: 0
-                                        }
-                                    }
-
-                                    @media (max-width:767px) {
-
-                                        #block-1593046178513_3,
-                                        [data-slick-id="1593046178513_3"] {
-                                            text-align: left
-                                        }
-                                    }
                                 </style>
                                 <div id="block-1593046178513_3" class="block-type--offer text- col-4"
                                     data-reveal-event="" data-reveal-offset="" data-reveal-units="seconds"
                                     kjb-settings-id="sections_1593046178513_blocks_1593046178513_3_settings_width">
                                     <div class="block box-shadow-none background-light" data-aos="none"
                                         data-aos-delay="0" data-aos-duration="0">
-                                        <style>
-                                            #block-1593046178513_3 .cta__wrapper {
-                                                margin-top: 1.5rem;
-                                                display: flex;
-                                                justify-content: center;
-                                                align-items: center
-                                            }
-
-                                            #block-1593046178513_3 .btn {
-                                                border-color: #06b6d4;
-                                                border-radius: 8px;
-                                                background: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%);
-                                                color: #fff;
-                                                margin: 0;
-                                                transition: all .3s ease
-                                            }
-
-                                            #block-1593046178513_3 .btn:hover {
-                                                transform: translateY(-2px);
-                                                box-shadow: 0 8px 25px rgba(99, 102, 241, .4)
-                                            }
-
-                                            #block-1593046178513_3 .btn--outline {
-                                                background: transparent;
-                                                color: #06b6d4
-                                            }
-                                        </style>
                                         <div class="card" data-product-url="https://metahubacademy.com/ledger-nano-x">
                                             <img loading="auto" class="card__image" alt="Ledger Nano X"
                                                 src="https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=1024,fit=scale-down/cdn-ecommerce/store_01J7DYMSS0NGYTG74SF3YB3TAP/assets/4a50435c-18a5-40ba-be3f-d0e76b27de1d.jpg">
@@ -2788,9 +2414,155 @@
                                                     style="color: #06b6d4; font-size: 1.5rem; font-weight: 700;">$400.00
                                                     USD</h5>
                                                 <a href="https://metahubacademy.com/checkout?cart_id=cart_01KJTNWZGAKAYJC6P58XFRAZB3&lang=en"
-                                                   class="buy-now-btn"
-                                                   target="_blank"
-                                                   rel="noopener noreferrer">
+                                                    class="buy-now-btn" target="_blank" rel="noopener noreferrer">
+                                                    Buy Now
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Move _6 Ledger Nano S to fourth -->
+                                <style>
+                                    #block-1593046178513_6,
+                                    [data-slick-id="1593046178513_6"] {
+                                        margin-top: 0;
+                                        margin-right: 0;
+                                        margin-bottom: 0;
+                                        margin-left: 0
+                                    }
+
+                                    #block-1593046178513_6 .block,
+                                    [data-slick-id="1593046178513_6"] .block {
+                                        border: none;
+                                        border-radius: 12px;
+                                        background-color: transparent;
+                                        padding: 0;
+                                        transition: all .3s ease
+                                    }
+
+                                    #block-1593046178513_6 .block:hover {
+                                        transform: translateY(-5px);
+                                        box-shadow: 0 15px 35px rgba(99, 102, 241, .2)
+                                    }
+                                </style>
+                                <div id="block-1593046178513_6" class="block-type--offer text- col-4"
+                                    data-reveal-event="" data-reveal-offset="" data-reveal-units="seconds"
+                                    kjb-settings-id="sections_1593046178513_blocks_1593046178513_6_settings_width">
+                                    <div class="block box-shadow-none background-light" data-aos="none"
+                                        data-aos-delay="0" data-aos-duration="0">
+                                        <div class="card" data-product-url="https://metahubacademy.com/ledger-nano-s">
+                                            <img loading="auto" class="card__image" alt="Ledger Nano S"
+                                                src="https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=1024,fit=scale-down/cdn-ecommerce/store_01J7DYMSS0NGYTG74SF3YB3TAP%2Fassets%2F1726141375274-nano%20s.jfif">
+                                            <div class="card__body background-light">
+                                                <h4 class="card__title">Ledger Nano S</h4>
+                                                <p class="card__text">Essential hardware wallet cold storage for
+                                                    long-term crypto security.</p>
+                                                <h5 class="card__price"
+                                                    style="color: #06b6d4; font-size: 1.5rem; font-weight: 700;">$250.00
+                                                    USD</h5>
+                                                <a href="https://metahubacademy.com/checkout?cart_id=cart_01KJTNYZ91Z3TV840M0QF6W10J&lang=en"
+                                                    class="buy-now-btn" target="_blank" rel="noopener noreferrer">
+                                                    Buy Now
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Move _1 Crypto Truth Guide to fifth -->
+                                <style>
+                                    #block-1593046178513_1,
+                                    [data-slick-id="1593046178513_1"] {
+                                        margin-top: 0;
+                                        margin-right: 0;
+                                        margin-bottom: 0;
+                                        margin-left: 0
+                                    }
+
+                                    #block-1593046178513_1 .block,
+                                    [data-slick-id="1593046178513_1"] .block {
+                                        border: none;
+                                        border-radius: 12px;
+                                        background-color: transparent;
+                                        padding: 0;
+                                        transition: all .3s ease
+                                    }
+
+                                    #block-1593046178513_1 .block:hover {
+                                        transform: translateY(-5px);
+                                        box-shadow: 0 15px 35px rgba(99, 102, 241, .2)
+                                    }
+                                </style>
+                                <div id="block-1593046178513_1" class="block-type--offer text- col-4"
+                                    data-reveal-event="" data-reveal-offset="" data-reveal-units="seconds"
+                                    kjb-settings-id="sections_1593046178513_blocks_1593046178513_1_settings_width">
+                                    <div class="block box-shadow-none background-light" data-aos="none"
+                                        data-aos-delay="0" data-aos-duration="0">
+                                        <div class="card"
+                                            data-product-url="https://metahubacademy.com/crypto-truth-guide">
+                                            <img loading="auto" class="card__image" alt="Crypto Truth Guide"
+                                                src="https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=1024,fit=scale-down/cdn-ecommerce/store_01J7DYMSS0NGYTG74SF3YB3TAP/assets/ce62dbb6-951a-401c-bfc5-67c00d937106.jpg">
+                                            <div class="card__body background-light">
+                                                <h4 class="card__title">Crypto Truth Guide</h4>
+                                                <p class="card__text">A practical guide cutting through hype to help you
+                                                    navigate crypto safely and smartly.</p>
+                                                <h5 class="card__price"
+                                                    style="color: #06b6d4; font-size: 1.5rem; font-weight: 700;">$30.00
+                                                    USD</h5>
+                                                <a href="https://metahubacademy.com/checkout?cart_id=cart_01KJTP4MAG23WJ9RBCFZ4BETQF&lang=en"
+                                                    class="buy-now-btn" target="_blank" rel="noopener noreferrer">
+                                                    Buy Now
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Move _7 Affiliate Marketing to sixth -->
+                                <style>
+                                    #block-1593046178513_7,
+                                    [data-slick-id="1593046178513_7"] {
+                                        margin-top: 0;
+                                        margin-right: 0;
+                                        margin-bottom: 0;
+                                        margin-left: 0
+                                    }
+
+                                    #block-1593046178513_7 .block,
+                                    [data-slick-id="1593046178513_7"] .block {
+                                        border: none;
+                                        border-radius: 12px;
+                                        background-color: transparent;
+                                        padding: 0;
+                                        transition: all .3s ease
+                                    }
+
+                                    #block-1593046178513_7 .block:hover {
+                                        transform: translateY(-5px);
+                                        box-shadow: 0 15px 35px rgba(99, 102, 241, .2)
+                                    }
+                                </style>
+                                <div id="block-1593046178513_7" class="block-type--offer text- col-4"
+                                    data-reveal-event="" data-reveal-offset="" data-reveal-units="seconds"
+                                    kjb-settings-id="sections_1593046178513_blocks_1593046178513_7_settings_width">
+                                    <div class="block box-shadow-none background-light" data-aos="none"
+                                        data-aos-delay="0" data-aos-duration="0">
+                                        <div class="card"
+                                            data-product-url="https://metahubacademy.com/proven-steps-to-6-figure-affiliate-marketing">
+                                            <img loading="auto" class="card__image"
+                                                alt="Proven Steps to 6-Figure Affiliate Marketing"
+                                                src="https://cdn.zyrosite.com/cdn-ecommerce/store_01J7DYMSS0NGYTG74SF3YB3TAP%2Fassets%2F1726139982511-Screenshot%202024-02-20%20at%2009-43-46%20Crypto-%20Truth%20and-2%20comma%20clubAffiliate-Marketing-%20new%20(2).pdf.png">
+                                            <div class="card__body background-light">
+                                                <h4 class="card__title">Proven Steps to 6-Figure Affiliate Marketing
+                                                </h4>
+                                                <p class="card__text">Step-by-step roadmap to start, scale, and optimize
+                                                    affiliate income streams.</p>
+                                                <h5 class="card__price"
+                                                    style="color: #06b6d4; font-size: 1.5rem; font-weight: 700;">$20.00
+                                                    USD</h5>
+                                                <a href="https://metahubacademy.com/checkout?cart_id=cart_01KJTP3B2AANCFZM9TASVBNTKQ&lang=en"
+                                                    class="buy-now-btn" target="_blank" rel="noopener noreferrer">
                                                     Buy Now
                                                 </a>
                                             </div>
@@ -2818,11 +2590,14 @@
                 </div>
                 <div class="form-group">
                     <label for="loginPassword">Password</label>
-                    <input type="password" id="loginPassword" name="password" placeholder="Enter your password" required>
+                    <input type="password" id="loginPassword" name="password" placeholder="Enter your password"
+                        required>
                 </div>
-                <div id="loginError" style="color: #60a5fa; font-size: 0.9rem; margin-bottom: 10px; display: none;"></div>
+                <div id="loginError" style="color: #60a5fa; font-size: 0.9rem; margin-bottom: 10px; display: none;">
+                </div>
                 <button type="submit" class="auth-btn">Login</button>
-                <p class="auth-switch">Don't have an account? <a href="javascript:void(0)" onclick="switchModal('loginModal', 'signupModal')">Sign Up</a></p>
+                <p class="auth-switch">Don't have an account? <a href="javascript:void(0)"
+                        onclick="switchModal('loginModal', 'signupModal')">Sign Up</a></p>
             </form>
         </div>
     </div>
@@ -2847,16 +2622,21 @@
                 </div>
                 <div class="form-group">
                     <label for="signupPassword">Password</label>
-                    <input type="password" id="signupPassword" name="password" placeholder="Create a password" required minlength="6">
+                    <input type="password" id="signupPassword" name="password" placeholder="Create a password" required
+                        minlength="6">
                 </div>
                 <div class="form-group">
                     <label for="signupConfirmPassword">Confirm Password</label>
-                    <input type="password" id="signupConfirmPassword" name="confirm_password" placeholder="Confirm your password" required>
+                    <input type="password" id="signupConfirmPassword" name="confirm_password"
+                        placeholder="Confirm your password" required>
                 </div>
-                <div id="signupError" style="color: #60a5fa; font-size: 0.9rem; margin-bottom: 10px; display: none;"></div>
-                <div id="signupSuccess" style="color: #10b981; font-size: 0.9rem; margin-bottom: 10px; display: none;"></div>
+                <div id="signupError" style="color: #60a5fa; font-size: 0.9rem; margin-bottom: 10px; display: none;">
+                </div>
+                <div id="signupSuccess" style="color: #10b981; font-size: 0.9rem; margin-bottom: 10px; display: none;">
+                </div>
                 <button type="submit" class="auth-btn">Sign Up</button>
-                <p class="auth-switch">Already have an account? <a href="javascript:void(0)" onclick="switchModal('signupModal', 'loginModal')">Login</a></p>
+                <p class="auth-switch">Already have an account? <a href="javascript:void(0)"
+                        onclick="switchModal('signupModal', 'loginModal')">Login</a></p>
             </form>
         </div>
     </div>
@@ -2922,10 +2702,11 @@
                             &copy; 2026 BullBear Trading - Master the Markets.
                         </span>
                         <div style="margin-top: 10px; font-size: 0.85rem; color: rgba(255, 255, 255, 0.7);">
-                            Developed by <a href="https://twitter.com/starico" target="_blank" style="color: #06b6d4; text-decoration: none; font-weight: 600;">@starico</a>
+                            Developed by <a href="https://twitter.com/starico" target="_blank"
+                                style="color: #06b6d4; text-decoration: none; font-weight: 600;">@starico</a>
                         </div>
                     </div>
-                    
+
                     <style>
                         #block-1738824906283,
                         [data-slick-id="1738824906283"] {
@@ -2989,13 +2770,13 @@
                                     gap: 40px;
                                     margin-top: 30px;
                                 }
-                                
+
                                 .footer-section {
                                     display: flex;
                                     flex-direction: column;
                                     gap: 12px;
                                 }
-                                
+
                                 .footer-section-title {
                                     font-size: 0.85rem;
                                     font-weight: 700;
@@ -3007,7 +2788,7 @@
                                     align-items: center;
                                     gap: 8px;
                                 }
-                                
+
                                 .footer-section-title::before {
                                     content: '';
                                     width: 3px;
@@ -3015,7 +2796,7 @@
                                     background: linear-gradient(135deg, #6366f1, #06b6d4);
                                     border-radius: 2px;
                                 }
-                                
+
                                 .footer-link {
                                     color: #94a3b8;
                                     text-decoration: none;
@@ -3026,22 +2807,22 @@
                                     align-items: center;
                                     gap: 8px;
                                 }
-                                
+
                                 .footer-link:hover {
                                     color: #06b6d4;
                                     transform: translateX(4px);
                                 }
-                                
+
                                 .footer-link::before {
                                     content: '→';
                                     opacity: 0;
                                     transition: opacity 0.3s ease;
                                 }
-                                
+
                                 .footer-link:hover::before {
                                     opacity: 1;
                                 }
-                                
+
                                 .fraud-alert {
                                     background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(220, 38, 38, 0.1));
                                     border: 1px solid rgba(239, 68, 68, 0.3);
@@ -3053,29 +2834,36 @@
                                     gap: 12px;
                                     transition: all 0.3s ease;
                                 }
-                                
+
                                 .fraud-alert:hover {
                                     border-color: rgba(239, 68, 68, 0.5);
                                     box-shadow: 0 4px 20px rgba(239, 68, 68, 0.2);
                                     transform: translateY(-2px);
                                 }
-                                
+
                                 .fraud-alert-icon {
                                     font-size: 1.5rem;
                                     animation: pulse 2s infinite;
                                 }
-                                
+
                                 @keyframes pulse {
-                                    0%, 100% { opacity: 1; }
-                                    50% { opacity: 0.6; }
+
+                                    0%,
+                                    100% {
+                                        opacity: 1;
+                                    }
+
+                                    50% {
+                                        opacity: 0.6;
+                                    }
                                 }
-                                
+
                                 .fraud-alert-text {
                                     color: #60a5fa;
                                     font-weight: 600;
                                     font-size: 0.95rem;
                                 }
-                                
+
                                 @media (max-width: 768px) {
                                     .footer-grid {
                                         grid-template-columns: 1fr;
@@ -3083,32 +2871,39 @@
                                     }
                                 }
                             </style>
-                            
+
                             <div class="footer-grid">
                                 <!-- Contact Section -->
                                 <div class="footer-section">
                                     <div class="footer-section-title">📞 Contact Us</div>
-                                    <a class="footer-link" href="https://www.bullbeartrading.com/contact" target="_blank" rel="noopener noreferrer">Contact Form</a>
-                                    <a class="footer-link" href="mailto:megametahub42@gmail.com">megametahub42@gmail.com</a>
+                                    <a class="footer-link" href="https://www.bullbeartrading.com/contact"
+                                        target="_blank" rel="noopener noreferrer">Contact Form</a>
+                                    <a class="footer-link"
+                                        href="mailto:megametahub42@gmail.com">megametahub42@gmail.com</a>
                                     <a class="footer-link" href="tel:+19738197530">+1 (973)-8197-530</a>
                                 </div>
-                                
+
                                 <!-- Legal Section -->
                                 <div class="footer-section">
                                     <div class="footer-section-title">⚖️ Legal</div>
-                                    <a class="footer-link" href="https://www.bullbeartrading.com/terms-and-conditions" target="_blank" rel="noopener noreferrer">Terms & Conditions</a>
-                                    <a class="footer-link" href="https://www.bullbeartrading.com/gdpr-policy" target="_blank" rel="noopener noreferrer">GDPR Privacy Policy</a>
-                                    <a class="footer-link" href="https://www.bullbeartrading.com/bullbear-disclaimer" target="_blank" rel="noopener noreferrer">Disclaimer</a>
+                                    <a class="footer-link" href="https://www.bullbeartrading.com/terms-and-conditions"
+                                        target="_blank" rel="noopener noreferrer">Terms & Conditions</a>
+                                    <a class="footer-link" href="https://www.bullbeartrading.com/gdpr-policy"
+                                        target="_blank" rel="noopener noreferrer">GDPR Privacy Policy</a>
+                                    <a class="footer-link" href="https://www.bullbeartrading.com/bullbear-disclaimer"
+                                        target="_blank" rel="noopener noreferrer">Disclaimer</a>
                                 </div>
-                                
+
                                 <!-- Policies Section -->
                                 <div class="footer-section">
                                     <div class="footer-section-title">📋 Policies</div>
-                                    <a class="footer-link" href="https://www.bullbeartrading.com/purchase-policy" target="_blank" rel="noopener noreferrer">Fulfillment & Refund Policy</a>
-                                    <a class="footer-link" href="https://www.bullbeartrading.com/affiliate-disclaimer" target="_blank" rel="noopener noreferrer">Affiliate Disclaimer</a>
+                                    <a class="footer-link" href="https://www.bullbeartrading.com/purchase-policy"
+                                        target="_blank" rel="noopener noreferrer">Fulfillment & Refund Policy</a>
+                                    <a class="footer-link" href="https://www.bullbeartrading.com/affiliate-disclaimer"
+                                        target="_blank" rel="noopener noreferrer">Affiliate Disclaimer</a>
                                 </div>
                             </div>
-                            
+
                             <!-- Fraud Alert Banner -->
                             <a class="fraud-alert" href="https://www.BullBear Trading/avoid-scams">
                                 <span class="fraud-alert-icon">⚠️🚨</span>
@@ -3159,28 +2954,24 @@
                                     <i class="fab fa-twitter"></i>
                                 </a>
                                 <a class="social-icons__icon social-icons__icon--"
-                                    href="https://www.instagram.com/bullbeartrading"
-                                    target="_blank" rel="noopener noreferrer"
+                                    href="https://www.instagram.com/bullbeartrading" target="_blank"
+                                    rel="noopener noreferrer"
                                     kjb-settings-id="sections_footer_blocks_1638945666179_settings_social_icon_link_instagram">
                                     <i class="fab fa-instagram"></i>
                                 </a>
                                 <a class="social-icons__icon social-icons__icon--"
-                                    href="https://tiktok.com/@bullbeartrading"
-                                    target="_blank" rel="noopener noreferrer"
+                                    href="https://tiktok.com/@bullbeartrading" target="_blank" rel="noopener noreferrer"
                                     kjb-settings-id="sections_footer_blocks_1638945666179_settings_social_icon_link_tiktok">
                                     <i class="fab fa-tiktok"></i>
                                 </a>
                                 <a class="social-icons__icon social-icons__icon--"
-                                    href="https://www.youtube.com/@bullbeartrading"
-                                    target="_blank" rel="noopener noreferrer"
+                                    href="https://www.youtube.com/@bullbeartrading" target="_blank"
+                                    rel="noopener noreferrer"
                                     kjb-settings-id="sections_footer_blocks_1638945666179_settings_social_icon_link_youtube">
                                     <i class="fab fa-youtube"></i>
                                 </a>
-                                <a class="social-icons__icon social-icons__icon--"
-                                    href="https://wa.me/19738197530"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    title="Contact us on WhatsApp">
+                                <a class="social-icons__icon social-icons__icon--" href="https://wa.me/19738197530"
+                                    target="_blank" rel="noopener noreferrer" title="Contact us on WhatsApp">
                                     <i class="fab fa-whatsapp"></i>
                                 </a>
                             </div>
@@ -3393,23 +3184,23 @@
             });
         });
     </script>
-    
+
     <script>
         // Make cards and buttons clickable
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             console.log('Initializing click handlers...');
-            
+
             // Handle Buy Now button clicks - Ensure single click works
             // Card click handling is done by initializeProductCards() below
 
             // Handle Library dropdown
             const libraryDropdown = document.querySelector('.library-dropdown');
             const libraryTrigger = document.querySelector('.library-trigger');
-            
+
             if (libraryTrigger && libraryDropdown) {
                 var dropdownContent = libraryDropdown.querySelector('.library-dropdown-content');
 
-                libraryTrigger.addEventListener('click', function(e) {
+                libraryTrigger.addEventListener('click', function (e) {
                     e.preventDefault();
                     e.stopPropagation();
 
@@ -3426,7 +3217,7 @@
                 });
 
                 // Reposition on scroll/resize
-                window.addEventListener('scroll', function() {
+                window.addEventListener('scroll', function () {
                     if (libraryDropdown.classList.contains('active')) {
                         var rect = libraryTrigger.getBoundingClientRect();
                         dropdownContent.style.top = (rect.bottom + 8) + 'px';
@@ -3435,7 +3226,7 @@
                 }, { passive: true });
 
                 // Close dropdown when clicking outside
-                document.addEventListener('click', function(e) {
+                document.addEventListener('click', function (e) {
                     if (!libraryDropdown.contains(e.target)) {
                         libraryDropdown.classList.remove('active');
                     }
@@ -3449,14 +3240,14 @@
             const mobileNav = document.getElementById('mobileNav');
 
             if (hamburger && mobileNav) {
-                hamburger.addEventListener('click', function(e) {
+                hamburger.addEventListener('click', function (e) {
                     e.stopPropagation();
                     this.classList.toggle('open');
                     mobileNav.classList.toggle('open');
                 });
 
                 // Close on outside click
-                document.addEventListener('click', function(e) {
+                document.addEventListener('click', function (e) {
                     if (!hamburger.contains(e.target) && !mobileNav.contains(e.target)) {
                         hamburger.classList.remove('open');
                         mobileNav.classList.remove('open');
@@ -3496,12 +3287,12 @@
             if (hamburger) hamburger.classList.remove('open');
             if (mobileNav) mobileNav.classList.remove('open');
         }
-        
+
         // Function to handle checklist download (requires signup)
         function showSignupForChecklist() {
             // Check if user is logged in
             const currentUser = localStorage.getItem('bullbearCurrentUser');
-            
+
             if (currentUser) {
                 // User is logged in, allow download
                 const user = JSON.parse(currentUser);
@@ -3511,7 +3302,7 @@
                 window.location.href = 'checklist-signup.html';
             }
         }
-        
+
         // Function to download the checklist
         function downloadChecklist(user) {
             // Create a link to the PDF
@@ -3521,13 +3312,13 @@
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-            
+
             // Send email with PDF
             sendChecklistEmail(user);
-            
+
             // Show success message
             alert('🎉 Thank you, ' + user.name + '! Your Crypto Quickstart Checklist is downloading now and will be sent to your email.');
-            
+
             // Track download (optional - for analytics)
             console.log('Checklist downloaded by:', user.email);
         }
@@ -3538,7 +3329,7 @@
         }
 
         // Close modal when clicking outside
-        window.onclick = function(event) {
+        window.onclick = function (event) {
             if (event.target.classList.contains('auth-modal')) {
                 event.target.style.display = 'none';
                 document.body.style.overflow = 'auto';
@@ -3548,16 +3339,16 @@
         // Authentication Functions
         function handleSignup(event) {
             event.preventDefault();
-            
+
             const name = document.getElementById('signupName').value;
             const email = document.getElementById('signupEmail').value;
             const phone = document.getElementById('signupPhone').value;
             const password = document.getElementById('signupPassword').value;
             const confirmPassword = document.getElementById('signupConfirmPassword').value;
-            
+
             const errorDiv = document.getElementById('signupError');
             const successDiv = document.getElementById('signupSuccess');
-            
+
             // Validation
             if (password !== confirmPassword) {
                 errorDiv.textContent = 'Passwords do not match!';
@@ -3565,25 +3356,25 @@
                 successDiv.style.display = 'none';
                 return false;
             }
-            
+
             if (password.length < 6) {
                 errorDiv.textContent = 'Password must be at least 6 characters!';
                 errorDiv.style.display = 'block';
                 successDiv.style.display = 'none';
                 return false;
             }
-            
+
             // Check if user already exists
             const users = JSON.parse(localStorage.getItem('bullbearUsers') || '[]');
             const existingUser = users.find(u => u.email === email);
-            
+
             if (existingUser) {
                 errorDiv.textContent = 'Email already registered! Please login.';
                 errorDiv.style.display = 'block';
                 successDiv.style.display = 'none';
                 return false;
             }
-            
+
             // Save user
             const newUser = {
                 name: name,
@@ -3592,16 +3383,16 @@
                 password: password, // In production, this should be hashed!
                 createdAt: new Date().toISOString()
             };
-            
+
             users.push(newUser);
             localStorage.setItem('bullbearUsers', JSON.stringify(users));
-            
+
             // Auto-login the new user
             localStorage.setItem('bullbearCurrentUser', JSON.stringify(newUser));
-            
+
             // Check if user wanted to download checklist
             const pendingDownload = localStorage.getItem('pendingChecklistDownload');
-            
+
             // Show success message
             errorDiv.style.display = 'none';
             if (pendingDownload === 'true') {
@@ -3610,50 +3401,50 @@
                 successDiv.textContent = 'Account created successfully! Welcome to BullBear Trading!';
             }
             successDiv.style.display = 'block';
-            
+
             // Close modal and download checklist if pending
-            setTimeout(function() {
+            setTimeout(function () {
                 closeModal('signupModal');
                 document.getElementById('signupForm').reset();
                 successDiv.style.display = 'none';
-                
+
                 // Download checklist if it was pending
                 if (pendingDownload === 'true') {
                     localStorage.removeItem('pendingChecklistDownload');
                     downloadChecklist(newUser);
                 }
             }, 2000);
-            
+
             return false;
         }
 
         function handleLogin(event) {
             event.preventDefault();
-            
+
             const email = document.getElementById('loginEmail').value;
             const password = document.getElementById('loginPassword').value;
             const errorDiv = document.getElementById('loginError');
-            
+
             // Get users from localStorage
             const users = JSON.parse(localStorage.getItem('bullbearUsers') || '[]');
-            
+
             // Find user
             const user = users.find(u => (u.email === email || u.phone === email) && u.password === password);
-            
+
             if (user) {
                 // Save logged in user
                 localStorage.setItem('bullbearCurrentUser', JSON.stringify(user));
-                
+
                 // Check if user wanted to download checklist
                 const pendingDownload = localStorage.getItem('pendingChecklistDownload');
-                
+
                 // Close modal
                 closeModal('loginModal');
-                
+
                 // Download checklist if pending
                 if (pendingDownload === 'true') {
                     localStorage.removeItem('pendingChecklistDownload');
-                    setTimeout(function() {
+                    setTimeout(function () {
                         downloadChecklist(user);
                     }, 500);
                 } else {
@@ -3662,9 +3453,9 @@
                     if (productsSection) {
                         productsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
                     }
-                    
+
                     // Show welcome message
-                    setTimeout(function() {
+                    setTimeout(function () {
                         alert('Welcome back, ' + user.name + '! Browse our products below.');
                     }, 500);
                 }
@@ -3672,25 +3463,25 @@
                 errorDiv.textContent = 'Invalid email/phone or password!';
                 errorDiv.style.display = 'block';
             }
-            
+
             return false;
         }
 
         // Check if user is logged in on page load
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const currentUser = localStorage.getItem('bullbearCurrentUser');
             if (currentUser) {
                 console.log('User is logged in:', JSON.parse(currentUser).name);
             }
-            
+
             // Make product cards clickable
             initializeProductCards();
         });
-        
+
         // Function to update time and date
         function updateDateTime() {
             const now = new Date();
-            
+
             // Format time (12-hour format with AM/PM)
             let hours = now.getHours();
             const minutes = now.getMinutes().toString().padStart(2, '0');
@@ -3699,22 +3490,22 @@
             hours = hours % 12;
             hours = hours ? hours : 12; // 0 should be 12
             const timeString = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
-            
+
             // Format date (e.g., "Monday, January 14, 2026")
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
             const dateString = now.toLocaleDateString('en-US', options);
-            
+
             // Update the display
             const timeElement = document.getElementById('current-time');
             const dateElement = document.getElementById('current-date');
-            
+
             if (timeElement) {
                 timeElement.textContent = timeString;
                 console.log('Time updated:', timeString);
             } else {
                 console.log('Time element not found');
             }
-            
+
             if (dateElement) {
                 dateElement.textContent = dateString;
                 console.log('Date updated:', dateString);
@@ -3722,10 +3513,10 @@
                 console.log('Date element not found');
             }
         }
-        
+
         // Start updating time immediately
         if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', function() {
+            document.addEventListener('DOMContentLoaded', function () {
                 updateDateTime();
                 setInterval(updateDateTime, 1000);
             });
@@ -3734,32 +3525,32 @@
             updateDateTime();
             setInterval(updateDateTime, 1000);
         }
-        
+
         // Function to initialize product card click handlers
         function initializeProductCards() {
             const productCards = document.querySelectorAll('.card[data-product-url]');
-            
+
             productCards.forEach(card => {
                 const productUrl = card.getAttribute('data-product-url');
                 const buyButton = card.querySelector('.buy-now-btn');
-                
+
                 // Make the entire card clickable (except the buy button)
                 card.style.cursor = 'pointer';
-                
-                card.addEventListener('click', function(e) {
+
+                card.addEventListener('click', function (e) {
                     // Don't trigger if clicking any button or link
                     if (e.target.closest('.buy-now-btn') || e.target.closest('a') || e.target.closest('button')) {
                         return;
                     }
-                    
+
                     // Open product page in new tab
                     if (productUrl) {
                         window.open(productUrl, '_blank', 'noopener,noreferrer');
                     }
                 });
-                
+
                 // Add hover effect to show it's clickable
-                card.addEventListener('mouseenter', function() {
+                card.addEventListener('mouseenter', function () {
                     if (!this.querySelector(':hover.buy-now-btn')) {
                         this.style.cursor = 'pointer';
                     }
@@ -3774,7 +3565,7 @@
             <span class="chat-icon">💬</span>
             <span class="chat-text">Chat with us</span>
         </button>
-        
+
         <div id="chatBox" class="chat-box" style="display: none;">
             <div class="chat-header">
                 <div class="chat-header-content">
@@ -3786,7 +3577,7 @@
                 </div>
                 <button id="chatClose" class="chat-close">&times;</button>
             </div>
-            
+
             <div id="chatMessages" class="chat-messages">
                 <div class="chat-message bot-message">
                     <div class="message-content">
@@ -3794,28 +3585,34 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="chat-quick-questions">
-                <button class="quick-question" onclick="askQuestion('What courses do you offer?')">📚 What courses do you offer?</button>
-                <button class="quick-question" onclick="askQuestion('How do I make a payment?')">💳 How do I make a payment?</button>
-                <button class="quick-question" onclick="askQuestion('What is BullBear Trading?')">ℹ️ What is BullBear Trading?</button>
+                <button class="quick-question" onclick="askQuestion('What courses do you offer?')">📚 What courses do
+                    you offer?</button>
+                <button class="quick-question" onclick="askQuestion('How do I make a payment?')">💳 How do I make a
+                    payment?</button>
+                <button class="quick-question" onclick="askQuestion('What is BullBear Trading?')">ℹ️ What is BullBear
+                    Trading?</button>
             </div>
-            
+
             <div class="chat-input-container">
                 <input type="text" id="chatInput" class="chat-input" placeholder="Type your message...">
                 <button id="chatSend" class="chat-send">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+                        <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" />
                     </svg>
                 </button>
             </div>
         </div>
     </div>
-    
+
     <!-- Live DateTime Display - Below Chatbot -->
-    <div id="live-datetime-widget" style="position: fixed; bottom: 90px; right: 20px; z-index: 9998; background: linear-gradient(135deg, rgba(0, 0, 0, 0.95) 0%, rgba(26, 26, 26, 0.95) 100%); padding: 12px 20px; border-radius: 50px; border: 2px solid rgba(251, 191, 36, 0.3); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5); backdrop-filter: blur(10px);">
+    <div id="live-datetime-widget"
+        style="position: fixed; bottom: 90px; right: 20px; z-index: 9998; background: linear-gradient(135deg, rgba(0, 0, 0, 0.95) 0%, rgba(26, 26, 26, 0.95) 100%); padding: 12px 20px; border-radius: 50px; border: 2px solid rgba(251, 191, 36, 0.3); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5); backdrop-filter: blur(10px);">
         <div style="display: flex; flex-direction: column; gap: 4px; align-items: center;">
-            <div id="current-time" style="font-family: 'Courier New', monospace; font-size: 18px; font-weight: 700; color: #fbbf24; text-shadow: 0 0 10px rgba(251, 191, 36, 0.5);"></div>
+            <div id="current-time"
+                style="font-family: 'Courier New', monospace; font-size: 18px; font-weight: 700; color: #fbbf24; text-shadow: 0 0 10px rgba(251, 191, 36, 0.5);">
+            </div>
             <div id="current-date" style="font-size: 11px; color: #94a3b8; font-weight: 500; text-align: center;"></div>
         </div>
     </div>
@@ -3856,8 +3653,15 @@
         }
 
         @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-5px);
+            }
         }
 
         .chat-box {
@@ -3946,6 +3750,7 @@
                 opacity: 0;
                 transform: translateY(10px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -4054,41 +3859,41 @@
         // Chat bot knowledge base
         const chatKnowledge = {
             'what courses do you offer': 'We offer several courses including:\n\n📚 Crypto Trading Video Course ($500) - Master cryptocurrency trading\n💼 Crypto Pull Profit Spreadsheet ($500) - Track your crypto profits\n🎯 6-Figure Affiliate Marketing ($20) - Build your affiliate business\n\nVisit our store to learn more!',
-            
+
             'how do i make a payment': 'We accept PayPal payments! Here\'s how:\n\n1. Select your course\n2. Click "Buy Now"\n3. Choose PayPal payment method\n4. Send $[amount] to: megametahub42@gmail.com\n5. Click "I\'ve Sent Payment via PayPal"\n6. We\'ll verify within 24 hours!\n\nYou can also use our direct PayPal link.',
-            
+
             'what is BullBear Trading': 'BullBear Trading is Master the Markets! 🚀\n\nWe provide:\n✅ Expert crypto trading education\n✅ Professional trading tools\n✅ Affiliate marketing training\n✅ Community support\n✅ Lifetime access to courses\n\nOur mission is to empower you with knowledge and tools for financial success in the crypto space!',
-            
+
             'price': 'Our course prices:\n\n💎 Crypto Trading Video Course: $500\n💎 Crypto Pull Profit Spreadsheet: $500\n💎 6-Figure Affiliate Marketing: $20\n\nAll courses include lifetime access!',
-            
+
             'contact': 'You can reach us at:\n\n📧 Email: megametahub42@gmail.com\n📱 Phone: +1 (973)-8197-530\n💬 WhatsApp: Available\n\nOr use our contact form on the website!',
-            
+
             'refund': 'We have a fulfillment and refund policy. Please check our Policies section in the footer for detailed information about refunds and our purchase policy.',
-            
+
             'access': 'After purchasing:\n\n1. Your course appears in "My Library"\n2. Click "Access Course" to start learning\n3. Enjoy lifetime access to all materials\n4. Join our community for support\n\nPending payments are verified within 24 hours.',
-            
+
             'help': 'I can help you with:\n\n📚 Course information\n💳 Payment methods\n📖 How to access courses\n💰 Pricing\n📞 Contact information\n🔄 Refund policy\n👤 About our CEO & Founder\n\nJust ask me anything!',
-            
+
             'ceo': '👨‍💼 Meet Seth Cryptolord - CEO & Founder of BullBear Trading!\n\nSeth is a digital entrepreneur, visionary educator, and Web3 enthusiast. His journey began in 2014, diving into online business with nothing but a dream and drive.\n\n🎓 His Journey:\n• Founded Forex Cryptomission Academy - training top forex traders\n• Launched BullBear Trading in 2017\n• Expanded from Migori to Nakuru, now thriving in Nairobi\n• Empowering digital transformation across Africa and beyond\n\n💡 His Mission: "When people are empowered with digital tools, their lives change."\n\nBullBear Trading is a gateway to freedom where knowledge becomes income and confidence becomes currency!',
-            
+
             'founder': '👨‍💼 Meet Seth Cryptolord - CEO & Founder of BullBear Trading!\n\nSeth is a digital entrepreneur, visionary educator, and Web3 enthusiast. His journey began in 2014, diving into online business with nothing but a dream and drive.\n\n🎓 His Journey:\n• Founded Forex Cryptomission Academy - training top forex traders\n• Launched BullBear Trading in 2017\n• Expanded from Migori to Nakuru, now thriving in Nairobi\n• Empowering digital transformation across Africa and beyond\n\n💡 His Mission: "When people are empowered with digital tools, their lives change."\n\nBullBear Trading is a gateway to freedom where knowledge becomes income and confidence becomes currency!',
-            
+
             'seth': '👨‍💼 Seth Cryptolord is our CEO & Founder!\n\nA digital entrepreneur and Web3 enthusiast who started his journey in 2014. He faced scams and confusion but learned, grew, and thrived!\n\n🌟 Achievements:\n• Founded Forex Cryptomission Academy\n• Launched BullBear Trading in 2017\n• Offices in Migori, Nakuru, and Nairobi\n• Training top traders across Africa\n\n"The greatest wealth is created when information meets intention." - Inspired by mentor Calvin D. Hill',
-            
+
             'co-founder': '🤝 Meet Starico Isige John - Co-Founder of BullBear Trading!\n\nStarico works alongside Seth Cryptolord to build and expand the BullBear Trading vision, bringing digital empowerment and financial education to communities worldwide.\n\nTogether, they\'re creating a platform where knowledge becomes income and confidence becomes currency!',
-            
+
             'starico': '🤝 Starico Isige John is the Co-Founder of BullBear Trading!\n\nWorking alongside CEO Seth Cryptolord, Starico is dedicated to expanding the mission of digital transformation and financial empowerment.\n\nTogether, they\'re building a gateway to freedom through education and Web3 innovation!',
-            
+
             'team': '👥 The BullBear Trading Leadership:\n\n👨‍💼 Seth Cryptolord - CEO & Founder\nDigital entrepreneur, Web3 enthusiast, and visionary educator since 2014.\n\n🤝 Starico Isige John - Co-Founder\nDedicated to expanding digital empowerment and financial education.\n\nTogether, they\'re transforming lives through knowledge and digital tools across Africa and beyond!',
-            
+
             'about': 'About BullBear Trading:\n\n🚀 Founded by Seth Cryptolord in 2017\n🤝 Co-Founded by Starico Isige John\n🌍 Offices in Migori, Nakuru, and Nairobi\n📚 Training digital entrepreneurs and traders\n💡 Mission: Creating wealth beyond boundaries\n\n"A gateway to freedom where knowledge becomes income and confidence becomes currency."\n\nFrom Forex Cryptomission Academy to BullBear Trading - we\'re building the future of financial education and breaking down outdated financial systems!',
-            
+
             'history': '📖 Our Story:\n\n2014: Seth Cryptolord begins his online business journey\n2015-2016: Founded Forex Cryptomission Academy\n2017: Launched BullBear Trading\n📍 First office in Migori\n📍 Expanded to Nakuru\n📍 Now thriving in Nairobi\n\nFrom facing scams and confusion to training top traders across Africa - we\'ve grown into a platform for digital transformation and financial empowerment!',
-            
+
             'mission': '🎯 Our Mission:\n\nAt BullBear Trading, we create wealth beyond boundaries by unlocking the full potential of 21st-century business.\n\n✨ We empower individuals with:\n• Digital skills & financial education\n• Entrepreneurial tools for global opportunities\n• Expert training in forex, crypto, Web3 & affiliate marketing\n\n💪 Our Goal:\nHelp people break free from financial limits and build sustainable wealth, regardless of background.\n\nWe\'re not just teaching business—we\'re shaping bold, financially free leaders for the future!',
-            
+
             'vision': '🌟 Our Vision:\n\nAt BullBear Trading, we challenge and break down unjust, unfair, and outdated financial systems that have held people back for generations.\n\n💡 We Believe:\nTrue freedom starts with knowledge—when people are financially educated and equipped, they take control of their future.\n\n🚀 We\'re Building:\nA world where decentralization and financial literacy are daily realities for everyone.\n\nThrough real education in forex, crypto, blockchain, and digital business, we help people rise above limits and build lasting wealth.\n\nThis is more than a vision—it\'s a movement for freedom and opportunity!',
-            
+
             'values': '💎 Our Core Values:\n\n🎓 Education First - Knowledge is power and freedom\n🌍 Global Opportunity - Wealth beyond boundaries\n💪 Empowerment - Breaking financial limits\n🔓 Freedom - Challenging outdated systems\n🤝 Community - Building leaders together\n📈 Sustainable Wealth - Long-term success\n\nAt BullBear Trading, we believe in creating financially free leaders for the future!'
         };
 
@@ -4142,11 +3947,11 @@
         function addMessage(text, type) {
             const messageDiv = document.createElement('div');
             messageDiv.className = `chat-message ${type}-message`;
-            
+
             const contentDiv = document.createElement('div');
             contentDiv.className = 'message-content';
             contentDiv.textContent = text;
-            
+
             messageDiv.appendChild(contentDiv);
             chatMessages.appendChild(messageDiv);
             chatMessages.scrollTop = chatMessages.scrollHeight;
@@ -4154,17 +3959,17 @@
 
         function getBotResponse(message) {
             const lowerMessage = message.toLowerCase();
-            
+
             for (const [key, value] of Object.entries(chatKnowledge)) {
                 if (lowerMessage.includes(key)) {
                     return value;
                 }
             }
-            
+
             // Default response
             return 'Thanks for your question! 😊\n\nI can help you with:\n• Course information\n• Payment methods\n• Pricing\n• Contact details\n\nTry asking about our courses, payments, or contact info!\n\nFor specific questions, email us at megametahub42@gmail.com';
         }
-        
+
     </script>
     <script src="./fix-clickable-products.js"></script>
 
@@ -4226,8 +4031,15 @@
         }
 
         @keyframes qrFadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to   { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .qr-panel-title {
@@ -4272,18 +4084,34 @@
 
     <!-- QR Widget (tabbed: Login / Sign Up) -->
     <style>
-        .qr-tabs { display: flex; gap: 6px; margin-bottom: 14px; }
-        .qr-tab {
-            flex: 1; padding: 7px 10px; border: none; border-radius: 7px;
-            font-family: 'Poppins', sans-serif; font-size: 0.75rem; font-weight: 700;
-            cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px;
-            background: rgba(99,102,241,0.12); color: #94a3b8;
-            border: 1px solid rgba(99,102,241,0.2); transition: all 0.2s ease;
+        .qr-tabs {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 14px;
         }
+
+        .qr-tab {
+            flex: 1;
+            padding: 7px 10px;
+            border: none;
+            border-radius: 7px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            background: rgba(99, 102, 241, 0.12);
+            color: #94a3b8;
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            transition: all 0.2s ease;
+        }
+
         .qr-tab.active {
-            background: linear-gradient(135deg,#6366f1 0%,#06b6d4 100%);
-            color: #fff; border-color: transparent;
-            box-shadow: 0 3px 12px rgba(99,102,241,0.4);
+            background: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%);
+            color: #fff;
+            border-color: transparent;
+            box-shadow: 0 3px 12px rgba(99, 102, 241, 0.4);
         }
     </style>
 
@@ -4298,9 +4126,12 @@
             <p class="qr-panel-url">bullbeartrading.com</p>
         </div>
         <button class="qr-toggle" onclick="toggleQR()">
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
-                <rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="3" height="3"/>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="7" height="7" />
+                <rect x="14" y="3" width="7" height="7" />
+                <rect x="3" y="14" width="7" height="7" />
+                <rect x="14" y="14" width="3" height="3" />
             </svg>
             QR Code
         </button>
@@ -4312,7 +4143,7 @@
         var currentQRType = 'login';
 
         var QR_URLS = {
-            login:  'https://www.bullbeartrading.com?modal=login',
+            login: 'https://www.bullbeartrading.com?modal=login',
             signup: 'https://www.bullbeartrading.com?modal=signup'
         };
 
@@ -4323,7 +4154,7 @@
         }
 
         function switchQR(type, btn) {
-            document.querySelectorAll('.qr-tab').forEach(function(t){ t.classList.remove('active'); });
+            document.querySelectorAll('.qr-tab').forEach(function (t) { t.classList.remove('active'); });
             btn.classList.add('active');
             currentQRType = type;
             document.getElementById('qrPanelTitle').textContent = type === 'login' ? 'Scan to Login' : 'Scan to Sign Up';
@@ -4341,7 +4172,7 @@
             });
         }
 
-        document.addEventListener('click', function(e) {
+        document.addEventListener('click', function (e) {
             var widget = document.getElementById('qrWidget');
             if (widget && !widget.contains(e.target)) {
                 document.getElementById('qrPanel').classList.remove('active');
@@ -4349,13 +4180,13 @@
         });
 
         // Auto-open modal from URL param (?modal=login or ?modal=signup)
-        (function() {
+        (function () {
             var params = new URLSearchParams(window.location.search);
             var modal = params.get('modal');
             if (modal === 'login') {
-                window.addEventListener('DOMContentLoaded', function(){ openModal('loginModal'); });
+                window.addEventListener('DOMContentLoaded', function () { openModal('loginModal'); });
             } else if (modal === 'signup') {
-                window.addEventListener('DOMContentLoaded', function(){ openModal('signupModal'); });
+                window.addEventListener('DOMContentLoaded', function () { openModal('signupModal'); });
             }
         })();
     </script>
@@ -4365,120 +4196,249 @@
          ================================================ -->
     <style>
         #adminPanel {
-            display: none; position: fixed; inset: 0;
-            background: rgba(0,0,0,0.85); z-index: 999999;
-            backdrop-filter: blur(8px); overflow-y: auto;
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 999999;
+            backdrop-filter: blur(8px);
+            overflow-y: auto;
         }
-        #adminPanel.open { display: block; }
+
+        #adminPanel.open {
+            display: block;
+        }
+
         .admin-wrap {
-            max-width: 900px; margin: 40px auto; padding: 0 16px 60px;
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 16px 60px;
         }
+
         .admin-header {
-            display: flex; align-items: center; justify-content: space-between;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             margin-bottom: 28px;
         }
+
         .admin-title {
-            font-family: 'Poppins', sans-serif; font-size: 1.5rem; font-weight: 800;
-            background: linear-gradient(135deg,#6366f1 0%,#06b6d4 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             background-clip: text;
         }
+
         .admin-close {
-            background: rgba(99,102,241,0.15); border: 1px solid rgba(99,102,241,0.3);
-            color: #94a3b8; border-radius: 8px; padding: 8px 16px;
-            font-family: 'Poppins', sans-serif; font-size: 0.85rem; cursor: pointer;
+            background: rgba(99, 102, 241, 0.15);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            color: #94a3b8;
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.85rem;
+            cursor: pointer;
             transition: all 0.2s ease;
         }
-        .admin-close:hover { background: rgba(239,68,68,0.2); border-color: rgba(239,68,68,0.4); color: #f87171; }
-        .admin-stats {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(160px,1fr));
-            gap: 14px; margin-bottom: 28px;
+
+        .admin-close:hover {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: rgba(239, 68, 68, 0.4);
+            color: #f87171;
         }
+
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 14px;
+            margin-bottom: 28px;
+        }
+
         .admin-stat {
-            background: rgba(10,14,26,0.9); border: 1px solid rgba(6,182,212,0.2);
-            border-radius: 12px; padding: 18px; text-align: center;
+            background: rgba(10, 14, 26, 0.9);
+            border: 1px solid rgba(6, 182, 212, 0.2);
+            border-radius: 12px;
+            padding: 18px;
+            text-align: center;
             backdrop-filter: blur(16px);
         }
+
         .admin-stat-num {
-            font-family: 'Poppins', sans-serif; font-size: 2rem; font-weight: 800;
-            color: #06b6d4; display: block;
-            text-shadow: 0 0 15px rgba(6,182,212,0.5);
+            font-family: 'Poppins', sans-serif;
+            font-size: 2rem;
+            font-weight: 800;
+            color: #06b6d4;
+            display: block;
+            text-shadow: 0 0 15px rgba(6, 182, 212, 0.5);
         }
+
         .admin-stat-label {
-            font-size: 0.75rem; color: #64748b; text-transform: uppercase; letter-spacing: 1px;
+            font-size: 0.75rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
+
         .admin-section-title {
-            font-family: 'Poppins', sans-serif; font-size: 1rem; font-weight: 700;
-            color: #e2e8f0; margin-bottom: 14px; padding-bottom: 8px;
-            border-bottom: 1px solid rgba(99,102,241,0.2);
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #e2e8f0;
+            margin-bottom: 14px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(99, 102, 241, 0.2);
         }
+
         .admin-table {
-            width: 100%; border-collapse: collapse; font-size: 0.85rem;
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
         }
+
         .admin-table th {
-            text-align: left; padding: 10px 14px; font-family: 'Poppins', sans-serif;
-            font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
-            letter-spacing: 1px; color: #06b6d4;
-            border-bottom: 1px solid rgba(99,102,241,0.2);
+            text-align: left;
+            padding: 10px 14px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #06b6d4;
+            border-bottom: 1px solid rgba(99, 102, 241, 0.2);
         }
+
         .admin-table td {
-            padding: 12px 14px; color: #cbd5e1;
-            border-bottom: 1px solid rgba(99,102,241,0.08);
+            padding: 12px 14px;
+            color: #cbd5e1;
+            border-bottom: 1px solid rgba(99, 102, 241, 0.08);
             font-family: 'Inter', sans-serif;
         }
-        .admin-table tr:hover td { background: rgba(99,102,241,0.05); }
+
+        .admin-table tr:hover td {
+            background: rgba(99, 102, 241, 0.05);
+        }
+
         .admin-delete-btn {
-            background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.3);
-            color: #f87171; border-radius: 6px; padding: 4px 10px; font-size: 0.75rem;
-            cursor: pointer; transition: all 0.2s ease;
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #f87171;
+            border-radius: 6px;
+            padding: 4px 10px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
         }
-        .admin-delete-btn:hover { background: rgba(239,68,68,0.3); }
+
+        .admin-delete-btn:hover {
+            background: rgba(239, 68, 68, 0.3);
+        }
+
         .admin-empty {
-            text-align: center; color: #475569; padding: 40px;
-            font-family: 'Inter', sans-serif; font-size: 0.9rem;
+            text-align: center;
+            color: #475569;
+            padding: 40px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
         }
+
         .admin-actions {
-            display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
         }
+
         .admin-btn {
-            padding: 9px 18px; border-radius: 8px; border: none; cursor: pointer;
-            font-family: 'Poppins', sans-serif; font-size: 0.8rem; font-weight: 700;
-            text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.2s ease;
+            padding: 9px 18px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.2s ease;
         }
+
         .admin-btn-export {
-            background: linear-gradient(135deg,#059669 0%,#047857 100%); color: #fff;
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            color: #fff;
         }
+
         .admin-btn-clear {
-            background: rgba(239,68,68,0.15); color: #f87171;
-            border: 1px solid rgba(239,68,68,0.3);
+            background: rgba(239, 68, 68, 0.15);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.3);
         }
-        .admin-btn-clear:hover { background: rgba(239,68,68,0.25); }
+
+        .admin-btn-clear:hover {
+            background: rgba(239, 68, 68, 0.25);
+        }
 
         /* Admin auth screen */
         .admin-auth {
-            max-width: 380px; margin: 120px auto; padding: 36px;
-            background: rgba(6,9,20,0.97); border: 1px solid rgba(6,182,212,0.3);
-            border-radius: 16px; text-align: center;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+            max-width: 380px;
+            margin: 120px auto;
+            padding: 36px;
+            background: rgba(6, 9, 20, 0.97);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
         }
+
         .admin-auth h2 {
-            font-family: 'Poppins', sans-serif; color: #fff; margin-bottom: 8px;
+            font-family: 'Poppins', sans-serif;
+            color: #fff;
+            margin-bottom: 8px;
         }
-        .admin-auth p { color: #64748b; font-size: 0.85rem; margin-bottom: 24px; }
+
+        .admin-auth p {
+            color: #64748b;
+            font-size: 0.85rem;
+            margin-bottom: 24px;
+        }
+
         .admin-auth input {
-            width: 100%; padding: 12px 16px; border-radius: 10px;
-            border: 1px solid rgba(99,102,241,0.3);
-            background: rgba(15,23,42,0.6); color: #fff; font-size: 0.95rem;
-            margin-bottom: 14px; box-sizing: border-box; outline: none;
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 10px;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            background: rgba(15, 23, 42, 0.6);
+            color: #fff;
+            font-size: 0.95rem;
+            margin-bottom: 14px;
+            box-sizing: border-box;
+            outline: none;
         }
-        .admin-auth input:focus { border-color: #06b6d4; }
+
+        .admin-auth input:focus {
+            border-color: #06b6d4;
+        }
+
         .admin-auth-btn {
-            width: 100%; padding: 13px;
-            background: linear-gradient(135deg,#6366f1 0%,#06b6d4 100%);
-            color: #fff; border: none; border-radius: 10px; font-weight: 700;
-            font-size: 0.95rem; cursor: pointer; text-transform: uppercase;
+            width: 100%;
+            padding: 13px;
+            background: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            text-transform: uppercase;
         }
-        .admin-auth-error { color: #f87171; font-size: 0.82rem; margin-top: 8px; display: none; }
+
+        .admin-auth-error {
+            color: #f87171;
+            font-size: 0.82rem;
+            margin-top: 8px;
+            display: none;
+        }
     </style>
 
     <div id="adminPanel">
@@ -4486,7 +4446,8 @@
         <div id="adminAuth" class="admin-auth">
             <h2>Admin Access</h2>
             <p>Enter your admin password to continue</p>
-            <input type="password" id="adminPasswordInput" placeholder="Admin password" onkeydown="if(event.key==='Enter')verifyAdmin()">
+            <input type="password" id="adminPasswordInput" placeholder="Admin password"
+                onkeydown="if(event.key==='Enter')verifyAdmin()">
             <button class="admin-auth-btn" onclick="verifyAdmin()">Access Panel</button>
             <p class="admin-auth-error" id="adminAuthError">Incorrect password. Try again.</p>
         </div>
@@ -4548,7 +4509,7 @@
         function renderAdminDashboard() {
             var users = JSON.parse(localStorage.getItem('bullbearUsers') || '[]');
             var today = new Date().toDateString();
-            var todaySignups = users.filter(function(u){ return new Date(u.createdAt).toDateString() === today; }).length;
+            var todaySignups = users.filter(function (u) { return new Date(u.createdAt).toDateString() === today; }).length;
 
             // Stats
             document.getElementById('adminStats').innerHTML =
@@ -4563,7 +4524,7 @@
                 return;
             }
 
-            var rows = users.map(function(u, i) {
+            var rows = users.map(function (u, i) {
                 var date = u.createdAt ? new Date(u.createdAt).toLocaleDateString() : '—';
                 return '<tr>' +
                     '<td>' + (i + 1) + '</td>' +
@@ -4572,7 +4533,7 @@
                     '<td>' + (u.phone || '—') + '</td>' +
                     '<td>' + date + '</td>' +
                     '<td><button class="admin-delete-btn" onclick="deleteUser(' + i + ')">Delete</button></td>' +
-                '</tr>';
+                    '</tr>';
             }).join('');
 
             tableDiv.innerHTML =
@@ -4594,7 +4555,7 @@
             var blob = new Blob([JSON.stringify(users, null, 2)], { type: 'application/json' });
             var a = document.createElement('a');
             a.href = URL.createObjectURL(blob);
-            a.download = 'bullbear-users-' + new Date().toISOString().slice(0,10) + '.json';
+            a.download = 'bullbear-users-' + new Date().toISOString().slice(0, 10) + '.json';
             a.click();
         }
 
@@ -4606,16 +4567,16 @@
         }
 
         // Secret access: click logo 5 times
-        (function() {
+        (function () {
             var logoClicks = 0, logoTimer;
-            document.addEventListener('DOMContentLoaded', function() {
+            document.addEventListener('DOMContentLoaded', function () {
                 var logo = document.querySelector('.logo');
                 if (logo) {
-                    logo.addEventListener('click', function(e) {
+                    logo.addEventListener('click', function (e) {
                         e.preventDefault();
                         logoClicks++;
                         clearTimeout(logoTimer);
-                        logoTimer = setTimeout(function(){ logoClicks = 0; }, 2000);
+                        logoTimer = setTimeout(function () { logoClicks = 0; }, 2000);
                         if (logoClicks >= 5) {
                             logoClicks = 0;
                             openAdmin();
@@ -4627,7 +4588,7 @@
 
         // Also open via URL hash #admin
         if (window.location.hash === '#admin') {
-            window.addEventListener('DOMContentLoaded', function(){ openAdmin(); });
+            window.addEventListener('DOMContentLoaded', function () { openAdmin(); });
         }
     </script>
 

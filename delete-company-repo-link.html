@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Delete Company Repository</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+            max-width: 500px;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .warning {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            color: #856404;
+        }
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            background: #dc3545;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 18px;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
+        }
+        .steps {
+            text-align: left;
+            margin: 20px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        .steps ol {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        .steps li {
+            margin: 10px 0;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🗑️ Delete Company Repository</h1>
+        
+        <div class="warning">
+            <strong>⚠️ Warning:</strong> This action is permanent and cannot be undone!
+        </div>
+        
+        <div class="steps">
+            <strong>Steps to delete:</strong>
+            <ol>
+                <li>Click the button below to open repository settings</li>
+                <li>Scroll down to the "Danger Zone" section</li>
+                <li>Click "Delete this repository"</li>
+                <li>Type: <code>SethDEV254/company-website</code></li>
+                <li>Click "I understand the consequences, delete this repository"</li>
+            </ol>
+        </div>
+        
+        <a href="https://github.com/SethDEV254/company-website/settings" class="btn" target="_blank">
+            Open Repository Settings
+        </a>
+        
+        <p style="margin-top: 20px; color: #666; font-size: 14px;">
+            Repository: <strong>SethDEV254/company-website</strong>
+        </p>
+    </div>
+</body>
+</html>

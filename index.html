@@ -1794,10 +1794,13 @@
                                     <a class="link-list__link library-trigger" href="my-library.html">My Library ▼</a>
                                     <div class="library-dropdown-content">
                                         <a href="my-library.html" class="dropdown-view-library">View Library</a>
-                                        <a href="#" class="dropdown-signup"
+                                        <a href="#" class="dropdown-signup" id="nav-signup-link"
                                             onclick="showSignupModal(); return false;">Sign Up</a>
-                                        <a href="#" class="dropdown-login"
+                                        <a href="#" class="dropdown-login" id="nav-login-link"
                                             onclick="showLoginModal(); return false;">Login</a>
+                                        <span id="nav-user-greeting" style="display:none; padding: 8px 16px; color: #fbbf24; font-size: 0.85rem; font-weight: 600;"></span>
+                                        <a href="#" id="nav-logout-link" style="display:none;" class="dropdown-login"
+                                            onclick="logoutUser(); return false;">Logout</a>
                                     </div>
                                 </div>
                             </div>
@@ -1857,11 +1860,14 @@
                         <a href="trading-indicators.html" class="mobile-nav-link">Indicators</a>
                         <a href="my-library.html" class="mobile-nav-link">My Library</a>
                         <a href="crypto-trading-course.html" class="mobile-nav-link">Crypto Trading Course</a>
-                        <div class="mobile-nav-auth">
-                            <a href="#" class="mobile-nav-signup"
+                        <div class="mobile-nav-auth" id="mobile-nav-auth">
+                            <a href="#" class="mobile-nav-signup" id="mobile-signup-link"
                                 onclick="showSignupModal(); closeMobileNav(); return false;">Sign Up</a>
-                            <a href="#" class="mobile-nav-login"
+                            <a href="#" class="mobile-nav-login" id="mobile-login-link"
                                 onclick="showLoginModal(); closeMobileNav(); return false;">Login</a>
+                            <span id="mobile-user-greeting" style="display:none; color: #fbbf24; font-size: 0.9rem; font-weight: 600; padding: 8px 0;"></span>
+                            <a href="#" id="mobile-logout-link" style="display:none;" class="mobile-nav-login"
+                                onclick="logoutUser(); closeMobileNav(); return false;">Logout</a>
                         </div>
                     </nav>
                 </div>
@@ -3409,6 +3415,7 @@
             successDiv.style.display = 'block';
 
             // Close modal and download checklist if pending
+            updateAuthNav();
             setTimeout(function () {
                 closeModal('signupModal');
                 document.getElementById('signupForm').reset();
@@ -3440,6 +3447,7 @@
             if (user) {
                 // Save logged in user
                 localStorage.setItem('bullbearCurrentUser', JSON.stringify(user));
+                updateAuthNav();
 
                 // Check if user wanted to download checklist
                 const pendingDownload = localStorage.getItem('pendingChecklistDownload');
@@ -3473,13 +3481,43 @@
             return false;
         }
 
+        function updateAuthNav() {
+            const raw = localStorage.getItem('bullbearCurrentUser');
+            const loggedIn = !!raw;
+            const user = loggedIn ? JSON.parse(raw) : null;
+            const firstName = loggedIn ? user.name.split(' ')[0] : '';
+
+            // Desktop nav
+            const signupLink = document.getElementById('nav-signup-link');
+            const loginLink = document.getElementById('nav-login-link');
+            const greeting = document.getElementById('nav-user-greeting');
+            const logoutLink = document.getElementById('nav-logout-link');
+
+            if (signupLink) signupLink.style.display = loggedIn ? 'none' : '';
+            if (loginLink) loginLink.style.display = loggedIn ? 'none' : '';
+            if (greeting) { greeting.textContent = loggedIn ? '👤 ' + firstName : ''; greeting.style.display = loggedIn ? 'block' : 'none'; }
+            if (logoutLink) logoutLink.style.display = loggedIn ? 'block' : 'none';
+
+            // Mobile nav
+            const mSignup = document.getElementById('mobile-signup-link');
+            const mLogin = document.getElementById('mobile-login-link');
+            const mGreeting = document.getElementById('mobile-user-greeting');
+            const mLogout = document.getElementById('mobile-logout-link');
+
+            if (mSignup) mSignup.style.display = loggedIn ? 'none' : '';
+            if (mLogin) mLogin.style.display = loggedIn ? 'none' : '';
+            if (mGreeting) { mGreeting.textContent = loggedIn ? '👤 ' + user.name : ''; mGreeting.style.display = loggedIn ? 'block' : 'none'; }
+            if (mLogout) mLogout.style.display = loggedIn ? 'block' : 'none';
+        }
+
+        function logoutUser() {
+            localStorage.removeItem('bullbearCurrentUser');
+            updateAuthNav();
+        }
+
         // Check if user is logged in on page load
         document.addEventListener('DOMContentLoaded', function () {
-            const currentUser = localStorage.getItem('bullbearCurrentUser');
-            if (currentUser) {
-                console.log('User is logged in:', JSON.parse(currentUser).name);
-            }
-
+            updateAuthNav();
             // Make product cards clickable
             initializeProductCards();
         });

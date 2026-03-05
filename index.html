@@ -3775,27 +3775,41 @@
 
         // Function to download the checklist
         function downloadChecklist(user) {
-            // Create a link to the PDF
             const link = document.createElement('a');
             link.href = 'crypto-quickstart-checklist.pdf';
-            link.download = 'BullBear-Trading-Crypto-Quickstart-Checklist.pdf';
+            link.download = 'BullBear-Crypto-Quickstart-Checklist.pdf';
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-
-            // Send email with PDF
-            sendChecklistEmail(user);
-
-            // Show success message
-            alert('🎉 Thank you, ' + user.name + '! Your Crypto Quickstart Checklist is downloading now and will be sent to your email.');
-
-            // Track download (optional - for analytics)
-            console.log('Checklist downloaded by:', user.email);
+            showToast('Download started — enjoy your free checklist, ' + user.name.split(' ')[0] + '!');
         }
 
-        function sendChecklistEmail(user) {
-            // Email delivery requires backend integration
-            console.log('Checklist download by:', user.email);
+        function showToast(msg) {
+            var t = document.getElementById('bb-toast');
+            if (!t) {
+                t = document.createElement('div');
+                t.id = 'bb-toast';
+                t.style.cssText = [
+                    'position:fixed', 'bottom:32px', 'left:50%', 'transform:translateX(-50%) translateY(20px)',
+                    'background:linear-gradient(135deg,#10b981,#059669)', 'color:#fff',
+                    'padding:14px 28px', 'border-radius:50px', 'font-family:Poppins,sans-serif',
+                    'font-size:0.88rem', 'font-weight:700', 'letter-spacing:0.03em',
+                    'box-shadow:0 8px 32px rgba(16,185,129,0.45)', 'z-index:999999',
+                    'opacity:0', 'transition:opacity 0.35s ease,transform 0.35s ease',
+                    'pointer-events:none', 'white-space:nowrap',
+                ].join(';');
+                document.body.appendChild(t);
+            }
+            t.textContent = msg;
+            requestAnimationFrame(() => {
+                t.style.opacity = '1';
+                t.style.transform = 'translateX(-50%) translateY(0)';
+            });
+            clearTimeout(t._timer);
+            t._timer = setTimeout(() => {
+                t.style.opacity = '0';
+                t.style.transform = 'translateX(-50%) translateY(20px)';
+            }, 4000);
         }
 
         // Close modal when clicking outside

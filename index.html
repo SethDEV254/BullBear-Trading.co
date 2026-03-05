@@ -3585,8 +3585,22 @@
         // Check if user is logged in on page load
         document.addEventListener('DOMContentLoaded', function () {
             updateAuthNav();
-            // Make product cards clickable
             initializeProductCards();
+
+            // Show signup popup 10s after first scroll — only if not logged in and not shown yet this session
+            if (!localStorage.getItem('bullbearCurrentUser') && !sessionStorage.getItem('popupShown')) {
+                var popupTimer = null;
+                var scrollHandler = function () {
+                    if (popupTimer) return; // already started
+                    popupTimer = setTimeout(function () {
+                        if (!localStorage.getItem('bullbearCurrentUser')) {
+                            sessionStorage.setItem('popupShown', '1');
+                            openModal('checklistModal');
+                        }
+                    }, 10000);
+                };
+                window.addEventListener('scroll', scrollHandler, { passive: true, once: true });
+            }
         });
 
         // Function to update time and date

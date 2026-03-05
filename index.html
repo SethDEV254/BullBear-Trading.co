@@ -574,19 +574,21 @@
         /* Auth Modal Styling */
         .auth-modal {
             display: none;
-            position: fixed;
-            z-index: 10000;
+            position: fixed !important;
+            z-index: 100000;
             left: 0;
             top: 0;
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(5px);
+            align-items: center;
+            justify-content: center;
         }
 
         .auth-modal-content {
             background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            margin: 2% auto;
+            margin: auto;
             padding: 40px;
             border: 1px solid rgba(99, 102, 241, 0.3);
             border-radius: 20px;
@@ -902,7 +904,6 @@
         .header,
         main,
         footer,
-        .auth-modal,
         .chat-widget,
         #live-datetime-widget {
             position: relative;
@@ -3306,7 +3307,7 @@
 
         // Modal functions
         function openModal(modalId) {
-            document.getElementById(modalId).style.display = 'block';
+            document.getElementById(modalId).style.display = 'flex';
             document.body.style.overflow = 'hidden';
         }
 

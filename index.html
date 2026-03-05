@@ -3664,15 +3664,13 @@
                 });
             });
 
-            // New CTA buttons — capture phase, pure JS navigation, bypasses Kajabi
-            document.querySelectorAll('.bb-cta-btn').forEach(function (btn) {
-                btn.addEventListener('pointerdown', function (e) {
-                    e.stopPropagation();
-                }, true);
-                btn.addEventListener('click', function (e) {
-                    e.stopPropagation();
+            // window-level capture fires BEFORE any document-level Kajabi handlers
+            window.addEventListener('click', function (e) {
+                var btn = e.target.closest('.bb-cta-btn');
+                if (btn) {
+                    e.stopImmediatePropagation();
                     e.preventDefault();
-                    var url = this.getAttribute('data-url');
+                    var url = btn.getAttribute('data-url');
                     if (!url) return;
                     if (!localStorage.getItem('bullbearCurrentUser')) {
                         sessionStorage.setItem('pendingProductUrl', url);
@@ -3680,19 +3678,14 @@
                     } else {
                         window.open(url, '_blank', 'noopener,noreferrer');
                     }
-                }, true);
-            });
-
-            // Checklist download button
-            var dlBtn = document.querySelector('.checklist-dl-btn');
-            if (dlBtn) {
-                dlBtn.addEventListener('pointerdown', function (e) { e.stopPropagation(); }, true);
-                dlBtn.addEventListener('click', function (e) {
-                    e.stopPropagation();
+                }
+                var dl = e.target.closest('.checklist-dl-btn');
+                if (dl) {
+                    e.stopImmediatePropagation();
                     e.preventDefault();
                     showSignupForChecklist();
-                }, true);
-            }
+                }
+            }, true);
         }
     </script>
 

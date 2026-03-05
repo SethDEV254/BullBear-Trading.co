@@ -1703,6 +1703,333 @@
                 font-size: 1.3rem;
             }
         }
+
+        /* ================================================
+           FEATURED PRODUCTS — FUTURISTIC RETHEME v2
+           ================================================ */
+
+        /* Per-card accent palette via CSS custom props */
+        #block-1593046178513_4 .card { --ca: #f59e0b; --cr: 245,158,11; }
+        #block-1593046178513_5 .card { --ca: #10b981; --cr: 16,185,129; }
+        #block-crypto-course .card   { --ca: #22d3ee; --cr: 34,211,238; }
+        #block-1593046178513_3 .card { --ca: #a78bfa; --cr: 167,139,250; }
+        #block-1593046178513_6 .card { --ca: #818cf8; --cr: 129,140,248; }
+        #block-1593046178513_1 .card { --ca: #2dd4bf; --cr: 45,212,191; }
+        #block-1593046178513_7 .card { --ca: #fb923c; --cr: 251,146,60; }
+
+        /* Section — deep space background */
+        #section-1593046178513 {
+            background:
+                radial-gradient(ellipse 70% 55% at 8% 20%, rgba(99,102,241,0.14) 0%, transparent 62%),
+                radial-gradient(ellipse 60% 70% at 90% 80%, rgba(6,182,212,0.11) 0%, transparent 58%),
+                radial-gradient(ellipse 50% 40% at 55% 100%, rgba(139,92,246,0.08) 0%, transparent 55%),
+                radial-gradient(ellipse 35% 35% at 88% 8%, rgba(245,158,11,0.06) 0%, transparent 50%),
+                linear-gradient(160deg, #030509 0%, #060b16 55%, #0a0e1a 100%) !important;
+        }
+
+        /* Circuit-dot grid overlay */
+        #section-1593046178513::before {
+            background:
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Ccircle cx='30' cy='30' r='1' fill='rgba(99%2C102%2C241%2C0.18)'/%3E%3Cpath d='M0 30 L60 30 M30 0 L30 60' stroke='rgba(99%2C102%2C241%2C0.04)' stroke-width='0.5'/%3E%3C/svg%3E") !important;
+            opacity: 1 !important;
+            background-size: 60px 60px !important;
+        }
+
+        /* Section padding boost */
+        #section-1593046178513 .sizer {
+            padding-top: 30px !important;
+            padding-bottom: 70px !important;
+        }
+
+        /* Heading glow */
+        #section-1593046178513 h2 {
+            font-size: 2.5rem !important;
+            letter-spacing: 3px !important;
+            margin-bottom: 2.8rem !important;
+        }
+
+        /* Strip Kajabi block background */
+        .block-type--offer .block {
+            background: transparent !important;
+            box-shadow: none !important;
+            border: none !important;
+        }
+
+        /* ── Card base ── */
+        .block-type--offer .card {
+            --ca: #6366f1;
+            --cr: 99,102,241;
+            border: 1px solid rgba(var(--cr), 0.22) !important;
+            background: linear-gradient(148deg,
+                rgba(5, 8, 20, 0.97) 0%,
+                rgba(10, 16, 36, 0.94) 100%) !important;
+            backdrop-filter: blur(22px) saturate(1.3) !important;
+            box-shadow:
+                0 8px 32px rgba(0,0,0,0.55),
+                0 0 0 1px rgba(var(--cr), 0.07),
+                inset 0 1px 0 rgba(255,255,255,0.06),
+                inset 0 0 30px rgba(var(--cr), 0.02) !important;
+            border-radius: 18px !important;
+            min-height: 430px !important;
+            max-height: 462px !important;
+            transition:
+                border-color 0.35s ease,
+                box-shadow 0.35s ease,
+                transform 0.35s cubic-bezier(0.34,1.4,0.64,1) !important;
+        }
+
+        /* Accent top border line — always visible */
+        .block-type--offer .card::before {
+            content: '' !important;
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            height: 2px !important;
+            background: linear-gradient(90deg,
+                transparent 0%,
+                rgba(var(--cr), 0.85) 50%,
+                transparent 100%) !important;
+            z-index: 10 !important;
+            pointer-events: none !important;
+            opacity: 0.55 !important;
+            transition: opacity 0.3s ease, box-shadow 0.3s ease !important;
+            border-radius: 18px 18px 0 0 !important;
+        }
+
+        .block-type--offer .card:hover::before {
+            opacity: 1 !important;
+            box-shadow: 0 0 14px rgba(var(--cr), 0.7) !important;
+        }
+
+        /* Override old ::after to use accent (was cyan-only) */
+        .block-type--offer .card::after {
+            background: linear-gradient(90deg,
+                transparent,
+                rgba(var(--cr), 0.9),
+                transparent) !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            width: 100% !important;
+            height: 1px !important;
+            border-radius: 0 !important;
+        }
+
+        /* Card hover */
+        .block-type--offer .card:hover {
+            border-color: rgba(var(--cr), 0.55) !important;
+            box-shadow:
+                0 22px 60px rgba(0,0,0,0.65),
+                0 0 50px rgba(var(--cr), 0.16),
+                0 0 100px rgba(var(--cr), 0.05),
+                0 0 0 1px rgba(var(--cr), 0.28),
+                inset 0 1px 0 rgba(255,255,255,0.1),
+                inset 0 0 40px rgba(var(--cr), 0.04) !important;
+            transform: translateY(-8px) !important;
+        }
+
+        /* Image */
+        .block-type--offer .card__image {
+            height: 210px !important;
+            border-radius: 18px 18px 0 0 !important;
+            filter: saturate(0.88) brightness(0.9) !important;
+            transition: filter 0.45s ease, transform 0.5s cubic-bezier(0.4,0,0.2,1) !important;
+        }
+
+        .block-type--offer .card:hover .card__image {
+            filter: saturate(1.1) brightness(1.0) !important;
+            transform: scale(1.07) translateZ(0) !important;
+        }
+
+        /* Card body */
+        .block-type--offer .card__body {
+            background: linear-gradient(175deg,
+                rgba(4, 7, 18, 0.98) 0%,
+                rgba(8, 13, 30, 0.97) 100%) !important;
+            border-top: 1px solid rgba(var(--cr), 0.12) !important;
+            padding: 20px 18px 18px !important;
+            position: relative !important;
+            min-height: 200px !important;
+        }
+
+        /* Glow bleed from top of body */
+        .block-type--offer .card__body::after {
+            content: '' !important;
+            position: absolute !important;
+            top: 0 !important;
+            left: 10% !important;
+            right: 10% !important;
+            height: 60px !important;
+            background: radial-gradient(ellipse at 50% 0%,
+                rgba(var(--cr), 0.08) 0%,
+                transparent 100%) !important;
+            pointer-events: none !important;
+            z-index: 0 !important;
+        }
+
+        /* Category tag badge (injected via JS) */
+        .card-tag {
+            display: inline-block;
+            font-size: 0.6rem;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--ca);
+            background: rgba(var(--cr), 0.1);
+            border: 1px solid rgba(var(--cr), 0.3);
+            padding: 3px 9px;
+            border-radius: 4px;
+            margin-bottom: 8px;
+            backdrop-filter: blur(6px);
+            text-shadow: 0 0 8px rgba(var(--cr), 0.4);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Title */
+        .block-type--offer .card__title {
+            color: #cbd5e1 !important;
+            font-size: 0.92rem !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.04em !important;
+            font-weight: 700 !important;
+            transition: color 0.3s ease, text-shadow 0.3s ease !important;
+            position: relative !important;
+            z-index: 1 !important;
+            min-height: 2.4em !important;
+        }
+
+        .block-type--offer .card:hover .card__title {
+            color: var(--ca) !important;
+            text-shadow: 0 0 20px rgba(var(--cr), 0.5) !important;
+        }
+
+        /* Description */
+        .block-type--offer .card__text {
+            color: rgba(148, 163, 184, 0.72) !important;
+            font-size: 0.81rem !important;
+            line-height: 1.65 !important;
+            position: relative !important;
+            z-index: 1 !important;
+        }
+
+        /* Price — accent neon */
+        .block-type--offer .card__price {
+            color: var(--ca) !important;
+            font-size: 1.45rem !important;
+            font-weight: 800 !important;
+            text-shadow: 0 0 12px rgba(var(--cr), 0.4) !important;
+            animation: none !important;
+            position: relative !important;
+            z-index: 1 !important;
+            transition: text-shadow 0.3s ease !important;
+        }
+
+        .block-type--offer .card:hover .card__price {
+            text-shadow: 0 0 24px rgba(var(--cr), 0.75), 0 0 50px rgba(var(--cr), 0.3) !important;
+        }
+
+        /* CTA button — glass + accent */
+        .block-type--offer .bb-cta-btn {
+            background: linear-gradient(135deg,
+                rgba(var(--cr), 0.14) 0%,
+                rgba(var(--cr), 0.06) 100%) !important;
+            border: 1px solid rgba(var(--cr), 0.38) !important;
+            color: var(--ca) !important;
+            box-shadow:
+                0 3px 18px rgba(var(--cr), 0.12),
+                inset 0 1px 0 rgba(255,255,255,0.07) !important;
+            border-radius: 10px !important;
+            font-size: 0.79rem !important;
+            letter-spacing: 0.1em !important;
+            text-shadow: 0 0 8px rgba(var(--cr), 0.3) !important;
+            position: relative !important;
+            z-index: 10 !important;
+            transition:
+                background 0.25s ease,
+                border-color 0.25s ease,
+                box-shadow 0.25s ease,
+                transform 0.2s ease,
+                color 0.25s ease,
+                text-shadow 0.25s ease !important;
+        }
+
+        .block-type--offer .bb-cta-btn:hover {
+            background: linear-gradient(135deg,
+                rgba(var(--cr), 0.3) 0%,
+                rgba(var(--cr), 0.14) 100%) !important;
+            border-color: rgba(var(--cr), 0.68) !important;
+            color: #fff !important;
+            box-shadow:
+                0 6px 28px rgba(var(--cr), 0.28),
+                0 0 40px rgba(var(--cr), 0.1),
+                inset 0 1px 0 rgba(255,255,255,0.12) !important;
+            transform: translateY(-2px) scale(1.01) !important;
+            text-shadow: 0 0 16px rgba(var(--cr), 0.65) !important;
+        }
+
+        /* Checklist download button — emerald glass */
+        .block-type--offer .checklist-dl-btn {
+            background: linear-gradient(135deg,
+                rgba(16,185,129,0.15) 0%,
+                rgba(16,185,129,0.07) 100%) !important;
+            border: 1px solid rgba(16,185,129,0.38) !important;
+            color: #34d399 !important;
+            box-shadow: 0 3px 18px rgba(16,185,129,0.12) !important;
+            text-shadow: 0 0 8px rgba(16,185,129,0.3) !important;
+            font-size: 0.79rem !important;
+            letter-spacing: 0.1em !important;
+            text-transform: uppercase !important;
+            font-weight: 800 !important;
+            border-radius: 10px !important;
+            transition: all 0.25s ease !important;
+        }
+
+        .block-type--offer .checklist-dl-btn:hover {
+            background: linear-gradient(135deg,
+                rgba(16,185,129,0.3) 0%,
+                rgba(16,185,129,0.15) 100%) !important;
+            border-color: rgba(16,185,129,0.68) !important;
+            color: #6ee7b7 !important;
+            box-shadow: 0 6px 28px rgba(16,185,129,0.25), 0 0 35px rgba(16,185,129,0.08) !important;
+            transform: translateY(-2px) scale(1.01) !important;
+        }
+
+        /* FREE badge — emerald glass */
+        .block-type--offer .free-badge {
+            background: linear-gradient(135deg,
+                rgba(16,185,129,0.2) 0%,
+                rgba(16,185,129,0.1) 100%) !important;
+            border: 1px solid rgba(16,185,129,0.45) !important;
+            color: #6ee7b7 !important;
+            text-shadow: 0 0 10px rgba(16,185,129,0.45) !important;
+            animation: none !important;
+            box-shadow: 0 2px 14px rgba(16,185,129,0.18) !important;
+            border-radius: 6px !important;
+        }
+
+        /* Mobile adjustments */
+        @media (max-width: 767px) {
+            .block-type--offer .card {
+                max-height: none !important;
+                min-height: auto !important;
+                border-radius: 14px !important;
+            }
+
+            .block-type--offer .card__image {
+                height: 185px !important;
+            }
+
+            .block-type--offer .card__body {
+                min-height: auto !important;
+            }
+
+            #section-1593046178513 h2 {
+                font-size: 1.7rem !important;
+                letter-spacing: 1.5px !important;
+            }
+        }
     </style>
     <script type="module"
         src="https://cdn.jsdelivr.net/npm/@pine-ds/core@2.1.2/dist/pine-core/pine-core.esm.js"></script>
@@ -3647,6 +3974,27 @@
 
         // Function to initialize product card click handlers
         function initializeProductCards() {
+            // Inject category tag badges
+            var tagMap = {
+                'block-1593046178513_4': 'PREMIUM',
+                'block-1593046178513_5': 'FREE',
+                'block-crypto-course':   'COURSE',
+                'block-1593046178513_3': 'HARDWARE',
+                'block-1593046178513_6': 'HARDWARE',
+                'block-1593046178513_1': 'GUIDE',
+                'block-1593046178513_7': 'BUSINESS',
+            };
+            Object.entries(tagMap).forEach(function(entry) {
+                var el = document.getElementById(entry[0]);
+                if (!el) return;
+                var body = el.querySelector('.card__body');
+                if (!body) return;
+                var tag = document.createElement('span');
+                tag.className = 'card-tag';
+                tag.textContent = entry[1];
+                body.insertBefore(tag, body.firstChild);
+            });
+
             const productCards = document.querySelectorAll('.card[data-product-url]');
 
             productCards.forEach(card => {

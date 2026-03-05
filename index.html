@@ -3366,7 +3366,7 @@
                 localStorage.setItem('bullbearCurrentUser', JSON.stringify(existing));
                 updateAuthNav();
                 closeModal('checklistModal');
-                downloadChecklist(existing);
+                redirectOrDownload(existing);
                 return false;
             }
 
@@ -3378,8 +3378,18 @@
             closeModal('checklistModal');
             document.getElementById('checklistForm').reset();
             errorDiv.style.display = 'none';
-            downloadChecklist(newUser);
+            redirectOrDownload(newUser);
             return false;
+        }
+
+        function redirectOrDownload(user) {
+            var pending = sessionStorage.getItem('pendingProductUrl');
+            if (pending) {
+                sessionStorage.removeItem('pendingProductUrl');
+                window.open(pending, '_blank', 'noopener,noreferrer');
+            } else {
+                downloadChecklist(user);
+            }
         }
 
         // Function to download the checklist
@@ -3587,20 +3597,16 @@
             updateAuthNav();
             initializeProductCards();
 
-            // Show signup popup 10s after first scroll — only if not logged in and not shown yet this session
-            if (!localStorage.getItem('bullbearCurrentUser') && !sessionStorage.getItem('popupShown')) {
-                var popupTimer = null;
-                var scrollHandler = function () {
-                    if (popupTimer) return; // already started
-                    popupTimer = setTimeout(function () {
-                        if (!localStorage.getItem('bullbearCurrentUser')) {
-                            sessionStorage.setItem('popupShown', '1');
-                            openModal('checklistModal');
-                        }
-                    }, 10000);
-                };
-                window.addEventListener('scroll', scrollHandler, { passive: true, once: true });
-            }
+            // Show signup popup when any product/buy button is clicked by a non-logged-in visitor
+            document.querySelectorAll('.buy-now-btn, .btn--solid[href]').forEach(function (btn) {
+                btn.addEventListener('click', function (e) {
+                    if (localStorage.getItem('bullbearCurrentUser')) return;
+                    e.stopPropagation();
+                    e.preventDefault();
+                    sessionStorage.setItem('pendingProductUrl', btn.getAttribute('href') || '');
+                    openModal('checklistModal');
+                }, true);
+            });
         });
 
         // Function to update time and date

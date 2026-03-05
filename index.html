@@ -329,24 +329,23 @@
             gap: 8px;
             width: 100%;
             margin-top: 16px;
-            padding: 14px 20px;
-            background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 50%, #f59e0b 100%);
-            background-size: 200% 100%;
-            color: #000 !important;
+            padding: 13px 22px;
+            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+            color: #fff !important;
             font-family: 'Inter', 'Poppins', sans-serif;
-            font-weight: 800;
-            font-size: 0.88rem;
-            letter-spacing: 0.06em;
+            font-weight: 900;
+            font-size: 0.77rem;
+            letter-spacing: 0.15em;
             text-transform: uppercase;
             border: none;
-            border-radius: 12px;
+            border-radius: 50px;
             cursor: pointer;
             position: relative;
             z-index: 9999;
             pointer-events: auto !important;
             overflow: hidden;
-            transition: background-position 0.4s ease, transform 0.2s ease, box-shadow 0.2s ease;
-            box-shadow: 0 4px 20px rgba(251, 191, 36, 0.35);
+            transition: box-shadow 0.3s ease, transform 0.22s ease, filter 0.25s ease;
+            box-shadow: 0 4px 22px rgba(99, 102, 241, 0.5);
         }
 
         .bb-cta-btn span {
@@ -1842,7 +1841,7 @@
             transform: scale(1.07) translateZ(0) !important;
         }
 
-        /* Card body */
+        /* Card body — flex column so button sticks to bottom */
         .block-type--offer .card__body {
             background: linear-gradient(175deg,
                 rgba(4, 7, 18, 0.98) 0%,
@@ -1851,6 +1850,8 @@
             padding: 20px 18px 18px !important;
             position: relative !important;
             min-height: 200px !important;
+            display: flex !important;
+            flex-direction: column !important;
         }
 
         /* Glow bleed from top of body */
@@ -1930,70 +1931,125 @@
             text-shadow: 0 0 24px rgba(var(--cr), 0.75), 0 0 50px rgba(var(--cr), 0.3) !important;
         }
 
-        /* CTA button — glass + accent */
+        /* CTA button — solid accent fill, pill, scan shimmer, bottom-sticky */
         .block-type--offer .bb-cta-btn {
+            margin-top: auto !important;
             background: linear-gradient(135deg,
-                rgba(var(--cr), 0.14) 0%,
-                rgba(var(--cr), 0.06) 100%) !important;
-            border: 1px solid rgba(var(--cr), 0.38) !important;
-            color: var(--ca) !important;
+                rgba(var(--cr), 1) 0%,
+                rgba(var(--cr), 0.72) 100%) !important;
+            border: none !important;
+            color: #fff !important;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.35) !important;
             box-shadow:
-                0 3px 18px rgba(var(--cr), 0.12),
-                inset 0 1px 0 rgba(255,255,255,0.07) !important;
-            border-radius: 10px !important;
-            font-size: 0.79rem !important;
-            letter-spacing: 0.1em !important;
-            text-shadow: 0 0 8px rgba(var(--cr), 0.3) !important;
+                0 4px 22px rgba(var(--cr), 0.5),
+                0 1px 0 rgba(255,255,255,0.2) inset !important;
+            border-radius: 50px !important;
+            font-size: 0.77rem !important;
+            font-weight: 900 !important;
+            letter-spacing: 0.15em !important;
+            padding: 13px 22px !important;
             position: relative !important;
             z-index: 10 !important;
+            overflow: hidden !important;
             transition:
-                background 0.25s ease,
-                border-color 0.25s ease,
-                box-shadow 0.25s ease,
-                transform 0.2s ease,
-                color 0.25s ease,
-                text-shadow 0.25s ease !important;
+                box-shadow 0.3s ease,
+                transform 0.22s cubic-bezier(0.34,1.5,0.64,1),
+                filter 0.25s ease !important;
+        }
+
+        /* Scan-line shimmer sweep */
+        .block-type--offer .bb-cta-btn::before {
+            content: '' !important;
+            position: absolute !important;
+            inset: 0 !important;
+            background: linear-gradient(105deg,
+                transparent 25%,
+                rgba(255,255,255,0.28) 50%,
+                transparent 75%) !important;
+            transform: translateX(-130%) skewX(-15deg) !important;
+            transition: transform 0.55s ease !important;
+            pointer-events: none !important;
+            z-index: 1 !important;
+        }
+
+        .block-type--offer .bb-cta-btn:hover::before {
+            transform: translateX(130%) skewX(-15deg) !important;
         }
 
         .block-type--offer .bb-cta-btn:hover {
-            background: linear-gradient(135deg,
-                rgba(var(--cr), 0.3) 0%,
-                rgba(var(--cr), 0.14) 100%) !important;
-            border-color: rgba(var(--cr), 0.68) !important;
-            color: #fff !important;
+            filter: brightness(1.18) saturate(1.12) !important;
             box-shadow:
-                0 6px 28px rgba(var(--cr), 0.28),
-                0 0 40px rgba(var(--cr), 0.1),
-                inset 0 1px 0 rgba(255,255,255,0.12) !important;
-            transform: translateY(-2px) scale(1.01) !important;
-            text-shadow: 0 0 16px rgba(var(--cr), 0.65) !important;
+                0 8px 36px rgba(var(--cr), 0.65),
+                0 0 70px rgba(var(--cr), 0.22),
+                inset 0 1px 0 rgba(255,255,255,0.25) !important;
+            transform: translateY(-3px) !important;
         }
 
-        /* Checklist download button — emerald glass */
+        .block-type--offer .bb-cta-btn:active {
+            transform: translateY(-1px) !important;
+            filter: brightness(1.05) !important;
+        }
+
+        /* Arrow nudge */
+        .block-type--offer .bb-cta-btn span {
+            display: inline-block;
+            transition: transform 0.25s ease !important;
+        }
+
+        .block-type--offer .bb-cta-btn:hover span {
+            transform: translateX(5px) !important;
+        }
+
+        /* Checklist button — emerald solid pill */
         .block-type--offer .checklist-dl-btn {
+            margin-top: auto !important;
             background: linear-gradient(135deg,
-                rgba(16,185,129,0.15) 0%,
-                rgba(16,185,129,0.07) 100%) !important;
-            border: 1px solid rgba(16,185,129,0.38) !important;
-            color: #34d399 !important;
-            box-shadow: 0 3px 18px rgba(16,185,129,0.12) !important;
-            text-shadow: 0 0 8px rgba(16,185,129,0.3) !important;
-            font-size: 0.79rem !important;
-            letter-spacing: 0.1em !important;
+                rgba(16,185,129,0.95) 0%,
+                rgba(5,150,105,0.85) 100%) !important;
+            border: none !important;
+            color: #fff !important;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.3) !important;
+            box-shadow:
+                0 4px 22px rgba(16,185,129,0.5),
+                inset 0 1px 0 rgba(255,255,255,0.2) !important;
+            border-radius: 50px !important;
+            font-size: 0.77rem !important;
+            font-weight: 900 !important;
+            letter-spacing: 0.15em !important;
             text-transform: uppercase !important;
-            font-weight: 800 !important;
-            border-radius: 10px !important;
-            transition: all 0.25s ease !important;
+            padding: 13px 22px !important;
+            overflow: hidden !important;
+            position: relative !important;
+            transition:
+                box-shadow 0.3s ease,
+                transform 0.22s cubic-bezier(0.34,1.5,0.64,1),
+                filter 0.25s ease !important;
+        }
+
+        .block-type--offer .checklist-dl-btn::before {
+            content: '' !important;
+            position: absolute !important;
+            inset: 0 !important;
+            background: linear-gradient(105deg,
+                transparent 25%,
+                rgba(255,255,255,0.28) 50%,
+                transparent 75%) !important;
+            transform: translateX(-130%) skewX(-15deg) !important;
+            transition: transform 0.55s ease !important;
+            pointer-events: none !important;
+        }
+
+        .block-type--offer .checklist-dl-btn:hover::before {
+            transform: translateX(130%) skewX(-15deg) !important;
         }
 
         .block-type--offer .checklist-dl-btn:hover {
-            background: linear-gradient(135deg,
-                rgba(16,185,129,0.3) 0%,
-                rgba(16,185,129,0.15) 100%) !important;
-            border-color: rgba(16,185,129,0.68) !important;
-            color: #6ee7b7 !important;
-            box-shadow: 0 6px 28px rgba(16,185,129,0.25), 0 0 35px rgba(16,185,129,0.08) !important;
-            transform: translateY(-2px) scale(1.01) !important;
+            filter: brightness(1.18) saturate(1.1) !important;
+            box-shadow:
+                0 8px 36px rgba(16,185,129,0.6),
+                0 0 70px rgba(16,185,129,0.2),
+                inset 0 1px 0 rgba(255,255,255,0.25) !important;
+            transform: translateY(-3px) !important;
         }
 
         /* FREE badge — emerald glass */

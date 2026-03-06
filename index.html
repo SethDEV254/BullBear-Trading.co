@@ -2735,7 +2735,7 @@
                                                 <span class="free-badge">FREE</span>
                                                 <h4 class="card__title">Crypto Quickstart Checklist</h4>
                                                 <p class="card__text">5-step guide to start trading crypto with confidence.</p>
-                                                <button class="checklist-dl-btn">Download Free</button>
+                                                <button class="checklist-dl-btn">Get Free Checklist <span style="margin-left:4px;">→</span></button>
                                             </div>
                                         </div>
                                     </div>
@@ -3719,9 +3719,8 @@
         }
 
         function showSignupForChecklist() {
-            const raw = localStorage.getItem('bullbearCurrentUser');
-            if (raw) {
-                downloadChecklist(JSON.parse(raw));
+            if (localStorage.getItem('bullbearCurrentUser')) {
+                window.location.href = 'crypto-quickstart-checklist.html';
             } else {
                 openModal('checklistModal');
             }
@@ -3769,19 +3768,8 @@
                 sessionStorage.removeItem('pendingProductUrl');
                 window.open(pending, '_blank', 'noopener,noreferrer');
             } else {
-                downloadChecklist(user);
+                window.location.href = 'crypto-quickstart-checklist.html';
             }
-        }
-
-        // Function to download the checklist
-        function downloadChecklist(user) {
-            const link = document.createElement('a');
-            link.href = 'crypto-quickstart-checklist.pdf';
-            link.download = 'BullBear-Crypto-Quickstart-Checklist.pdf';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            showToast('Download started — enjoy your free checklist, ' + user.name.split(' ')[0] + '!');
         }
 
         function showToast(msg) {

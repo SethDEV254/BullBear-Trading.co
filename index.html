@@ -2,52 +2,21 @@
 <html lang="en">
 
 <head>
-    <!-- EARLY BUTTON INTERCEPTOR — coordinate-based, registered before any Kajabi scripts -->
+    <!-- EARLY BUTTON INTERCEPTOR — registered before any Kajabi scripts -->
     <script>
     (function () {
-        // Returns btn element if click coords fall inside any .bb-cta-btn within an offer block
-        function findBtnAtPoint(offer, sel, x, y) {
-            var els = offer.querySelectorAll(sel);
-            for (var i = 0; i < els.length; i++) {
-                var r = els[i].getBoundingClientRect();
-                if (x >= r.left && x <= r.right && y >= r.top && y <= r.bottom) return els[i];
-            }
-            return null;
-        }
+        var _busy = false;
 
-        function handleBBEvent(e) {
-            // Fast path: direct hit (no overlay)
-            var btn = e.target.closest ? e.target.closest('.bb-cta-btn') : null;
-            if (!btn) {
-                var dl = e.target.closest ? e.target.closest('.checklist-dl-btn') : null;
-                if (dl) { btn = dl; btn._isCl = true; }
-            }
+        function dispatch(btn) {
+            if (_busy) return;
+            _busy = true;
+            setTimeout(function () { _busy = false; }, 400);
 
-            // Fallback: coordinate check in case an overlay absorbed the click
-            if (!btn) {
-                var offer = e.target.closest ? e.target.closest('.block-type--offer') : null;
-                if (offer) {
-                    var found = findBtnAtPoint(offer, '.bb-cta-btn', e.clientX, e.clientY);
-                    if (found) { btn = found; }
-                    else {
-                        found = findBtnAtPoint(offer, '.checklist-dl-btn', e.clientX, e.clientY);
-                        if (found) { btn = found; btn._isCl = true; }
-                    }
-                }
-            }
-
-            if (!btn) return;
-
-            e.stopImmediatePropagation();
-            e.preventDefault();
-
-            if (btn._isCl || btn.classList.contains('checklist-dl-btn')) {
-                btn._isCl = false;
+            if (btn.classList.contains('checklist-dl-btn')) {
                 if (typeof showSignupForChecklist === 'function') showSignupForChecklist();
                 else window._bbPending = 'checklist';
                 return;
             }
-
             var url = btn.getAttribute('data-url');
             if (!url) return;
             if (!localStorage.getItem('bullbearCurrentUser')) {
@@ -59,8 +28,37 @@
             }
         }
 
-        window.addEventListener('click',     handleBBEvent, true);
+        function handleBBEvent(e) {
+            // Primary: direct target (works when pointer-events:none on card children)
+            var btn = e.target.closest ? e.target.closest('.bb-cta-btn, .checklist-dl-btn') : null;
+
+            // Fallback: coordinate scan inside the offer block (handles any overlay)
+            if (!btn) {
+                var offer = e.target.closest ? e.target.closest('.block-type--offer') : null;
+                if (offer) {
+                    var sels = ['.bb-cta-btn', '.checklist-dl-btn'];
+                    for (var s = 0; s < sels.length; s++) {
+                        var els = offer.querySelectorAll(sels[s]);
+                        for (var i = 0; i < els.length; i++) {
+                            var r = els[i].getBoundingClientRect();
+                            if (e.clientX >= r.left && e.clientX <= r.right &&
+                                e.clientY >= r.top  && e.clientY <= r.bottom) {
+                                btn = els[i]; break;
+                            }
+                        }
+                        if (btn) break;
+                    }
+                }
+            }
+
+            if (!btn) return;
+            e.stopImmediatePropagation();
+            e.preventDefault();
+            dispatch(btn);
+        }
+
         window.addEventListener('mousedown', handleBBEvent, true);
+        window.addEventListener('click',     handleBBEvent, true);
     })();
     </script>
     <meta name="csrf-param" content="authenticity_token">
@@ -1813,6 +1811,18 @@
             background: transparent !important;
             box-shadow: none !important;
             border: none !important;
+        }
+
+        /* ── Pointer-events isolation: ONLY our buttons are clickable ── */
+        /* This prevents any Kajabi overlay inside the card from absorbing clicks */
+        .block-type--offer .card * {
+            pointer-events: none !important;
+        }
+        .block-type--offer .bb-cta-btn,
+        .block-type--offer .bb-cta-btn *,
+        .block-type--offer .checklist-dl-btn,
+        .block-type--offer .checklist-dl-btn * {
+            pointer-events: auto !important;
         }
 
         /* ── Card base ── */

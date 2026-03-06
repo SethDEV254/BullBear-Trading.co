@@ -42,6 +42,18 @@
         e.preventDefault();
         showSignupForChecklist();
     }
+
+    /* Nav helpers */
+    function showLoginModal()  { openModal('loginModal'); }
+    function showSignupModal() { openModal('signupModal'); }
+    function logoutUser() {
+        localStorage.removeItem('bullbearCurrentUser');
+        if (typeof updateAuthNav === 'function') updateAuthNav();
+        else location.reload();
+    }
+
+    /* Fallback for downloadChecklist if called before body scripts load */
+    function downloadChecklist() { window.location.href = 'crypto-quickstart-checklist.html'; }
     </script>
     <meta name="csrf-param" content="authenticity_token">
     <meta name="csrf-token"
@@ -3810,10 +3822,15 @@
             var pending = sessionStorage.getItem('pendingProductUrl');
             if (pending) {
                 sessionStorage.removeItem('pendingProductUrl');
-                window.open(pending, '_blank', 'noopener,noreferrer');
+                var w = window.open(pending, '_blank', 'noopener,noreferrer');
+                if (!w) window.location.href = pending; // popup blocked fallback
             } else {
                 window.location.href = 'crypto-quickstart-checklist.html';
             }
+        }
+
+        function downloadChecklist(user) {
+            window.location.href = 'crypto-quickstart-checklist.html';
         }
 
         function showToast(msg) {
@@ -3845,12 +3862,12 @@
         }
 
         // Close modal when clicking outside
-        window.onclick = function (event) {
+        window.addEventListener('click', function (event) {
             if (event.target.classList.contains('auth-modal')) {
                 event.target.style.display = 'none';
-                document.body.style.overflow = 'auto';
+                document.body.style.overflow = '';
             }
-        }
+        });
 
         // Authentication Functions
         function handleSignup(event) {
@@ -3918,19 +3935,24 @@
             }
             successDiv.style.display = 'block';
 
-            // Close modal and download checklist if pending
             updateAuthNav();
             setTimeout(function () {
                 closeModal('signupModal');
                 document.getElementById('signupForm').reset();
                 successDiv.style.display = 'none';
 
-                // Download checklist if it was pending
-                if (pendingDownload === 'true') {
+                var pendingUrl = sessionStorage.getItem('pendingProductUrl');
+                if (pendingUrl) {
+                    sessionStorage.removeItem('pendingProductUrl');
+                    var w = window.open(pendingUrl, '_blank', 'noopener,noreferrer');
+                    if (!w) window.location.href = pendingUrl;
+                } else if (pendingDownload === 'true') {
                     localStorage.removeItem('pendingChecklistDownload');
-                    downloadChecklist(newUser);
+                    window.location.href = 'crypto-quickstart-checklist.html';
+                } else {
+                    showToast('Welcome to BullBear Blockchain, ' + newUser.name.split(' ')[0] + '!');
                 }
-            }, 2000);
+            }, 1500);
 
             return false;
         }
@@ -3956,26 +3978,18 @@
                 // Check if user wanted to download checklist
                 const pendingDownload = localStorage.getItem('pendingChecklistDownload');
 
-                // Close modal
                 closeModal('loginModal');
 
-                // Download checklist if pending
-                if (pendingDownload === 'true') {
+                var pendingUrl = sessionStorage.getItem('pendingProductUrl');
+                if (pendingUrl) {
+                    sessionStorage.removeItem('pendingProductUrl');
+                    var w = window.open(pendingUrl, '_blank', 'noopener,noreferrer');
+                    if (!w) window.location.href = pendingUrl;
+                } else if (pendingDownload === 'true') {
                     localStorage.removeItem('pendingChecklistDownload');
-                    setTimeout(function () {
-                        downloadChecklist(user);
-                    }, 500);
+                    window.location.href = 'crypto-quickstart-checklist.html';
                 } else {
-                    // Scroll to products section
-                    const productsSection = document.getElementById('section-1593046178513');
-                    if (productsSection) {
-                        productsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }
-
-                    // Show welcome message
-                    setTimeout(function () {
-                        alert('Welcome back, ' + user.name + '! Browse our products below.');
-                    }, 500);
+                    showToast('Welcome back, ' + user.name.split(' ')[0] + '!');
                 }
             } else {
                 errorDiv.textContent = 'Invalid email/phone or password!';

@@ -2,8 +2,29 @@
 <html lang="en">
 
 <head>
-    <!-- Global button handler — called directly from onclick attributes on each button -->
+    <!-- Core functions defined HERE in <head> so they exist before any blocking script loads -->
     <script>
+    /* Modal helpers */
+    function openModal(id) {
+        var el = document.getElementById(id);
+        if (el) { el.style.display = 'flex'; document.body.style.overflow = 'hidden'; }
+    }
+    function closeModal(id) {
+        var el = document.getElementById(id);
+        if (el) { el.style.display = 'none'; document.body.style.overflow = ''; }
+    }
+    function switchModal(a, b) { closeModal(a); openModal(b); }
+
+    /* Checklist flow */
+    function showSignupForChecklist() {
+        if (localStorage.getItem('bullbearCurrentUser')) {
+            window.location.href = 'crypto-quickstart-checklist.html';
+        } else {
+            openModal('checklistModal');
+        }
+    }
+
+    /* Button handlers — called from onclick attributes */
     function bbCta(btn, e) {
         e.stopPropagation();
         e.preventDefault();
@@ -1772,18 +1793,6 @@
             background: transparent !important;
             box-shadow: none !important;
             border: none !important;
-        }
-
-        /* ── Pointer-events isolation: ONLY our buttons are clickable ── */
-        /* This prevents any Kajabi overlay inside the card from absorbing clicks */
-        .block-type--offer .card * {
-            pointer-events: none !important;
-        }
-        .block-type--offer .bb-cta-btn,
-        .block-type--offer .bb-cta-btn *,
-        .block-type--offer .checklist-dl-btn,
-        .block-type--offer .checklist-dl-btn * {
-            pointer-events: auto !important;
         }
 
         /* ── Card base ── */

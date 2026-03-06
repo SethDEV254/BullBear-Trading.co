@@ -2,64 +2,25 @@
 <html lang="en">
 
 <head>
-    <!-- EARLY BUTTON INTERCEPTOR — registered before any Kajabi scripts -->
+    <!-- Global button handler — called directly from onclick attributes on each button -->
     <script>
-    (function () {
-        var _busy = false;
-
-        function dispatch(btn) {
-            if (_busy) return;
-            _busy = true;
-            setTimeout(function () { _busy = false; }, 400);
-
-            if (btn.classList.contains('checklist-dl-btn')) {
-                if (typeof showSignupForChecklist === 'function') showSignupForChecklist();
-                else window._bbPending = 'checklist';
-                return;
-            }
-            var url = btn.getAttribute('data-url');
-            if (!url) return;
-            if (!localStorage.getItem('bullbearCurrentUser')) {
-                sessionStorage.setItem('pendingProductUrl', url);
-                if (typeof openModal === 'function') openModal('checklistModal');
-                else window._bbPending = 'product';
-            } else {
-                window.location.href = url;
-            }
+    function bbCta(btn, e) {
+        e.stopPropagation();
+        e.preventDefault();
+        var url = btn.getAttribute('data-url');
+        if (!url) return;
+        if (!localStorage.getItem('bullbearCurrentUser')) {
+            sessionStorage.setItem('pendingProductUrl', url);
+            openModal('checklistModal');
+        } else {
+            window.location.href = url;
         }
-
-        function handleBBEvent(e) {
-            // Primary: direct target (works when pointer-events:none on card children)
-            var btn = e.target.closest ? e.target.closest('.bb-cta-btn, .checklist-dl-btn') : null;
-
-            // Fallback: coordinate scan inside the offer block (handles any overlay)
-            if (!btn) {
-                var offer = e.target.closest ? e.target.closest('.block-type--offer') : null;
-                if (offer) {
-                    var sels = ['.bb-cta-btn', '.checklist-dl-btn'];
-                    for (var s = 0; s < sels.length; s++) {
-                        var els = offer.querySelectorAll(sels[s]);
-                        for (var i = 0; i < els.length; i++) {
-                            var r = els[i].getBoundingClientRect();
-                            if (e.clientX >= r.left && e.clientX <= r.right &&
-                                e.clientY >= r.top  && e.clientY <= r.bottom) {
-                                btn = els[i]; break;
-                            }
-                        }
-                        if (btn) break;
-                    }
-                }
-            }
-
-            if (!btn) return;
-            e.stopImmediatePropagation();
-            e.preventDefault();
-            dispatch(btn);
-        }
-
-        window.addEventListener('mousedown', handleBBEvent, true);
-        window.addEventListener('click',     handleBBEvent, true);
-    })();
+    }
+    function bbChecklist(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        showSignupForChecklist();
+    }
     </script>
     <meta name="csrf-param" content="authenticity_token">
     <meta name="csrf-token"
@@ -2767,7 +2728,7 @@
                                                 <h5 class="card__price"
                                                     style="color: #06b6d4; font-size: 1.5rem; font-weight: 700;">$500.00
                                                     USD</h5>
-                                                <button class="bb-cta-btn" data-url="https://metahubacademy.com/available-courses-and-ebooks">Get Access <span>→</span></button>
+                                                <button class="bb-cta-btn" data-url="https://metahubacademy.com/available-courses-and-ebooks" onclick="bbCta(this,event)">Get Access <span>→</span></button>
                                             </div>
                                         </div>
                                     </div>
@@ -2809,7 +2770,7 @@
                                                 <span class="free-badge">FREE</span>
                                                 <h4 class="card__title">Crypto Quickstart Checklist</h4>
                                                 <p class="card__text">5-step guide to start trading crypto with confidence.</p>
-                                                <button class="checklist-dl-btn">Get Free Checklist <span style="margin-left:4px;">→</span></button>
+                                                <button class="checklist-dl-btn" onclick="bbChecklist(event)">Get Free Checklist <span style="margin-left:4px;">→</span></button>
                                             </div>
                                         </div>
                                     </div>
@@ -2853,7 +2814,7 @@
                                                 <h5 class="card__price"
                                                     style="color: #06b6d4; font-size: 1.5rem; font-weight: 700;">$500.00
                                                     USD</h5>
-                                                <button class="bb-cta-btn" data-url="crypto-trading-course.html">Get Access <span>→</span></button>
+                                                <button class="bb-cta-btn" data-url="crypto-trading-course.html" onclick="bbCta(this,event)">Get Access <span>→</span></button>
                                             </div>
                                         </div>
                                     </div>
@@ -2898,7 +2859,7 @@
                                                 <h5 class="card__price"
                                                     style="color: #06b6d4; font-size: 1.5rem; font-weight: 700;">$400.00
                                                     USD</h5>
-                                                <button class="bb-cta-btn" data-url="https://metahubacademy.com/ledger-nano-x">Get Access <span>→</span></button>
+                                                <button class="bb-cta-btn" data-url="https://metahubacademy.com/ledger-nano-x" onclick="bbCta(this,event)">Get Access <span>→</span></button>
                                             </div>
                                         </div>
                                     </div>
@@ -2943,7 +2904,7 @@
                                                 <h5 class="card__price"
                                                     style="color: #06b6d4; font-size: 1.5rem; font-weight: 700;">$250.00
                                                     USD</h5>
-                                                <button class="bb-cta-btn" data-url="https://metahubacademy.com/ledger-nano-s">Get Access <span>→</span></button>
+                                                <button class="bb-cta-btn" data-url="https://metahubacademy.com/ledger-nano-s" onclick="bbCta(this,event)">Get Access <span>→</span></button>
                                             </div>
                                         </div>
                                     </div>
@@ -2989,7 +2950,7 @@
                                                 <h5 class="card__price"
                                                     style="color: #06b6d4; font-size: 1.5rem; font-weight: 700;">$30.00
                                                     USD</h5>
-                                                <button class="bb-cta-btn" data-url="https://metahubacademy.com/crypto-truth-guide">Get Access <span>→</span></button>
+                                                <button class="bb-cta-btn" data-url="https://metahubacademy.com/crypto-truth-guide" onclick="bbCta(this,event)">Get Access <span>→</span></button>
                                             </div>
                                         </div>
                                     </div>
@@ -3037,7 +2998,7 @@
                                                 <h5 class="card__price"
                                                     style="color: #06b6d4; font-size: 1.5rem; font-weight: 700;">$20.00
                                                     USD</h5>
-                                                <button class="bb-cta-btn" data-url="https://metahubacademy.com/proven-steps-to-6-figure-affiliate-marketing">Get Access <span>→</span></button>
+                                                <button class="bb-cta-btn" data-url="https://metahubacademy.com/proven-steps-to-6-figure-affiliate-marketing" onclick="bbCta(this,event)">Get Access <span>→</span></button>
                                             </div>
                                         </div>
                                     </div>

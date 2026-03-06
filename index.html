@@ -2,6 +2,41 @@
 <html lang="en">
 
 <head>
+    <!-- EARLY BUTTON INTERCEPTOR — registered before any Kajabi scripts -->
+    <script>
+    (function () {
+        window.addEventListener('click', function (e) {
+            var btn = e.target.closest ? e.target.closest('.bb-cta-btn') : null;
+            if (btn) {
+                e.stopImmediatePropagation();
+                e.preventDefault();
+                var url = btn.getAttribute('data-url');
+                if (!url) return;
+                if (!localStorage.getItem('bullbearCurrentUser')) {
+                    sessionStorage.setItem('pendingProductUrl', url);
+                    if (typeof openModal === 'function') {
+                        openModal('checklistModal');
+                    } else {
+                        window._bbPending = 'product';
+                    }
+                } else {
+                    window.open(url, '_blank', 'noopener,noreferrer');
+                }
+                return;
+            }
+            var dl = e.target.closest ? e.target.closest('.checklist-dl-btn') : null;
+            if (dl) {
+                e.stopImmediatePropagation();
+                e.preventDefault();
+                if (typeof showSignupForChecklist === 'function') {
+                    showSignupForChecklist();
+                } else {
+                    window._bbPending = 'checklist';
+                }
+            }
+        }, true);
+    })();
+    </script>
     <meta name="csrf-param" content="authenticity_token">
     <meta name="csrf-token"
         content="a5YQcGJxUx5w3FWuMkUlHDFwHU7L06SIWfUDQwBzqEMs1/Ow00XhwpJNymVC/fxBtqmta3qcmY1F6xzAaT+Eow==">
@@ -3978,8 +4013,14 @@
         // Check if user is logged in on page load
         document.addEventListener('DOMContentLoaded', function () {
             updateAuthNav();
-            initializeProductCards();
 
+            // Strip any Kajabi event listeners from product blocks by cloning them
+            document.querySelectorAll('.block-type--offer').forEach(function (el) {
+                var clone = el.cloneNode(true);
+                el.parentNode.replaceChild(clone, el);
+            });
+
+            initializeProductCards();
         });
 
         // Function to update time and date
@@ -4053,45 +4094,12 @@
                 body.insertBefore(tag, body.firstChild);
             });
 
-            const productCards = document.querySelectorAll('.card[data-product-url]');
-
-            productCards.forEach(card => {
-                const productUrl = card.getAttribute('data-product-url');
-
-                card.style.cursor = 'pointer';
-
-                card.addEventListener('click', function (e) {
-                    if (e.target.closest('.buy-now-btn') || e.target.closest('a') || e.target.closest('button')) {
-                        return;
-                    }
-                    if (productUrl) {
-                        window.open(productUrl, '_blank', 'noopener,noreferrer');
-                    }
-                });
-            });
-
-            // window-level capture fires BEFORE any document-level Kajabi handlers
-            window.addEventListener('click', function (e) {
-                var btn = e.target.closest('.bb-cta-btn');
-                if (btn) {
-                    e.stopImmediatePropagation();
-                    e.preventDefault();
-                    var url = btn.getAttribute('data-url');
-                    if (!url) return;
-                    if (!localStorage.getItem('bullbearCurrentUser')) {
-                        sessionStorage.setItem('pendingProductUrl', url);
-                        openModal('checklistModal');
-                    } else {
-                        window.open(url, '_blank', 'noopener,noreferrer');
-                    }
-                }
-                var dl = e.target.closest('.checklist-dl-btn');
-                if (dl) {
-                    e.stopImmediatePropagation();
-                    e.preventDefault();
-                    showSignupForChecklist();
-                }
-            }, true);
+            // Wire up _bbPending in case early interceptor fired before functions were defined
+            if (window._bbPending) {
+                if (window._bbPending === 'checklist') showSignupForChecklist();
+                else if (window._bbPending === 'product') openModal('checklistModal');
+                window._bbPending = null;
+            }
         }
     </script>
 

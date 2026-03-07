@@ -1313,7 +1313,7 @@
     </div>
 
     <script>
-        const API_URL = 'http://localhost:5000/api';
+        const API_URL = 'https://backend-tawny-nu-33.vercel.app/api';
         let authToken = null;
         let currentAdmin = null;
         let revenueChart, userChart, salesChart, monthlyRevenueChart, statusChart, registrationChart;
@@ -1479,24 +1479,39 @@
             const email = document.getElementById('loginEmail').value;
             const password = document.getElementById('loginPassword').value;
             const errorDiv = document.getElementById('loginError');
+            const btn = event.target.querySelector('button[type="submit"]') || event.target.querySelector('.login-btn');
 
-            // Default credentials
-            if (email === 'admin@bullbeartrading.com' && password === 'Admin@2025!') {
-                const adminData = {
-                    email: email,
-                    token: 'admin-token-' + Date.now(),
-                    loginTime: new Date().toISOString()
-                };
+            errorDiv.style.display = 'none';
+            if (btn) btn.textContent = 'Logging in...';
 
-                localStorage.setItem('bullbearAdmin', JSON.stringify(adminData));
-                currentAdmin = adminData;
-                authToken = adminData.token;
-
-                showDashboard();
-            } else {
-                errorDiv.textContent = '❌ Invalid email or password';
+            fetch(API_URL + '/admin/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password }),
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (btn) btn.textContent = 'Login to Dashboard';
+                if (data.status === 'success') {
+                    const adminData = {
+                        email: data.data.user.email,
+                        token: data.data.token,
+                        loginTime: new Date().toISOString(),
+                    };
+                    localStorage.setItem('bullbearAdmin', JSON.stringify(adminData));
+                    currentAdmin = adminData;
+                    authToken = adminData.token;
+                    showDashboard();
+                } else {
+                    errorDiv.textContent = '❌ ' + (data.message || 'Invalid credentials');
+                    errorDiv.style.display = 'block';
+                }
+            })
+            .catch(() => {
+                if (btn) btn.textContent = 'Login to Dashboard';
+                errorDiv.textContent = '❌ Server error. Try again.';
                 errorDiv.style.display = 'block';
-            }
+            });
 
             return false;
         }
@@ -1570,35 +1585,36 @@
 
         // Load dashboard data
         function loadDashboardData() {
-            const users = JSON.parse(localStorage.getItem('bullbearUsers') || '[]');
-            const purchases = getAllPurchases();
-            const pending = purchases.filter(p => p.status === 'pending').length;
-            const revenue = purchases.reduce((sum, p) => sum + (parseFloat(p.amount) || 0), 0);
+            fetch(API_URL + '/admin/stats', {
+                headers: { 'Authorization': 'Bearer ' + authToken },
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.status !== 'success') return;
+                const s = data.data;
+                document.getElementById('totalUsers').textContent = s.totalUsers || 0;
+                document.getElementById('totalPurchases').textContent = s.totalPurchases || 0;
+                document.getElementById('pendingCount').textContent = s.pendingApprovals || 0;
+                document.getElementById('totalRevenue').textContent = '$' + (s.totalRevenue || 0).toFixed(2);
 
-            document.getElementById('totalUsers').textContent = users.length;
-            document.getElementById('totalPurchases').textContent = purchases.length;
-            document.getElementById('pendingCount').textContent = pending;
-            document.getElementById('totalRevenue').textContent = '$' + revenue.toFixed(2);
-
-            // Load recent purchases
-            const recentPurchases = purchases.slice(-5).reverse();
-            const tbody = document.getElementById('recentPurchasesTable');
-
-            if (recentPurchases.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5"><div class="empty-state"><div class="empty-state-icon">📦</div><p>No recent purchases</p></div></td></tr>';
-            } else {
-                tbody.innerHTML = recentPurchases.map(purchase => `
-                    <tr>
-                        <td>${purchase.userName || purchase.userEmail}</td>
-                        <td>${purchase.courseTitle || purchase.courseId || 'Course'}</td>
-                        <td>$${purchase.amount || 0}</td>
-                        <td>${new Date(purchase.purchaseDate || purchase.createdAt).toLocaleDateString()}</td>
-                        <td><span class="status-badge status-${purchase.status || 'pending'}">${purchase.status || 'pending'}</span></td>
-                    </tr>
-                `).join('');
-            }
-
-            updateCharts();
+                const tbody = document.getElementById('recentPurchasesTable');
+                const recent = s.recentPurchases || [];
+                if (recent.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="5"><div class="empty-state"><div class="empty-state-icon">📦</div><p>No recent purchases</p></div></td></tr>';
+                } else {
+                    tbody.innerHTML = recent.map(p => `
+                        <tr>
+                            <td>${(p.user && (p.user.firstName || p.user.email)) || 'N/A'}</td>
+                            <td>${(p.course && p.course.title) || 'Course'}</td>
+                            <td>$${p.amount || 0}</td>
+                            <td>${new Date(p.createdAt).toLocaleDateString()}</td>
+                            <td><span class="status-badge status-${p.status || 'pending'}">${p.status || 'pending'}</span></td>
+                        </tr>
+                    `).join('');
+                }
+                updateCharts();
+            })
+            .catch(() => updateCharts());
         }
 
         // Initialize charts
@@ -1816,59 +1832,78 @@
         // Load users
         function loadUsers() {
             const tbody = document.getElementById('usersTable');
-            const users = JSON.parse(localStorage.getItem('bullbearUsers') || '[]');
+            tbody.innerHTML = '<tr><td colspan="6"><div class="empty-state"><div class="empty-state-icon">⏳</div><p>Loading...</p></div></td></tr>';
 
-            if (users.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6"><div class="empty-state"><div class="empty-state-icon">👥</div><p>No users yet</p></div></td></tr>';
-                return;
-            }
-
-            tbody.innerHTML = users.map(user => {
-                const purchases = JSON.parse(localStorage.getItem('metahubPurchases_' + user.email) || '[]');
-                return `
+            fetch(API_URL + '/admin/users?limit=100', {
+                headers: { 'Authorization': 'Bearer ' + authToken },
+            })
+            .then(r => r.json())
+            .then(data => {
+                const users = (data.data && data.data.users) || [];
+                if (users.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="6"><div class="empty-state"><div class="empty-state-icon">👥</div><p>No users yet</p></div></td></tr>';
+                    return;
+                }
+                tbody.innerHTML = users.map(user => `
                     <tr>
-                        <td>${user.name}</td>
+                        <td>${user.firstName || ''} ${user.lastName || ''}</td>
                         <td>${user.email}</td>
                         <td>${user.phone || 'N/A'}</td>
                         <td>${new Date(user.createdAt).toLocaleDateString()}</td>
-                        <td>${purchases.length}</td>
+                        <td>${(user.purchases && user.purchases.length) || 0}</td>
                         <td>
                             <button class="action-btn btn-view" onclick="viewUser('${user.email}')">👁 View</button>
                         </td>
                     </tr>
-                `;
-            }).join('');
+                `).join('');
+            })
+            .catch(() => {
+                tbody.innerHTML = '<tr><td colspan="6"><div class="empty-state"><div class="empty-state-icon">❌</div><p>Failed to load users</p></div></td></tr>';
+            });
         }
 
         function viewUser(email) {
-            const users = JSON.parse(localStorage.getItem('bullbearUsers') || '[]');
-            const user = users.find(u => u.email === email);
-            if (user) {
-                alert(JSON.stringify(user, null, 2));
-            }
+            fetch(API_URL + '/admin/users', {
+                headers: { 'Authorization': 'Bearer ' + authToken },
+            })
+            .then(r => r.json())
+            .then(data => {
+                const users = (data.data && data.data.users) || [];
+                const user = users.find(u => u.email === email);
+                if (user) alert(JSON.stringify(user, null, 2));
+            });
         }
 
-        // Load checklist downloads
+        // Load checklist downloads (all signups = checklist subscribers)
         function loadChecklistDownloads() {
             const tbody = document.getElementById('checklistTable');
-            const users = JSON.parse(localStorage.getItem('bullbearUsers') || '[]');
+            tbody.innerHTML = '<tr><td colspan="5"><div class="empty-state"><div class="empty-state-icon">⏳</div><p>Loading...</p></div></td></tr>';
 
-            if (users.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5"><div class="empty-state"><div class="empty-state-icon">📋</div><p>No downloads yet</p></div></td></tr>';
-                return;
-            }
-
-            tbody.innerHTML = users.map(user => `
-                <tr>
-                    <td>${user.name}</td>
-                    <td>${user.email}</td>
-                    <td>${user.phone || 'N/A'}</td>
-                    <td>${new Date(user.createdAt).toLocaleDateString()}</td>
-                    <td>
-                        <button class="action-btn btn-view" onclick="viewUser('${user.email}')">👁 View</button>
-                    </td>
-                </tr>
-            `).join('');
+            fetch(API_URL + '/admin/users?limit=100', {
+                headers: { 'Authorization': 'Bearer ' + authToken },
+            })
+            .then(r => r.json())
+            .then(data => {
+                const users = (data.data && data.data.users) || [];
+                if (users.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="5"><div class="empty-state"><div class="empty-state-icon">📋</div><p>No signups yet</p></div></td></tr>';
+                    return;
+                }
+                tbody.innerHTML = users.map(user => `
+                    <tr>
+                        <td>${user.firstName || ''} ${user.lastName || ''}</td>
+                        <td>${user.email}</td>
+                        <td>${user.phone || 'N/A'}</td>
+                        <td>${new Date(user.createdAt).toLocaleDateString()}</td>
+                        <td>
+                            <button class="action-btn btn-view" onclick="viewUser('${user.email}')">👁 View</button>
+                        </td>
+                    </tr>
+                `).join('');
+            })
+            .catch(() => {
+                tbody.innerHTML = '<tr><td colspan="5"><div class="empty-state"><div class="empty-state-icon">❌</div><p>Failed to load</p></div></td></tr>';
+            });
         }
 
         // Settings functions

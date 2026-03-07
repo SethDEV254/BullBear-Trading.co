@@ -3809,6 +3809,20 @@
             const newUser = { name, email, password, createdAt: new Date().toISOString() };
             users.push(newUser);
             localStorage.setItem('bullbearUsers', JSON.stringify(users));
+
+            // Sync to backend (fire-and-forget)
+            var clParts = name.trim().split(' ');
+            fetch('https://backend-tawny-nu-33.vercel.app/api/auth/signup', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email: email,
+                    password: password,
+                    firstName: clParts[0] || name,
+                    lastName: clParts.slice(1).join(' ') || '',
+                }),
+            }).catch(function() {});
+
             localStorage.setItem('bullbearCurrentUser', JSON.stringify(newUser));
             updateAuthNav();
             closeModal('checklistModal');
@@ -3919,6 +3933,20 @@
 
             users.push(newUser);
             localStorage.setItem('bullbearUsers', JSON.stringify(users));
+
+            // Sync to backend (fire-and-forget)
+            var nameParts = name.trim().split(' ');
+            fetch('https://backend-tawny-nu-33.vercel.app/api/auth/signup', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email: email,
+                    password: password,
+                    firstName: nameParts[0] || name,
+                    lastName: nameParts.slice(1).join(' ') || '',
+                    phone: phone,
+                }),
+            }).catch(function() {});
 
             // Auto-login the new user
             localStorage.setItem('bullbearCurrentUser', JSON.stringify(newUser));

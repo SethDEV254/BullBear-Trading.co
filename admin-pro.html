@@ -1839,6 +1839,10 @@
             })
             .then(r => r.json())
             .then(data => {
+                if (data.status === 'error') {
+                    tbody.innerHTML = '<tr><td colspan="6"><div class="empty-state"><div class="empty-state-icon">❌</div><p>' + (data.message || 'Auth error') + '</p></div></td></tr>';
+                    return;
+                }
                 const users = (data.data && data.data.users) || [];
                 if (users.length === 0) {
                     tbody.innerHTML = '<tr><td colspan="6"><div class="empty-state"><div class="empty-state-icon">👥</div><p>No users yet</p></div></td></tr>';

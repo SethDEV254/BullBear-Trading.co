@@ -707,13 +707,13 @@
                 messageDiv.style.display = 'none';
             }
 
-            function handleSignup(event) {
+            async function handleSignup(event) {
                 event.preventDefault();
                 hideMessage();
 
-                const name = document.getElementById('name').value;
-                const email = document.getElementById('email').value;
-                const phone = document.getElementById('phone').value;
+                const name = document.getElementById('name').value.trim();
+                const email = document.getElementById('email').value.trim();
+                const phone = document.getElementById('phone').value.trim();
                 const password = document.getElementById('password').value;
                 const confirmPassword = document.getElementById('confirmPassword').value;
 
@@ -728,51 +728,44 @@
                     return false;
                 }
 
-                if (!phone || phone.trim() === '') {
+                if (!phone) {
                     showMessage('❌ Phone number is required!', 'error');
                     return false;
                 }
 
-                // Check if user already exists
-                const users = JSON.parse(localStorage.getItem('bullbearUsers') || '[]');
-                const existingUser = users.find(u => u.email === email);
+                const nameParts = name.split(' ');
+                const firstName = nameParts[0] || name;
+                const lastName = nameParts.slice(1).join(' ') || '';
 
-                if (existingUser) {
-                    showMessage('❌ Email already registered! Please login instead.', 'error');
+                try {
+                    const res = await fetch('https://backend-tawny-nu-33.vercel.app/api/auth/signup', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ firstName, lastName, email, password, phone }),
+                    });
+
+                    const data = await res.json();
+
+                    if (!res.ok) {
+                        showMessage('❌ ' + (data.message || 'Signup failed. Try again.'), 'error');
+                        return false;
+                    }
+
+                    // Store session
+                    localStorage.setItem('bullbearToken', data.token);
+                    localStorage.setItem('bullbearCurrentUser', JSON.stringify(data.user || { name, email, phone }));
+
+                    showMessage('✅ Account created successfully! Downloading your FREE checklist...', 'success');
+
                     setTimeout(() => {
-                        window.location.href = 'index.html';
-                    }, 2000);
-                    return false;
+                        downloadChecklist({ name, email, phone });
+                        setTimeout(() => {
+                            window.location.href = 'index.html';
+                        }, 2000);
+                    }, 1000);
+                } catch (err) {
+                    showMessage('❌ Network error. Please try again.', 'error');
                 }
-
-                // Create new user
-                const newUser = {
-                    name: name,
-                    email: email,
-                    phone: phone,
-                    password: password,
-                    createdAt: new Date().toISOString()
-                };
-
-                // Save user
-                users.push(newUser);
-                localStorage.setItem('bullbearUsers', JSON.stringify(users));
-
-                // Auto-login
-                localStorage.setItem('bullbearCurrentUser', JSON.stringify(newUser));
-
-                // Show success message
-                showMessage('✅ Account created successfully! Downloading your FREE checklist...', 'success');
-
-                // Download checklist
-                setTimeout(() => {
-                    downloadChecklist(newUser);
-
-                    // Redirect to main site after 2 seconds
-                    setTimeout(() => {
-                        window.location.href = 'index.html';
-                    }, 2000);
-                }, 1000);
 
                 return false;
             }
@@ -795,7 +788,7 @@
 
             async function sendChecklistEmail(user) {
                 try {
-                    const response = await fetch('http://localhost:5000/api/checklist/send-email', {
+                    const response = await fetch('https://backend-tawny-nu-33.vercel.app/api/checklist/send-email', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'

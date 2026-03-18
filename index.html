@@ -5573,8 +5573,8 @@
             fetch(AP_API + '/admin/users?limit=200', { headers: apAuthHeaders() })
             .then(function(r){ return r.json(); })
             .then(function(data){
-                var users = (data.data && data.data.users) || [];
-                allUsersCache = users;
+                allUsersCache = (data.data && data.data.users) || [];
+                var users = allUsersCache.filter(function(u){ return u.role !== 'admin'; });
                 document.getElementById('apUserCount').textContent = users.length;
                 renderUsersFiltered(users);
             })
@@ -5602,6 +5602,7 @@
         window.filterUsers = function(q) {
             q = q.toLowerCase();
             var filtered = allUsersCache.filter(function(u){
+                if (u.role === 'admin') return false;
                 var name = ((u.firstName||'') + ' ' + (u.lastName||'')).toLowerCase();
                 return name.includes(q) || (u.email||'').toLowerCase().includes(q);
             });

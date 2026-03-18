@@ -540,11 +540,20 @@
             checkAuth();
         });
 
-        function checkAuth() {
-            const raw = localStorage.getItem('bullbearCurrentUser');
-            if (raw) {
-                showLibrary(JSON.parse(raw));
-            } else {
+        const API_BASE = 'https://backend-tawny-nu-33.vercel.app/api';
+
+        async function checkAuth() {
+            const token = localStorage.getItem('bullbearToken');
+            if (!token) { showAuthRequired(); return; }
+
+            try {
+                const res = await fetch(API_BASE + '/auth/me', {
+                    headers: { 'Authorization': 'Bearer ' + token },
+                });
+                const data = await res.json();
+                if (!res.ok || !data.data) { showAuthRequired(); return; }
+                showLibrary(data.data);
+            } catch (err) {
                 showAuthRequired();
             }
         }
@@ -558,29 +567,32 @@
             document.getElementById('authRequired').style.display = 'none';
             document.getElementById('libraryContent').style.display = 'block';
             document.getElementById('headerUserInfo').style.display = 'flex';
-            document.getElementById('headerUserEmail').textContent = user.name || user.email;
+            document.getElementById('headerUserEmail').textContent = user.firstName || user.email;
             loadUserCourses(user);
         }
 
-        function loadUserCourses(user) {
+        async function loadUserCourses(user) {
             const coursesGrid = document.getElementById('coursesGrid');
             const emptyLibrary = document.getElementById('emptyLibrary');
+            coursesGrid.innerHTML = '<p style="color:#94a3b8;">Loading...</p>';
 
-            // Load from localStorage (keyed by email or flat array)
-            const byEmail = JSON.parse(localStorage.getItem('bullbearPurchases_' + user.email) || '[]');
-            const all = JSON.parse(localStorage.getItem('bullbearPurchases') || '[]');
-            const fromAll = all.filter(p => p.userEmail === user.email || p.email === user.email);
-            const purchases = byEmail.length ? byEmail : fromAll;
+            try {
+                const res = await fetch(API_BASE + '/purchases/user/' + encodeURIComponent(user.email));
+                const data = await res.json();
+                const purchases = (data.data && data.data.purchases) || [];
 
-            if (purchases.length === 0) {
+                if (purchases.length === 0) {
+                    coursesGrid.innerHTML = '';
+                    emptyLibrary.style.display = 'block';
+                    return;
+                }
+
+                emptyLibrary.style.display = 'none';
                 coursesGrid.innerHTML = '';
-                emptyLibrary.style.display = 'block';
-                return;
+                purchases.forEach(p => coursesGrid.appendChild(createPurchaseCard(p)));
+            } catch (err) {
+                coursesGrid.innerHTML = '<p style="color:#ef4444;">Failed to load purchases.</p>';
             }
-
-            emptyLibrary.style.display = 'none';
-            coursesGrid.innerHTML = '';
-            purchases.forEach(p => coursesGrid.appendChild(createPurchaseCard(p)));
         }
 
         function createPurchaseCard(purchase) {
@@ -589,7 +601,7 @@
 
             const date = new Date(purchase.createdAt || purchase.purchaseDate || Date.now());
             const formattedDate = date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-            const title = purchase.courseTitle || purchase.course?.title || 'Course';
+            const title = (purchase.course && purchase.course.title) || purchase.courseId || 'Course';
             const status = purchase.status || 'pending';
 
             const badges = {
@@ -618,6 +630,7 @@
         }
 
         function handleLogout() {
+            localStorage.removeItem('bullbearToken');
             localStorage.removeItem('bullbearCurrentUser');
             window.location.href = 'index.html';
         }

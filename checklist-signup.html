@@ -752,8 +752,8 @@
                     }
 
                     // Store session
-                    localStorage.setItem('bullbearToken', data.token);
-                    localStorage.setItem('bullbearCurrentUser', JSON.stringify(data.user || { name, email, phone }));
+                    localStorage.setItem('bullbearToken', data.data.token);
+                    localStorage.setItem('bullbearCurrentUser', JSON.stringify(data.data.user || { name, email, phone }));
 
                     showMessage('✅ Account created successfully! Downloading your FREE checklist...', 'success');
 

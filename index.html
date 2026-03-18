@@ -5366,6 +5366,8 @@
         var adminAuthed = false;
         var apClockTimer = null;
         var allUsersCache = [];
+        var AP_API = 'https://backend-tawny-nu-33.vercel.app/api';
+        var apAdminToken = null;
 
         /* ---- Open / Close ---- */
         window.openAdmin = function() {
@@ -5389,9 +5391,22 @@
         window.verifyAdmin = function() {
             var pw = document.getElementById('adminPasswordInput').value;
             if (pw === ADMIN_PW) {
-                adminAuthed = true;
-                document.getElementById('adminAuth').style.display = 'none';
-                showAdminDashboard();
+                // Get backend token
+                fetch(AP_API + '/admin/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: 'megametahub42@gmail.com', password: pw }),
+                })
+                .then(function(r){ return r.json(); })
+                .then(function(data){
+                    if (data.status === 'success') apAdminToken = data.data.token;
+                })
+                .catch(function(){})
+                .finally(function(){
+                    adminAuthed = true;
+                    document.getElementById('adminAuth').style.display = 'none';
+                    showAdminDashboard();
+                });
             } else {
                 var err = document.getElementById('adminAuthError');
                 err.style.display = 'block';
@@ -5484,54 +5499,62 @@
         };
 
         /* ---- Data helpers ---- */
-        function getUsers() { return JSON.parse(localStorage.getItem('bullbearUsers')||'[]'); }
-        function saveUsers(u) { localStorage.setItem('bullbearUsers', JSON.stringify(u)); }
-        function getPurchases() {
-            var users = getUsers(), all = [];
-            users.forEach(function(u) {
-                var pp = JSON.parse(localStorage.getItem('metahubPurchases_'+u.email)||'[]');
-                pp.forEach(function(p){ all.push(Object.assign({},p,{userName:u.name,userEmail:u.email})); });
-            });
-            return all.concat(JSON.parse(localStorage.getItem('bullbearPurchases')||'[]'));
+        function apAuthHeaders() {
+            return apAdminToken ? { 'Authorization': 'Bearer ' + apAdminToken } : {};
         }
+        function getUsers() { return allUsersCache; }
+        function getPurchases() { return JSON.parse(localStorage.getItem('bullbearPurchases')||'[]'); }
         function getBroadcasts() { return JSON.parse(localStorage.getItem('bbBroadcasts')||'[]'); }
         function getDocs() { return JSON.parse(localStorage.getItem('bbDocs')||'[]'); }
         function getMeetings() { return JSON.parse(localStorage.getItem('bbMeetings')||'[]'); }
 
         /* ---- Overview ---- */
         function renderOverview() {
-            var users = getUsers(), purchases = getPurchases();
-            var today = new Date().toDateString();
-            var todaySignups = users.filter(function(u){ return new Date(u.createdAt).toDateString()===today; }).length;
-            var rev = purchases.reduce(function(s,p){ return s+(parseFloat(p.amount)||0); },0);
             var msgs = getBroadcasts().length;
             var docs = getDocs().length;
             document.getElementById('apStatCards').innerHTML =
-                apStatCard('👥', users.length, 'Total Users') +
-                apStatCard('📅', todaySignups, "Today's Signups") +
-                apStatCard('🛒', purchases.length, 'Purchases') +
-                apStatCard('💰', '$'+rev.toFixed(0), 'Revenue') +
+                apStatCard('👥', '...', 'Total Users') +
+                apStatCard('📅', '...', "Today's Signups") +
+                apStatCard('🛒', '...', 'Purchases') +
+                apStatCard('💰', '...', 'Revenue') +
                 apStatCard('📣', msgs, 'Broadcasts') +
                 apStatCard('📁', docs, 'Documents');
 
-            // Recent activity
-            var items = [];
-            users.slice(-3).reverse().forEach(function(u){
-                items.push({icon:'👤', text:'<b>'+(u.name||u.email)+'</b> signed up', time:u.createdAt});
-            });
-            purchases.slice(-3).reverse().forEach(function(p){
-                items.push({icon:'🛒', text:'<b>'+(p.userName||p.userEmail||'User')+'</b> purchased '+(p.courseTitle||'a course'), time:p.purchaseDate||p.createdAt});
-            });
-            items.sort(function(a,b){ return new Date(b.time)-new Date(a.time); });
-            var ra = document.getElementById('apRecentActivity');
-            if (items.length===0) { ra.innerHTML='<p class="ap-empty">No recent activity</p>'; return; }
-            ra.innerHTML = items.slice(0,6).map(function(it){
-                var d = it.time ? new Date(it.time).toLocaleString() : '';
-                return '<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid rgba(99,102,241,0.07);">'+
-                    '<span style="font-size:1.2rem;">'+it.icon+'</span>'+
-                    '<span style="font-size:0.82rem;color:#94a3b8;flex:1;">'+it.text+'</span>'+
-                    '<span style="font-size:0.7rem;color:#334155;">'+d+'</span></div>';
-            }).join('');
+            if (!apAdminToken) { document.getElementById('apRecentActivity').innerHTML='<p class="ap-empty">Loading...</p>'; return; }
+
+            fetch(AP_API + '/admin/stats', { headers: apAuthHeaders() })
+            .then(function(r){ return r.json(); })
+            .then(function(data){
+                if (data.status !== 'success') return;
+                var s = data.data;
+                var todayStr = new Date().toDateString();
+                document.getElementById('apStatCards').innerHTML =
+                    apStatCard('👥', s.totalUsers||0, 'Total Users') +
+                    apStatCard('📅', allUsersCache.filter(function(u){ return new Date(u.createdAt).toDateString()===todayStr; }).length, "Today's Signups") +
+                    apStatCard('🛒', s.totalPurchases||0, 'Purchases') +
+                    apStatCard('💰', '$'+(s.totalRevenue||0).toFixed(0), 'Revenue') +
+                    apStatCard('📣', msgs, 'Broadcasts') +
+                    apStatCard('📁', docs, 'Documents');
+
+                var items = [];
+                allUsersCache.slice(0,3).forEach(function(u){
+                    items.push({icon:'👤', text:'<b>'+(u.firstName+' '+u.lastName||u.email)+'</b> signed up', time:u.createdAt});
+                });
+                (s.recentPurchases||[]).slice(0,3).forEach(function(p){
+                    items.push({icon:'🛒', text:'<b>'+(p.user&&p.user.email||'User')+'</b> purchased '+(p.course&&p.course.title||'a course'), time:p.createdAt});
+                });
+                items.sort(function(a,b){ return new Date(b.time)-new Date(a.time); });
+                var ra = document.getElementById('apRecentActivity');
+                if (items.length===0) { ra.innerHTML='<p class="ap-empty">No recent activity</p>'; return; }
+                ra.innerHTML = items.slice(0,6).map(function(it){
+                    var d = it.time ? new Date(it.time).toLocaleString() : '';
+                    return '<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid rgba(99,102,241,0.07);">'+
+                        '<span style="font-size:1.2rem;">'+it.icon+'</span>'+
+                        '<span style="font-size:0.82rem;color:#94a3b8;flex:1;">'+it.text+'</span>'+
+                        '<span style="font-size:0.7rem;color:#334155;">'+d+'</span></div>';
+                }).join('');
+            })
+            .catch(function(){ document.getElementById('apRecentActivity').innerHTML='<p class="ap-empty">Failed to load</p>'; });
         }
 
         function apStatCard(icon, val, label) {
@@ -5543,102 +5566,124 @@
 
         /* ---- Users ---- */
         function renderUsers() {
-            allUsersCache = getUsers();
-            document.getElementById('apUserCount').textContent = allUsersCache.length;
-            renderUsersFiltered(allUsersCache);
+            var div = document.getElementById('apUsersTable');
+            div.innerHTML = '<p class="ap-empty">Loading...</p>';
+            if (!apAdminToken) { div.innerHTML='<p class="ap-empty">Not authenticated</p>'; return; }
+
+            fetch(AP_API + '/admin/users?limit=200', { headers: apAuthHeaders() })
+            .then(function(r){ return r.json(); })
+            .then(function(data){
+                var users = (data.data && data.data.users) || [];
+                allUsersCache = users;
+                document.getElementById('apUserCount').textContent = users.length;
+                renderUsersFiltered(users);
+            })
+            .catch(function(){ div.innerHTML='<p class="ap-empty">Failed to load users</p>'; });
         }
 
         function renderUsersFiltered(users) {
             var div = document.getElementById('apUsersTable');
             if (users.length===0){ div.innerHTML='<p class="ap-empty">No users found</p>'; return; }
             var rows = users.map(function(u,i){
+                var name = ((u.firstName||'') + ' ' + (u.lastName||'')).trim() || '—';
                 var d = u.createdAt ? new Date(u.createdAt).toLocaleDateString() : '—';
-                var idx = allUsersCache.indexOf(u);
                 return '<tr>'+
                     '<td style="color:#475569;">'+(i+1)+'</td>'+
-                    '<td style="font-weight:600;color:#e2e8f0;">'+(u.name||'—')+'</td>'+
+                    '<td style="font-weight:600;color:#e2e8f0;">'+name+'</td>'+
                     '<td>'+(u.email||'—')+'</td>'+
                     '<td>'+(u.phone||'—')+'</td>'+
                     '<td style="color:#475569;">'+d+'</td>'+
-                    '<td><button class="ap-btn ap-btn-red ap-btn-sm" onclick="deleteUser('+idx+')">Delete</button></td>'+
+                    '<td><span style="color:'+(u.role==='admin'?'#f59e0b':'#10b981')+';font-size:0.75rem;font-weight:600;">'+u.role+'</span></td>'+
                     '</tr>';
             }).join('');
-            div.innerHTML='<table class="ap-tbl"><thead><tr><th>#</th><th>Name</th><th>Email</th><th>Phone</th><th>Joined</th><th></th></tr></thead><tbody>'+rows+'</tbody></table>';
+            div.innerHTML='<table class="ap-tbl"><thead><tr><th>#</th><th>Name</th><th>Email</th><th>Phone</th><th>Joined</th><th>Role</th></tr></thead><tbody>'+rows+'</tbody></table>';
         }
 
         window.filterUsers = function(q) {
             q = q.toLowerCase();
             var filtered = allUsersCache.filter(function(u){
-                return (u.name||'').toLowerCase().includes(q) || (u.email||'').toLowerCase().includes(q);
+                var name = ((u.firstName||'') + ' ' + (u.lastName||'')).toLowerCase();
+                return name.includes(q) || (u.email||'').toLowerCase().includes(q);
             });
             renderUsersFiltered(filtered);
         };
 
-        window.deleteUser = function(i) {
-            if (!confirm('Delete this user?')) return;
-            var users = getUsers();
-            users.splice(i,1);
-            saveUsers(users);
-            renderUsers();
-        };
-
         window.exportUsers = function() {
-            var u = getUsers();
-            apDownload(JSON.stringify(u,null,2),'bullbear-users-'+today()+'.json','application/json');
+            apDownload(JSON.stringify(allUsersCache,null,2),'bullbear-users-'+today()+'.json','application/json');
         };
 
         window.clearAllUsers = function() {
-            if (!confirm('Delete ALL users? This cannot be undone.')) return;
-            localStorage.removeItem('bullbearUsers');
-            localStorage.removeItem('bullbearCurrentUser');
-            renderUsers();
+            alert('To delete users, use the admin panel at /admin-pro.html');
         };
 
         /* ---- Checklist ---- */
         function renderChecklist() {
-            var users = getUsers();
             var div = document.getElementById('apChecklistTable');
-            if (users.length===0){ div.innerHTML='<p class="ap-empty">No checklist signups yet</p>'; return; }
+            if (allUsersCache.length === 0 && apAdminToken) {
+                div.innerHTML = '<p class="ap-empty">Loading...</p>';
+                fetch(AP_API + '/admin/users?limit=200', { headers: apAuthHeaders() })
+                .then(function(r){ return r.json(); })
+                .then(function(data){
+                    allUsersCache = (data.data && data.data.users) || [];
+                    renderChecklist();
+                })
+                .catch(function(){ div.innerHTML='<p class="ap-empty">Failed to load</p>'; });
+                return;
+            }
+            var users = allUsersCache.filter(function(u){ return u.role === 'user'; });
+            if (users.length===0){ div.innerHTML='<p class="ap-empty">No signups yet</p>'; return; }
             var rows = users.map(function(u,i){
+                var name = ((u.firstName||'') + ' ' + (u.lastName||'')).trim() || '—';
                 var d = u.createdAt ? new Date(u.createdAt).toLocaleDateString() : '—';
                 return '<tr>'+
                     '<td style="color:#475569;">'+(i+1)+'</td>'+
-                    '<td style="font-weight:600;color:#e2e8f0;">'+(u.name||'—')+'</td>'+
+                    '<td style="font-weight:600;color:#e2e8f0;">'+name+'</td>'+
                     '<td>'+(u.email||'—')+'</td>'+
                     '<td>'+(u.phone||'—')+'</td>'+
                     '<td style="color:#475569;">'+d+'</td>'+
                     '</tr>';
             }).join('');
-            div.innerHTML='<table class="ap-tbl"><thead><tr><th>#</th><th>Name</th><th>Email</th><th>Phone</th><th>Signed Up</th></tr></thead><tbody>'+rows+'</tbody></table>';
+            div.innerHTML='<table class="ap-tbl"><thead><tr><th>#</th><th>Name</th><th>Email</th><th>Phone</th><th>Joined</th></tr></thead><tbody>'+rows+'</tbody></table>';
         }
 
         window.exportChecklistCSV = function() {
-            var users = getUsers();
+            var users = allUsersCache.filter(function(u){ return u.role==='user'; });
             var csv = 'Name,Email,Phone,Joined\n' + users.map(function(u){
-                return [u.name,u.email,u.phone,u.createdAt].join(',');
+                return [((u.firstName||'')+' '+(u.lastName||'')).trim(), u.email, u.phone||'', u.createdAt].join(',');
             }).join('\n');
-            apDownload(csv,'checklist-signups-'+today()+'.csv','text/csv');
+            apDownload(csv,'bullbear-signups-'+today()+'.csv','text/csv');
         };
 
         /* ---- Purchases ---- */
         function renderPurchases() {
-            var purchases = getPurchases();
-            var rev = purchases.reduce(function(s,p){ return s+(parseFloat(p.amount)||0); },0);
-            document.getElementById('apRevTotal').textContent = '$'+rev.toFixed(2);
             var div = document.getElementById('apPurchasesTable');
-            if (purchases.length===0){ div.innerHTML='<p class="ap-empty">No purchases recorded yet</p>'; return; }
-            var rows = purchases.map(function(p){
-                var d = (p.purchaseDate||p.createdAt) ? new Date(p.purchaseDate||p.createdAt).toLocaleDateString() : '—';
-                var st = p.status||'pending';
-                return '<tr>'+
-                    '<td style="font-weight:600;color:#e2e8f0;">'+(p.userName||p.userEmail||'—')+'</td>'+
-                    '<td>'+(p.courseTitle||p.courseId||'—')+'</td>'+
-                    '<td style="color:#10b981;font-weight:600;">$'+(p.amount||0)+'</td>'+
-                    '<td style="color:#475569;">'+d+'</td>'+
-                    '<td><span class="ap-badge ap-badge-'+st+'">'+st+'</span></td>'+
-                    '</tr>';
-            }).join('');
-            div.innerHTML='<table class="ap-tbl"><thead><tr><th>User</th><th>Course</th><th>Amount</th><th>Date</th><th>Status</th></tr></thead><tbody>'+rows+'</tbody></table>';
+            div.innerHTML = '<p class="ap-empty">Loading...</p>';
+            if (!apAdminToken) { div.innerHTML='<p class="ap-empty">Not authenticated</p>'; return; }
+
+            fetch(AP_API + '/admin/purchases?limit=200', { headers: apAuthHeaders() })
+            .then(function(r){ return r.json(); })
+            .then(function(data){
+                var purchases = (data.data && data.data.purchases) || [];
+                var rev = purchases.filter(function(p){ return p.status==='approved'||p.status==='completed'; })
+                    .reduce(function(s,p){ return s+(parseFloat(p.amount)||0); },0);
+                document.getElementById('apRevTotal').textContent = '$'+rev.toFixed(2);
+                if (purchases.length===0){ div.innerHTML='<p class="ap-empty">No purchases yet</p>'; return; }
+                var rows = purchases.map(function(p){
+                    var d = p.createdAt ? new Date(p.createdAt).toLocaleDateString() : '—';
+                    var st = p.status||'pending';
+                    var userLabel = (p.user&&p.user.email) || p.userEmail || '—';
+                    var courseLabel = (p.course&&p.course.title) || p.courseId || '—';
+                    return '<tr>'+
+                        '<td style="font-weight:600;color:#e2e8f0;">'+userLabel+'</td>'+
+                        '<td>'+courseLabel+'</td>'+
+                        '<td style="color:#10b981;font-weight:600;">$'+(p.amount||0)+'</td>'+
+                        '<td style="color:#475569;">'+d+'</td>'+
+                        '<td><span class="ap-badge ap-badge-'+st+'">'+st+'</span></td>'+
+                        '</tr>';
+                }).join('');
+                div.innerHTML='<table class="ap-tbl"><thead><tr><th>User</th><th>Course</th><th>Amount</th><th>Date</th><th>Status</th></tr></thead><tbody>'+rows+'</tbody></table>';
+            })
+            .catch(function(){ div.innerHTML='<p class="ap-empty">Failed to load purchases</p>'; });
         }
 
         /* ---- Bulk Messaging ---- */

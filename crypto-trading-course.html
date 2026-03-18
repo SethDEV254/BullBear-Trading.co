@@ -1462,17 +1462,23 @@
 
 
     <script>
-        // Check if user is logged in and course access
+        const API_BASE = 'https://backend-tawny-nu-33.vercel.app/api';
+
         document.addEventListener('DOMContentLoaded', function () {
-            const currentUser = localStorage.getItem('metahubCurrentUser');
-            if (currentUser) {
-                const user = JSON.parse(currentUser);
-                document.getElementById('userEmail').textContent = user.email;
-                document.getElementById('checkoutEmail').value = user.email;
-                document.getElementById('userDisplay').style.display = 'block';
+            // Pre-fill email if logged in
+            const token = localStorage.getItem('bullbearToken');
+            if (token) {
+                fetch(API_BASE + '/auth/me', { headers: { 'Authorization': 'Bearer ' + token } })
+                    .then(r => r.json())
+                    .then(data => {
+                        if (data.data && data.data.email) {
+                            const emailInput = document.getElementById('checkoutEmail');
+                            if (emailInput) emailInput.value = data.data.email;
+                        }
+                    }).catch(() => {});
             }
 
-            // Check if user has already purchased this course
+            // Check access
             checkCourseAccess();
 
             // Payment method toggle
@@ -1488,253 +1494,153 @@
                         cardFields.style.display = 'block';
                         paypalFields.style.display = 'none';
                         mpesaFields.style.display = 'none';
-                        cardPaymentBtn.style.display = 'block';
+                        if (cardPaymentBtn) cardPaymentBtn.style.display = 'block';
                     } else if (this.value === 'paypal') {
                         cardFields.style.display = 'none';
                         paypalFields.style.display = 'block';
                         mpesaFields.style.display = 'none';
-                        cardPaymentBtn.style.display = 'none';
+                        if (cardPaymentBtn) cardPaymentBtn.style.display = 'none';
                     } else if (this.value === 'mpesa') {
                         cardFields.style.display = 'none';
                         paypalFields.style.display = 'none';
                         mpesaFields.style.display = 'block';
-                        cardPaymentBtn.style.display = 'none';
+                        if (cardPaymentBtn) cardPaymentBtn.style.display = 'none';
                     }
                 });
             });
 
-            // Copy email button
             const copyEmailBtn = document.getElementById('copyEmailBtn');
             if (copyEmailBtn) {
-                copyEmailBtn.addEventListener('click', function () {
-                    copyPayPalEmail();
-                });
+                copyEmailBtn.addEventListener('click', function () { copyPayPalEmail(); });
             }
-
-            // Enable payment unlock when user interacts with form
-            enablePaymentUnlock();
         });
 
-        // Check if user has already purchased the course
-        function checkCourseAccess() {
-            const currentUser = localStorage.getItem('metahubCurrentUser');
-            if (currentUser) {
-                const user = JSON.parse(currentUser);
-                const purchases = JSON.parse(localStorage.getItem('metahubPurchases_' + user.email) || '[]');
+        async function checkCourseAccess() {
+            const token = localStorage.getItem('bullbearToken');
+            if (!token) return;
 
-                // Check if user has purchased this course
-                const hasPurchased = purchases.some(p => p.courseId === 'crypto-trading' && p.status === 'completed');
+            try {
+                const meRes = await fetch(API_BASE + '/auth/me', { headers: { 'Authorization': 'Bearer ' + token } });
+                const meData = await meRes.json();
+                if (!meRes.ok || !meData.data) return;
 
-                if (hasPurchased) {
+                const email = meData.data.email;
+                const purchaseRes = await fetch(API_BASE + '/purchases/user/' + encodeURIComponent(email));
+                const purchaseData = await purchaseRes.json();
+                const purchases = (purchaseData.data && purchaseData.data.purchases) || [];
+
+                const approved = purchases.find(p => p.courseId === 'crypto-trading-course' && (p.status === 'approved' || p.status === 'completed'));
+                const pending = purchases.find(p => p.courseId === 'crypto-trading-course' && p.status === 'pending');
+
+                if (approved) {
                     unlockContent();
-                    // Hide checkout section for users who already purchased
-                    const checkoutSection = document.querySelector('.checkout-section');
+                    const checkoutSection = document.querySelector('.checkout-section') || document.querySelector('.course-purchase-section');
                     if (checkoutSection) {
                         checkoutSection.innerHTML = `
-                            <div class="container" style="text-align: center; padding: 60px 20px;">
-                                <div style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(5, 150, 105, 0.2) 100%); 
-                                            border: 2px solid #10b981; border-radius: 20px; padding: 40px; max-width: 600px; margin: 0 auto;
-                                            box-shadow: 0 20px 60px rgba(16, 185, 129, 0.3);">
-                                    <div style="font-size: 4rem; margin-bottom: 20px;">✅</div>
-                                    <h2 style="color: #10b981; font-size: 2rem; margin-bottom: 15px;">Course Already Purchased!</h2>
-                                    <p style="color: #cbd5e1; font-size: 1.1rem; margin-bottom: 25px;">
-                                        You have full access to all course materials. Enjoy your learning journey!
-                                    </p>
-                                    <a href="my-library.html" style="display: inline-block; padding: 16px 40px; 
-                                       background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; 
-                                       text-decoration: none; border-radius: 12px; font-weight: 700; font-size: 1.1rem;
-                                       box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4); transition: all 0.3s ease;">
-                                        📚 Go to My Library
-                                    </a>
+                            <div class="container" style="text-align:center;padding:60px 20px;">
+                                <div style="background:linear-gradient(135deg,rgba(16,185,129,0.2),rgba(5,150,105,0.2));border:2px solid #10b981;border-radius:20px;padding:40px;max-width:600px;margin:0 auto;">
+                                    <div style="font-size:4rem;margin-bottom:20px;">✅</div>
+                                    <h2 style="color:#10b981;font-size:2rem;margin-bottom:15px;">Access Granted!</h2>
+                                    <p style="color:#cbd5e1;font-size:1.1rem;margin-bottom:25px;">You have full access to all course materials.</p>
+                                    <a href="my-library.html" style="display:inline-block;padding:16px 40px;background:linear-gradient(135deg,#10b981,#059669);color:white;text-decoration:none;border-radius:12px;font-weight:700;font-size:1.1rem;">📚 Go to My Library</a>
                                 </div>
-                            </div>
-                        `;
+                            </div>`;
+                    }
+                } else if (pending) {
+                    const checkoutSection = document.querySelector('.checkout-section') || document.querySelector('.course-purchase-section');
+                    if (checkoutSection) {
+                        checkoutSection.innerHTML = `
+                            <div class="container" style="text-align:center;padding:60px 20px;">
+                                <div style="background:rgba(245,158,11,0.1);border:2px solid #f59e0b;border-radius:20px;padding:40px;max-width:600px;margin:0 auto;">
+                                    <div style="font-size:4rem;margin-bottom:20px;">⏳</div>
+                                    <h2 style="color:#f59e0b;font-size:2rem;margin-bottom:15px;">Payment Pending</h2>
+                                    <p style="color:#cbd5e1;font-size:1.1rem;">Your payment is awaiting admin approval. You'll have full access once confirmed.</p>
+                                </div>
+                            </div>`;
                     }
                 }
-            }
+            } catch (err) {}
         }
 
-        // Enable content unlock when user interacts with payment form
-        function enablePaymentUnlock() {
-            const checkoutForm = document.getElementById('checkoutForm');
-            const paymentInputs = checkoutForm.querySelectorAll('input');
-
-            paymentInputs.forEach(input => {
-                input.addEventListener('focus', function () {
-                    // Unlock content when user starts filling payment details
-                    unlockContent();
-                    showUnlockNotification();
-                });
-            });
-
-            // Also unlock when payment method is selected
-            const paymentRadios = document.querySelectorAll('input[name="paymentMethod"]');
-            paymentRadios.forEach(radio => {
-                radio.addEventListener('change', function () {
-                    unlockContent();
-                    showUnlockNotification();
-                });
-            });
-        }
-
-        // Unlock the course content
         function unlockContent() {
             document.body.classList.add('content-unlocked');
-
-            // Smooth scroll to show unlocked content
-            setTimeout(() => {
-                const coursePreview = document.getElementById('coursePreview');
-                if (coursePreview && !document.body.dataset.unlockNotified) {
-                    coursePreview.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            }, 500);
-        }
-
-        // Show unlock notification
-        function showUnlockNotification() {
-            if (document.body.dataset.unlockNotified) return;
-            document.body.dataset.unlockNotified = 'true';
-
-            const notification = document.createElement('div');
-            notification.style.cssText = `
-                position: fixed;
-                top: 100px;
-                right: 30px;
-                background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-                color: white;
-                padding: 20px 30px;
-                border-radius: 15px;
-                box-shadow: 0 10px 40px rgba(16, 185, 129, 0.5);
-                z-index: 10000;
-                font-weight: 700;
-                font-size: 1rem;
-                animation: slideInRight 0.5s ease;
-                border: 2px solid rgba(255, 255, 255, 0.3);
-            `;
-            notification.innerHTML = `
-                <div style="display: flex; align-items: center; gap: 12px;">
-                    <span style="font-size: 1.5rem;">🔓</span>
-                    <div>
-                        <div style="font-size: 1.1rem; margin-bottom: 3px;">Content Unlocked!</div>
-                        <div style="font-size: 0.85rem; opacity: 0.9;">Preview the course materials below</div>
-                    </div>
-                </div>
-            `;
-            document.body.appendChild(notification);
-
-            // Add animation
-            const style = document.createElement('style');
-            style.textContent = `
-                @keyframes slideInRight {
-                    from {
-                        transform: translateX(400px);
-                        opacity: 0;
-                    }
-                    to {
-                        transform: translateX(0);
-                        opacity: 1;
-                    }
-                }
-            `;
-            document.head.appendChild(style);
-
-            // Remove notification after 4 seconds
-            setTimeout(() => {
-                notification.style.animation = 'slideInRight 0.5s ease reverse';
-                setTimeout(() => notification.remove(), 500);
-            }, 4000);
         }
 
         function handleLogout() {
-            localStorage.removeItem('metahubCurrentUser');
+            localStorage.removeItem('bullbearToken');
+            localStorage.removeItem('bullbearCurrentUser');
             window.location.href = 'index.html';
         }
 
-        function handleCheckout(event) {
+        async function handleCheckout(event) {
             event.preventDefault();
 
             const email = document.getElementById('checkoutEmail').value;
-            const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+            const methodEl = document.querySelector('input[name="paymentMethod"]:checked');
+            if (!methodEl) { alert('Please select a payment method.'); return false; }
+            const paymentMethod = methodEl.value;
 
-            if (paymentMethod === 'card') {
-                const cardNumber = document.getElementById('cardNumber').value;
-                const expiryDate = document.getElementById('expiryDate').value;
-                const cvv = document.getElementById('cvv').value;
-                const cardName = document.getElementById('cardName').value;
+            const btn = event.target.querySelector('button[type="submit"]');
+            const originalText = btn ? btn.textContent : '';
+            if (btn) { btn.textContent = '⏳ Submitting...'; btn.disabled = true; }
 
-                if (!cardNumber || !expiryDate || !cvv || !cardName) {
-                    alert('Please fill in all card details');
-                    return false;
+            try {
+                const res = await fetch(API_BASE + '/purchases', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        userEmail: email,
+                        courseId: 'crypto-trading-course',
+                        amount: 500,
+                        paymentMethod: paymentMethod,
+                        orderId: 'ORD-' + Date.now(),
+                        transactionId: '',
+                    }),
+                });
+                const data = await res.json();
+                if (res.ok && data.status === 'success') {
+                    const section = document.querySelector('.checkout-section') || document.querySelector('.course-purchase-section');
+                    if (section) {
+                        section.innerHTML = `
+                            <div class="container" style="text-align:center;padding:60px 20px;">
+                                <div style="background:rgba(245,158,11,0.1);border:2px solid #f59e0b;border-radius:20px;padding:40px;max-width:600px;margin:0 auto;">
+                                    <div style="font-size:4rem;margin-bottom:20px;">⏳</div>
+                                    <h2 style="color:#f59e0b;font-size:2rem;margin-bottom:15px;">Payment Submitted!</h2>
+                                    <p style="color:#cbd5e1;font-size:1.1rem;">
+                                        Complete your payment of <strong>KES 50,000 (~$500)</strong> to <strong>0799997293</strong> via M-Pesa,
+                                        or via <a href="https://www.paypal.com/paypalme/megametahub42/500" target="_blank" style="color:#06b6d4;">PayPal</a>.<br><br>
+                                        Your access will be unlocked once payment is confirmed by admin.
+                                    </p>
+                                </div>
+                            </div>`;
+                    }
+                } else {
+                    alert(data.message || 'Failed to submit. Please try again.');
+                    if (btn) { btn.textContent = originalText; btn.disabled = false; }
                 }
-
-                // Show processing message
-                const btn = event.target.querySelector('button[type="submit"]');
-                const originalText = btn.textContent;
-                btn.textContent = '⏳ Processing Payment...';
-                btn.disabled = true;
-
-                // Simulate card payment processing
-                setTimeout(() => {
-                    alert('✅ Payment Successful!\n\nEmail: ' + email + '\nAmount: $500.00\n\nYour course access has been granted!\n\nRedirecting to your library...');
-
-                    // Save purchase to localStorage
-                    savePurchase(email, 'card', 500);
-
-                    // Redirect to success page
-                    setTimeout(function () {
-                        window.location.href = 'my-library.html';
-                    }, 1500);
-                }, 2000);
+            } catch (err) {
+                alert('Network error. Please try again.');
+                if (btn) { btn.textContent = originalText; btn.disabled = false; }
             }
 
             return false;
         }
 
-        // M-Pesa Payment Function
         function initiateMpesaPayment() {
             const phoneInput = document.getElementById('mpesaPhone');
             const phoneNumber = phoneInput ? phoneInput.value.trim() : '';
-
             if (!phoneNumber) {
                 alert('Please enter your M-Pesa phone number first.');
                 if (phoneInput) phoneInput.focus();
                 return;
             }
-
-            const email = document.getElementById('checkoutEmail').value || 'guest';
             alert(
-                '📱 M-Pesa Payment Instructions\n\n' +
+                'M-Pesa Payment Instructions\n\n' +
                 'Send KES 50,000 (~$500) to:\n' +
-                'Till/Paybill: 0799997293\n' +
-                'Account: CRYPTO_COURSE\n\n' +
-                'After sending, email your M-Pesa confirmation to:\n' +
-                'megametahub42@gmail.com\n\n' +
-                'Your course access will be activated within 24 hours.'
+                'Number: 0799997293\n\n' +
+                'After paying, click "Complete Purchase" below to register your order.\n' +
+                'Access is activated once payment is confirmed.'
             );
-
-            savePurchase(email, 'M-Pesa (manual)', 50000);
-        }
-
-        function savePurchase(email, paymentMethod, amount) {
-            const currentUser = localStorage.getItem('metahubCurrentUser');
-            let userEmail = email;
-
-            if (currentUser) {
-                const user = JSON.parse(currentUser);
-                userEmail = user.email;
-            }
-
-            const purchases = JSON.parse(localStorage.getItem('metahubPurchases_' + userEmail) || '[]');
-            purchases.push({
-                courseId: 'crypto-trading',
-                courseName: 'Crypto Trading Video Course',
-                purchaseDate: new Date().toISOString(),
-                orderId: 'ORDER-' + Date.now(),
-                amount: amount,
-                paymentMethod: paymentMethod,
-                status: 'completed'
-            });
-            localStorage.setItem('metahubPurchases_' + userEmail, JSON.stringify(purchases));
         }
 
         // Cursor gradient effect on feature cards

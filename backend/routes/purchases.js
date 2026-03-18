@@ -41,7 +41,7 @@ router.post('/', async (req, res) => {
             paymentMethod,
             orderId,
             transactionId,
-            status: paymentMethod === 'paypal-manual' ? 'pending' : 'completed'
+            status: 'pending'
         });
 
         // Update course total purchases

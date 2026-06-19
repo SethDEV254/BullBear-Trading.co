@@ -9,7 +9,7 @@ const userRoutes = require('../routes/users');
 const adminRoutes = require('../routes/admin');
 const paypalRoutes = require('../routes/paypal');
 const checklistRoutes = require('../routes/checklist');
-const whatsappRoutes = require('../routes/whatsapp');
+const axios = require('axios');
 
 const app = express();
 
@@ -44,7 +44,52 @@ app.use('/api/users', userRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/paypal', paypalRoutes);
 app.use('/api/checklist', checklistRoutes);
-app.use('/api/whatsapp', whatsappRoutes);
+
+// ── WhatsApp Bot ──────────────────────────────────────────────────────────────
+let agentsOnline = true;
+
+const WA_SYSTEM_PROMPT = `You are a helpful support assistant for BullBear Trading (bullbearblockchain.com), a professional trading education platform.
+Products: Trading Indicators $30/mo, All-Access Membership $99/mo (includes all courses), Crypto Trading Course $500 one-time.
+Payment: PayPal and M-Pesa. Website: bullbearblockchain.com
+Be friendly, concise, under 150 words. End with a helpful next step.`;
+
+function waTwiml(msg) {
+  const safe = msg.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  return `<?xml version="1.0" encoding="UTF-8"?><Response><Message>${safe}</Message></Response>`;
+}
+
+app.post('/api/whatsapp/webhook', async (req, res) => {
+  res.set('Content-Type', 'text/xml');
+  const body = (req.body.Body || '').trim();
+  if (!body) return res.send(waTwiml('Hi! How can we help you with BullBear Trading today?'));
+  try {
+    if (agentsOnline) {
+      return res.send(waTwiml('Hi! Thanks for reaching out to BullBear Trading. An agent has been notified and will reply shortly.'));
+    }
+    const gemini = await axios.post(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
+      {
+        systemInstruction: { parts: [{ text: WA_SYSTEM_PROMPT }] },
+        contents: [{ role: 'user', parts: [{ text: body }] }],
+        generationConfig: { maxOutputTokens: 300, temperature: 0.7 },
+      },
+      { headers: { 'content-type': 'application/json' }, timeout: 15000 }
+    );
+    return res.send(waTwiml(gemini.data.candidates[0].content.parts[0].text));
+  } catch (err) {
+    console.error('WA bot error:', err.message);
+    return res.send(waTwiml('Thanks for your message! Visit bullbearblockchain.com or our team will reply shortly.'));
+  }
+});
+
+app.get('/api/whatsapp/agent-status', (req, res) => res.json({ agentsOnline }));
+
+app.post('/api/whatsapp/agent-status', (req, res) => {
+  if (req.body.secret !== process.env.WHATSAPP_ADMIN_SECRET)
+    return res.status(403).json({ status: 'error', message: 'Unauthorized' });
+  agentsOnline = Boolean(req.body.online);
+  res.json({ status: 'success', agentsOnline });
+});
 
 app.use((err, req, res, next) => {
   console.error(err.stack);

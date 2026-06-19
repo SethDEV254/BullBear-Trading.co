@@ -4015,10 +4015,29 @@
 
     <!-- Chat Bot Widget -->
     <div id="chatWidget" class="chat-widget">
-        <a id="liveAgentBtn" class="live-agent-btn" href="mailto:dollarpath1@gmail.com">
-            <span class="live-dot"></span>
-            Chat with Live Agent
-        </a>
+        <div id="liveAgentWrap" style="position:relative; margin-bottom:8px;">
+            <button class="live-agent-btn" onclick="toggleAgentMenu(event)">
+                <span class="live-dot"></span>
+                Chat with Live Agent
+            </button>
+            <div id="agentMenu" style="display:none; position:absolute; bottom:calc(100% + 8px); right:0; background:rgba(6,3,18,0.97); border:1px solid rgba(16,185,129,0.3); border-radius:12px; padding:10px; min-width:220px; box-shadow:0 12px 40px rgba(0,0,0,0.6); backdrop-filter:blur(16px);">
+                <p style="font-size:0.68rem; font-weight:700; letter-spacing:0.1em; color:rgba(110,231,183,0.6); text-transform:uppercase; margin:0 0 8px; padding:0 4px;">Select an agent</p>
+                <a href="https://wa.me/254797844481" target="_blank" rel="noopener" class="agent-opt">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="#25d366" style="flex-shrink:0"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.125.557 4.126 1.528 5.858L0 24l6.335-1.505A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.93 0-3.742-.516-5.3-1.415l-.38-.225-3.761.894.953-3.672-.247-.389A9.96 9.96 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+                    <div>
+                        <div style="font-size:0.82rem; font-weight:700; color:#e2e8f0;">Agent 1</div>
+                        <div style="font-size:0.72rem; color:rgba(148,163,184,0.7);">+254 797 844 481</div>
+                    </div>
+                </a>
+                <a href="https://wa.me/254702000987" target="_blank" rel="noopener" class="agent-opt">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="#25d366" style="flex-shrink:0"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.125.557 4.126 1.528 5.858L0 24l6.335-1.505A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.93 0-3.742-.516-5.3-1.415l-.38-.225-3.761.894.953-3.672-.247-.389A9.96 9.96 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+                    <div>
+                        <div style="font-size:0.82rem; font-weight:700; color:#e2e8f0;">Agent 2</div>
+                        <div style="font-size:0.72rem; color:rgba(148,163,184,0.7);">+254 702 000 987</div>
+                    </div>
+                </a>
+            </div>
+        </div>
         <button id="chatToggle" class="chat-toggle">
             <span class="chat-icon">Chat</span>
             <span class="chat-text">Chat with us</span>
@@ -4113,6 +4132,19 @@
             0%, 100% { opacity: 1; box-shadow: 0 0 6px #10b981; }
             50%       { opacity: 0.6; box-shadow: 0 0 12px #10b981; }
         }
+
+        .agent-opt {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 9px 10px;
+            border-radius: 8px;
+            text-decoration: none !important;
+            transition: background 0.2s ease;
+            margin-bottom: 4px;
+        }
+        .agent-opt:last-child { margin-bottom: 0; }
+        .agent-opt:hover { background: rgba(37,211,102,0.08); }
 
         .chat-toggle {
             display: flex;
@@ -4394,6 +4426,18 @@
         const chatInput = document.getElementById('chatInput');
         const chatSend = document.getElementById('chatSend');
         const chatMessages = document.getElementById('chatMessages');
+
+        function toggleAgentMenu(e) {
+            e.stopPropagation();
+            var m = document.getElementById('agentMenu');
+            m.style.display = m.style.display === 'none' ? 'block' : 'none';
+        }
+        document.addEventListener('click', function(e) {
+            var wrap = document.getElementById('liveAgentWrap');
+            if (wrap && !wrap.contains(e.target)) {
+                document.getElementById('agentMenu').style.display = 'none';
+            }
+        });
 
         chatToggle.addEventListener('click', () => {
             chatBox.style.display = chatBox.style.display === 'none' ? 'flex' : 'none';

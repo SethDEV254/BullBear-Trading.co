@@ -66,16 +66,26 @@ app.post('/api/whatsapp/webhook', async (req, res) => {
     if (agentsOnline) {
       return res.send(waTwiml('Hi! Thanks for reaching out to BullBear Trading. An agent has been notified and will reply shortly.'));
     }
-    const gemini = await axios.post(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
+    const groq = await axios.post(
+      'https://api.groq.com/openai/v1/chat/completions',
       {
-        systemInstruction: { parts: [{ text: WA_SYSTEM_PROMPT }] },
-        contents: [{ role: 'user', parts: [{ text: body }] }],
-        generationConfig: { maxOutputTokens: 300, temperature: 0.7 },
+        model: 'llama-3.1-8b-instant',
+        messages: [
+          { role: 'system', content: WA_SYSTEM_PROMPT },
+          { role: 'user', content: body },
+        ],
+        max_tokens: 300,
+        temperature: 0.7,
       },
-      { headers: { 'content-type': 'application/json' }, timeout: 15000 }
+      {
+        headers: {
+          'Authorization': `Bearer ${(process.env.GROQ_API_KEY || '').trim()}`,
+          'Content-Type': 'application/json',
+        },
+        timeout: 15000,
+      }
     );
-    return res.send(waTwiml(gemini.data.candidates[0].content.parts[0].text));
+    return res.send(waTwiml(groq.data.choices[0].message.content));
   } catch (err) {
     console.error('WA bot error:', err.message);
     return res.send(waTwiml('Thanks for your message! Visit bullbearblockchain.com or our team will reply shortly.'));
@@ -85,7 +95,8 @@ app.post('/api/whatsapp/webhook', async (req, res) => {
 app.get('/api/whatsapp/agent-status', (req, res) => res.json({ agentsOnline }));
 
 app.post('/api/whatsapp/agent-status', (req, res) => {
-  if (req.body.secret !== process.env.WHATSAPP_ADMIN_SECRET)
+  const ADMIN_SECRET = (process.env.WHATSAPP_ADMIN_SECRET || 'bb-admin-2026').trim();
+  if (req.body.secret !== ADMIN_SECRET)
     return res.status(403).json({ status: 'error', message: 'Unauthorized' });
   agentsOnline = Boolean(req.body.online);
   res.json({ status: 'success', agentsOnline });

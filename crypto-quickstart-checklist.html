@@ -186,6 +186,48 @@
         }
     </style>
     <link rel="stylesheet" href="./bb-theme.css">
+    <style>
+        /* ── BullBear landing-page theme ── */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800&display=swap');
+        body {
+            background: #05010f !important;
+            font-family: 'Inter', system-ui, sans-serif !important;
+            -webkit-font-smoothing: antialiased !important;
+        }
+        body::before, body::after { display: none !important; }
+        h1, h2, h3 {
+            font-family: 'Space Grotesk', 'Inter', sans-serif !important;
+            background: linear-gradient(135deg, #a78bfa 0%, #f0abfc 100%) !important;
+            -webkit-background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+            background-clip: text !important;
+        }
+        .header, header {
+            background: rgba(5,1,15,0.96) !important;
+            backdrop-filter: blur(16px) !important;
+            -webkit-backdrop-filter: blur(16px) !important;
+            border-bottom: 1px solid rgba(124,58,237,0.25) !important;
+            box-shadow: 0 1px 0 rgba(124,58,237,0.12), 0 8px 40px rgba(0,0,0,0.6) !important;
+        }
+        .card, [class*="card"],
+        [class*="checklist-card"],
+        [class*="step"], [class*="box"] {
+            background: rgba(255,255,255,0.03) !important;
+            border: 1px solid rgba(124,58,237,0.2) !important;
+            border-radius: 14px !important;
+        }
+        .card:hover, [class*="card"]:hover {
+            border-color: rgba(124,58,237,0.45) !important;
+            box-shadow: 0 12px 40px rgba(124,58,237,0.2) !important;
+        }
+        button[type="submit"], [class*="btn"], [class*="cta"], [class*="submit"] {
+            background: linear-gradient(135deg, #7c3aed, #6d28d9) !important;
+            border: none !important;
+        }
+        [class*="badge"] {
+            background: linear-gradient(135deg, #16a34a, #15803d) !important;
+        }
+    </style>
 </head>
 
 <body>

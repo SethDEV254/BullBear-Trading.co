@@ -596,6 +596,57 @@
         }
     </style>
     <link rel="stylesheet" href="./bb-theme.css">
+    <style>
+        /* ── BullBear landing-page theme ── */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800&display=swap');
+        body {
+            background: #05010f !important;
+            font-family: 'Inter', system-ui, sans-serif !important;
+            -webkit-font-smoothing: antialiased !important;
+        }
+        body::after { background: none !important; animation: none !important; }
+        body::before { display: none !important; }
+        h1, h2, h3 {
+            font-family: 'Space Grotesk', 'Inter', sans-serif !important;
+        }
+        .hero-title, [class*="title"] {
+            background: linear-gradient(135deg, #a78bfa 0%, #f0abfc 100%) !important;
+            -webkit-background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+            background-clip: text !important;
+            font-family: 'Space Grotesk', sans-serif !important;
+        }
+        .form-container, [class*="form"], [class*="card"] {
+            background: rgba(255,255,255,0.03) !important;
+            border: 1px solid rgba(124,58,237,0.25) !important;
+            border-radius: 16px !important;
+            backdrop-filter: blur(12px) !important;
+        }
+        input[type="text"], input[type="email"], input[type="tel"], textarea {
+            background: rgba(255,255,255,0.05) !important;
+            border: 1px solid rgba(124,58,237,0.3) !important;
+            color: #e2e8f0 !important;
+            border-radius: 8px !important;
+        }
+        input:focus, textarea:focus {
+            border-color: rgba(124,58,237,0.6) !important;
+            box-shadow: 0 0 0 3px rgba(124,58,237,0.15) !important;
+            outline: none !important;
+        }
+        button[type="submit"], [class*="btn"], [class*="cta"] {
+            background: linear-gradient(135deg, #7c3aed, #6d28d9) !important;
+            border: none !important;
+            font-family: 'Space Grotesk', sans-serif !important;
+            font-weight: 700 !important;
+        }
+        [class*="badge"], [class*="guarantee"] {
+            background: rgba(124,58,237,0.15) !important;
+            border-color: rgba(124,58,237,0.3) !important;
+        }
+        [class*="trust"], [class*="security"] {
+            color: rgba(148,163,184,0.8) !important;
+        }
+    </style>
 </head>
 
 <body>

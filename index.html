@@ -85,7 +85,7 @@
     <!-- Modern Premium Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link
-        href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;0,700;1,400;1,700&family=Fira+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" media="print" onload="this.onload=null;this.removeAttribute(&#39;media&#39;);"
         href="https://kajabi-app-assets.kajabi-cdn.com/assets/core-0d125629e028a5a14579c81397830a1acd5cf5a9f3ec2d0de19efb9b0795fb03.css">
@@ -2170,7 +2170,9 @@
         #encore-theme {
             background-color: var(--bb-bg1) !important;
             color: var(--bb-text) !important;
-            font-family: 'Open Sans', sans-serif !important;
+            font-family: 'Inter', system-ui, sans-serif !important;
+            font-size: 15px !important;
+            letter-spacing: -0.01em !important;
             scrollbar-color: var(--bb-blue2) #0d1224 !important;
         }
 
@@ -2212,15 +2214,15 @@
         /* Hero */
         .bb-hero-section {
             position: relative;
-            background: var(--bb-bg1);
+            background: linear-gradient(135deg, #1a0533 0%, #2d0a5e 40%, #1a0533 100%);
             overflow: hidden;
         }
         .bb-hero-section::before {
             content: '';
             position: absolute;
             inset: 0;
-            background: radial-gradient(ellipse at 50% 40%, rgba(29,78,216,0.18) 0%, transparent 65%),
-                        radial-gradient(ellipse at 80% 80%, rgba(59,130,246,0.08) 0%, transparent 50%);
+            background: radial-gradient(ellipse at 50% 0%, rgba(217,70,239,0.18) 0%, transparent 60%),
+                        radial-gradient(ellipse at 80% 100%, rgba(124,58,237,0.2) 0%, transparent 55%);
             pointer-events: none;
         }
         .bb-hero-logo {
@@ -2237,7 +2239,7 @@
             50%      { transform: translateY(-10px); }
         }
         .bb-hero-title {
-            font-family: 'Fira Sans', 'Open Sans', sans-serif !important;
+            font-family: 'Space Grotesk', 'Inter', sans-serif !important;
             font-size: 2.8rem;
             font-weight: 700;
             color: #ffffff !important;
@@ -2254,7 +2256,7 @@
         }
         .bb-hero-badge {
             display: inline-block;
-            background: var(--bb-blue);
+            background: linear-gradient(135deg, #7c3aed, #d946ef);
             color: #fff !important;
             font-size: 0.75rem;
             font-weight: 700;
@@ -2263,7 +2265,7 @@
             border-radius: 50px;
             margin-bottom: 20px;
             text-transform: uppercase;
-            box-shadow: 0 0 20px rgba(29,78,216,0.4);
+            box-shadow: 0 0 20px rgba(124,58,237,0.5);
         }
 
         /* Buttons */
@@ -2271,7 +2273,7 @@
             display: inline-block;
             background: var(--bb-green);
             color: #ffffff !important;
-            font-family: 'Fira Sans', sans-serif !important;
+            font-family: 'Space Grotesk', 'Inter', sans-serif !important;
             font-size: 1.1rem;
             font-weight: 700;
             padding: 16px 44px;
@@ -2301,14 +2303,14 @@
             flex-wrap: wrap;
             margin-top: 36px;
             padding-top: 28px;
-            border-top: 1px solid var(--bb-border);
+            border-top: 1px solid rgba(124,58,237,0.3);
         }
         .bb-stat { text-align: center; }
         .bb-stat-num {
-            font-family: 'Fira Sans', sans-serif !important;
+            font-family: 'Space Grotesk', 'Inter', sans-serif !important;
             font-size: 1.7rem;
             font-weight: 700;
-            color: var(--bb-blue2) !important;
+            color: #d946ef !important;
         }
         .bb-stat-lbl {
             font-size: 0.75rem;
@@ -2320,7 +2322,7 @@
         /* Section 2 — Benefits */
         .bb-benefits-section { background: var(--bb-bg2); border-top: 1px solid var(--bb-border); }
         .bb-benefits-section h2 {
-            font-family: 'Fira Sans', sans-serif !important;
+            font-family: 'Space Grotesk', 'Inter', sans-serif !important;
             font-size: 2rem;
             font-weight: 700;
             color: #ffffff !important;
@@ -2335,7 +2337,7 @@
             line-height: 1.8;
         }
         .bb-checklist-heading {
-            font-family: 'Fira Sans', sans-serif !important;
+            font-family: 'Space Grotesk', 'Inter', sans-serif !important;
             font-size: 1.2rem;
             font-weight: 700;
             color: #ffffff !important;
@@ -2370,7 +2372,7 @@
             border-bottom: 1px solid var(--bb-border);
         }
         .bb-features-section h2 {
-            font-family: 'Fira Sans', sans-serif !important;
+            font-family: 'Space Grotesk', 'Inter', sans-serif !important;
             font-size: 2rem;
             font-weight: 700;
             color: #ffffff !important;
@@ -2385,7 +2387,7 @@
             backdrop-filter: blur(10px);
         }
         .bb-cta-label {
-            font-family: 'Fira Sans', sans-serif !important;
+            font-family: 'Space Grotesk', 'Inter', sans-serif !important;
             font-size: 1.3rem;
             font-weight: 700;
             color: #ffffff !important;
@@ -2404,7 +2406,7 @@
         /* Section 4 — Courses */
         .bb-courses-section { background: var(--bb-bg2); border-top: 1px solid var(--bb-border); }
         .bb-courses-section h2 {
-            font-family: 'Fira Sans', sans-serif !important;
+            font-family: 'Space Grotesk', 'Inter', sans-serif !important;
             font-size: 2rem;
             font-weight: 700;
             color: #ffffff !important;

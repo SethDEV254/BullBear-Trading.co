@@ -5333,29 +5333,34 @@
 
         window.verifyAdmin = function() {
             var pw = document.getElementById('adminPasswordInput').value;
-            if (pw === ADMIN_PW) {
-                // Get backend token
-                fetch(AP_API + '/admin/login', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email: 'admin@bullbeartrading.com', password: pw }),
-                })
-                .then(function(r){ return r.json(); })
-                .then(function(data){
-                    if (data.status === 'success') apAdminToken = data.data.token;
-                })
-                .catch(function(){})
-                .finally(function(){
-                    adminAuthed = true;
-                    document.getElementById('adminAuth').style.display = 'none';
-                    showAdminDashboard();
-                });
-            } else {
+            if (pw !== ADMIN_PW) {
                 var err = document.getElementById('adminAuthError');
                 err.style.display = 'block';
                 document.getElementById('adminPasswordInput').value = '';
                 setTimeout(function(){ err.style.display='none'; }, 3000);
+                return;
             }
+            var btn = document.querySelector('#adminAuth button[onclick]');
+            if (btn) { btn.disabled = true; btn.textContent = 'Authenticating…'; }
+
+            fetch(AP_API + '/admin/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: 'admin@bullbeartrading.com', password: pw }),
+            })
+            .then(function(r){ return r.json(); })
+            .then(function(data){
+                if (data.status === 'success' && data.data && data.data.token) {
+                    apAdminToken = data.data.token;
+                }
+            })
+            .catch(function(e){ console.warn('Admin backend login failed:', e); })
+            .finally(function(){
+                if (btn) { btn.disabled = false; btn.textContent = 'Access Dashboard'; }
+                adminAuthed = true;
+                document.getElementById('adminAuth').style.display = 'none';
+                showAdminDashboard();
+            });
         };
 
         function showAdminDashboard() {
@@ -5455,48 +5460,76 @@
         function renderOverview() {
             var msgs = getBroadcasts().length;
             var docs = getDocs().length;
+            var ra = document.getElementById('apRecentActivity');
+
             document.getElementById('apStatCards').innerHTML =
-                apStatCard('', '...', 'Total Users') +
-                apStatCard('', '...', "Today's Signups") +
-                apStatCard('', '...', 'Purchases') +
-                apStatCard('', '...', 'Revenue') +
-                apStatCard('', msgs, 'Broadcasts') +
-                apStatCard('', docs, 'Documents');
+                apStatCard('👥', '…', 'Total Users') +
+                apStatCard('🆕', '…', "Today's Signups") +
+                apStatCard('💳', '…', 'Purchases') +
+                apStatCard('💰', '…', 'Revenue') +
+                apStatCard('📢', msgs, 'Broadcasts') +
+                apStatCard('📄', docs, 'Documents');
+            ra.innerHTML = '<p class="ap-empty">Loading…</p>';
 
-            if (!apAdminToken) { document.getElementById('apRecentActivity').innerHTML='<p class="ap-empty">Loading...</p>'; return; }
+            if (!apAdminToken) {
+                ra.innerHTML = '<p class="ap-empty" style="color:#f87171;">Not authenticated — re-enter your password</p>';
+                return;
+            }
 
-            fetch(AP_API + '/admin/stats', { headers: apAuthHeaders() })
-            .then(function(r){ return r.json(); })
-            .then(function(data){
-                if (data.status !== 'success') return;
-                var s = data.data;
+            // Fetch users + stats in parallel
+            Promise.all([
+                fetch(AP_API + '/admin/users?limit=200', { headers: apAuthHeaders() }).then(function(r){ return r.json(); }),
+                fetch(AP_API + '/admin/stats',            { headers: apAuthHeaders() }).then(function(r){ return r.json(); }),
+            ])
+            .then(function(results) {
+                var usersData = results[0];
+                var statsData = results[1];
+
+                // Populate users cache
+                if (usersData.data && usersData.data.users) {
+                    allUsersCache = usersData.data.users;
+                }
+
                 var todayStr = new Date().toDateString();
-                document.getElementById('apStatCards').innerHTML =
-                    apStatCard('', s.totalUsers||0, 'Total Users') +
-                    apStatCard('', allUsersCache.filter(function(u){ return new Date(u.createdAt).toDateString()===todayStr; }).length, "Today's Signups") +
-                    apStatCard('', s.totalPurchases||0, 'Purchases') +
-                    apStatCard('', '$'+(s.totalRevenue||0).toFixed(0), 'Revenue') +
-                    apStatCard('', msgs, 'Broadcasts') +
-                    apStatCard('', docs, 'Documents');
+                var todayCount = allUsersCache.filter(function(u){
+                    return u.role !== 'admin' && new Date(u.createdAt).toDateString() === todayStr;
+                }).length;
 
+                var s = (statsData.status === 'success' && statsData.data) ? statsData.data : {};
+
+                document.getElementById('apStatCards').innerHTML =
+                    apStatCard('👥', s.totalUsers || allUsersCache.filter(function(u){ return u.role!=='admin'; }).length || 0, 'Total Users') +
+                    apStatCard('🆕', todayCount, "Today's Signups") +
+                    apStatCard('💳', s.totalPurchases || 0, 'Purchases') +
+                    apStatCard('💰', '$' + (s.totalRevenue || 0).toFixed(0), 'Revenue') +
+                    apStatCard('📢', msgs, 'Broadcasts') +
+                    apStatCard('📄', docs, 'Documents');
+
+                // Recent activity feed
                 var items = [];
-                allUsersCache.slice(0,3).forEach(function(u){
-                    items.push({text:'<b>'+(u.firstName+' '+u.lastName||u.email)+'</b> signed up', time:u.createdAt});
+                allUsersCache.filter(function(u){ return u.role!=='admin'; }).slice(0,3).forEach(function(u){
+                    var name = ((u.firstName||'')+ ' '+(u.lastName||'')).trim() || u.email || 'User';
+                    items.push({ text: '<b>'+name+'</b> signed up', time: u.createdAt });
                 });
                 (s.recentPurchases||[]).slice(0,3).forEach(function(p){
-                    items.push({text:'<b>'+(p.user&&p.user.email||'User')+'</b> purchased '+(p.course&&p.course.title||'a course'), time:p.createdAt});
+                    var who = (p.user && p.user.email) || 'A user';
+                    var what = (p.course && p.course.title) || 'a course';
+                    items.push({ text: '<b>'+who+'</b> purchased '+what, time: p.createdAt });
                 });
                 items.sort(function(a,b){ return new Date(b.time)-new Date(a.time); });
-                var ra = document.getElementById('apRecentActivity');
-                if (items.length===0) { ra.innerHTML='<p class="ap-empty">No recent activity</p>'; return; }
-                ra.innerHTML = items.slice(0,6).map(function(it){
+
+                if (items.length === 0) { ra.innerHTML='<p class="ap-empty">No recent activity yet</p>'; return; }
+                ra.innerHTML = items.slice(0,8).map(function(it){
                     var d = it.time ? new Date(it.time).toLocaleString() : '';
-                    return '<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid rgba(124,58,237,0.1);">'+
+                    return '<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid rgba(124,58,237,0.08);">'+
                         '<span style="font-size:0.82rem;color:#94a3b8;flex:1;">'+it.text+'</span>'+
-                        '<span style="font-size:0.7rem;color:#334155;">'+d+'</span></div>';
+                        '<span style="font-size:0.72rem;color:#475569;white-space:nowrap;">'+d+'</span></div>';
                 }).join('');
             })
-            .catch(function(){ document.getElementById('apRecentActivity').innerHTML='<p class="ap-empty">Failed to load</p>'; });
+            .catch(function(e){
+                console.error('Overview load failed:', e);
+                ra.innerHTML = '<p class="ap-empty" style="color:#f87171;">Failed to load data — check connection</p>';
+            });
         }
 
         function apStatCard(icon, val, label) {

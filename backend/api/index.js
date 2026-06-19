@@ -46,7 +46,7 @@ app.use('/api/paypal', paypalRoutes);
 app.use('/api/checklist', checklistRoutes);
 
 // ── WhatsApp Bot ──────────────────────────────────────────────────────────────
-let agentsOnline = true;
+let agentsOnline = false;
 
 const WA_SYSTEM_PROMPT = `You are a helpful support assistant for BullBear Trading (bullbearblockchain.com), a professional trading education platform.
 Products: Trading Indicators $30/mo, All-Access Membership $99/mo (includes all courses), Crypto Trading Course $500 one-time.

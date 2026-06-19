@@ -4164,16 +4164,16 @@
         .chat-toggle {
             display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 15px 25px;
+            gap: 6px;
+            padding: 8px 14px;
             background: linear-gradient(135deg, #7c3aed 0%, #d946ef 100%);
             color: #ffffff;
             border: none;
             border-radius: 50px;
             cursor: pointer;
-            box-shadow: 0 8px 25px rgba(124, 58, 237, 0.5);
+            box-shadow: 0 4px 14px rgba(124, 58, 237, 0.45);
             transition: all 0.3s ease;
-            font-size: 16px;
+            font-size: 13px;
             font-weight: 600;
         }
 
@@ -6079,6 +6079,7 @@
         // Log page view
         rtLogEvent('page_view', { page: 'store', url: window.location.href }).catch(() => {});
     </script>
+    <script src="./bb-notifications.js"></script>
 </body>
 
 </html>

@@ -33,16 +33,7 @@ YOUR BEHAVIOR:
 - End responses with a helpful next step (e.g., "Visit bullbearblockchain.com to sign up")`;
 
 function isAgentActive() {
-  if (!agentsOnline) return false;
-
-  // Business hours: 8am–8pm EAT (UTC+3), Monday–Saturday
-  const now = new Date();
-  const eat = new Date(now.getTime() + 3 * 60 * 60 * 1000);
-  const day = eat.getUTCDay(); // 0=Sun, 6=Sat
-  const hour = eat.getUTCHours();
-
-  if (day === 0) return false; // Sunday off
-  return hour >= 8 && hour < 20;
+  return agentsOnline;
 }
 
 async function askClaude(userMessage) {

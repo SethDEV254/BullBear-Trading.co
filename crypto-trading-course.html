@@ -1254,6 +1254,141 @@
             background: rgba(124,58,237,0.15) !important;
             border-color: rgba(124,58,237,0.3) !important;
         }
+
+        /* ── Membership Banner ── */
+        .bb-membership-banner {
+            margin: 28px 0;
+            background: linear-gradient(135deg, rgba(124,58,237,0.12), rgba(217,70,239,0.08));
+            border: 1px solid rgba(124,58,237,0.4);
+            border-radius: 16px;
+            padding: 28px 28px 18px;
+            position: relative;
+            overflow: hidden;
+        }
+        .bb-membership-banner::before {
+            content: '';
+            position: absolute;
+            top: -40px; right: -40px;
+            width: 180px; height: 180px;
+            background: radial-gradient(circle, rgba(217,70,239,0.18) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .bb-membership-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #7c3aed, #d946ef);
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            padding: 4px 14px;
+            border-radius: 50px;
+            margin-bottom: 16px;
+        }
+        .bb-membership-inner {
+            display: flex;
+            align-items: flex-start;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+        .bb-membership-left { flex: 1; min-width: 220px; }
+        .bb-membership-title {
+            font-family: 'Space Grotesk', sans-serif !important;
+            font-size: 1.25rem !important;
+            font-weight: 700 !important;
+            color: #f1f5f9 !important;
+            -webkit-text-fill-color: #f1f5f9 !important;
+            background: none !important;
+            margin: 0 0 8px !important;
+            letter-spacing: -0.02em !important;
+        }
+        .bb-membership-sub {
+            font-size: 0.9rem;
+            color: rgba(203,213,225,0.8) !important;
+            margin: 0 0 14px !important;
+            -webkit-text-fill-color: unset !important;
+        }
+        .bb-membership-sub strong { color: #e2e8f0 !important; font-weight: 600; }
+        .bb-membership-perks {
+            list-style: none;
+            padding: 0; margin: 0;
+        }
+        .bb-membership-perks li {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            color: rgba(203,213,225,0.9) !important;
+            padding: 4px 0;
+        }
+        .bb-membership-right {
+            text-align: center;
+            min-width: 160px;
+        }
+        .bb-membership-price {
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            gap: 4px;
+            margin-bottom: 4px;
+        }
+        .bb-mem-amount {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            background: linear-gradient(135deg, #a78bfa, #f0abfc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .bb-mem-period {
+            font-size: 1rem;
+            color: rgba(148,163,184,0.8);
+            font-family: 'Inter', sans-serif;
+        }
+        .bb-mem-save {
+            font-size: 0.72rem;
+            color: #86efac;
+            font-weight: 600;
+            margin-bottom: 14px;
+            letter-spacing: 0.02em;
+        }
+        .bb-mem-btn {
+            display: block;
+            width: 100%;
+            padding: 13px 0;
+            background: linear-gradient(135deg, #7c3aed, #6d28d9) !important;
+            color: #fff !important;
+            border: none !important;
+            border-radius: 8px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(124,58,237,0.4);
+            transition: all 0.2s ease;
+        }
+        .bb-mem-btn:hover {
+            background: linear-gradient(135deg, #6d28d9, #5b21b6) !important;
+            box-shadow: 0 6px 24px rgba(124,58,237,0.55);
+            transform: translateY(-2px);
+        }
+        .bb-mem-note {
+            font-size: 0.7rem;
+            color: rgba(148,163,184,0.6) !important;
+            margin-top: 8px !important;
+            -webkit-text-fill-color: unset !important;
+        }
+        .bb-membership-divider {
+            text-align: center;
+            font-size: 0.78rem;
+            color: rgba(148,163,184,0.5);
+            margin-top: 20px;
+            font-style: italic;
+        }
+        @media (max-width: 600px) {
+            .bb-membership-inner { flex-direction: column; }
+            .bb-membership-right { width: 100%; }
+        }
     </style>
 </head>
 
@@ -1395,6 +1530,36 @@
                         <div class="feature-item">✓ Certificate</div>
                     </div>
                 </div>
+            </div>
+
+            <!-- Membership Upsell -->
+            <div class="bb-membership-banner">
+                <div class="bb-membership-badge">⭐ ALL-ACCESS MEMBERSHIP</div>
+                <div class="bb-membership-inner">
+                    <div class="bb-membership-left">
+                        <h3 class="bb-membership-title">Get Everything with BullBear Membership</h3>
+                        <p class="bb-membership-sub">Unlock this course <strong>plus all future content</strong> for one low monthly price</p>
+                        <ul class="bb-membership-perks">
+                            <li>✓ This course + all other courses (worth $1,649+)</li>
+                            <li>✓ Live trading indicators &amp; real-time signals</li>
+                            <li>✓ Priority community &amp; 1-on-1 support sessions</li>
+                            <li>✓ New content added every month</li>
+                            <li>✓ Cancel anytime — no lock-in</li>
+                        </ul>
+                    </div>
+                    <div class="bb-membership-right">
+                        <div class="bb-membership-price">
+                            <span class="bb-mem-amount">$99</span>
+                            <span class="bb-mem-period">/month</span>
+                        </div>
+                        <div class="bb-mem-save">Save vs buying separately</div>
+                        <button class="bb-mem-btn" onclick="showSignupModal ? showSignupModal() : window.location.href='/'">
+                            Join Membership
+                        </button>
+                        <p class="bb-mem-note">30-day money-back guarantee</p>
+                    </div>
+                </div>
+                <div class="bb-membership-divider">— or purchase this course only for $500 below —</div>
             </div>
 
             <!-- Payment Section - Directly Below Card -->

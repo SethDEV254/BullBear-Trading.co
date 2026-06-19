@@ -82,24 +82,9 @@ app.get('/api/health', (req, res) => {
     });
 });
 
-// Root endpoint
+// Root endpoint — serve the live dashboard
 app.get('/', (req, res) => {
-    res.json({
-        message: 'Welcome to Bull Bear Trading API',
-        tagline: 'Master the Markets',
-        version: '1.0.0',
-        endpoints: {
-            health: '/api/health',
-            auth: '/api/auth',
-            admin: '/api/admin',
-            courses: '/api/courses',
-            purchases: '/api/purchases',
-            users: '/api/users',
-            paypal: '/api/paypal',
-            checklist: '/api/checklist',
-            mpesa: '/api/mpesa'
-        }
-    });
+    res.sendFile(path.join(__dirname, '..', 'realtime-dashboard.html'));
 });
 
 // Error handling middleware

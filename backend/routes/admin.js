@@ -1,341 +1,200 @@
-// Admin Routes
 const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
-const User = require('../models/User');
-const Purchase = require('../models/Purchase');
-const Course = require('../models/Course');
+const bcrypt = require('bcryptjs');
+const { getDb } = require('../lib/firebase');
 const { adminAuth } = require('../middleware/auth');
 
-// Generate JWT token
-const generateToken = (userId) => {
-    return jwt.sign({ id: userId }, process.env.JWT_SECRET, {
-        expiresIn: '7d' // Admin tokens expire in 7 days
-    });
-};
+const generateToken = (email) =>
+  jwt.sign({ id: email }, process.env.JWT_SECRET, { expiresIn: '7d' });
 
-// @route   POST /api/admin/login
-// @desc    Admin login
-// @access  Public
+// POST /api/admin/login
 router.post('/login', async (req, res) => {
-    try {
-        const { email, password } = req.body;
-
-        // Validate input
-        if (!email || !password) {
-            return res.status(400).json({
-                status: 'error',
-                message: 'Email and password are required'
-            });
-        }
-
-        // Find user
-        const user = await User.findOne({ email });
-        if (!user) {
-            return res.status(401).json({
-                status: 'error',
-                message: 'Invalid credentials'
-            });
-        }
-
-        // Check if user is admin
-        if (user.role !== 'admin') {
-            return res.status(403).json({
-                status: 'error',
-                message: 'Access denied. Admin privileges required.'
-            });
-        }
-
-        // Check password
-        const isMatch = await user.comparePassword(password);
-        if (!isMatch) {
-            return res.status(401).json({
-                status: 'error',
-                message: 'Invalid credentials'
-            });
-        }
-
-        // Update last login
-        user.lastLogin = new Date();
-        await user.save();
-
-        // Generate token
-        const token = generateToken(user._id);
-
-        res.json({
-            status: 'success',
-            message: 'Admin login successful',
-            data: {
-                user: {
-                    id: user._id,
-                    email: user.email,
-                    firstName: user.firstName,
-                    lastName: user.lastName,
-                    role: user.role
-                },
-                token
-            }
-        });
-    } catch (error) {
-        res.status(500).json({
-            status: 'error',
-            message: error.message
-        });
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({ status: 'error', message: 'Email and password are required' });
     }
+
+    const db = getDb();
+    const snap = await db.collection('users').doc(email.toLowerCase().trim()).get();
+    if (!snap.exists) {
+      return res.status(401).json({ status: 'error', message: 'Invalid credentials' });
+    }
+
+    const user = snap.data();
+    if (user.role !== 'admin') {
+      return res.status(403).json({ status: 'error', message: 'Access denied. Admin privileges required.' });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.passwordHash);
+    if (!isMatch) {
+      return res.status(401).json({ status: 'error', message: 'Invalid credentials' });
+    }
+
+    await snap.ref.update({ lastLogin: new Date().toISOString() });
+    const token = generateToken(user.email);
+
+    res.json({
+      status: 'success',
+      message: 'Admin login successful',
+      data: {
+        user: { id: user.email, email: user.email, firstName: user.firstName, lastName: user.lastName, role: user.role },
+        token,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ status: 'error', message: error.message });
+  }
 });
 
-// @route   GET /api/admin/verify
-// @desc    Verify admin token
-// @access  Private/Admin
-router.get('/verify', adminAuth, async (req, res) => {
-    try {
-        res.json({
-            status: 'success',
-            message: 'Token is valid',
-            data: {
-                user: {
-                    id: req.user._id,
-                    email: req.user.email,
-                    firstName: req.user.firstName,
-                    lastName: req.user.lastName,
-                    role: req.user.role
-                }
-            }
-        });
-    } catch (error) {
-        res.status(500).json({
-            status: 'error',
-            message: error.message
-        });
-    }
+// GET /api/admin/verify
+router.get('/verify', adminAuth, (req, res) => {
+  res.json({
+    status: 'success',
+    message: 'Token is valid',
+    data: { user: { id: req.user.id, email: req.user.email, firstName: req.user.firstName, lastName: req.user.lastName, role: req.user.role } },
+  });
 });
 
-// @route   GET /api/admin/stats
-// @desc    Get admin statistics
-// @access  Private/Admin
+// GET /api/admin/stats
 router.get('/stats', adminAuth, async (req, res) => {
-    try {
-        const totalPurchases = await Purchase.countDocuments();
-        const pendingApprovals = await Purchase.countDocuments({ status: 'pending' });
-        const totalUsers = await User.countDocuments({ role: 'user' });
-        const totalAdmins = await User.countDocuments({ role: 'admin' });
-        
-        const revenueResult = await Purchase.aggregate([
-            { $match: { status: { $in: ['completed', 'approved'] } } },
-            { $group: { _id: null, total: { $sum: '$amount' } } }
-        ]);
-        
-        const totalRevenue = revenueResult.length > 0 ? revenueResult[0].total : 0;
+  try {
+    const db = getDb();
 
-        // Get recent purchases
-        const recentPurchases = await Purchase.find()
-            .populate('user', 'email firstName lastName')
-            .populate('course', 'title price')
-            .sort({ createdAt: -1 })
-            .limit(10);
+    const [purchasesSnap, usersSnap, leadsSnap] = await Promise.all([
+      db.collection('purchases').get(),
+      db.collection('users').get(),
+      db.collection('checklist_leads').get(),
+    ]);
 
-        res.json({
-            status: 'success',
-            data: {
-                totalRevenue,
-                totalUsers,
-                totalAdmins,
-                totalPurchases,
-                pendingApprovals,
-                recentPurchases
-            }
-        });
-    } catch (error) {
-        res.status(500).json({
-            status: 'error',
-            message: error.message
-        });
-    }
+    const purchases = purchasesSnap.docs.map(d => d.data());
+    const users = usersSnap.docs.map(d => d.data());
+
+    const totalPurchases = purchases.length;
+    const pendingApprovals = purchases.filter(p => p.status === 'pending').length;
+    const totalUsers = users.filter(u => u.role !== 'admin').length;
+    const totalAdmins = users.filter(u => u.role === 'admin').length;
+    const checklistLeads = leadsSnap.size;
+
+    const completedPurchases = purchases.filter(p => ['completed', 'approved'].includes(p.status));
+    const totalRevenue = completedPurchases.reduce((sum, p) => sum + (parseFloat(p.amount) || 0), 0);
+
+    const recentPurchases = purchases
+      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+      .slice(0, 10);
+
+    res.json({
+      status: 'success',
+      data: { totalRevenue, totalUsers, totalAdmins, totalPurchases, pendingApprovals, checklistLeads, recentPurchases },
+    });
+  } catch (error) {
+    res.status(500).json({ status: 'error', message: error.message });
+  }
 });
 
-// @route   GET /api/admin/purchases
-// @desc    Get all purchases with filters
-// @access  Private/Admin
+// GET /api/admin/purchases
 router.get('/purchases', adminAuth, async (req, res) => {
-    try {
-        const { status, limit = 50, page = 1 } = req.query;
-        const filter = status ? { status } : {};
-        
-        const purchases = await Purchase.find(filter)
-            .populate('user', 'email firstName lastName')
-            .populate('course', 'title price')
-            .sort({ createdAt: -1 })
-            .limit(parseInt(limit))
-            .skip((parseInt(page) - 1) * parseInt(limit));
+  try {
+    const { status, limit = 50, page = 1 } = req.query;
+    const db = getDb();
 
-        const total = await Purchase.countDocuments(filter);
+    let query = db.collection('purchases').orderBy('createdAt', 'desc');
+    if (status) query = query.where('status', '==', status);
 
-        res.json({
-            status: 'success',
-            count: purchases.length,
-            total,
-            page: parseInt(page),
-            pages: Math.ceil(total / parseInt(limit)),
-            data: { purchases }
-        });
-    } catch (error) {
-        res.status(500).json({
-            status: 'error',
-            message: error.message
-        });
-    }
+    const snap = await query.limit(parseInt(limit) * parseInt(page)).get();
+    const all = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    const offset = (parseInt(page) - 1) * parseInt(limit);
+    const purchases = all.slice(offset, offset + parseInt(limit));
+
+    res.json({
+      status: 'success',
+      count: purchases.length,
+      total: all.length,
+      page: parseInt(page),
+      data: { purchases },
+    });
+  } catch (error) {
+    res.status(500).json({ status: 'error', message: error.message });
+  }
 });
 
-// @route   GET /api/admin/users
-// @desc    Get all users
-// @access  Private/Admin
+// GET /api/admin/users
 router.get('/users', adminAuth, async (req, res) => {
-    try {
-        const { role, limit = 50, page = 1 } = req.query;
-        const filter = role ? { role } : {};
-        
-        const users = await User.find(filter)
-            .select('-password')
-            .populate('purchases')
-            .sort({ createdAt: -1 })
-            .limit(parseInt(limit))
-            .skip((parseInt(page) - 1) * parseInt(limit));
+  try {
+    const { role, limit = 50, page = 1 } = req.query;
+    const db = getDb();
 
-        const total = await User.countDocuments(filter);
+    let query = db.collection('users').orderBy('createdAt', 'desc');
+    if (role) query = query.where('role', '==', role);
 
-        res.json({
-            status: 'success',
-            count: users.length,
-            total,
-            page: parseInt(page),
-            pages: Math.ceil(total / parseInt(limit)),
-            data: { users }
-        });
-    } catch (error) {
-        res.status(500).json({
-            status: 'error',
-            message: error.message
-        });
-    }
+    const snap = await query.get();
+    const all = snap.docs.map(d => {
+      const { passwordHash: _, ...u } = d.data();
+      return { id: d.id, ...u };
+    });
+
+    const offset = (parseInt(page) - 1) * parseInt(limit);
+    const users = all.slice(offset, offset + parseInt(limit));
+
+    res.json({
+      status: 'success',
+      count: users.length,
+      total: all.length,
+      page: parseInt(page),
+      data: { users },
+    });
+  } catch (error) {
+    res.status(500).json({ status: 'error', message: error.message });
+  }
 });
 
-// @route   PUT /api/admin/purchases/:id/approve
-// @desc    Approve purchase
-// @access  Private/Admin
+// PUT /api/admin/purchases/:id/approve
 router.put('/purchases/:id/approve', adminAuth, async (req, res) => {
-    try {
-        const purchase = await Purchase.findById(req.params.id)
-            .populate('course')
-            .populate('user');
-
-        if (!purchase) {
-            return res.status(404).json({
-                status: 'error',
-                message: 'Purchase not found'
-            });
-        }
-
-        purchase.status = 'approved';
-        purchase.verifiedAt = new Date();
-        purchase.verifiedBy = req.user._id;
-        await purchase.save();
-
-        // Send confirmation email if email service is configured
-        if (process.env.EMAIL_USER) {
-            const { sendPurchaseConfirmation } = require('../utils/emailService');
-            await sendPurchaseConfirmation(
-                purchase.userEmail,
-                purchase.user?.firstName || 'Valued Customer',
-                purchase.course?.title || 'Course',
-                purchase.orderId
-            );
-        }
-
-        res.json({
-            status: 'success',
-            message: 'Purchase approved successfully',
-            data: { purchase }
-        });
-    } catch (error) {
-        res.status(500).json({
-            status: 'error',
-            message: error.message
-        });
-    }
+  try {
+    const db = getDb();
+    const ref = db.collection('purchases').doc(req.params.id);
+    const snap = await ref.get();
+    if (!snap.exists) return res.status(404).json({ status: 'error', message: 'Purchase not found' });
+    await ref.update({ status: 'approved', verifiedAt: new Date().toISOString(), verifiedBy: req.user.email });
+    res.json({ status: 'success', message: 'Purchase approved successfully', data: { purchase: { id: ref.id, ...snap.data(), status: 'approved' } } });
+  } catch (error) {
+    res.status(500).json({ status: 'error', message: error.message });
+  }
 });
 
-// @route   PUT /api/admin/purchases/:id/reject
-// @desc    Reject purchase
-// @access  Private/Admin
+// PUT /api/admin/purchases/:id/reject
 router.put('/purchases/:id/reject', adminAuth, async (req, res) => {
-    try {
-        const { reason } = req.body;
-        
-        const purchase = await Purchase.findById(req.params.id);
-
-        if (!purchase) {
-            return res.status(404).json({
-                status: 'error',
-                message: 'Purchase not found'
-            });
-        }
-
-        purchase.status = 'rejected';
-        purchase.rejectionReason = reason || 'Payment verification failed';
-        purchase.rejectedBy = req.user._id;
-        purchase.rejectedAt = new Date();
-        await purchase.save();
-
-        res.json({
-            status: 'success',
-            message: 'Purchase rejected',
-            data: { purchase }
-        });
-    } catch (error) {
-        res.status(500).json({
-            status: 'error',
-            message: error.message
-        });
-    }
+  try {
+    const { reason } = req.body;
+    const db = getDb();
+    const ref = db.collection('purchases').doc(req.params.id);
+    const snap = await ref.get();
+    if (!snap.exists) return res.status(404).json({ status: 'error', message: 'Purchase not found' });
+    await ref.update({ status: 'rejected', rejectionReason: reason || 'Payment verification failed', rejectedAt: new Date().toISOString() });
+    res.json({ status: 'success', message: 'Purchase rejected', data: { purchase: { id: ref.id, ...snap.data(), status: 'rejected' } } });
+  } catch (error) {
+    res.status(500).json({ status: 'error', message: error.message });
+  }
 });
 
-// @route   PUT /api/admin/users/:id/role
-// @desc    Update user role
-// @access  Private/Admin
+// PUT /api/admin/users/:id/role
 router.put('/users/:id/role', adminAuth, async (req, res) => {
-    try {
-        const { role } = req.body;
-
-        if (!['user', 'admin'].includes(role)) {
-            return res.status(400).json({
-                status: 'error',
-                message: 'Invalid role. Must be "user" or "admin"'
-            });
-        }
-
-        const user = await User.findById(req.params.id);
-
-        if (!user) {
-            return res.status(404).json({
-                status: 'error',
-                message: 'User not found'
-            });
-        }
-
-        user.role = role;
-        await user.save();
-
-        res.json({
-            status: 'success',
-            message: `User role updated to ${role}`,
-            data: { user: user.toJSON() }
-        });
-    } catch (error) {
-        res.status(500).json({
-            status: 'error',
-            message: error.message
-        });
+  try {
+    const { role } = req.body;
+    if (!['user', 'admin'].includes(role)) {
+      return res.status(400).json({ status: 'error', message: 'Invalid role. Must be "user" or "admin"' });
     }
+    const db = getDb();
+    const ref = db.collection('users').doc(req.params.id);
+    const snap = await ref.get();
+    if (!snap.exists) return res.status(404).json({ status: 'error', message: 'User not found' });
+    await ref.update({ role });
+    const { passwordHash: _, ...u } = snap.data();
+    res.json({ status: 'success', message: `User role updated to ${role}`, data: { user: { id: ref.id, ...u, role } } });
+  } catch (error) {
+    res.status(500).json({ status: 'error', message: error.message });
+  }
 });
 
 module.exports = router;

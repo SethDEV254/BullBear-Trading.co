@@ -1596,6 +1596,8 @@
                 document.getElementById('totalPurchases').textContent = s.totalPurchases || 0;
                 document.getElementById('pendingCount').textContent = s.pendingApprovals || 0;
                 document.getElementById('totalRevenue').textContent = '$' + (s.totalRevenue || 0).toFixed(2);
+                const clEl = document.getElementById('checklistLeadsCount');
+                if (clEl) clEl.textContent = s.checklistLeads || 0;
 
                 const tbody = document.getElementById('recentPurchasesTable');
                 const recent = s.recentPurchases || [];
@@ -1878,35 +1880,33 @@
             });
         }
 
-        // Load checklist downloads (all signups = checklist subscribers)
+        // Load checklist leads from MongoDB
         function loadChecklistDownloads() {
             const tbody = document.getElementById('checklistTable');
             tbody.innerHTML = '<tr><td colspan="5"><div class="empty-state"><div class="empty-state-icon">⏳</div><p>Loading...</p></div></td></tr>';
 
-            fetch(API_URL + '/admin/users?limit=100', {
+            fetch(API_URL + '/checklist/leads', {
                 headers: { 'Authorization': 'Bearer ' + authToken },
             })
             .then(r => r.json())
             .then(data => {
-                const users = (data.data && data.data.users) || [];
-                if (users.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="5"><div class="empty-state"><div class="empty-state-icon">📋</div><p>No signups yet</p></div></td></tr>';
+                const leads = data.data || [];
+                if (leads.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="5"><div class="empty-state"><div class="empty-state-icon">📋</div><p>No checklist leads yet</p></div></td></tr>';
                     return;
                 }
-                tbody.innerHTML = users.map(user => `
+                tbody.innerHTML = leads.map(lead => `
                     <tr>
-                        <td>${user.firstName || ''} ${user.lastName || ''}</td>
-                        <td>${user.email}</td>
-                        <td>${user.phone || 'N/A'}</td>
-                        <td>${new Date(user.createdAt).toLocaleDateString()}</td>
-                        <td>
-                            <button class="action-btn btn-view" onclick="viewUser('${user.email}')">👁 View</button>
-                        </td>
+                        <td>${lead.name || 'N/A'}</td>
+                        <td>${lead.email}</td>
+                        <td>${lead.phone || 'N/A'}</td>
+                        <td>${new Date(lead.createdAt).toLocaleDateString()}</td>
+                        <td><span class="status-badge status-completed">${lead.source || 'index'}</span></td>
                     </tr>
                 `).join('');
             })
             .catch(() => {
-                tbody.innerHTML = '<tr><td colspan="5"><div class="empty-state"><div class="empty-state-icon">❌</div><p>Failed to load</p></div></td></tr>';
+                tbody.innerHTML = '<tr><td colspan="5"><div class="empty-state"><div class="empty-state-icon">❌</div><p>Failed to load leads</p></div></td></tr>';
             });
         }
 

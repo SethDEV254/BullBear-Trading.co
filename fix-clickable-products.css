@@ -15,7 +15,7 @@
 /* Specific styling for hover effects to indicate clickability */
 .card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 15px 35px rgba(99, 102, 241, 0.2);
+    box-shadow: 0 15px 35px rgba(201, 162, 39, 0.2);
 }
 
 /* Make sure buttons inside the card are still clickable and distinct */

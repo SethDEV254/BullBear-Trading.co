@@ -15,21 +15,28 @@
   "engines": {
     "node": ">=18.x"
   },
-  "keywords": ["metahub", "crypto", "education", "api"],
+  "keywords": [
+    "metahub",
+    "crypto",
+    "education",
+    "api"
+  ],
   "author": "Seth Cryptolord",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.18.2",
+    "@google-cloud/firestore": "^8.6.0",
+    "axios": "^1.6.2",
+    "bcryptjs": "^2.4.3",
+    "compression": "^1.7.4",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
-    "bcryptjs": "^2.4.3",
+    "express": "^4.18.2",
+    "express-rate-limit": "^7.1.5",
+    "firebase-admin": "^14.0.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.0.3",
     "nodemailer": "^6.9.7",
-    "stripe": "^14.9.0",
-    "axios": "^1.6.2",
-    "compression": "^1.7.4",
-    "express-rate-limit": "^7.1.5"
+    "stripe": "^14.9.0"
   },
   "devDependencies": {
     "nodemon": "^3.0.2"

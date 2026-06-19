@@ -1,66 +1,39 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/User');
+const { getDb } = require('../lib/firebase');
 
-// @route   GET /api/users/:email
-// @desc    Get user by email
-// @access  Public
+// GET /api/users/:email
 router.get('/:email', async (req, res) => {
-    try {
-        const user = await User.findOne({ email: req.params.email })
-            .populate('purchases')
-            .select('-password');
-
-        if (!user) {
-            return res.status(404).json({
-                status: 'error',
-                message: 'User not found'
-            });
-        }
-
-        res.json({
-            status: 'success',
-            data: { user }
-        });
-    } catch (error) {
-        res.status(500).json({
-            status: 'error',
-            message: error.message
-        });
+  try {
+    const db = getDb();
+    const snap = await db.collection('users').doc(req.params.email.toLowerCase()).get();
+    if (!snap.exists) {
+      return res.status(404).json({ status: 'error', message: 'User not found' });
     }
+    const { passwordHash: _, ...user } = snap.data();
+    res.json({ status: 'success', data: { user: { ...user, id: snap.id } } });
+  } catch (error) {
+    res.status(500).json({ status: 'error', message: error.message });
+  }
 });
 
-// @route   PUT /api/users/:email
-// @desc    Update user profile
-// @access  Private
+// PUT /api/users/:email
 router.put('/:email', async (req, res) => {
-    try {
-        const { firstName, lastName } = req.body;
-
-        const user = await User.findOneAndUpdate(
-            { email: req.params.email },
-            { firstName, lastName },
-            { new: true, runValidators: true }
-        ).select('-password');
-
-        if (!user) {
-            return res.status(404).json({
-                status: 'error',
-                message: 'User not found'
-            });
-        }
-
-        res.json({
-            status: 'success',
-            message: 'Profile updated successfully',
-            data: { user }
-        });
-    } catch (error) {
-        res.status(500).json({
-            status: 'error',
-            message: error.message
-        });
+  try {
+    const { firstName, lastName } = req.body;
+    const db = getDb();
+    const ref = db.collection('users').doc(req.params.email.toLowerCase());
+    const snap = await ref.get();
+    if (!snap.exists) {
+      return res.status(404).json({ status: 'error', message: 'User not found' });
     }
+    await ref.update({ firstName, lastName });
+    const updated = (await ref.get()).data();
+    const { passwordHash: _, ...user } = updated;
+    res.json({ status: 'success', message: 'Profile updated successfully', data: { user: { ...user, id: ref.id } } });
+  } catch (error) {
+    res.status(500).json({ status: 'error', message: error.message });
+  }
 });
 
 module.exports = router;

@@ -2749,31 +2749,49 @@
                         <div id="block-1741845168019" class="header__block header__switch-content header__block--cta"
                             kjb-settings-id="sections_header_blocks_1741845168019_settings_stretch">
                             <style>
-                                #block-1741845168019 .btn,
-                                [data-slick-id="1741845168019"] .block .btn {
-                                    color: #fff;
-                                    border-color: rgba(124, 58, 237, 0.4);
-                                    border-radius: 4px;
-                                    background: linear-gradient(135deg, #7c3aed 0%, #d946ef 100%);
-                                    transition: all .3s ease
+                                #block-1741845168019 { display: flex; align-items: center; gap: 8px; }
+                                .nav-cta-membership {
+                                    display: inline-flex;
+                                    align-items: center;
+                                    padding: 7px 16px;
+                                    background: linear-gradient(135deg, #7c3aed, #d946ef);
+                                    color: #fff !important;
+                                    border-radius: 6px;
+                                    font-size: 0.82rem;
+                                    font-weight: 700;
+                                    text-decoration: none !important;
+                                    letter-spacing: 0.02em;
+                                    transition: all 0.25s ease;
+                                    white-space: nowrap;
+                                    box-shadow: 0 3px 12px rgba(124,58,237,0.4);
                                 }
-
-                                #block-1741845168019 .btn:hover {
+                                .nav-cta-membership:hover {
                                     transform: translateY(-2px);
-                                    box-shadow: 0 8px 25px rgba(124, 58, 237, .5)
+                                    box-shadow: 0 6px 20px rgba(124,58,237,0.55);
                                 }
-
-                                #block-1741845168019 .btn--outline,
-                                [data-slick-id="1741845168019"] .block .btn--outline {
+                                .nav-cta-courses {
+                                    display: inline-flex;
+                                    align-items: center;
+                                    padding: 7px 16px;
                                     background: transparent;
-                                    color: #a78bfa
+                                    color: #a78bfa !important;
+                                    border: 1px solid rgba(124,58,237,0.4);
+                                    border-radius: 6px;
+                                    font-size: 0.82rem;
+                                    font-weight: 700;
+                                    text-decoration: none !important;
+                                    letter-spacing: 0.02em;
+                                    transition: all 0.25s ease;
+                                    white-space: nowrap;
+                                }
+                                .nav-cta-courses:hover {
+                                    background: rgba(124,58,237,0.12);
+                                    color: #c4b5fd !important;
+                                    transform: translateY(-2px);
                                 }
                             </style>
-                            <a class="btn btn--solid btn--small btn--auto" href="crypto-trading-course.html"
-                                kjb-settings-id="sections_header_blocks_1741845168019_settings_btn_background_color"
-                                role="button">
-                                Crypto Trading Video Course - $500
-                            </a>
+                            <a class="nav-cta-membership" href="/">Membership</a>
+                            <a class="nav-cta-courses" href="crypto-trading-course.html">Trading Courses</a>
                         </div>
                         <div class="hamburger hidden--desktop"
                             kjb-settings-id="sections_header_settings_hamburger_color">
@@ -2794,7 +2812,8 @@
                         <a href="crypto-quickstart-checklist.html" class="mobile-nav-link">Free Checklist</a>
                         <a href="trading-indicators.html" class="mobile-nav-link">Indicators</a>
                         <a href="my-library.html" class="mobile-nav-link">My Library</a>
-                        <a href="crypto-trading-course.html" class="mobile-nav-link">Crypto Trading Course</a>
+                        <a href="/" class="mobile-nav-link">Membership</a>
+                        <a href="crypto-trading-course.html" class="mobile-nav-link">Trading Courses</a>
                         <div class="mobile-nav-auth" id="mobile-nav-auth">
                             <a href="#" class="mobile-nav-signup" id="mobile-signup-link"
                                 onclick="showSignupModal(); closeMobileNav(); return false;">Sign Up</a>

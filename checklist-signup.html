@@ -595,6 +595,7 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="./bb-theme.css">
 </head>
 
 <body>
@@ -834,6 +835,26 @@
                     target="_blank" style="color: #06b6d4; text-decoration: none; font-weight: 600;">@starico</a></p>
         </div>
     </div> <!-- Close main-content -->
+
+    <script type="module">
+        import { rtSaveUser, rtLogChecklistDownload, rtLogEvent } from './firebase-realtime.js';
+
+        // Log page view
+        rtLogEvent('page_view', { page: 'checklist-signup', url: window.location.href }).catch(() => {});
+
+        // Hook into form success to save to Firestore
+        const origHandleForm = window.handleChecklistForm;
+        window.handleChecklistForm = async function(event) {
+            const name  = document.getElementById('fullName')?.value?.trim() || '';
+            const email = document.getElementById('email')?.value?.trim()    || '';
+            const phone = document.getElementById('phone')?.value?.trim()    || '';
+            await (origHandleForm ? origHandleForm(event) : false);
+            if (email) {
+                rtSaveUser({ name, email, source: 'checklist-signup-page' }).catch(() => {});
+                rtLogChecklistDownload(email, name).catch(() => {});
+            }
+        };
+    </script>
 </body>
 
 </html>

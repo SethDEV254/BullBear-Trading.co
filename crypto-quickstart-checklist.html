@@ -185,6 +185,7 @@
             font-size: 0.9rem;
         }
     </style>
+    <link rel="stylesheet" href="./bb-theme.css">
 </head>
 
 <body>
@@ -464,10 +465,7 @@
     </style>
 
     <script>
-        // API Base URL - change this to your backend URL
-        const API_BASE_URL = window.location.hostname === 'localhost'
-            ? 'http://localhost:5000/api'
-            : 'https://your-backend-url.com/api';
+        const API_BASE_URL = 'https://backend-tawny-nu-33.vercel.app/api';
 
         function checkLoginAndDownload() {
             const currentUser = localStorage.getItem('bullbearCurrentUser');
@@ -571,19 +569,18 @@
             openModal('pdfSignupModal');
         }
 
-        function handlePdfSignup(event) {
+        async function handlePdfSignup(event) {
             event.preventDefault();
 
-            const name = document.getElementById('signupName').value;
-            const email = document.getElementById('signupEmail').value;
-            const phone = document.getElementById('signupPhone').value;
+            const name = document.getElementById('signupName').value.trim();
+            const email = document.getElementById('signupEmail').value.trim();
+            const phone = document.getElementById('signupPhone').value.trim();
             const password = document.getElementById('signupPassword').value;
             const confirmPassword = document.getElementById('signupConfirmPassword').value;
 
             const errorDiv = document.getElementById('signupError');
             const successDiv = document.getElementById('signupSuccess');
 
-            // Validation
             if (password !== confirmPassword) {
                 errorDiv.textContent = 'Passwords do not match!';
                 errorDiv.style.display = 'block';
@@ -598,7 +595,6 @@
                 return false;
             }
 
-            // Validate phone number
             if (!phone || phone.trim().length < 7) {
                 errorDiv.textContent = 'Please enter a valid phone number!';
                 errorDiv.style.display = 'block';
@@ -606,61 +602,97 @@
                 return false;
             }
 
-            // Check if user already exists
-            const users = JSON.parse(localStorage.getItem('bullbearUsers') || '[]');
-            const existingUser = users.find(u => u.email === email);
+            errorDiv.style.display = 'none';
 
-            if (existingUser) {
-                errorDiv.textContent = 'Email already registered! Please login.';
+            try {
+                var nameParts = name.trim().split(' ');
+                var res = await fetch('https://backend-tawny-nu-33.vercel.app/api/auth/signup', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: email,
+                        password: password,
+                        firstName: nameParts[0] || name,
+                        lastName: nameParts.slice(1).join(' ') || '',
+                        phone: phone,
+                    }),
+                });
+
+                var data = await res.json();
+
+                if (!res.ok) {
+                    errorDiv.textContent = data.message || 'Signup failed. Please try again.';
+                    errorDiv.style.display = 'block';
+                    successDiv.style.display = 'none';
+                    return false;
+                }
+
+                var user = data.data.user;
+                var token = data.data.token;
+                var storedUser = { name: (user.firstName + ' ' + (user.lastName || '')).trim() || name, email: user.email, id: user._id, token: token };
+                localStorage.setItem('bullbearToken', token);
+                localStorage.setItem('bullbearCurrentUser', JSON.stringify(storedUser));
+
+                // Save checklist lead
+                fetch('https://backend-tawny-nu-33.vercel.app/api/checklist/lead', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name: storedUser.name, email: email, phone: phone, source: 'checklist-page' }),
+                }).catch(function() {});
+
+                errorDiv.style.display = 'none';
+                successDiv.textContent = 'Account created! Starting download & sending to email...';
+                successDiv.style.display = 'block';
+
+                setTimeout(function () {
+                    closeModal('pdfSignupModal');
+                    downloadPdfAndSendEmail(email, storedUser.name);
+                    document.getElementById('pdfSignupForm').reset();
+                    successDiv.style.display = 'none';
+                }, 1500);
+            } catch (err) {
+                errorDiv.textContent = 'Network error. Please try again.';
                 errorDiv.style.display = 'block';
                 successDiv.style.display = 'none';
-                return false;
             }
-
-            // Save user
-            const newUser = {
-                name: name,
-                email: email,
-                phone: phone,
-                password: password,
-                createdAt: new Date().toISOString()
-            };
-
-            users.push(newUser);
-            localStorage.setItem('bullbearUsers', JSON.stringify(users));
-            localStorage.setItem('bullbearCurrentUser', JSON.stringify(newUser));
-
-            // Show success and download
-            errorDiv.style.display = 'none';
-            successDiv.textContent = 'Account created! Starting download & sending to email...';
-            successDiv.style.display = 'block';
-
-            setTimeout(function () {
-                closeModal('pdfSignupModal');
-                downloadPdfAndSendEmail(email, name);
-                document.getElementById('pdfSignupForm').reset();
-                successDiv.style.display = 'none';
-            }, 1500);
 
             return false;
         }
 
-        function handlePdfLogin(event) {
+        async function handlePdfLogin(event) {
             event.preventDefault();
 
-            const email = document.getElementById('loginEmail').value;
+            const email = document.getElementById('loginEmail').value.trim();
             const password = document.getElementById('loginPassword').value;
             const errorDiv = document.getElementById('loginError');
 
-            const users = JSON.parse(localStorage.getItem('bullbearUsers') || '[]');
-            const user = users.find(u => (u.email === email || u.phone === email) && u.password === password);
+            errorDiv.style.display = 'none';
 
-            if (user) {
-                localStorage.setItem('bullbearCurrentUser', JSON.stringify(user));
+            try {
+                var res = await fetch('https://backend-tawny-nu-33.vercel.app/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: email, password: password }),
+                });
+
+                var data = await res.json();
+
+                if (!res.ok) {
+                    errorDiv.textContent = data.message || 'Invalid email or password!';
+                    errorDiv.style.display = 'block';
+                    return false;
+                }
+
+                var user = data.data.user;
+                var token = data.data.token;
+                var storedUser = { name: (user.firstName + ' ' + (user.lastName || '')).trim() || email, email: user.email, id: user._id, token: token };
+                localStorage.setItem('bullbearToken', token);
+                localStorage.setItem('bullbearCurrentUser', JSON.stringify(storedUser));
+
                 closeModal('pdfLoginModal');
-                downloadPdfAndSendEmail(user.email, user.name);
-            } else {
-                errorDiv.textContent = 'Invalid email/phone or password!';
+                downloadPdfAndSendEmail(storedUser.email, storedUser.name);
+            } catch (err) {
+                errorDiv.textContent = 'Network error. Please try again.';
                 errorDiv.style.display = 'block';
             }
 
@@ -701,6 +733,39 @@
             }
         }
     </style>
+
+    <script type="module">
+        import { rtSaveUser, rtLogChecklistDownload, rtLogEvent } from './firebase-realtime.js';
+
+        rtLogEvent('page_view', { page: 'checklist', url: window.location.href }).catch(() => {});
+
+        // Wrap PDF signup to also save to Firestore
+        const _origPdfSignup = window.handlePdfSignup;
+        window.handlePdfSignup = async function(event) {
+            const name  = document.getElementById('signupName')?.value?.trim() || '';
+            const email = document.getElementById('signupEmail')?.value?.trim() || '';
+            const phone = document.getElementById('signupPhone')?.value?.trim() || '';
+            await (_origPdfSignup ? _origPdfSignup(event) : false);
+            const errEl = document.getElementById('signupError');
+            const errVisible = errEl && errEl.style.display !== 'none' && errEl.textContent;
+            if (email && !errVisible) {
+                rtSaveUser({ name, email, source: 'checklist-page' }).catch(() => {});
+                rtLogChecklistDownload(email, name).catch(() => {});
+            }
+        };
+
+        // Wrap PDF login to log to Firestore
+        const _origPdfLogin = window.handlePdfLogin;
+        window.handlePdfLogin = async function(event) {
+            const email = document.getElementById('loginEmail')?.value?.trim() || '';
+            await (_origPdfLogin ? _origPdfLogin(event) : false);
+            const errEl = document.getElementById('loginError');
+            const errVisible = errEl && errEl.style.display !== 'none' && errEl.textContent;
+            if (email && !errVisible) {
+                rtLogChecklistDownload(email, '').catch(() => {});
+            }
+        };
+    </script>
 
 </body>
 

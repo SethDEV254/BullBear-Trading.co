@@ -728,232 +728,337 @@
         }
 
         /* Subscription Lock Overlay */
+        /* ══ SUBSCRIPTION LOCK OVERLAY ══════════════════════════════ */
         .subscription-lock-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(10, 14, 26, 0.98);
-            backdrop-filter: blur(20px);
+            inset: 0;
+            background: rgba(3, 0, 10, 0.94);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
             z-index: 9999;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
+            overflow-y: auto;
+        }
+        .subscription-lock-overlay::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 30% 20%, rgba(124,58,237,0.18) 0%, transparent 55%),
+                radial-gradient(ellipse at 75% 80%, rgba(217,70,239,0.12) 0%, transparent 50%);
+            pointer-events: none;
         }
 
+        /* Card wrapper */
         .subscription-lock-content {
-            background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.95) 100%);
-            border: 2px solid rgba(99, 102, 241, 0.3);
-            border-radius: 20px;
-            padding: 40px;
-            max-width: 450px;
-            width: 100%;
-            text-align: center;
-            box-shadow:
-                0 30px 80px rgba(0, 0, 0, 0.6),
-                0 0 100px rgba(99, 102, 241, 0.3),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1);
-            animation: fadeInScale 0.5s ease;
             position: relative;
+            width: 100%;
+            max-width: 680px;
+            background: rgba(8, 4, 20, 0.85);
+            border-radius: 24px;
+            padding: 0;
             overflow: hidden;
+            animation: slFadeIn 0.5s cubic-bezier(0.34,1.2,0.64,1) both;
+            box-shadow:
+                0 40px 100px rgba(0,0,0,0.7),
+                0 0 0 1px rgba(124,58,237,0.25),
+                inset 0 1px 0 rgba(255,255,255,0.06);
         }
-
+        /* Animated gradient border */
         .subscription-lock-content::before {
             content: '';
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
-            animation: rotate 20s linear infinite;
+            inset: 0;
+            border-radius: 24px;
+            padding: 1.5px;
+            background: linear-gradient(135deg, #7c3aed, #d946ef, #3b82f6, #7c3aed);
+            background-size: 300% 300%;
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            animation: borderSpin 6s linear infinite;
+            pointer-events: none;
+        }
+        @keyframes borderSpin {
+            0%   { background-position: 0% 50%; }
+            50%  { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        @keyframes slFadeIn {
+            from { opacity: 0; transform: scale(0.93) translateY(20px); }
+            to   { opacity: 1; transform: scale(1) translateY(0); }
         }
 
-        @keyframes rotate {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
-        @keyframes fadeInScale {
-            from {
-                opacity: 0;
-                transform: scale(0.95);
-            }
-
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        .lock-icon-large {
-            font-size: 3.5rem;
-            margin-bottom: 20px;
-            filter: drop-shadow(0 0 30px rgba(99, 102, 241, 0.6));
-            animation: lockPulse 2s ease-in-out infinite;
+        /* ── Header strip ── */
+        .sl-header {
+            padding: 36px 36px 28px;
+            text-align: center;
+            border-bottom: 1px solid rgba(124,58,237,0.15);
             position: relative;
-            z-index: 1;
         }
-
+        .sl-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 50%;
+            transform: translateX(-50%);
+            width: 80px; height: 2px;
+            background: linear-gradient(90deg, #7c3aed, #d946ef);
+            border-radius: 2px;
+        }
+        .lock-icon-large {
+            font-size: 2.6rem;
+            margin-bottom: 14px;
+            display: inline-block;
+            filter: drop-shadow(0 0 20px rgba(167,139,250,0.6));
+            animation: lockPulse 2.5s ease-in-out infinite;
+        }
         @keyframes lockPulse {
-
-            0%,
-            100% {
-                transform: scale(1);
-            }
-
-            50% {
-                transform: scale(1.08);
-            }
+            0%,100% { transform: scale(1); filter: drop-shadow(0 0 20px rgba(167,139,250,0.6)); }
+            50%      { transform: scale(1.1); filter: drop-shadow(0 0 30px rgba(217,70,239,0.8)); }
+        }
+        .subscription-lock-content h2 {
+            font-family: 'Space Grotesk', sans-serif !important;
+            font-size: 1.75rem !important;
+            font-weight: 800 !important;
+            letter-spacing: -0.03em !important;
+            background: linear-gradient(135deg, #f1f5f9 0%, #c4b5fd 60%, #f0abfc 100%) !important;
+            -webkit-background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+            background-clip: text !important;
+            margin: 0 0 10px !important;
+            line-height: 1.15 !important;
+        }
+        .lock-description {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            color: rgba(148,163,184,0.85) !important;
+            line-height: 1.6;
+            margin: 0 !important;
+            max-width: 420px;
+            margin: 0 auto !important;
         }
 
-        .subscription-lock-content h2 {
-            font-size: 1.8rem;
-            font-weight: 900;
-            margin-bottom: 12px;
-            background: linear-gradient(135deg, #ffffff 0%, #06b6d4 100%);
+        /* ── Plans grid ── */
+        .sl-plans {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            padding: 0;
+        }
+
+        /* ── Single plan ── */
+        .sl-plan {
+            padding: 28px 28px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            position: relative;
+            border-right: 1px solid rgba(124,58,237,0.12);
+            transition: background 0.3s ease;
+        }
+        .sl-plan:last-child { border-right: none; }
+        .sl-plan:hover { background: rgba(124,58,237,0.04); }
+
+        /* Featured plan (right) */
+        .sl-plan-featured {
+            background: linear-gradient(160deg, rgba(124,58,237,0.1), rgba(217,70,239,0.05));
+        }
+        .sl-plan-featured:hover {
+            background: linear-gradient(160deg, rgba(124,58,237,0.16), rgba(217,70,239,0.08));
+        }
+
+        .sl-plan-tag {
+            display: inline-block;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.62rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            padding: 3px 10px;
+            border-radius: 50px;
+            margin-bottom: 14px;
+            width: fit-content;
+        }
+        .sl-plan-tag.basic {
+            background: rgba(59,130,246,0.15);
+            color: #93c5fd;
+            border: 1px solid rgba(59,130,246,0.25);
+        }
+        .sl-plan-tag.featured {
+            background: linear-gradient(135deg, #7c3aed, #d946ef);
+            color: #fff;
+            box-shadow: 0 2px 12px rgba(124,58,237,0.4);
+        }
+
+        .sl-plan-name {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #f1f5f9;
+            letter-spacing: -0.02em;
+            margin-bottom: 8px;
+        }
+
+        .sl-plan-price {
+            display: flex;
+            align-items: baseline;
+            gap: 2px;
+            margin-bottom: 4px;
+        }
+        .sl-price-num {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3rem;
+            font-weight: 800;
+            letter-spacing: -0.05em;
+            line-height: 1;
+        }
+        .sl-plan:not(.sl-plan-featured) .sl-price-num {
+            color: #93c5fd;
+        }
+        .sl-plan-featured .sl-price-num {
+            background: linear-gradient(135deg, #a78bfa, #f0abfc);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            position: relative;
-            z-index: 1;
-            letter-spacing: -0.5px;
+        }
+        .sl-price-period {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            color: rgba(148,163,184,0.7);
+            padding-bottom: 4px;
+        }
+        .sl-plan-save {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: #86efac;
+            margin-bottom: 18px;
+            min-height: 18px;
         }
 
-        .lock-description {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 0.95rem;
-            margin-bottom: 25px;
-            line-height: 1.5;
-            position: relative;
-            z-index: 1;
+        /* Features list */
+        .sl-features {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 22px;
+            flex: 1;
+            border-top: 1px solid rgba(124,58,237,0.1);
+            padding-top: 16px;
         }
-
-        .subscription-price {
-            margin: 25px 0;
+        .sl-features li {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.82rem;
+            color: rgba(203,213,225,0.85);
+            padding: 6px 0 6px 22px;
             position: relative;
-            z-index: 1;
+            line-height: 1.4;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
         }
-
-        .price-amount {
-            font-size: 3rem;
+        .sl-features li:last-child { border-bottom: none; }
+        .sl-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            top: 6px;
+            width: 16px;
+            height: 16px;
+            background: linear-gradient(135deg, #7c3aed, #d946ef);
+            border-radius: 50%;
+            font-size: 0.55rem;
             font-weight: 900;
-            color: #06b6d4;
-            line-height: 1;
-            margin-bottom: 5px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 16px;
+            text-align: center;
         }
-
-        .price-period {
-            font-size: 1rem;
-            color: rgba(255, 255, 255, 0.6);
+        .sl-features li strong {
+            color: #e2e8f0;
             font-weight: 600;
         }
 
-        .subscription-features {
-            background: rgba(99, 102, 241, 0.08);
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            border-radius: 12px;
-            padding: 20px;
-            margin: 25px 0;
-            text-align: left;
-            position: relative;
-            z-index: 1;
-        }
-
-        .sub-feature {
-            color: rgba(255, 255, 255, 0.85);
-            font-size: 0.9rem;
-            padding: 8px 0;
-            padding-left: 25px;
-            position: relative;
-            line-height: 1.5;
-        }
-
-        .sub-feature::before {
-            content: "✓";
-            position: absolute;
-            left: 0;
-            color: #10b981;
-            font-weight: bold;
-            font-size: 1.1rem;
-        }
-
-        .subscribe-button {
+        /* Plan buttons */
+        .sl-btn {
+            display: block;
             width: 100%;
-            padding: 16px;
-            background: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%);
-            color: #ffffff;
+            padding: 13px 0;
             border: none;
-            border-radius: 12px;
-            font-size: 1.1rem;
-            font-weight: 800;
+            border-radius: 10px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            box-shadow: 0 8px 30px rgba(99, 102, 241, 0.5);
-            margin-bottom: 15px;
+            transition: all 0.22s ease;
             position: relative;
-            z-index: 1;
             overflow: hidden;
         }
-
-        .subscribe-button::before {
+        .sl-btn::after {
             content: '';
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transition: left 0.6s;
+            inset: 0;
+            background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.12) 50%, transparent 100%);
+            transform: translateX(-100%);
+            transition: transform 0.5s ease;
+        }
+        .sl-btn:hover::after { transform: translateX(100%); }
+
+        .sl-btn-secondary {
+            background: rgba(59,130,246,0.12);
+            color: #93c5fd;
+            border: 1px solid rgba(59,130,246,0.3) !important;
+        }
+        .sl-btn-secondary:hover {
+            background: rgba(59,130,246,0.22);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59,130,246,0.2);
+        }
+        .sl-btn-primary {
+            background: linear-gradient(135deg, #7c3aed, #6d28d9);
+            color: #fff;
+            box-shadow: 0 4px 18px rgba(124,58,237,0.4);
+        }
+        .sl-btn-primary:hover {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(124,58,237,0.55);
         }
 
-        .subscribe-button:hover::before {
-            left: 100%;
+        /* ── Trust footer ── */
+        .sl-trust {
+            padding: 14px 28px;
+            border-top: 1px solid rgba(124,58,237,0.12);
+            text-align: center;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            color: rgba(148,163,184,0.55);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
         }
+        .sl-trust span { display: flex; align-items: center; gap: 5px; }
 
-        .subscribe-button:hover {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 12px 40px rgba(99, 102, 241, 0.7);
-        }
+        /* ── Subscriptions (kept for JS compat) ── */
+        .subscription-price,
+        .subscription-features,
+        .subscribe-button,
+        .subscription-note,
+        .sub-feature { display: none !important; }
 
-        .subscribe-button:active {
-            transform: translateY(-1px) scale(1);
-        }
-
-        .subscription-note {
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 0.85rem;
-            margin-top: 10px;
-            position: relative;
-            z-index: 1;
-        }
-
-        @media (max-width: 768px) {
-            .subscription-lock-content {
-                padding: 30px 25px;
-                max-width: 100%;
-            }
-
-            .subscription-lock-content h2 {
-                font-size: 1.5rem;
-            }
-
-            .price-amount {
-                font-size: 2.5rem;
-            }
-
-            .lock-icon-large {
-                font-size: 3rem;
-            }
+        @media (max-width: 600px) {
+            .sl-plans { grid-template-columns: 1fr; }
+            .sl-plan { border-right: none; border-bottom: 1px solid rgba(124,58,237,0.12); }
+            .sl-plan:last-child { border-bottom: none; }
+            .subscription-lock-content { border-radius: 18px; }
+            .sl-header { padding: 28px 20px 22px; }
+            .sl-plan { padding: 22px 20px 18px; }
+            .subscription-lock-content h2 { font-size: 1.4rem !important; }
         }
 
         /* Responsive */
@@ -1223,56 +1328,63 @@
     <!-- Subscription Lock Overlay -->
     <div id="subscriptionLock" class="subscription-lock-overlay" style="display: flex;">
         <div class="subscription-lock-content">
-            <div class="lock-icon-large">🔒</div>
-            <h2>Premium Subscription Required</h2>
-            <p class="lock-description">Get unlimited access to professional trading indicators and live charts</p>
 
-            <div class="subscription-price">
-                <div class="price-amount">$30</div>
-                <div class="price-period">per month</div>
+            <!-- Header -->
+            <div class="sl-header">
+                <div class="lock-icon-large">🔒</div>
+                <h2>Premium Access Required</h2>
+                <p class="lock-description">Unlock professional trading indicators, live TradingView charts, and real-time market signals.</p>
             </div>
 
-            <div class="subscription-features">
-                <div class="sub-feature">Full access to all trading indicators</div>
-                <div class="sub-feature">Live TradingView charts integration</div>
-                <div class="sub-feature">Real-time market signals</div>
-                <div class="sub-feature">Monthly subscription - cancel anytime</div>
-            </div>
+            <!-- Two-plan grid -->
+            <div class="sl-plans">
 
-            <button onclick="showSubscriptionPayment()" class="subscribe-button">
-                Subscribe Now - $30/month
-            </button>
-            <p class="subscription-note">Secure payment processing • Cancel anytime</p>
-
-            <!-- Membership Upsell -->
-            <div class="bb-mem-divider">— or get everything with —</div>
-            <div class="bb-mem-card">
-                <div class="bb-mem-card-badge">⭐ ALL-ACCESS MEMBERSHIP</div>
-                <div class="bb-mem-card-inner">
-                    <div class="bb-mem-card-left">
-                        <h3 class="bb-mem-card-title">BullBear Full Membership</h3>
-                        <p class="bb-mem-card-sub">Indicators <strong>+</strong> all courses <strong>+</strong> live signals <strong>+</strong> community</p>
-                        <ul class="bb-mem-card-perks">
-                            <li>✓ All trading indicators &amp; live charts</li>
-                            <li>✓ Crypto Trading Course ($500 value)</li>
-                            <li>✓ DeFi &amp; Blockchain courses ($1,149 value)</li>
-                            <li>✓ Priority support &amp; live sessions</li>
-                            <li>✓ New content every month</li>
-                        </ul>
+                <!-- Plan A: Indicators Only -->
+                <div class="sl-plan">
+                    <div class="sl-plan-tag basic">INDICATORS</div>
+                    <div class="sl-plan-name">Indicators Only</div>
+                    <div class="sl-plan-price">
+                        <span class="sl-price-num">$30</span>
+                        <span class="sl-price-period">/mo</span>
                     </div>
-                    <div class="bb-mem-card-right">
-                        <div class="bb-mem-card-price">
-                            <span class="bb-mem-card-amount">$99</span>
-                            <span class="bb-mem-card-period">/mo</span>
-                        </div>
-                        <div class="bb-mem-card-save">vs $30 indicators only</div>
-                        <button class="bb-mem-card-btn" onclick="window.location.href='/'">
-                            Join Membership
-                        </button>
-                        <p class="bb-mem-card-note">30-day money-back guarantee</p>
-                    </div>
+                    <div class="sl-plan-save">&nbsp;</div>
+                    <ul class="sl-features">
+                        <li>All trading indicators</li>
+                        <li>Live TradingView charts</li>
+                        <li>Real-time market signals</li>
+                        <li>Cancel anytime</li>
+                    </ul>
+                    <button class="sl-btn sl-btn-secondary" onclick="showSubscriptionPayment()">Get Indicators</button>
                 </div>
+
+                <!-- Plan B: All Access -->
+                <div class="sl-plan sl-plan-featured">
+                    <div class="sl-plan-tag featured">BEST VALUE</div>
+                    <div class="sl-plan-name">All Access</div>
+                    <div class="sl-plan-price">
+                        <span class="sl-price-num">$99</span>
+                        <span class="sl-price-period">/mo</span>
+                    </div>
+                    <div class="sl-plan-save">Save $1,649+ vs buying separately</div>
+                    <ul class="sl-features">
+                        <li><strong>Everything in Indicators</strong></li>
+                        <li>Crypto Trading Course <strong>($500)</strong></li>
+                        <li>DeFi &amp; Blockchain courses <strong>($1,149)</strong></li>
+                        <li>Priority support &amp; live sessions</li>
+                        <li>New content every month</li>
+                    </ul>
+                    <button class="sl-btn sl-btn-primary" onclick="window.location.href='/'">Join All Access</button>
+                </div>
+
             </div>
+
+            <!-- Trust bar -->
+            <div class="sl-trust">
+                <span>🔒 Secure payment</span>
+                <span>↩ Cancel anytime</span>
+                <span>✓ 30-day guarantee</span>
+            </div>
+
         </div>
     </div>
 

@@ -36,25 +36,17 @@ function isAgentActive() {
   return agentsOnline;
 }
 
-async function askClaude(userMessage) {
+async function askGemini(userMessage) {
   const res = await axios.post(
-    'https://api.anthropic.com/v1/messages',
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
     {
-      model: 'claude-haiku-4-5-20251001',
-      max_tokens: 300,
-      system: SYSTEM_PROMPT,
-      messages: [{ role: 'user', content: userMessage }],
+      systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
+      contents: [{ role: 'user', parts: [{ text: userMessage }] }],
+      generationConfig: { maxOutputTokens: 300, temperature: 0.7 },
     },
-    {
-      headers: {
-        'x-api-key': process.env.ANTHROPIC_API_KEY,
-        'anthropic-version': '2023-06-01',
-        'content-type': 'application/json',
-      },
-      timeout: 15000,
-    }
+    { headers: { 'content-type': 'application/json' }, timeout: 15000 }
   );
-  return res.data.content[0].text;
+  return res.data.candidates[0].content.parts[0].text;
 }
 
 function twiml(message) {
@@ -86,7 +78,7 @@ router.post('/webhook', async (req, res) => {
     }
 
     // Agent offline — Claude auto-replies
-    const reply = await askClaude(body);
+    const reply = await askGemini(body);
     return res.send(twiml(reply));
 
   } catch (err) {

@@ -329,38 +329,7 @@
             margin-bottom: 5px;
         }
 
-        /* Live DateTime Styling */
-        #live-datetime-widget {
-            animation: fadeIn 1s ease-in;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
         @media (max-width: 768px) {
-            #live-datetime-widget {
-                bottom: 80px !important;
-                right: 10px !important;
-                padding: 10px 16px !important;
-            }
-
-            #live-datetime-widget #current-time {
-                font-size: 16px !important;
-            }
-
-            #live-datetime-widget #current-date {
-                font-size: 10px !important;
-            }
-
             .chat-widget {
                 bottom: 10px !important;
                 right: 10px !important;
@@ -972,8 +941,7 @@
         .header,
         main,
         footer,
-        .chat-widget,
-        #live-datetime-widget {
+        .chat-widget {
             position: relative;
             z-index: 1;
         }
@@ -4017,54 +3985,6 @@
             initializeProductCards();
         });
 
-        // Function to update time and date
-        function updateDateTime() {
-            const now = new Date();
-
-            // Format time (12-hour format with AM/PM)
-            let hours = now.getHours();
-            const minutes = now.getMinutes().toString().padStart(2, '0');
-            const seconds = now.getSeconds().toString().padStart(2, '0');
-            const ampm = hours >= 12 ? 'PM' : 'AM';
-            hours = hours % 12;
-            hours = hours ? hours : 12; // 0 should be 12
-            const timeString = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
-
-            // Format date (e.g., "Monday, January 14, 2026")
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            const dateString = now.toLocaleDateString('en-US', options);
-
-            // Update the display
-            const timeElement = document.getElementById('current-time');
-            const dateElement = document.getElementById('current-date');
-
-            if (timeElement) {
-                timeElement.textContent = timeString;
-                console.log('Time updated:', timeString);
-            } else {
-                console.log('Time element not found');
-            }
-
-            if (dateElement) {
-                dateElement.textContent = dateString;
-                console.log('Date updated:', dateString);
-            } else {
-                console.log('Date element not found');
-            }
-        }
-
-        // Start updating time immediately
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', function () {
-                updateDateTime();
-                setInterval(updateDateTime, 1000);
-            });
-        } else {
-            // DOM is already loaded
-            updateDateTime();
-            setInterval(updateDateTime, 1000);
-        }
-
         // Function to initialize product card click handlers
         function initializeProductCards() {
             // Inject category tag badges
@@ -4141,16 +4061,6 @@
         </div>
     </div>
 
-    <!-- Live DateTime Display - Below Chatbot -->
-    <div id="live-datetime-widget"
-        style="position: fixed; bottom: 90px; right: 20px; z-index: 9998; background: rgba(8, 10, 28, 0.92); padding: 12px 20px; border-radius: 50px; border: 1px solid rgba(124, 58, 237, 0.3); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5), 0 0 20px rgba(124, 58, 237, 0.15); backdrop-filter: blur(10px);">
-        <div style="display: flex; flex-direction: column; gap: 4px; align-items: center;">
-            <div id="current-time"
-                style="font-family: 'Courier New', monospace; font-size: 18px; font-weight: 700; color: #c4b5fd; text-shadow: 0 0 10px rgba(167, 139, 250, 0.5);">
-            </div>
-            <div id="current-date" style="font-size: 11px; color: #94a3b8; font-weight: 500; text-align: center;"></div>
-        </div>
-    </div>
 
     <style>
         .chat-widget {
@@ -4510,211 +4420,7 @@
     </script>
     <script src="./fix-clickable-products.js"></script>
 
-    <!-- QR Code Widget -->
-    <style>
-        .qr-widget {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            z-index: 9998;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-        }
-
-        .qr-toggle {
-            background: linear-gradient(135deg, #7c3aed 0%, #d946ef 100%);
-            color: #fff;
-            border: none;
-            border-radius: 50px;
-            padding: 10px 18px;
-            font-family: 'Poppins', sans-serif;
-            font-size: 0.82rem;
-            font-weight: 700;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.5);
-            transition: all 0.3s ease;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
-
-        .qr-toggle:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(217, 70, 239, 0.65);
-        }
-
-        .qr-panel {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            background: rgba(6, 3, 20, 0.97);
-            border: 1px solid rgba(124, 58, 237, 0.35);
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 10px;
-            box-shadow:
-                0 16px 50px rgba(0, 0, 0, 0.6),
-                0 0 0 1px rgba(124, 58, 237, 0.15),
-                inset 0 1px 0 rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            animation: qrFadeIn 0.25s ease;
-        }
-
-        .qr-panel.active {
-            display: flex;
-        }
-
-        @keyframes qrFadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .qr-panel-title {
-            font-family: 'Poppins', sans-serif;
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: #c4b5fd;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-bottom: 14px;
-            text-align: center;
-        }
-
-        .qr-code-box {
-            background: #ffffff;
-            padding: 10px;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(124, 58, 237, 0.35);
-        }
-
-        .qr-code-box canvas,
-        .qr-code-box img {
-            display: block;
-        }
-
-        .qr-panel-url {
-            font-family: 'Inter', sans-serif;
-            font-size: 0.72rem;
-            color: rgba(148, 163, 184, 0.8);
-            margin-top: 12px;
-            text-align: center;
-            letter-spacing: 0.5px;
-        }
-
-        @media (max-width: 767px) {
-            .qr-widget {
-                bottom: 80px;
-                left: 12px;
-            }
-        }
-    </style>
-
-    <!-- QR Widget (tabbed: Login / Sign Up) -->
-    <style>
-        .qr-tabs {
-            display: flex;
-            gap: 6px;
-            margin-bottom: 14px;
-        }
-
-        .qr-tab {
-            flex: 1;
-            padding: 7px 10px;
-            border: none;
-            border-radius: 7px;
-            font-family: 'Poppins', sans-serif;
-            font-size: 0.75rem;
-            font-weight: 700;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            background: rgba(124, 58, 237, 0.12);
-            color: #94a3b8;
-            border: 1px solid rgba(124, 58, 237, 0.2);
-            transition: all 0.2s ease;
-        }
-
-        .qr-tab.active {
-            background: linear-gradient(135deg, #7c3aed 0%, #d946ef 100%);
-            color: #fff;
-            border-color: transparent;
-            box-shadow: 0 3px 12px rgba(124, 58, 237, 0.4);
-        }
-    </style>
-
-    <div class="qr-widget" id="qrWidget">
-        <div class="qr-panel" id="qrPanel">
-            <div class="qr-tabs">
-                <button class="qr-tab active" onclick="switchQR('login',this)">Login</button>
-                <button class="qr-tab" onclick="switchQR('signup',this)">Sign Up</button>
-            </div>
-            <p class="qr-panel-title" id="qrPanelTitle">Scan to Login</p>
-            <div class="qr-code-box" id="qrCodeBox"></div>
-            <p class="qr-panel-url">bullbearblockchain.com</p>
-        </div>
-        <button class="qr-toggle" onclick="toggleQR()">
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"
-                stroke-linecap="round" stroke-linejoin="round">
-                <rect x="3" y="3" width="7" height="7" />
-                <rect x="14" y="3" width="7" height="7" />
-                <rect x="3" y="14" width="7" height="7" />
-                <rect x="14" y="14" width="3" height="3" />
-            </svg>
-            QR Code
-        </button>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
     <script>
-        var qrInstance = null;
-        var currentQRType = 'login';
-
-        var QR_URLS = {
-            login: 'https://www.bullbearblockchain.com?modal=login',
-            signup: 'https://www.bullbearblockchain.com?modal=signup'
-        };
-
-        function toggleQR() {
-            var panel = document.getElementById('qrPanel');
-            panel.classList.toggle('active');
-            if (panel.classList.contains('active')) renderQR(currentQRType);
-        }
-
-        function switchQR(type, btn) {
-            document.querySelectorAll('.qr-tab').forEach(function (t) { t.classList.remove('active'); });
-            btn.classList.add('active');
-            currentQRType = type;
-            document.getElementById('qrPanelTitle').textContent = type === 'login' ? 'Scan to Login' : 'Scan to Sign Up';
-            renderQR(type);
-        }
-
-        function renderQR(type) {
-            var box = document.getElementById('qrCodeBox');
-            box.innerHTML = '';
-            qrInstance = new QRCode(box, {
-                text: QR_URLS[type],
-                width: 180, height: 180,
-                colorDark: '#000000', colorLight: '#ffffff',
-                correctLevel: QRCode.CorrectLevel.H,
-            });
-        }
-
-        document.addEventListener('click', function (e) {
-            var widget = document.getElementById('qrWidget');
-            if (widget && !widget.contains(e.target)) {
-                document.getElementById('qrPanel').classList.remove('active');
-            }
-        });
 
         // Auto-open modal from URL param (?modal=login or ?modal=signup)
         (function () {

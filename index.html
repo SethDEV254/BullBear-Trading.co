@@ -85,7 +85,7 @@
     <!-- Modern Premium Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" media="print" onload="this.onload=null;this.removeAttribute(&#39;media&#39;);"
         href="https://kajabi-app-assets.kajabi-cdn.com/assets/core-0d125629e028a5a14579c81397830a1acd5cf5a9f3ec2d0de19efb9b0795fb03.css">
@@ -2170,9 +2170,13 @@
         #encore-theme {
             background-color: var(--bb-bg1) !important;
             color: var(--bb-text) !important;
-            font-family: 'Inter', system-ui, sans-serif !important;
-            font-size: 15px !important;
-            letter-spacing: -0.01em !important;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+            font-size: 16px !important;
+            font-weight: 400 !important;
+            line-height: 1.6 !important;
+            letter-spacing: -0.011em !important;
+            -webkit-font-smoothing: antialiased !important;
+            -moz-osx-font-smoothing: grayscale !important;
             scrollbar-color: var(--bb-blue2) #0d1224 !important;
         }
 
@@ -2202,16 +2206,27 @@
             border-top: 1px solid var(--bb-border) !important;
         }
 
+        /* ── TYPE SCALE ───────────────────────────────
+           --ts-xs:   0.72rem / Inter 500 / ls 0.06em uppercase
+           --ts-sm:   0.875rem / Inter 400-500
+           --ts-base: 1rem     / Inter 400
+           --ts-lg:   1.125rem / Inter 400-500
+           --ts-xl:   1.25rem  / Space Grotesk 600
+           --ts-2xl:  1.625rem / Space Grotesk 700
+           --ts-3xl:  2.25rem  / Space Grotesk 700-800
+           --ts-4xl:  3rem     / Space Grotesk 800
+        ─────────────────────────────────────────── */
+
         /* ── LANDING SECTIONS ─────────────────────── */
         .bb-section { width: 100%; box-sizing: border-box; }
         .bb-container {
-            max-width: 860px;
+            max-width: 880px;
             margin: 0 auto;
-            padding: 70px 24px;
+            padding: 80px 28px;
             text-align: center;
         }
 
-        /* Hero */
+        /* ── HERO ─────────────────────────────────── */
         .bb-hero-section {
             position: relative;
             background: linear-gradient(135deg, #1a0533 0%, #2d0a5e 40%, #1a0533 100%);
@@ -2229,278 +2244,389 @@
             width: 160px;
             height: 160px;
             object-fit: contain;
-            margin: 0 auto 24px;
+            margin: 0 auto 28px;
             display: block;
-            filter: drop-shadow(0 8px 30px rgba(59,130,246,0.4));
+            filter: drop-shadow(0 8px 32px rgba(124,58,237,0.55));
             animation: bbFloat 3.5s ease-in-out infinite;
         }
         @keyframes bbFloat {
             0%,100% { transform: translateY(0); }
             50%      { transform: translateY(-10px); }
         }
-        .bb-hero-title {
-            font-family: 'Space Grotesk', 'Inter', sans-serif !important;
-            font-size: 2.8rem;
-            font-weight: 700;
-            color: #ffffff !important;
-            line-height: 1.2;
-            margin: 0 0 18px;
-        }
-        .bb-accent { color: var(--bb-blue2) !important; font-style: italic; }
-        .bb-hero-sub {
-            font-size: 1.1rem;
-            color: var(--bb-muted) !important;
-            max-width: 680px;
-            margin: 0 auto 32px;
-            line-height: 1.75;
-        }
+
+        /* Badge */
         .bb-hero-badge {
-            display: inline-block;
-            background: linear-gradient(135deg, #7c3aed, #d946ef);
-            color: #fff !important;
-            font-size: 0.75rem;
-            font-weight: 700;
-            letter-spacing: 0.08em;
-            padding: 5px 16px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: linear-gradient(135deg, rgba(124,58,237,0.25), rgba(217,70,239,0.15));
+            border: 1px solid rgba(217,70,239,0.4);
+            color: #e9d5ff !important;
+            font-family: 'Inter', sans-serif !important;
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            padding: 6px 18px;
             border-radius: 50px;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
             text-transform: uppercase;
-            box-shadow: 0 0 20px rgba(124,58,237,0.5);
+            backdrop-filter: blur(8px);
         }
 
-        /* Buttons */
-        .bb-btn-green {
-            display: inline-block;
-            background: var(--bb-green);
+        /* Hero title */
+        .bb-hero-title {
+            font-family: 'Space Grotesk', sans-serif !important;
+            font-size: clamp(2.2rem, 5vw, 3.25rem);
+            font-weight: 800;
             color: #ffffff !important;
-            font-family: 'Space Grotesk', 'Inter', sans-serif !important;
+            line-height: 1.12;
+            letter-spacing: -0.03em;
+            margin: 0 0 20px;
+        }
+        .bb-accent {
+            background: linear-gradient(135deg, #a78bfa, #f0abfc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-style: normal;
+        }
+
+        /* Hero subtext */
+        .bb-hero-sub {
+            font-family: 'Inter', sans-serif !important;
             font-size: 1.1rem;
+            font-weight: 400;
+            color: rgba(203,213,225,0.85) !important;
+            max-width: 620px;
+            margin: 0 auto 36px;
+            line-height: 1.75;
+            letter-spacing: -0.005em;
+        }
+        .bb-hero-sub strong {
+            color: #e2e8f0 !important;
+            font-weight: 600;
+        }
+
+        /* ── BUTTONS ──────────────────────────────── */
+        .bb-btn-green {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #16a34a, #15803d);
+            color: #ffffff !important;
+            font-family: 'Space Grotesk', sans-serif !important;
+            font-size: 1rem;
             font-weight: 700;
-            padding: 16px 44px;
+            letter-spacing: 0.03em;
+            padding: 15px 40px;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
-            letter-spacing: 0.02em;
-            transition: all 0.2s ease;
+            transition: all 0.22s ease;
             text-decoration: none;
-            box-shadow: 0 4px 18px rgba(27,169,75,0.4);
+            box-shadow: 0 4px 20px rgba(22,163,74,0.35), inset 0 1px 0 rgba(255,255,255,0.1);
         }
         .bb-btn-green:hover {
-            background: #15883d;
+            background: linear-gradient(135deg, #15803d, #166534);
             transform: translateY(-2px);
-            box-shadow: 0 6px 24px rgba(27,169,75,0.55);
+            box-shadow: 0 8px 28px rgba(22,163,74,0.5), inset 0 1px 0 rgba(255,255,255,0.12);
         }
-        .bb-btn-lg { font-size: 1.2rem; padding: 20px 56px; }
-        .bb-no-spam { font-size: 0.8rem; color: #64748b !important; margin: 10px 0 0; }
-        .bb-already { margin-top: 14px; font-size: 0.9rem; color: var(--bb-muted) !important; }
-        .bb-already a { color: var(--bb-blue2) !important; text-decoration: underline; }
+        .bb-btn-green:active { transform: translateY(0); }
+        .bb-btn-lg {
+            font-size: 1.1rem;
+            padding: 18px 52px;
+            border-radius: 10px;
+        }
+        .bb-no-spam {
+            font-family: 'Inter', sans-serif !important;
+            font-size: 0.78rem;
+            font-weight: 400;
+            color: rgba(148,163,184,0.7) !important;
+            margin: 12px 0 0;
+            letter-spacing: 0.01em;
+        }
+        .bb-already {
+            margin-top: 14px;
+            font-family: 'Inter', sans-serif !important;
+            font-size: 0.875rem;
+            font-weight: 400;
+            color: rgba(148,163,184,0.85) !important;
+        }
+        .bb-already a {
+            color: #c4b5fd !important;
+            font-weight: 500;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(196,181,253,0.35);
+            transition: border-color 0.2s;
+        }
+        .bb-already a:hover { border-color: #c4b5fd; }
 
-        /* Stats bar */
+        /* ── STATS BAR ────────────────────────────── */
         .bb-stats-bar {
             display: flex;
             justify-content: center;
-            gap: 36px;
+            gap: 0;
             flex-wrap: wrap;
-            margin-top: 36px;
-            padding-top: 28px;
-            border-top: 1px solid rgba(124,58,237,0.3);
+            margin-top: 44px;
+            padding-top: 32px;
+            border-top: 1px solid rgba(124,58,237,0.25);
         }
-        .bb-stat { text-align: center; }
+        .bb-stat {
+            text-align: center;
+            padding: 0 32px;
+            border-right: 1px solid rgba(124,58,237,0.2);
+        }
+        .bb-stat:last-child { border-right: none; }
         .bb-stat-num {
-            font-family: 'Space Grotesk', 'Inter', sans-serif !important;
-            font-size: 1.7rem;
-            font-weight: 700;
-            color: #d946ef !important;
+            font-family: 'Space Grotesk', sans-serif !important;
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            background: linear-gradient(135deg, #c4b5fd, #f0abfc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.1;
         }
         .bb-stat-lbl {
-            font-size: 0.75rem;
-            color: var(--bb-muted) !important;
+            font-family: 'Inter', sans-serif !important;
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: rgba(148,163,184,0.7) !important;
             text-transform: uppercase;
-            letter-spacing: 0.06em;
+            letter-spacing: 0.09em;
+            margin-top: 4px;
         }
 
-        /* Section 2 — Benefits */
-        .bb-benefits-section { background: var(--bb-bg2); border-top: 1px solid var(--bb-border); }
-        .bb-benefits-section h2 {
-            font-family: 'Space Grotesk', 'Inter', sans-serif !important;
-            font-size: 2rem;
+        /* ── SECTION DIVIDER ──────────────────────── */
+        .bb-divider {
+            width: 40px;
+            height: 3px;
+            background: linear-gradient(90deg, #7c3aed, #d946ef);
+            border-radius: 2px;
+            margin: 0 auto 32px;
+        }
+
+        /* ── SECTION HEADINGS (shared) ────────────── */
+        .bb-benefits-section h2,
+        .bb-features-section h2,
+        .bb-courses-section h2 {
+            font-family: 'Space Grotesk', sans-serif !important;
+            font-size: clamp(1.6rem, 3.5vw, 2.25rem);
             font-weight: 700;
-            color: #ffffff !important;
+            color: #f1f5f9 !important;
+            line-height: 1.2;
+            letter-spacing: -0.025em;
             margin: 0 0 16px;
-            line-height: 1.25;
         }
+
+        /* ── LEAD TEXT ────────────────────────────── */
         .bb-lead {
+            font-family: 'Inter', sans-serif !important;
             font-size: 1.05rem;
-            color: var(--bb-muted) !important;
-            max-width: 680px;
-            margin: 0 auto 28px;
+            font-weight: 400;
+            color: rgba(148,163,184,0.9) !important;
+            max-width: 640px;
+            margin: 0 auto 32px;
             line-height: 1.8;
+            letter-spacing: -0.005em;
         }
+        .bb-lead em { color: #e2e8f0 !important; font-style: normal; font-weight: 500; }
+
+        /* ── CHECKLIST HEADING ────────────────────── */
         .bb-checklist-heading {
-            font-family: 'Space Grotesk', 'Inter', sans-serif !important;
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: #ffffff !important;
-            margin: 0 0 12px;
+            font-family: 'Space Grotesk', sans-serif !important;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #e2e8f0 !important;
+            letter-spacing: -0.01em;
+            margin: 0 0 16px;
         }
+
+        /* ── CHECKLIST ────────────────────────────── */
         .bb-checklist {
             list-style: none;
             padding: 0;
             margin: 0 auto;
-            max-width: 580px;
+            max-width: 600px;
             text-align: left;
         }
         .bb-checklist li {
-            font-size: 1rem;
-            color: var(--bb-text) !important;
-            padding: 12px 0 12px 32px;
-            border-bottom: 1px solid var(--bb-border);
-            line-height: 1.5;
+            font-family: 'Inter', sans-serif !important;
+            font-size: 0.975rem;
+            font-weight: 400;
+            color: rgba(203,213,225,0.9) !important;
+            padding: 14px 0 14px 36px;
+            border-bottom: 1px solid rgba(59,130,246,0.08);
+            line-height: 1.55;
             position: relative;
         }
         .bb-checklist li::before {
-            content: '✅';
+            content: '✓';
             position: absolute;
             left: 0;
+            top: 14px;
+            width: 22px;
+            height: 22px;
+            background: linear-gradient(135deg, #7c3aed, #d946ef);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 800;
+            color: #fff;
+            line-height: 22px;
+            text-align: center;
+        }
+        .bb-checklist li strong {
+            color: #f1f5f9 !important;
+            font-weight: 600;
+        }
+        .bb-checklist li em {
+            color: rgba(148,163,184,0.75) !important;
+            font-style: normal;
+            font-size: 0.875rem;
         }
         .bb-checklist li:last-child { border-bottom: none; }
 
-        /* Section 3 — Features */
+        /* ── SECTION BACKGROUNDS ──────────────────── */
+        .bb-benefits-section { background: var(--bb-bg2); border-top: 1px solid var(--bb-border); }
         .bb-features-section {
             background: var(--bb-bg3);
             border-top: 1px solid var(--bb-border);
             border-bottom: 1px solid var(--bb-border);
         }
-        .bb-features-section h2 {
-            font-family: 'Space Grotesk', 'Inter', sans-serif !important;
-            font-size: 2rem;
-            font-weight: 700;
-            color: #ffffff !important;
-            margin: 0 0 28px;
-        }
+        .bb-courses-section { background: var(--bb-bg2); border-top: 1px solid var(--bb-border); }
+
+        /* ── CTA BOX ──────────────────────────────── */
         .bb-cta-box {
-            margin-top: 40px;
-            background: var(--bb-card);
-            border: 1px solid var(--bb-border);
-            border-radius: 14px;
-            padding: 36px 24px;
-            backdrop-filter: blur(10px);
+            margin-top: 48px;
+            background: linear-gradient(135deg, rgba(124,58,237,0.1), rgba(217,70,239,0.06));
+            border: 1px solid rgba(124,58,237,0.3);
+            border-radius: 16px;
+            padding: 44px 32px;
+            backdrop-filter: blur(12px);
         }
         .bb-cta-label {
-            font-family: 'Space Grotesk', 'Inter', sans-serif !important;
-            font-size: 1.3rem;
+            font-family: 'Space Grotesk', sans-serif !important;
+            font-size: 1.5rem;
             font-weight: 700;
-            color: #ffffff !important;
-            margin: 0 0 18px;
+            color: #f1f5f9 !important;
+            letter-spacing: -0.02em;
+            margin: 0 0 20px;
         }
 
-        /* Section divider */
-        .bb-divider {
-            width: 60px;
-            height: 4px;
-            background: linear-gradient(90deg, var(--bb-blue), var(--bb-blue2));
-            border-radius: 2px;
-            margin: 0 auto 28px;
-        }
-
-        /* Section 4 — Courses */
-        .bb-courses-section { background: var(--bb-bg2); border-top: 1px solid var(--bb-border); }
-        .bb-courses-section h2 {
-            font-family: 'Space Grotesk', 'Inter', sans-serif !important;
-            font-size: 2rem;
-            font-weight: 700;
-            color: #ffffff !important;
-            margin: 0 0 8px;
-        }
-        .bb-courses-section .bb-lead { margin-bottom: 36px; }
+        /* ── COURSE CARDS ─────────────────────────── */
+        .bb-courses-section .bb-lead { margin-bottom: 40px; }
         .bb-courses-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(256px, 1fr));
             gap: 20px;
             text-align: left;
         }
         .bb-course-card {
-            border: 1px solid var(--bb-border);
-            border-radius: 12px;
+            border: 1px solid rgba(59,130,246,0.15);
+            border-radius: 14px;
             overflow: hidden;
-            background: var(--bb-card);
-            backdrop-filter: blur(10px);
-            transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s;
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(12px);
+            transition: box-shadow 0.25s ease, transform 0.25s ease, border-color 0.25s ease;
         }
         .bb-course-card:hover {
-            box-shadow: 0 8px 30px rgba(59,130,246,0.2);
-            transform: translateY(-4px);
-            border-color: rgba(59,130,246,0.5);
+            box-shadow: 0 12px 40px rgba(124,58,237,0.22), 0 2px 8px rgba(0,0,0,0.4);
+            transform: translateY(-5px);
+            border-color: rgba(124,58,237,0.45);
         }
         .bb-course-img {
             width: 100%;
-            height: 130px;
-            background: linear-gradient(135deg, var(--bb-bg3), #111827);
+            height: 120px;
+            background: linear-gradient(135deg, #0d1224, #111827);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 3rem;
+            font-size: 2.75rem;
+            border-bottom: 1px solid rgba(59,130,246,0.1);
         }
-        .bb-course-body { padding: 16px; }
+        .bb-course-body { padding: 20px; }
         .bb-course-badge {
             display: inline-block;
-            background: var(--bb-blue);
-            color: #fff !important;
-            font-size: 0.62rem;
+            font-family: 'Inter', sans-serif !important;
+            font-size: 0.65rem;
             font-weight: 700;
-            padding: 2px 10px;
-            border-radius: 50px;
+            letter-spacing: 0.1em;
             text-transform: uppercase;
-            letter-spacing: 0.06em;
-            margin-bottom: 8px;
+            padding: 3px 10px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            background: rgba(124,58,237,0.2);
+            color: #c4b5fd !important;
+            border: 1px solid rgba(124,58,237,0.35);
         }
-        .bb-course-badge.free { background: var(--bb-green); }
+        .bb-course-badge.free {
+            background: rgba(22,163,74,0.15);
+            color: #86efac !important;
+            border-color: rgba(22,163,74,0.3);
+        }
         .bb-course-title {
+            font-family: 'Space Grotesk', sans-serif !important;
+            font-size: 1.05rem;
             font-weight: 700;
-            font-size: 0.95rem;
-            color: #ffffff !important;
-            margin: 0 0 6px;
+            color: #f1f5f9 !important;
+            letter-spacing: -0.015em;
             line-height: 1.3;
+            margin: 0 0 8px;
         }
         .bb-course-desc {
-            font-size: 0.82rem;
-            color: var(--bb-muted) !important;
-            margin: 0 0 12px;
-            line-height: 1.5;
+            font-family: 'Inter', sans-serif !important;
+            font-size: 0.825rem;
+            font-weight: 400;
+            color: rgba(148,163,184,0.85) !important;
+            line-height: 1.6;
+            margin: 0 0 16px;
         }
         .bb-course-price {
-            font-weight: 700;
-            font-size: 1rem;
-            color: var(--bb-blue2) !important;
+            font-family: 'Space Grotesk', sans-serif !important;
+            font-size: 1.4rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            color: #a78bfa !important;
+            margin-bottom: 14px;
         }
         .bb-course-btn {
             display: block;
-            margin-top: 10px;
-            background: var(--bb-blue);
+            background: linear-gradient(135deg, #7c3aed, #6d28d9);
             color: #fff !important;
             text-align: center;
-            padding: 9px 0;
-            border-radius: 6px;
-            font-size: 0.85rem;
+            padding: 11px 0;
+            border-radius: 8px;
+            font-family: 'Space Grotesk', sans-serif !important;
+            font-size: 0.875rem;
             font-weight: 700;
+            letter-spacing: 0.02em;
             text-decoration: none;
             cursor: pointer;
             border: none;
             width: 100%;
-            transition: background 0.2s;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 10px rgba(124,58,237,0.3);
         }
-        .bb-course-btn:hover { background: #1e40af; }
+        .bb-course-btn:hover {
+            background: linear-gradient(135deg, #6d28d9, #5b21b6);
+            box-shadow: 0 4px 16px rgba(124,58,237,0.45);
+            transform: translateY(-1px);
+        }
 
-        /* Mobile */
+        /* ── MOBILE ───────────────────────────────── */
         @media (max-width: 640px) {
-            .bb-hero-logo { width: 110px; height: 110px; }
-            .bb-hero-title { font-size: 1.9rem; }
-            .bb-benefits-section h2,
-            .bb-features-section h2,
-            .bb-courses-section h2 { font-size: 1.5rem; }
-            .bb-container { padding: 48px 16px; }
-            .bb-stats-bar { gap: 20px; }
+            .bb-container { padding: 52px 18px; }
+            .bb-hero-logo { width: 120px; height: 120px; }
+            .bb-stat { padding: 0 18px; }
+            .bb-stat-num { font-size: 1.5rem; }
             .bb-btn-lg { font-size: 1rem; padding: 16px 32px; }
+            .bb-courses-grid { grid-template-columns: 1fr; }
+            .bb-cta-box { padding: 32px 18px; }
         }
     </style>
 </head>

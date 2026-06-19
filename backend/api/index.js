@@ -9,6 +9,7 @@ const userRoutes = require('../routes/users');
 const adminRoutes = require('../routes/admin');
 const paypalRoutes = require('../routes/paypal');
 const checklistRoutes = require('../routes/checklist');
+const whatsappRoutes = require('../routes/whatsapp');
 
 const app = express();
 
@@ -43,6 +44,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/paypal', paypalRoutes);
 app.use('/api/checklist', checklistRoutes);
+app.use('/api/whatsapp', whatsappRoutes);
 
 app.use((err, req, res, next) => {
   console.error(err.stack);

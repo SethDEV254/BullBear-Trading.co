@@ -382,7 +382,7 @@
         /* Chart Grid */
         .chart-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(min(600px, 100%), 1fr));
             gap: 35px;
             margin-bottom: 80px;
         }
@@ -528,7 +528,7 @@
         /* Indicator Features */
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
             gap: 30px;
             margin-bottom: 80px;
         }
@@ -1056,63 +1056,55 @@
             .sl-plan { border-right: none; border-bottom: 1px solid rgba(124,58,237,0.12); }
             .sl-plan:last-child { border-bottom: none; }
             .subscription-lock-content { border-radius: 18px; }
-            .sl-header { padding: 28px 20px 22px; }
-            .sl-plan { padding: 22px 20px 18px; }
-            .subscription-lock-content h2 { font-size: 1.4rem !important; }
+            .sl-header { padding: 28px 16px 22px; }
+            .sl-plan { padding: 22px 16px 18px; }
+            .subscription-lock-content h2 { font-size: 1.3rem !important; }
         }
 
         /* Responsive */
         @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.5rem;
-                letter-spacing: -1px;
-            }
+            html, body { overflow-x: hidden; }
 
-            .hero p {
-                font-size: 1.05rem;
-            }
+            .hero h1 { font-size: 2rem; letter-spacing: -1px; }
+            .hero p { font-size: 1rem; }
+            .hero { padding: 60px 16px 40px; }
 
-            .section-title h2 {
-                font-size: 2rem;
-            }
+            .section-title h2 { font-size: 1.75rem; }
 
-            .chart-grid {
-                grid-template-columns: 1fr;
-            }
+            .chart-grid { grid-template-columns: 1fr; gap: 20px; }
+            .features-grid { grid-template-columns: 1fr; gap: 16px; }
 
-            .tradingview-widget-container {
-                height: 400px;
-            }
+            .tradingview-widget-container { height: 350px; }
 
-            .header {
-                flex-direction: column;
-                gap: 20px;
-                padding: 20px;
-            }
+            .header { flex-direction: column; gap: 16px; padding: 16px; }
+            .nav-links { flex-direction: column; gap: 8px; width: 100%; }
+            .nav-links a { width: 100%; text-align: center; }
 
-            .nav-links {
-                flex-direction: column;
-                gap: 10px;
-                width: 100%;
-            }
+            .cta-section h2 { font-size: 1.75rem; }
+            .cta-button { padding: 14px 32px; font-size: 0.95rem; }
 
-            .nav-links a {
-                width: 100%;
-                text-align: center;
-            }
+            .container { padding-left: 16px !important; padding-right: 16px !important; }
 
-            .cta-section h2 {
-                font-size: 2rem;
-            }
+            /* Membership card */
+            .bb-mem-card-inner { flex-direction: column !important; gap: 20px; }
+            .bb-mem-card-left { min-width: unset !important; width: 100%; }
+            .bb-mem-card-right { min-width: unset !important; width: 100%; }
+            .bb-mem-card { padding: 20px 16px !important; }
 
-            .cta-button {
-                padding: 16px 40px;
-                font-size: 1rem;
+            /* Feature cards */
+            [class*="feature-card"],
+            [class*="indicator-card"],
+            [class*="package"] {
+                padding: 20px 16px !important;
             }
+        }
 
-            .features-grid {
-                grid-template-columns: 1fr;
-            }
+        @media (max-width: 480px) {
+            .hero h1 { font-size: 1.6rem; }
+            .section-title h2 { font-size: 1.5rem; }
+            .sl-plan-price .sl-price-num { font-size: 2.2rem; }
+            .hero-badges { flex-wrap: wrap; gap: 8px; justify-content: center; }
+            .badge { font-size: 0.75rem; padding: 6px 12px; }
         }
     </style>
     <link rel="stylesheet" href="./bb-theme.css">

@@ -1716,7 +1716,26 @@
         }
 
         function showSubscriptionPayment() {
-            // Create payment modal
+            openBBPaymentModal({
+                icon: '📊',
+                tag: 'Monthly Subscription',
+                name: 'Trading Indicators',
+                amount: 30,
+                period: '/month',
+                mpesaAmount: 3900,
+                courseId: 'trading-indicators',
+                features: [
+                    'Live TradingView signals',
+                    'Real-time market alerts',
+                    'Forex & Crypto coverage',
+                    'Entry & exit alerts',
+                    'Cancel anytime',
+                ],
+                onSuccess: () => unlockIndicators(),
+            });
+        }
+        /* ── legacy placeholder — replaced by bb-payment.js ── */
+        function _REMOVED_showSubscriptionPayment_legacy() {
             const modal = document.createElement('div');
             modal.style.cssText = `
                 position: fixed;
@@ -2063,6 +2082,7 @@
             return false;
         }
     </script>
+    <script src="./bb-payment.js"></script>
     <script src="./bb-notifications.js"></script>
 </body>
 

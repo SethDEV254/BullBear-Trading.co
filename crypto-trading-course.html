@@ -1562,18 +1562,37 @@
                 <div class="bb-membership-divider">— or purchase this course only for $500 below —</div>
             </div>
 
-            <!-- Payment Section - Directly Below Card -->
+            <!-- Payment Section -->
             <div id="paymentSection" class="payment-section-compact">
-                <h3>Complete Your Purchase</h3>
+                <div style="text-align:center;max-width:480px;margin:0 auto;">
+                    <div style="font-size:3.5rem;margin-bottom:16px;">🎓</div>
+                    <h3 style="color:#fff;font-size:1.5rem;font-weight:800;margin:0 0 8px;">Crypto Trading Course</h3>
+                    <div style="font-size:2.5rem;font-weight:900;color:#fff;margin:12px 0 4px;">$500</div>
+                    <div style="color:rgba(255,255,255,.4);font-size:.85rem;margin-bottom:24px;">One-time payment · Lifetime access</div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:28px;text-align:left;">
+                        <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:12px 14px;color:rgba(255,255,255,.75);font-size:.85rem;display:flex;align-items:center;gap:8px;"><span style="color:#10b981;font-weight:700;">✓</span>50+ Video Lessons</div>
+                        <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:12px 14px;color:rgba(255,255,255,.75);font-size:.85rem;display:flex;align-items:center;gap:8px;"><span style="color:#10b981;font-weight:700;">✓</span>Lifetime Access</div>
+                        <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:12px 14px;color:rgba(255,255,255,.75);font-size:.85rem;display:flex;align-items:center;gap:8px;"><span style="color:#10b981;font-weight:700;">✓</span>Trading Tools</div>
+                        <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:12px 14px;color:rgba(255,255,255,.75);font-size:.85rem;display:flex;align-items:center;gap:8px;"><span style="color:#10b981;font-weight:700;">✓</span>Community Access</div>
+                        <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:12px 14px;color:rgba(255,255,255,.75);font-size:.85rem;display:flex;align-items:center;gap:8px;"><span style="color:#10b981;font-weight:700;">✓</span>Live Sessions</div>
+                        <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:12px 14px;color:rgba(255,255,255,.75);font-size:.85rem;display:flex;align-items:center;gap:8px;"><span style="color:#10b981;font-weight:700;">✓</span>Certificate</div>
+                    </div>
+                    <button onclick="showCoursePaymentModal()" style="width:100%;padding:18px;background:linear-gradient(135deg,#7c3aed,#d946ef);color:#fff;border:none;border-radius:14px;font-size:1.05rem;font-weight:800;cursor:pointer;letter-spacing:.3px;box-shadow:0 8px 28px rgba(124,58,237,.45);transition:all .25s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 12px 36px rgba(124,58,237,.55)'" onmouseout="this.style.transform='';this.style.boxShadow='0 8px 28px rgba(124,58,237,.45)'">
+                        Get Instant Access — $500
+                    </button>
+                    <div style="display:flex;align-items:center;justify-content:center;gap:18px;margin-top:16px;flex-wrap:wrap;">
+                        <span style="color:rgba(255,255,255,.35);font-size:.75rem;display:flex;align-items:center;gap:5px;">🔒 256-bit SSL</span>
+                        <span style="color:rgba(255,255,255,.35);font-size:.75rem;display:flex;align-items:center;gap:5px;">⚡ Instant access</span>
+                        <span style="color:rgba(255,255,255,.35);font-size:.75rem;display:flex;align-items:center;gap:5px;">💳 PayPal · M-Pesa · Crypto</span>
+                    </div>
+                </div>
 
-                <form id="checkoutForm" onsubmit="return handleCheckout(event)">
-                    <!-- Email -->
+                <!-- hidden legacy — do not remove, used by checkCourseAccess -->
+                <form id="checkoutForm" onsubmit="return false;" style="display:none;">
                     <div class="form-group">
                         <label for="checkoutEmail">Email Address *</label>
                         <input type="email" id="checkoutEmail" name="email" placeholder="your@email.com" required>
                     </div>
-
-                    <!-- Payment Method Selection -->
                     <div class="form-group">
                         <label>Payment Method *</label>
                         <div class="payment-methods-compact">
@@ -1869,6 +1888,41 @@
             );
         }
 
+        function showCoursePaymentModal() {
+            openBBPaymentModal({
+                icon: '🎓',
+                tag: 'One-Time Purchase',
+                name: 'Crypto Trading Course',
+                amount: 500,
+                period: ' one-time',
+                mpesaAmount: 65000,
+                courseId: 'crypto-trading-course',
+                features: [
+                    '50+ professional video lessons',
+                    'DeFi & blockchain modules',
+                    'Trading tools & resources',
+                    'Community access',
+                    'Live sessions',
+                    'Completion certificate',
+                ],
+                onSuccess: () => {
+                    unlockContent();
+                    const section = document.querySelector('.course-purchase-section');
+                    if (section) {
+                        section.innerHTML = `
+                          <div class="container" style="text-align:center;padding:60px 20px;">
+                            <div style="background:linear-gradient(135deg,rgba(16,185,129,.2),rgba(5,150,105,.2));border:2px solid #10b981;border-radius:20px;padding:40px;max-width:600px;margin:0 auto;">
+                              <div style="font-size:4rem;margin-bottom:20px;">✅</div>
+                              <h2 style="color:#10b981;font-size:2rem;margin-bottom:15px;">Access Granted!</h2>
+                              <p style="color:#cbd5e1;font-size:1.1rem;margin-bottom:25px;">You now have full access to all course materials.</p>
+                              <a href="my-library.html" style="display:inline-block;padding:16px 40px;background:linear-gradient(135deg,#10b981,#059669);color:white;text-decoration:none;border-radius:12px;font-weight:700;font-size:1.1rem;">Go to My Library</a>
+                            </div>
+                          </div>`;
+                    }
+                },
+            });
+        }
+
         let paypalCourseRendered = false;
 
         function loadPayPalSDK(callback) {
@@ -1957,6 +2011,7 @@
         <p style="margin-top: 10px; font-size: 0.85rem;">Developed by <a href="https://twitter.com/starico"
                 target="_blank" style="color: #06b6d4; text-decoration: none; font-weight: 600;">@starico</a></p>
     </div>
+    <script src="./bb-payment.js"></script>
     <script src="./bb-notifications.js"></script>
 </body>
 

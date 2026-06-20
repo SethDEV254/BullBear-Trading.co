@@ -121,7 +121,7 @@
               PayPal
             </button>
             <button class="bb-tb" onclick="switchBBTab('mpesa')">📱 M-Pesa</button>
-            <button class="bb-tb" onclick="switchBBTab('crypto')">₿ Crypto</button>
+            <button class="bb-tb" onclick="switchBBTab('crypto')" style="opacity:.45;cursor:not-allowed;pointer-events:none;">₿ Crypto <span style="font-size:.65rem;background:rgba(255,255,255,.12);padding:2px 6px;border-radius:4px;margin-left:3px;">Soon</span></button>
           </div>
 
           <div id="bb-pane-paypal" class="bb-pane active">

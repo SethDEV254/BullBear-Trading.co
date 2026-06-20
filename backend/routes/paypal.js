@@ -1,154 +1,108 @@
 const express = require('express');
 const router = express.Router();
+const axios = require('axios');
+const { getDb } = require('../lib/firebase');
 
-// PayPal configuration - Direct integration without encryption
-const PAYPAL_CLIENT_ID = 'EHyxXrMCDAjeeNIFxhIVhg9b8I7PffoH0nPeoHWN7VJUD6Gfw1yHYrOqOiN5lbm5EKLXty5ukbsnLGIS';
-const PAYPAL_MODE = 'sandbox'; // Always sandbox for testing
+const PAYPAL_CLIENT_ID = (process.env.PAYPAL_CLIENT_ID || '').trim();
+const PAYPAL_CLIENT_SECRET = (process.env.PAYPAL_CLIENT_SECRET || '').trim();
+const PAYPAL_BASE = (process.env.PAYPAL_MODE || 'live') === 'live'
+  ? 'https://api-m.paypal.com'
+  : 'https://api-m.sandbox.paypal.com';
 
-// Simple payment creation endpoint
-router.post('/create-payment', async (req, res) => {
-    try {
-        const { amount, currency = 'USD', description, courseId, userId } = req.body;
-
-        if (!amount || !description) {
-            return res.status(400).json({
-                status: 'error',
-                message: 'Amount and description are required'
-            });
-        }
-
-        // Return payment data for frontend processing
-        res.json({
-            status: 'success',
-            message: 'Payment data prepared',
-            paymentData: {
-                amount: amount,
-                currency: currency,
-                description: description,
-                courseId: courseId,
-                userId: userId
-            },
-            clientId: PAYPAL_CLIENT_ID,
-            mode: PAYPAL_MODE
-        });
-
-    } catch (error) {
-        console.error('Payment creation error:', error.message);
-        res.status(500).json({
-            status: 'error',
-            message: 'Failed to create payment',
-            error: error.message
-        });
+async function getAccessToken() {
+  const res = await axios.post(
+    `${PAYPAL_BASE}/v1/oauth2/token`,
+    'grant_type=client_credentials',
+    {
+      auth: { username: PAYPAL_CLIENT_ID, password: PAYPAL_CLIENT_SECRET },
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     }
-});
+  );
+  return res.data.access_token;
+}
 
-// Simple payment capture endpoint
-router.post('/capture-payment/:paymentId', async (req, res) => {
-    try {
-        const { paymentId } = req.params;
-        const { amount, description, userId } = req.body;
-        
-        // Log the payment for tracking
-        console.log(`✅ Payment processed:`, {
-            paymentId: paymentId,
-            amount: amount,
-            description: description,
-            userId: userId,
-            timestamp: new Date().toISOString()
-        });
-        
-        // Simulate successful payment capture
-        res.json({
-            status: 'success',
-            message: 'Payment captured successfully',
-            paymentDetails: {
-                id: paymentId,
-                status: 'COMPLETED',
-                amount: {
-                    value: amount,
-                    currency_code: 'USD'
-                },
-                payer: {
-                    name: { given_name: 'Customer' }
-                },
-                create_time: new Date().toISOString()
-            }
-        });
-
-    } catch (error) {
-        console.error('Payment capture error:', error.message);
-        res.status(500).json({
-            status: 'error',
-            message: 'Failed to capture payment',
-            error: error.message
-        });
-    }
-});
-
-// Get PayPal client ID for frontend
+// GET /api/paypal/config — client ID for frontend SDK
 router.get('/config', (req, res) => {
-    res.json({
-        status: 'success',
-        clientId: PAYPAL_CLIENT_ID,
-        mode: PAYPAL_MODE,
-        message: 'PayPal configuration retrieved'
-    });
+  res.json({ status: 'success', clientId: PAYPAL_CLIENT_ID, mode: process.env.PAYPAL_MODE || 'live' });
 });
 
-// Simple test endpoint
-router.get('/test', (req, res) => {
-    res.json({
-        status: 'success',
-        message: 'PayPal API is working - No encryption required',
-        config: {
-            clientId: PAYPAL_CLIENT_ID,
-            mode: PAYPAL_MODE
-        },
-        timestamp: new Date().toISOString()
-    });
-});
-
-// Payment status endpoint
-router.get('/payment/:paymentId', (req, res) => {
-    const { paymentId } = req.params;
-    
-    res.json({
-        status: 'success',
-        payment: {
-            id: paymentId,
-            status: 'COMPLETED',
-            amount: {
-                value: '500.00',
-                currency_code: 'USD'
-            },
-            create_time: new Date().toISOString()
-        }
-    });
-});
-
-// Webhook handler (simplified)
-router.post('/webhook', (req, res) => {
-    try {
-        const event = req.body;
-        
-        console.log('PayPal webhook received:', {
-            event_type: event.event_type,
-            resource_id: event.resource?.id,
-            timestamp: new Date().toISOString()
-        });
-        
-        res.status(200).json({ 
-            status: 'success',
-            message: 'Webhook processed'
-        });
-        
-    } catch (error) {
-        console.error('Webhook error:', error);
-        res.status(500).json({ 
-            status: 'error', 
-            message: error.message 
-        });
+// POST /api/paypal/create-order
+router.post('/create-order', async (req, res) => {
+  try {
+    const { amount, courseId, currency = 'USD' } = req.body;
+    if (!amount || !courseId) {
+      return res.status(400).json({ status: 'error', message: 'amount and courseId required' });
     }
+
+    const token = await getAccessToken();
+    const order = await axios.post(
+      `${PAYPAL_BASE}/v2/checkout/orders`,
+      {
+        intent: 'CAPTURE',
+        purchase_units: [{
+          amount: { currency_code: currency, value: parseFloat(amount).toFixed(2) },
+          description: `BullBear Trading - ${courseId}`,
+        }],
+      },
+      { headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' } }
+    );
+
+    res.json({ status: 'success', orderId: order.data.id });
+  } catch (err) {
+    console.error('Create order error:', err.response?.data || err.message);
+    res.status(500).json({ status: 'error', message: 'Failed to create PayPal order' });
+  }
+});
+
+// POST /api/paypal/capture-order/:orderId
+router.post('/capture-order/:orderId', async (req, res) => {
+  try {
+    const { orderId } = req.params;
+    const { userEmail, courseId, amount } = req.body;
+
+    const token = await getAccessToken();
+    const capture = await axios.post(
+      `${PAYPAL_BASE}/v2/checkout/orders/${orderId}/capture`,
+      {},
+      { headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' } }
+    );
+
+    if (capture.data.status !== 'COMPLETED') {
+      return res.status(400).json({ status: 'error', message: 'Payment not completed' });
+    }
+
+    const transactionId = capture.data.purchase_units?.[0]?.payments?.captures?.[0]?.id || orderId;
+
+    if (userEmail && courseId) {
+      const db = getDb();
+      const courseSnap = await db.collection('courses').doc(courseId).get();
+      const courseName = courseSnap.exists ? (courseSnap.data().title || courseId) : courseId;
+
+      await db.collection('purchases').add({
+        userId: userEmail.toLowerCase(),
+        userEmail: userEmail.toLowerCase(),
+        courseId,
+        courseName,
+        amount: parseFloat(amount) || 0,
+        paymentMethod: 'paypal',
+        orderId,
+        transactionId,
+        status: 'approved',
+        createdAt: new Date().toISOString(),
+        verifiedAt: new Date().toISOString(),
+      });
+
+      if (courseSnap.exists) {
+        const d = courseSnap.data();
+        await courseSnap.ref.update({ totalPurchases: (d.totalPurchases || 0) + 1 });
+      }
+    }
+
+    res.json({ status: 'success', message: 'Payment verified and access granted', transactionId });
+  } catch (err) {
+    console.error('Capture error:', err.response?.data || err.message);
+    res.status(500).json({ status: 'error', message: 'Failed to capture payment' });
+  }
 });
 
 module.exports = router;

@@ -1623,12 +1623,12 @@
                     <!-- PayPal Fields -->
                     <div id="paypalFields" style="display: none;">
                         <div class="paypal-info-compact">
-                            <p style="margin-bottom: 15px; font-size: 0.95rem; color: #e2e8f0;">Pay securely with
-                                PayPal:</p>
-
-                            <a href="https://www.paypal.com/paypalme/megametahub42/500"
-                                class="paypal-direct-btn-compact" target="_blank" rel="noopener noreferrer">
-                                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white' width='20' height='20'%3E%3Cpath d='M20.067 8.478c.492.88.556 2.014.3 3.327-.74 3.806-3.276 5.12-6.514 5.12h-.5a.805.805 0 00-.794.68l-.04.22-.63 3.993-.032.17a.804.804 0 01-.794.679H7.72a.483.483 0 01-.477-.558L9.22 7.08a.965.965 0 01.952-.814h4.645c.935 0 1.683.094 2.246.298.18.065.35.139.51.224.925.486 1.47 1.314 1.495 2.67z'/%3E%3C/svg%3E"
+                            <p style="margin-bottom: 15px; font-size: 0.95rem; color: #e2e8f0;">Pay securely with PayPal:</p>
+                            <div id="paypal-button-container-course" style="min-height: 50px;"></div>
+                            <!-- hidden legacy anchor kept for DOM reference -->
+                            <a href="#"
+                                class="paypal-direct-btn-compact" style="display:none;" rel="noopener noreferrer">
+                                <img src=""
                                     style="width: 20px; margin-right: 8px;">
                                 Pay $500 with PayPal
                             </a>
@@ -1725,6 +1725,7 @@
                         paypalFields.style.display = 'block';
                         mpesaFields.style.display = 'none';
                         if (cardPaymentBtn) cardPaymentBtn.style.display = 'none';
+                        renderCoursePayPalButtons();
                     } else if (this.value === 'mpesa') {
                         cardFields.style.display = 'none';
                         paypalFields.style.display = 'none';
@@ -1866,6 +1867,67 @@
                 'After paying, click "Complete Purchase" below to register your order.\n' +
                 'Access is activated once payment is confirmed.'
             );
+        }
+
+        let paypalCourseRendered = false;
+
+        function loadPayPalSDK(callback) {
+            if (window.paypal) { callback(); return; }
+            const script = document.createElement('script');
+            script.src = 'https://www.paypal.com/sdk/js?client-id=AR2mGqK9aUHm9KFg7z3VWo54ILqueC8GpWNcSn1Z_IXq72lFC9mRZkBTEG_VU40kFu5yz__TxOJAWZVr&currency=USD';
+            script.onload = callback;
+            document.head.appendChild(script);
+        }
+
+        function renderCoursePayPalButtons() {
+            if (paypalCourseRendered) return;
+            loadPayPalSDK(() => {
+                paypalCourseRendered = true;
+                paypal.Buttons({
+                    style: { layout: 'vertical', color: 'blue', shape: 'rect', label: 'pay' },
+                    createOrder: async () => {
+                        const res = await fetch(API_BASE + '/paypal/create-order', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ amount: 500, courseId: 'crypto-trading-course', currency: 'USD' }),
+                        });
+                        const data = await res.json();
+                        if (!data.orderId) throw new Error('Failed to create order');
+                        return data.orderId;
+                    },
+                    onApprove: async (data) => {
+                        const userEmail = document.getElementById('checkoutEmail')?.value;
+                        if (!userEmail) { alert('Please enter your email address.'); return; }
+                        const res = await fetch(API_BASE + '/paypal/capture-order/' + data.orderID, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ userEmail, courseId: 'crypto-trading-course', amount: 500 }),
+                        });
+                        const result = await res.json();
+                        if (result.status === 'success') {
+                            unlockContent();
+                            const section = document.querySelector('.checkout-section') || document.querySelector('.course-purchase-section');
+                            if (section) {
+                                section.innerHTML = `
+                                    <div class="container" style="text-align:center;padding:60px 20px;">
+                                        <div style="background:linear-gradient(135deg,rgba(16,185,129,0.2),rgba(5,150,105,0.2));border:2px solid #10b981;border-radius:20px;padding:40px;max-width:600px;margin:0 auto;">
+                                            <div style="font-size:4rem;margin-bottom:20px;">✅</div>
+                                            <h2 style="color:#10b981;font-size:2rem;margin-bottom:15px;">Payment Successful!</h2>
+                                            <p style="color:#cbd5e1;font-size:1.1rem;margin-bottom:25px;">You now have full access to all course materials.</p>
+                                            <a href="my-library.html" style="display:inline-block;padding:16px 40px;background:linear-gradient(135deg,#10b981,#059669);color:white;text-decoration:none;border-radius:12px;font-weight:700;font-size:1.1rem;">Go to My Library</a>
+                                        </div>
+                                    </div>`;
+                            }
+                        } else {
+                            alert('Payment verification failed. Please contact support.');
+                        }
+                    },
+                    onError: (err) => {
+                        console.error('PayPal error:', err);
+                        alert('Payment failed. Please try again.');
+                    },
+                }).render('#paypal-button-container-course');
+            });
         }
 
         // Cursor gradient effect on feature cards

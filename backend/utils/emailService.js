@@ -160,6 +160,60 @@ const sendPurchaseConfirmation = async (userEmail, userName, courseName, orderId
   }
 };
 
+// Send password reset email
+const sendPasswordResetEmail = async (userEmail, userName, resetUrl) => {
+  try {
+    const transporter = createTransporter();
+
+    const mailOptions = {
+      from: `"BullBear Trading" <${process.env.EMAIL_USER}>`,
+      to: userEmail,
+      subject: 'Reset Your BullBear Trading Password',
+      html: `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <style>
+            body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+            .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+            .header { background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
+            .content { background: #f8fafc; padding: 30px; border-radius: 0 0 10px 10px; }
+            .button { display: inline-block; padding: 15px 30px; background: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%); color: white; text-decoration: none; border-radius: 8px; margin: 20px 0; }
+            .footer { text-align: center; margin-top: 30px; color: #64748b; font-size: 14px; }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <div class="header">
+              <h1>🔑 Reset Your Password</h1>
+            </div>
+            <div class="content">
+              <h2>Hi ${userName || 'there'},</h2>
+              <p>We received a request to reset your BullBear Trading password. Click the button below to set a new one:</p>
+
+              <a href="${resetUrl}" class="button">Reset Password</a>
+
+              <p>This link expires in 1 hour. If you didn't request this, you can safely ignore this email — your password won't change.</p>
+            </div>
+            <div class="footer">
+              <p>© 2026 BullBear Trading. All rights reserved.</p>
+              <p>Master the Markets</p>
+            </div>
+          </div>
+        </body>
+        </html>
+      `
+    };
+
+    await transporter.sendMail(mailOptions);
+    console.log('Password reset email sent to:', userEmail);
+    return { success: true };
+  } catch (error) {
+    console.error('Error sending password reset email:', error);
+    return { success: false, error: error.message };
+  }
+};
+
 // Send admin notification
 const sendAdminNotification = async (userName, userEmail, courseName, amount, orderId) => {
   try {
@@ -221,5 +275,6 @@ const sendAdminNotification = async (userName, userEmail, courseName, amount, or
 module.exports = {
   sendPurchaseConfirmation,
   sendAdminNotification,
-  sendFreePdfEmail
+  sendFreePdfEmail,
+  sendPasswordResetEmail
 };

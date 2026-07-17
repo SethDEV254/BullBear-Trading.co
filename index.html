@@ -2931,9 +2931,60 @@
                 </div>
                 <div id="loginError" style="color: #a78bfa; font-size: 0.9rem; margin-bottom: 10px; display: none;">
                 </div>
+                <p style="text-align: right; margin: -8px 0 12px;"><a href="javascript:void(0)"
+                        onclick="switchModal('loginModal', 'forgotPasswordModal')"
+                        style="font-size: 0.85rem;">Forgot password?</a></p>
                 <button type="submit" class="auth-btn">Login</button>
                 <p class="auth-switch">Don't have an account? <a href="javascript:void(0)"
                         onclick="switchModal('loginModal', 'signupModal')">Sign Up</a></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Forgot Password Modal -->
+    <div id="forgotPasswordModal" class="auth-modal">
+        <div class="auth-modal-content">
+            <span class="auth-modal-close" onclick="closeModal('forgotPasswordModal')">&times;</span>
+            <h2>Reset Your Password</h2>
+            <p style="font-size: 0.9rem; margin-bottom: 16px;">Enter your account email and we'll send you a link to
+                reset your password.</p>
+            <form id="forgotPasswordForm" onsubmit="return handleForgotPassword(event)">
+                <div class="form-group">
+                    <label for="forgotEmail">Email</label>
+                    <input type="email" id="forgotEmail" name="email" placeholder="Enter your email" required>
+                </div>
+                <div id="forgotPasswordError"
+                    style="color: #a78bfa; font-size: 0.9rem; margin-bottom: 10px; display: none;"></div>
+                <div id="forgotPasswordSuccess"
+                    style="color: #10b981; font-size: 0.9rem; margin-bottom: 10px; display: none;"></div>
+                <button type="submit" class="auth-btn" id="forgotPasswordBtn">Send Reset Link</button>
+                <p class="auth-switch">Remembered your password? <a href="javascript:void(0)"
+                        onclick="switchModal('forgotPasswordModal', 'loginModal')">Login</a></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Reset Password Modal -->
+    <div id="resetPasswordModal" class="auth-modal">
+        <div class="auth-modal-content">
+            <span class="auth-modal-close" onclick="closeModal('resetPasswordModal')">&times;</span>
+            <h2>Choose a New Password</h2>
+            <form id="resetPasswordForm" onsubmit="return handleResetPassword(event)">
+                <div class="form-group">
+                    <label for="resetNewPassword">New Password</label>
+                    <input type="password" id="resetNewPassword" name="newPassword" placeholder="Create a new password"
+                        required minlength="6">
+                </div>
+                <div class="form-group">
+                    <label for="resetConfirmPassword">Confirm New Password</label>
+                    <input type="password" id="resetConfirmPassword" name="confirmPassword"
+                        placeholder="Confirm your new password" required minlength="6">
+                </div>
+                <div id="resetPasswordError"
+                    style="color: #a78bfa; font-size: 0.9rem; margin-bottom: 10px; display: none;"></div>
+                <div id="resetPasswordSuccess"
+                    style="color: #10b981; font-size: 0.9rem; margin-bottom: 10px; display: none;"></div>
+                <button type="submit" class="auth-btn" id="resetPasswordBtn">Reset Password</button>
             </form>
         </div>
     </div>
@@ -3248,6 +3299,7 @@
                                     <a class="footer-link"
                                         href="mailto:megametahub42@gmail.com">megametahub42@gmail.com</a>
                                     <a class="footer-link" href="tel:+19738197530">+1 (973)-8197-530</a>
+                                    <a class="footer-link" href="tel:0702000987">0702000987</a>
                                 </div>
 
                                 <!-- Legal Section -->
@@ -3337,7 +3389,7 @@
                                     kjb-settings-id="sections_footer_blocks_1638945666179_settings_social_icon_link_youtube">
                                     <i class="fab fa-youtube"></i>
                                 </a>
-                                <a class="social-icons__icon social-icons__icon--" href="https://wa.me/19738197530"
+                                <a class="social-icons__icon social-icons__icon--" href="https://wa.me/254702000987"
                                     target="_blank" rel="noopener noreferrer" title="Contact us on WhatsApp">
                                     <i class="fab fa-whatsapp"></i>
                                 </a>
@@ -3929,6 +3981,124 @@
             return false;
         }
 
+        async function handleForgotPassword(event) {
+            event.preventDefault();
+
+            const email = document.getElementById('forgotEmail').value.trim();
+            const errorDiv = document.getElementById('forgotPasswordError');
+            const successDiv = document.getElementById('forgotPasswordSuccess');
+            const btn = document.getElementById('forgotPasswordBtn');
+
+            errorDiv.style.display = 'none';
+            successDiv.style.display = 'none';
+            btn.disabled = true;
+            btn.textContent = 'Sending...';
+
+            try {
+                var res = await fetch('https://backend-tawny-nu-33.vercel.app/api/auth/forgot-password', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: email }),
+                });
+
+                var data = await res.json();
+
+                if (!res.ok) {
+                    errorDiv.textContent = data.message || 'Something went wrong. Please try again.';
+                    errorDiv.style.display = 'block';
+                    return false;
+                }
+
+                successDiv.textContent = data.message || 'If that email is registered, a reset link has been sent.';
+                successDiv.style.display = 'block';
+                document.getElementById('forgotPasswordForm').reset();
+            } catch (err) {
+                errorDiv.textContent = 'Network error. Please check your connection and try again.';
+                errorDiv.style.display = 'block';
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Send Reset Link';
+            }
+
+            return false;
+        }
+
+        async function handleResetPassword(event) {
+            event.preventDefault();
+
+            const newPassword = document.getElementById('resetNewPassword').value;
+            const confirmPassword = document.getElementById('resetConfirmPassword').value;
+            const errorDiv = document.getElementById('resetPasswordError');
+            const successDiv = document.getElementById('resetPasswordSuccess');
+            const btn = document.getElementById('resetPasswordBtn');
+
+            errorDiv.style.display = 'none';
+            successDiv.style.display = 'none';
+
+            if (newPassword !== confirmPassword) {
+                errorDiv.textContent = 'Passwords do not match!';
+                errorDiv.style.display = 'block';
+                return false;
+            }
+
+            if (newPassword.length < 6) {
+                errorDiv.textContent = 'Password must be at least 6 characters!';
+                errorDiv.style.display = 'block';
+                return false;
+            }
+
+            const params = new URLSearchParams(window.location.search);
+            const email = params.get('email');
+            const token = params.get('resetToken');
+
+            if (!email || !token) {
+                errorDiv.textContent = 'Invalid or expired reset link. Please request a new one.';
+                errorDiv.style.display = 'block';
+                return false;
+            }
+
+            btn.disabled = true;
+            btn.textContent = 'Resetting...';
+
+            try {
+                var res = await fetch('https://backend-tawny-nu-33.vercel.app/api/auth/reset-password', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: email, token: token, newPassword: newPassword }),
+                });
+
+                var data = await res.json();
+
+                if (!res.ok) {
+                    errorDiv.textContent = data.message || 'Invalid or expired reset link.';
+                    errorDiv.style.display = 'block';
+                    return false;
+                }
+
+                successDiv.textContent = 'Password reset! You can now log in.';
+                successDiv.style.display = 'block';
+                document.getElementById('resetPasswordForm').reset();
+
+                setTimeout(function () {
+                    closeModal('resetPasswordModal');
+                    successDiv.style.display = 'none';
+                    openModal('loginModal');
+                    var url = new URL(window.location.href);
+                    url.searchParams.delete('resetToken');
+                    url.searchParams.delete('email');
+                    window.history.replaceState({}, document.title, url.toString());
+                }, 1500);
+            } catch (err) {
+                errorDiv.textContent = 'Network error. Please check your connection and try again.';
+                errorDiv.style.display = 'block';
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Reset Password';
+            }
+
+            return false;
+        }
+
         function updateAuthNav() {
             const raw = localStorage.getItem('bullbearCurrentUser');
             const loggedIn = !!raw;
@@ -4419,7 +4589,7 @@
 
             'price': 'Our course prices:\n\nCrypto Trading Video Course: $500\nCrypto Pull Profit Spreadsheet: $500\n6-Figure Affiliate Marketing: $20\n\nAll courses include lifetime access!',
 
-            'contact': 'You can reach us at:\n\nEmail: megametahub42@gmail.com\nPhone: +1 (973)-8197-530\nWhatsApp: Available\n\nOr use our contact form on the website!',
+            'contact': 'You can reach us at:\n\nEmail: megametahub42@gmail.com\nPhone: 0702000987\nWhatsApp: Available\n\nOr use our contact form on the website!',
 
             'refund': 'We have a fulfillment and refund policy. Please check our Policies section in the footer for detailed information about refunds and our purchase policy.',
 
@@ -4532,7 +4702,7 @@
             }
 
             // Default response
-            return 'Thanks for your question!\n\nI can help you with:\n• Course information\n• Payment methods\n• Pricing\n• Contact details\n\nTry asking about our courses, payments, or contact info!\n\nFor specific questions, email us at megametahub42@gmail.com';
+            return 'Thanks for your question!\n\nI can help you with:\n• Course information\n• Payment methods\n• Pricing\n• Contact details\n\nTry asking about our courses, payments, or contact info!\n\nFor specific questions, email us at megametahub42@gmail.com or call 0702000987';
         }
 
     </script>
@@ -4544,7 +4714,9 @@
         (function () {
             var params = new URLSearchParams(window.location.search);
             var modal = params.get('modal');
-            if (modal === 'login') {
+            if (params.get('resetToken') && params.get('email')) {
+                window.addEventListener('DOMContentLoaded', function () { openModal('resetPasswordModal'); });
+            } else if (modal === 'login') {
                 window.addEventListener('DOMContentLoaded', function () { openModal('loginModal'); });
             } else if (modal === 'signup') {
                 window.addEventListener('DOMContentLoaded', function () { openModal('signupModal'); });

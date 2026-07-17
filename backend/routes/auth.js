@@ -2,8 +2,9 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
 const { getDb } = require('../lib/firebase');
-const { sendFreePdfEmail } = require('../utils/emailService');
+const { sendFreePdfEmail, sendPasswordResetEmail } = require('../utils/emailService');
 
 const generateToken = (email) =>
   jwt.sign({ id: email }, process.env.JWT_SECRET, { expiresIn: '30d' });
@@ -102,6 +103,73 @@ router.get('/me', async (req, res) => {
     res.json({ status: 'success', data: { user: { ...safeUser, id: decoded.id } } });
   } catch (error) {
     res.status(401).json({ status: 'error', message: 'Invalid token' });
+  }
+});
+
+// POST /api/auth/forgot-password
+router.post('/forgot-password', async (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email) {
+      return res.status(400).json({ status: 'error', message: 'Email is required' });
+    }
+
+    const db = getDb();
+    const userRef = db.collection('users').doc(email.toLowerCase().trim());
+    const snap = await userRef.get();
+
+    // Same response whether or not the email is registered, so we don't leak which emails exist
+    const genericMessage = 'If that email is registered, a password reset link has been sent.';
+    if (!snap.exists) {
+      return res.json({ status: 'success', message: genericMessage });
+    }
+
+    const resetToken = crypto.randomBytes(32).toString('hex');
+    const resetTokenHash = crypto.createHash('sha256').update(resetToken).digest('hex');
+    const resetTokenExpiry = Date.now() + 60 * 60 * 1000; // 1 hour
+
+    await userRef.update({ resetTokenHash, resetTokenExpiry });
+
+    const user = snap.data();
+    const resetUrl = `${process.env.FRONTEND_URL || 'https://bullbearblockchain.com'}/index.html?resetToken=${resetToken}&email=${encodeURIComponent(user.email)}`;
+    await sendPasswordResetEmail(user.email, user.firstName, resetUrl);
+
+    res.json({ status: 'success', message: genericMessage });
+  } catch (error) {
+    res.status(500).json({ status: 'error', message: error.message });
+  }
+});
+
+// POST /api/auth/reset-password
+router.post('/reset-password', async (req, res) => {
+  try {
+    const { email, token, newPassword } = req.body;
+    if (!email || !token || !newPassword) {
+      return res.status(400).json({ status: 'error', message: 'Email, token, and new password are required' });
+    }
+    if (newPassword.length < 6) {
+      return res.status(400).json({ status: 'error', message: 'Password must be at least 6 characters' });
+    }
+
+    const db = getDb();
+    const userRef = db.collection('users').doc(email.toLowerCase().trim());
+    const snap = await userRef.get();
+    if (!snap.exists) {
+      return res.status(400).json({ status: 'error', message: 'Invalid or expired reset link' });
+    }
+
+    const user = snap.data();
+    const tokenHash = crypto.createHash('sha256').update(token).digest('hex');
+    if (!user.resetTokenHash || user.resetTokenHash !== tokenHash || !user.resetTokenExpiry || Date.now() > user.resetTokenExpiry) {
+      return res.status(400).json({ status: 'error', message: 'Invalid or expired reset link' });
+    }
+
+    const passwordHash = await bcrypt.hash(newPassword, 10);
+    await userRef.update({ passwordHash, resetTokenHash: null, resetTokenExpiry: null });
+
+    res.json({ status: 'success', message: 'Password reset successful. You can now log in.' });
+  } catch (error) {
+    res.status(500).json({ status: 'error', message: error.message });
   }
 });
 

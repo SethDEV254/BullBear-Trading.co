@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
 
 <head>
@@ -482,6 +482,325 @@
             cursor: pointer;
         }
 
+        /* ── Partners & Tools Dropdown ── */
+        .partners-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .partners-trigger { cursor: pointer; user-select: none; }
+        .partners-dropdown-content {
+            display: none;
+            position: fixed;
+            background: rgba(4, 3, 18, 0.97);
+            border: 1px solid rgba(124, 58, 237, 0.28);
+            min-width: 500px;
+            box-shadow: 0 24px 70px rgba(0,0,0,0.95), 0 0 0 1px rgba(124,58,237,0.1), inset 0 1px 0 rgba(255,255,255,0.05);
+            border-radius: 20px;
+            z-index: 99999;
+            overflow: hidden;
+            backdrop-filter: blur(30px);
+            padding: 22px;
+        }
+        .partners-dropdown.active .partners-dropdown-content {
+            display: block;
+        }
+        .partners-mega-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(124,58,237,0.18);
+        }
+        .partners-mega-icon {
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, #7c3aed, #d946ef);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            color: #fff;
+        }
+        .partners-mega-label {
+            font-size: 0.68rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            color: #a78bfa;
+        }
+        .partners-mega-sub { font-size: 0.7rem; color: #64748b; margin-top: 1px; }
+        .partners-cards-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .pcard {
+            background: rgba(15, 10, 40, 0.8);
+            border: 1px solid rgba(124,58,237,0.18);
+            border-radius: 14px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            text-decoration: none !important;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .pcard::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(124,58,237,0.08), transparent);
+            opacity: 0;
+            transition: opacity 0.25s ease;
+            pointer-events: none;
+        }
+        .pcard:hover::before { opacity: 1; }
+        .pcard:hover {
+            border-color: rgba(124,58,237,0.45);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(124,58,237,0.2);
+        }
+        .pcard-logo {
+            width: 44px;
+            height: 44px;
+            border-radius: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            font-weight: 900;
+            color: #fff;
+            flex-shrink: 0;
+            letter-spacing: -0.5px;
+        }
+        .pcard-logo-tv { background: linear-gradient(135deg, #1c3d7a, #2962ff); }
+        .pcard-logo-bf { background: linear-gradient(135deg, #7a2c00, #ff6000); }
+        .pcard-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.62rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 2px 8px;
+            border-radius: 20px;
+            width: fit-content;
+        }
+        .pcard-badge-aff { background: rgba(124,58,237,0.18); color: #a78bfa; border: 1px solid rgba(124,58,237,0.28); }
+        .pcard-badge-partner { background: rgba(217,70,239,0.12); color: #e879f9; border: 1px solid rgba(217,70,239,0.25); }
+        .pcard-name { font-size: 0.9rem; font-weight: 700; color: #e2e8f0; margin-top: 2px; }
+        .pcard-desc { font-size: 0.73rem; color: #94a3b8; line-height: 1.6; }
+        .pcard-link {
+            font-size: 0.73rem;
+            font-weight: 600;
+            color: #a78bfa;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: auto;
+            transition: gap 0.2s ease, color 0.2s ease;
+        }
+        .pcard:hover .pcard-link { gap: 9px; color: #c4b5fd; }
+
+        /* ── Partners & Tools Page Section ── */
+        .bb-partners-section {
+            background: linear-gradient(180deg, #06030f 0%, #0a0520 50%, #06030f 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .bb-partners-section::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 700px;
+            height: 700px;
+            background: radial-gradient(circle, rgba(124,58,237,0.07) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .bb-partners-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.68rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #a78bfa;
+            background: rgba(124,58,237,0.1);
+            border: 1px solid rgba(124,58,237,0.25);
+            border-radius: 30px;
+            padding: 6px 16px;
+            margin-bottom: 18px;
+        }
+        .bb-accent-purple { color: #a78bfa; }
+        .bb-partner-full-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px;
+            margin-top: 40px;
+        }
+        @media (max-width: 768px) {
+            .bb-partner-full-grid { grid-template-columns: 1fr; }
+            .partners-dropdown-content { min-width: 310px; }
+            .partners-cards-grid { grid-template-columns: 1fr; }
+        }
+        .bb-pfcard {
+            background: rgba(8, 5, 30, 0.85);
+            border: 1px solid rgba(124,58,237,0.2);
+            border-radius: 22px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .bb-pfcard::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(124,58,237,0.5), transparent);
+        }
+        .bb-pfcard:hover {
+            border-color: rgba(124,58,237,0.45);
+            box-shadow: 0 20px 60px rgba(124,58,237,0.15);
+            transform: translateY(-5px);
+        }
+        .bb-pfcard-header { display: flex; align-items: flex-start; gap: 14px; }
+        .bb-pfcard-logo {
+            width: 58px;
+            height: 58px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            font-weight: 900;
+            color: #fff;
+            flex-shrink: 0;
+            letter-spacing: -1px;
+        }
+        .bb-pfcard-logo-tv { background: linear-gradient(135deg, #1c3d7a, #2962ff); box-shadow: 0 6px 22px rgba(41,98,255,0.35); }
+        .bb-pfcard-logo-bf { background: linear-gradient(135deg, #7a2c00, #ff6000); box-shadow: 0 6px 22px rgba(255,96,0,0.35); }
+        .bb-pfcard-meta { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+        .bb-pfcard-name { font-size: 1.2rem; font-weight: 800; color: #f1f5f9; }
+        .bb-pfcard-tag { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: #64748b; }
+        .bb-pfcard-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.63rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            width: fit-content;
+            margin-top: 2px;
+        }
+        .bb-pfcard-badge-aff { background: rgba(124,58,237,0.18); color: #a78bfa; border: 1px solid rgba(124,58,237,0.3); }
+        .bb-pfcard-badge-partner { background: rgba(217,70,239,0.12); color: #e879f9; border: 1px solid rgba(217,70,239,0.25); }
+        .bb-pfcard-desc { font-size: 0.88rem; color: #94a3b8; line-height: 1.75; }
+        .bb-pfcard-features { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 9px; }
+        .bb-pfcard-features li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.82rem;
+            color: #cbd5e1;
+        }
+        .bb-pfcard-features li::before {
+            content: '✓';
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 19px;
+            height: 19px;
+            background: linear-gradient(135deg, #7c3aed, #d946ef);
+            border-radius: 50%;
+            font-size: 0.62rem;
+            font-weight: 700;
+            color: #fff;
+            flex-shrink: 0;
+        }
+        .bb-pfcard-divider { height: 1px; background: rgba(124,58,237,0.12); margin: 4px 0; }
+        .bb-pfcard-cta {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 14px 24px;
+            color: #fff !important;
+            text-decoration: none !important;
+            border-radius: 11px;
+            font-size: 0.86rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            transition: all 0.25s ease;
+            margin-top: 4px;
+        }
+        .bb-pfcard-cta-tv { background: linear-gradient(135deg, #1c3d7a, #2962ff); box-shadow: 0 5px 22px rgba(41,98,255,0.35); }
+        .bb-pfcard-cta-tv:hover { box-shadow: 0 10px 35px rgba(41,98,255,0.55); transform: translateY(-2px); }
+        .bb-pfcard-cta-bf { background: linear-gradient(135deg, #7a2c00, #ff6000); box-shadow: 0 5px 22px rgba(255,96,0,0.3); }
+        .bb-pfcard-cta-bf:hover { box-shadow: 0 10px 35px rgba(255,96,0,0.5); transform: translateY(-2px); }
+
+        /* ── Footer partners strip ── */
+        .footer-partners-strip {
+            padding: 16px 0 20px;
+            margin-bottom: 18px;
+            border-bottom: 1px solid rgba(124,58,237,0.13);
+            text-align: center;
+        }
+        .footer-partners-eyebrow {
+            font-size: 0.6rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            color: #475569;
+            margin-bottom: 14px;
+        }
+        .footer-partner-logos {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 28px;
+            flex-wrap: wrap;
+        }
+        .fpl {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            text-decoration: none !important;
+            opacity: 0.55;
+            transition: opacity 0.22s ease, filter 0.22s ease;
+            filter: grayscale(0.5);
+        }
+        .fpl:hover { opacity: 1; filter: grayscale(0); }
+        .fpl-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.78rem;
+            font-weight: 900;
+            color: #fff;
+        }
+        .fpl-tv { background: linear-gradient(135deg, #1c3d7a, #2962ff); }
+        .fpl-bf { background: linear-gradient(135deg, #7a2c00, #ff6000); }
+        .fpl-name { font-size: 0.78rem; font-weight: 700; color: #94a3b8; }
+
         /* Library Dropdown Styling */
         .library-dropdown {
             position: relative;
@@ -678,6 +997,11 @@
 
         .auth-modal-close:hover {
             color: #E6B800;
+        }
+
+        #dlModal .auth-modal-content a:hover {
+            filter: brightness(1.15);
+            transform: translateY(-2px);
         }
 
         .auth-modal-content h2 {
@@ -1176,117 +1500,9 @@
            MOBILE — RESPONSIVE POLISH
            ================================================ */
 
-        /* ---- MOBILE NAV ---- */
-        .mobile-nav-links {
-            display: none;
-        }
-
-        .header__content--mobile.open .mobile-nav-links {
-            display: flex;
-            flex-direction: column;
-            padding: 8px 0 16px;
-            border-top: 1px solid rgba(230, 184, 0, 0.15);
-            margin-top: 8px;
-        }
-
-        .mobile-nav-link {
-            color: #e2e8f0 !important;
-            text-decoration: none !important;
-            padding: 12px 20px;
-            font-family: 'Poppins', sans-serif;
-            font-size: 0.95rem;
-            font-weight: 500;
-            border-bottom: 1px solid rgba(201, 162, 39, 0.08);
-            transition: all 0.2s ease;
-            display: block;
-        }
-
-        .mobile-nav-link:hover {
-            color: #E6B800 !important;
-            background: rgba(201, 162, 39, 0.06);
-            padding-left: 28px;
-        }
-
-        .mobile-nav-auth {
-            display: flex;
-            gap: 10px;
-            padding: 14px 20px 4px;
-        }
-
-        .mobile-nav-signup {
-            flex: 1;
-            text-align: center;
-            padding: 10px 14px;
-            background: linear-gradient(135deg, #7c3aed 0%, #d946ef 100%);
-            color: #fff !important;
-            text-decoration: none !important;
-            border-radius: 8px;
-            font-family: 'Poppins', sans-serif;
-            font-size: 0.85rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .mobile-nav-login {
-            flex: 1;
-            text-align: center;
-            padding: 10px 14px;
-            border: 1px solid rgba(124, 58, 237, 0.4);
-            color: #a78bfa !important;
-            text-decoration: none !important;
-            border-radius: 8px;
-            font-family: 'Poppins', sans-serif;
-            font-size: 0.85rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        /* Hamburger icon styling */
-        .hamburger {
-            cursor: pointer;
-            padding: 8px;
-        }
-
-        .hamburger__slice {
-            display: block;
-            width: 24px;
-            height: 2px;
-            background: #ffffff;
-            margin: 5px 0;
-            border-radius: 2px;
-            transition: all 0.3s ease;
-        }
-
-        .hamburger.open .hamburger--slice-1 {
-            transform: translateY(7px) rotate(45deg);
-        }
-
-        .hamburger.open .hamburger--slice-2 {
-            opacity: 0;
-        }
-
-        .hamburger.open .hamburger--slice-3 {
-            transform: translateY(-7px) rotate(-45deg);
-        }
-
-        .hamburger.open .hamburger--slice-4 {
-            opacity: 0;
-        }
-
-        /* Header mobile nav */
+        /* ---- MOBILE NAV — handled by navbar styles in section-header ---- */
+        /* Library dropdown on mobile */
         @media (max-width: 767px) {
-            .header {
-                padding: 10px 0 !important;
-            }
-
-            .header__content--mobile {
-                background: rgba(4, 6, 14, 0.98) !important;
-                padding: 0 16px !important;
-            }
-
-            /* Library dropdown full width on mobile */
             .library-dropdown {
                 width: 100% !important;
             }
@@ -2586,6 +2802,144 @@
             transform: translateY(-1px);
         }
 
+        /* ── LIBRARY SECTION ──────────────────────── */
+        .bb-library-section { background: var(--bb-bg); border-top: 1px solid var(--bb-border); }
+
+        .bb-lib-header {
+            display: flex; align-items: flex-start; justify-content: space-between;
+            flex-wrap: wrap; gap: 20px; margin-bottom: 28px;
+        }
+        .bb-lib-filter-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; padding-top: 6px; }
+        .bb-lib-filter-btn {
+            padding: 6px 16px; border-radius: 20px; border: 1px solid var(--bb-border);
+            background: transparent; color: #64748b; font-size: .78rem; font-weight: 600;
+            cursor: pointer; transition: all .2s; font-family: inherit; letter-spacing: .2px;
+        }
+        .bb-lib-filter-btn.active, .bb-lib-filter-btn:hover {
+            background: rgba(124,58,237,.15); color: #a78bfa; border-color: rgba(124,58,237,.35);
+        }
+
+        /* Stats bar */
+        .bb-lib-stats {
+            display: flex; align-items: center; gap: 0;
+            background: rgba(124,58,237,.06); border: 1px solid rgba(124,58,237,.15);
+            border-radius: 14px; padding: 16px 28px; margin-bottom: 36px; flex-wrap: wrap;
+        }
+        .bb-lib-stat { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 0 24px; }
+        .bb-lib-stat span { font-size: 1.6rem; font-weight: 800; color: #a78bfa; font-family: 'Space Grotesk', sans-serif; }
+        .bb-lib-stat small { font-size: .72rem; color: #475569; font-weight: 600; text-transform: uppercase; letter-spacing: .8px; }
+        .bb-lib-stat-div { width: 1px; height: 36px; background: rgba(255,255,255,.06); }
+
+        /* Module block */
+        .bb-lib-module { margin-bottom: 40px; }
+        .bb-lib-module-header {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 16px; padding-bottom: 14px;
+            border-bottom: 1px solid rgba(255,255,255,.05);
+        }
+        .bb-lib-module-left { display: flex; align-items: center; gap: 14px; }
+        .bb-lib-module-num {
+            width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0;
+            background: linear-gradient(135deg, rgba(124,58,237,.25), rgba(217,70,239,.15));
+            border: 1px solid rgba(124,58,237,.3);
+            display: flex; align-items: center; justify-content: center;
+            font-size: .8rem; font-weight: 800; color: #a78bfa;
+        }
+        .bb-lib-module-title { font-size: 1.05rem; font-weight: 700; color: #e2e8f0; }
+        .bb-lib-module-count { font-size: .78rem; color: #475569; margin-top: 2px; }
+        .bb-lib-module-lock {
+            font-size: .72rem; font-weight: 600; padding: 4px 12px; border-radius: 20px;
+            background: rgba(239,68,68,.08); color: #f87171; border: 1px solid rgba(239,68,68,.2);
+        }
+        .bb-lib-module-unlock {
+            font-size: .72rem; font-weight: 600; padding: 4px 12px; border-radius: 20px;
+            background: rgba(34,197,94,.08); color: #22c55e; border: 1px solid rgba(34,197,94,.2);
+        }
+
+        /* Video grid inside module */
+        .bb-lib-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 16px;
+        }
+        .bb-lib-card {
+            background: var(--bb-bg2);
+            border: 1px solid var(--bb-border);
+            border-radius: 14px; overflow: hidden;
+            transition: transform .2s, box-shadow .2s, border-color .2s;
+            position: relative;
+        }
+        .bb-lib-card:hover { transform: translateY(-3px); box-shadow: 0 12px 36px rgba(124,58,237,.18); border-color: rgba(124,58,237,.25); }
+        .bb-lib-thumb {
+            width: 100%; aspect-ratio: 16/9;
+            background: linear-gradient(135deg, rgba(124,58,237,.12), rgba(217,70,239,.07));
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2rem; position: relative; overflow: hidden;
+        }
+        .bb-lib-thumb img { width:100%; height:100%; object-fit:cover; position:absolute; inset:0; }
+        .bb-lib-play-icon {
+            position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+            opacity: 0; transition: opacity .2s;
+        }
+        .bb-lib-card:hover .bb-lib-play-icon { opacity: 1; }
+        .bb-lib-play-icon span {
+            width: 44px; height: 44px; border-radius: 50%;
+            background: rgba(124,58,237,.9); backdrop-filter: blur(8px);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.1rem; color: #fff; box-shadow: 0 8px 24px rgba(124,58,237,.5);
+        }
+        .bb-lib-lock {
+            position: absolute; inset: 0; background: rgba(0,0,0,.75);
+            display: flex; align-items: center; justify-content: center; flex-direction: column;
+            gap: 6px; backdrop-filter: blur(4px);
+        }
+        .bb-lib-lock-icon { font-size: 1.5rem; }
+        .bb-lib-lock-txt { font-size: .72rem; color: rgba(255,255,255,.5); text-align: center; padding: 0 12px; }
+        .bb-lib-body { padding: 14px 16px; }
+        .bb-lib-title { font-weight: 700; font-size: .9rem; color: #e2e8f0; margin-bottom: 5px; line-height: 1.35; }
+        .bb-lib-desc { font-size: .78rem; color: #64748b; line-height: 1.45; margin-bottom: 12px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .bb-lib-meta { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+        .bb-lib-badge {
+            font-size: .68rem; padding: 2px 8px; border-radius: 20px; font-weight: 600;
+            background: rgba(124,58,237,.12); color: #a78bfa; border: 1px solid rgba(124,58,237,.18);
+        }
+        .bb-lib-badge.free { background: rgba(34,197,94,.08); color: #22c55e; border-color: rgba(34,197,94,.18); }
+        .bb-lib-btn {
+            display: block; width: 100%; padding: 9px; border-radius: 8px; border: none;
+            font-size: .82rem; font-weight: 700; cursor: pointer; text-align: center;
+            text-decoration: none; transition: all .2s; font-family: inherit;
+        }
+        .bb-lib-btn:hover { opacity: .88; transform: translateY(-1px); }
+        .bb-lib-btn-watch { background: linear-gradient(135deg,#7c3aed,#d946ef); color: #fff; box-shadow: 0 4px 14px rgba(124,58,237,.3); }
+        .bb-lib-btn-lock { background: rgba(124,58,237,.08); color: #a78bfa; border: 1px solid rgba(124,58,237,.18); }
+
+        /* Unlock CTA inside locked module */
+        .bb-lib-unlock-cta {
+            grid-column: 1/-1; display: flex; align-items: center; justify-content: space-between;
+            gap: 16px; flex-wrap: wrap;
+            background: linear-gradient(135deg, rgba(124,58,237,.08), rgba(217,70,239,.05));
+            border: 1px solid rgba(124,58,237,.2); border-radius: 14px; padding: 20px 24px;
+        }
+        .bb-lib-unlock-cta p { font-size: .88rem; color: #94a3b8; margin: 4px 0 0; }
+        .bb-lib-unlock-cta strong { color: #e2e8f0; font-size: .95rem; }
+        .bb-lib-unlock-btn {
+            padding: 10px 24px; border-radius: 10px; border: none; cursor: pointer;
+            background: linear-gradient(135deg,#7c3aed,#d946ef); color: #fff;
+            font-weight: 700; font-size: .85rem; font-family: inherit;
+            white-space: nowrap; transition: all .2s;
+            box-shadow: 0 4px 16px rgba(124,58,237,.4);
+        }
+        .bb-lib-unlock-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(124,58,237,.5); }
+
+        /* Loading */
+        .bb-lib-loading { text-align: center; padding: 60px 20px; color: #475569; }
+        .bb-lib-spinner {
+            width: 36px; height: 36px; border-radius: 50%; margin: 0 auto 16px;
+            border: 3px solid rgba(124,58,237,.15); border-top-color: #7c3aed;
+            animation: bbSpin .8s linear infinite;
+        }
+        @keyframes bbSpin { to { transform: rotate(360deg); } }
+
         /* ── MOBILE ───────────────────────────────── */
         @media (max-width: 640px) {
             .bb-container { padding: 52px 18px; }
@@ -2595,6 +2949,7 @@
             .bb-btn-lg { font-size: 1rem; padding: 16px 32px; }
             .bb-courses-grid { grid-template-columns: 1fr; }
             .bb-cta-box { padding: 32px 18px; }
+            .bb-library-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -2603,129 +2958,268 @@
 <body id="encore-theme" class="background-unrecognized">
     <div id="section-header" data-section-id="header">
         <style>
+            /* ══ MODERN NAVBAR OVERRIDE ══ */
+            /* Mobile: hide nav links + CTA, show hamburger */
+            @media (max-width: 959px) {
+                #block-1746648689147 { display: none !important; }
+                #block-1741845168019 { display: none !important; }
+            }
+            /* Desktop: hide hamburger + mobile drawer */
+            @media (min-width: 960px) {
+                #mobileNav { display: none !important; }
+                .hamburger { display: none !important; }
+            }
+
+            /* Fixed nav bar */
             .header {
-                background: rgba(0,0,0,0.88) !important;
-                backdrop-filter: blur(20px) saturate(1.5) !important;
-                -webkit-backdrop-filter: blur(20px) saturate(1.5) !important;
+                position: fixed !important;
+                top: 0 !important; left: 0 !important; right: 0 !important;
+                z-index: 9999 !important;
+                background: rgba(4, 2, 16, 0.93) !important;
+                backdrop-filter: blur(28px) saturate(1.6) !important;
+                -webkit-backdrop-filter: blur(28px) saturate(1.6) !important;
                 border-bottom: 1px solid rgba(124,58,237,0.25) !important;
-                box-shadow: 0 1px 0 rgba(124,58,237,0.12), 0 8px 40px rgba(0,0,0,0.7) !important;
+                box-shadow: 0 1px 0 rgba(124,58,237,0.15), 0 10px 40px rgba(0,0,0,0.85) !important;
                 font-size: 15px !important;
+                height: 66px !important;
             }
 
-            .header .dropdown__item a,
-            .header .dropdown__trigger:hover,
-            .header .user__login a,
-            .header a,
-            .header a.link-list__link,
-            .header a.link-list__link:hover,
-            .header a.social-icons__icon {
-                color: rgba(245,240,224,0.85) !important;
-                transition: color 0.2s !important;
+            /* ── Navbar layout ── */
+            .header__wrap {
+                display: flex !important;
+                align-items: center !important;
+                height: 66px !important;
+                padding: 0 28px !important;
+                max-width: 100% !important;
+                gap: 0 !important;
+            }
+            .header__container {
+                display: flex !important;
+                align-items: center !important;
+                width: 100% !important;
+                gap: 0 !important;
+                padding: 0 !important;
+                max-width: 100% !important;
             }
 
-            .header a:hover,
+            /* Logo */
+            #block-1555988494486 {
+                display: flex !important;
+                align-items: center !important;
+                flex-shrink: 0 !important;
+                margin-right: 28px !important;
+            }
+            #block-1555988494486 .logo__image {
+                height: 44px !important;
+                width: auto !important;
+                filter: drop-shadow(0 0 6px rgba(255,215,0,0.2)) !important;
+                transition: filter 0.3s ease, transform 0.3s ease !important;
+            }
+            #block-1555988494486 .logo__image:hover {
+                filter: drop-shadow(0 0 14px rgba(255,215,0,0.5)) !important;
+                transform: scale(1.04) !important;
+            }
+
+            /* Nav links block */
+            #block-1746648689147 {
+                flex: 1 !important;
+                display: flex !important;
+                align-items: center !important;
+            }
+            .link-list.justify-content-right {
+                display: flex !important;
+                align-items: center !important;
+                gap: 2px !important;
+                justify-content: flex-start !important;
+            }
+            .link-list__link,
+            .header a.link-list__link {
+                color: rgba(226,232,240,0.78) !important;
+                font-family: 'Inter', sans-serif !important;
+                font-size: 0.855rem !important;
+                font-weight: 500 !important;
+                padding: 6px 11px !important;
+                border-radius: 8px !important;
+                transition: color 0.18s ease, background 0.18s ease !important;
+                text-decoration: none !important;
+                white-space: nowrap !important;
+            }
+            .link-list__link:hover,
             .header a.link-list__link:hover {
                 color: #c4b5fd !important;
+                background: rgba(124,58,237,0.1) !important;
             }
 
-            .header .dropdown__trigger {
-                color: rgba(245,240,224,0.85) !important;
+            /* Partners & Library triggers */
+            .partners-trigger, .library-trigger {
+                display: inline-flex !important;
+                align-items: center !important;
             }
 
-            @media (max-width:767px) {
-                .header {
-                    font-size: 14px !important;
-                }
-                .dropdown__item a,
-                .header a.link-list__link,
-                .header__content--mobile {
-                    text-align: left
-                }
-                .header--overlay .header__content--mobile {
-                    padding-bottom: 20px
-                }
-                .header__content--mobile {
-                    background: rgba(0,0,0,0.96) !important;
-                    border-top: 1px solid rgba(124,58,237,0.2) !important;
-                }
+            /* CTA block */
+            #block-1741845168019 {
+                display: flex !important;
+                align-items: center !important;
+                flex-shrink: 0 !important;
+                margin-left: 10px !important;
+            }
+            .nav-cta-main {
+                display: inline-flex !important;
+                align-items: center !important;
+                padding: 8px 16px !important;
+                background: linear-gradient(135deg, #C9A227, #E6B800) !important;
+                color: #000 !important;
+                border-radius: 8px !important;
+                font-size: 0.8rem !important;
+                font-weight: 800 !important;
+                text-decoration: none !important;
+                letter-spacing: 0.01em !important;
+                white-space: nowrap !important;
+                transition: all 0.25s ease !important;
+                box-shadow: 0 3px 14px rgba(201,162,39,0.35) !important;
+            }
+            .nav-cta-main:hover {
+                transform: translateY(-2px) !important;
+                box-shadow: 0 6px 22px rgba(230,184,0,0.55) !important;
             }
 
-            .header.header--fixed {
-                background: rgba(0,0,0,0.96) !important;
+            /* Hamburger — modern pill style */
+            .hamburger {
+                display: none !important;
+                flex-direction: column !important;
+                justify-content: center !important;
+                gap: 5px !important;
+                width: 38px !important;
+                height: 38px !important;
+                cursor: pointer !important;
+                background: rgba(124,58,237,0.1) !important;
+                border: 1px solid rgba(124,58,237,0.22) !important;
+                border-radius: 9px !important;
+                padding: 9px 8px !important;
+                margin-left: 10px !important;
+                transition: background 0.2s ease !important;
+                flex-shrink: 0 !important;
             }
-
-            .header.header--fixed .hamburger__slice {
-                background-color: #a78bfa !important;
-            }
-
+            .hamburger:hover { background: rgba(124,58,237,0.2) !important; }
             .hamburger__slice {
+                display: block !important;
+                height: 2px !important;
                 background: #a78bfa !important;
+                border-radius: 2px !important;
+                transition: all 0.28s cubic-bezier(0.4,0,0.2,1) !important;
+                margin: 0 !important;
             }
+            .hamburger.open .hamburger--slice-1 { transform: translateY(7px) rotate(45deg) !important; }
+            .hamburger.open .hamburger--slice-2 { opacity: 0 !important; transform: scaleX(0) !important; }
+            .hamburger.open .hamburger--slice-3 { transform: translateY(-7px) rotate(-45deg) !important; }
+            .hamburger.open .hamburger--slice-4 { opacity: 0 !important; }
+
+            /* Mobile nav — rendered outside header stacking context via body-level z */
+            .header__content--mobile {
+                display: block !important;
+                position: fixed !important;
+                top: 66px !important;
+                left: 0 !important;
+                right: 0 !important;
+                width: 100% !important;
+                z-index: 999999 !important;
+                background: rgba(4, 2, 16, 0.98) !important;
+                border-top: 1px solid rgba(124,58,237,0.18) !important;
+                border-bottom: 1px solid rgba(124,58,237,0.12) !important;
+                box-shadow: 0 8px 40px rgba(0,0,0,0.8) !important;
+                overflow: hidden !important;
+                max-height: 0 !important;
+                visibility: hidden !important;
+                pointer-events: none !important;
+                transition: max-height 0.38s cubic-bezier(0.4,0,0.2,1), visibility 0s linear 0.38s !important;
+            }
+            .header__content--mobile.open {
+                max-height: 600px !important;
+                visibility: visible !important;
+                pointer-events: auto !important;
+                transition: max-height 0.38s cubic-bezier(0.4,0,0.2,1), visibility 0s linear 0s !important;
+            }
+            .header__spacer { display: none !important; }
+            .mobile-nav-links {
+                padding: 10px 16px 18px !important;
+                gap: 2px !important;
+            }
+            .mobile-nav-link {
+                display: flex !important;
+                align-items: center !important;
+                padding: 12px 14px !important;
+                color: rgba(226,232,240,0.85) !important;
+                font-family: 'Inter', sans-serif !important;
+                font-size: 0.92rem !important;
+                font-weight: 500 !important;
+                border-radius: 10px !important;
+                border-bottom: 1px solid rgba(124,58,237,0.06) !important;
+                transition: all 0.18s ease !important;
+                text-decoration: none !important;
+            }
+            .mobile-nav-link:hover {
+                color: #c4b5fd !important;
+                background: rgba(124,58,237,0.08) !important;
+                padding-left: 20px !important;
+            }
+            .mobile-nav-auth {
+                padding: 10px 0 0 !important;
+                gap: 10px !important;
+            }
+            .mobile-nav-signup {
+                background: linear-gradient(135deg, #7c3aed, #d946ef) !important;
+                border-radius: 9px !important;
+                font-family: 'Inter', sans-serif !important;
+                font-size: 0.875rem !important;
+                font-weight: 700 !important;
+                text-transform: none !important;
+                letter-spacing: 0 !important;
+                padding: 11px 14px !important;
+            }
+            .mobile-nav-login {
+                border: 1px solid rgba(124,58,237,0.38) !important;
+                border-radius: 9px !important;
+                font-family: 'Inter', sans-serif !important;
+                font-size: 0.875rem !important;
+                font-weight: 600 !important;
+                text-transform: none !important;
+                letter-spacing: 0 !important;
+                padding: 11px 14px !important;
+            }
+            .mobile-nav-login:hover { background: rgba(124,58,237,0.1) !important; }
+
+            /* Mobile: show hamburger, push logo left */
+            @media (max-width: 959px) {
+                .hamburger { display: flex !important; }
+                #block-1555988494486 { margin-right: auto !important; }
+                .header__wrap { padding: 0 16px !important; }
+            }
+
+            /* Adjust main for fixed nav */
+            main { padding-top: 66px !important; }
         </style>
-        <div class="hidden">
-        </div>
-        <header class="header header--static sticky header--close-on-scroll"
+        <div class="hidden"></div>
+        <header class="header header--static sticky"
             kjb-settings-id="sections_header_settings_background_color">
-            <div class="hello-bars">
-            </div>
+            <div class="hello-bars"></div>
             <div class="header__wrap">
-                <div class="header__content header__content--desktop background-unrecognized">
+                <div class="header__content header__content--desktop background-unrecognized" style="width:100%;">
                     <div class="container header__container media justify-content-center">
-                        <style>
-                            @media (min-width:768px) {
-                                #block-1555988494486 {
-                                    text-align: left
-                                }
-                            }
-                        </style>
                         <div id="block-1555988494486"
-                            class="header__block header__block--logo header__block--show header__switch-content stretch"
-                            kjb-settings-id="sections_header_blocks_1555988494486_settings_stretch">
-                            <style>
-                                #block-1555988494486 {
-                                    line-height: 1;
-                                    display: flex;
-                                    align-items: center;
-                                }
-
-                                #block-1555988494486 .logo__image {
-                                    display: block;
-                                    height: 55px;
-                                    width: auto;
-                                    max-width: 100%;
-                                    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-                                    filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.3));
-                                }
-
-                                #block-1555988494486 .logo__image:hover {
-                                    transform: scale(1.05);
-                                    filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.6));
-                                }
-                            </style>
-                            <a class="logo" href="/" style="display: block; text-decoration: none;">
+                            class="header__block header__block--logo header__block--show header__switch-content stretch">
+                            <a class="logo" href="/" style="display:block;text-decoration:none;">
                                 <img loading="auto" class="logo__image" alt="BullBear Blockchain Logo"
-                                    kjb-settings-id="sections_header_blocks_1555988494486_settings_logo"
                                     src="images/bullbear-logo.png" />
                             </a>
                         </div>
-                        <style>
-                            @media (min-width:768px) {
-                                #block-1746648689147 {
-                                    text-align: right
-                                }
-                            }
-                        </style>
                         <div id="block-1746648689147"
-                            class="header__block header__switch-content header__block--menu stretch"
-                            kjb-settings-id="sections_header_blocks_1746648689147_settings_stretch">
-                            <div class="link-list justify-content-right"
-                                kjb-settings-id="sections_header_blocks_1746648689147_settings_menu">
-                                <a class="link-list__link" href="https://metahubacademy.com/store" target="_blank"
-                                    rel="noopener noreferrer">Store</a>
-                                <a class="link-list__link" href="crypto-quickstart-checklist.html">Free Checklist</a>
+                            class="header__block header__switch-content header__block--menu stretch">
+                            <div class="link-list justify-content-right">
+                                <a class="link-list__link" href="javascript:void(0)" onclick="openModal('dlModal')">Free Checklist</a>
                                 <a class="link-list__link" href="trading-indicators.html">Indicators</a>
+                                <a class="link-list__link" href="store.html">Store</a>
                                 <div class="library-dropdown">
-                                    <a class="link-list__link library-trigger" href="my-library.html">My Library ▼</a>
+                                    <a class="link-list__link library-trigger" href="my-library.html">My Library &#9660;</a>
                                     <div class="library-dropdown-content">
                                         <a href="my-library.html" class="dropdown-view-library">View Library</a>
                                         <a href="#" class="dropdown-signup" id="nav-signup-link"
@@ -2737,42 +3231,41 @@
                                             onclick="logoutUser(); return false;">Logout</a>
                                     </div>
                                 </div>
+                                <div class="partners-dropdown">
+                                    <a class="link-list__link partners-trigger" href="#partners">Partners &amp; Tools</a>
+                                    <div class="partners-dropdown-content">
+                                        <div class="partners-mega-header">
+                                            <div class="partners-mega-icon">&#9670;</div>
+                                            <div>
+                                                <div class="partners-mega-label">Partners &amp; Tools</div>
+                                                <div class="partners-mega-sub">Platforms we trust &amp; recommend</div>
+                                            </div>
+                                        </div>
+                                        <div class="partners-cards-grid">
+                                            <a class="pcard" href="https://www.tradingview.com/?aff_id=152391" target="_blank" rel="noopener noreferrer">
+                                                <div class="pcard-logo pcard-logo-tv"><img src="images/tradingview-logo.webp" alt="TradingView" style="width:28px;height:28px;object-fit:contain;border-radius:4px;"></div>
+                                                <span class="pcard-badge pcard-badge-aff">&#9670; Affiliate</span>
+                                                <div class="pcard-name">TradingView</div>
+                                                <div class="pcard-desc">The world's leading charting platform — used daily for technical analysis, chart reading &amp; market research.</div>
+                                                <span class="pcard-link">Visit TradingView &#8594;</span>
+                                            </a>
+                                            <a class="pcard" href="https://partner.blofin.com/d/CryptoLord" target="_blank" rel="noopener noreferrer">
+                                                <div class="pcard-logo pcard-logo-bf"><img src="images/blofin-logo.png" alt="BloFin" style="width:28px;height:28px;object-fit:contain;border-radius:4px;"></div>
+                                                <span class="pcard-badge pcard-badge-partner">&#9670; Official Partner</span>
+                                                <div class="pcard-name">BloFin</div>
+                                                <img src="https://static.news.bitcoin.com/wp-content/uploads/2024/12/photo_2024-12-26-21-50-12.jpeg" alt="BloFin Partnership" style="width:100%;border-radius:8px;margin:8px 0;object-fit:cover;max-height:120px;">
+                                                <div class="pcard-desc">Professional-grade crypto derivatives exchange — reduced fees, referral bonuses &amp; direct support.</div>
+                                                <span class="pcard-link">Join via Seth's Link &#8594;</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <style>
-                            @media (min-width:768px) {
-                                #block-1741845168019 {
-                                    text-align: left
-                                }
-                            }
-                        </style>
-                        <div id="block-1741845168019" class="header__block header__switch-content header__block--cta"
-                            kjb-settings-id="sections_header_blocks_1741845168019_settings_stretch">
-                            <style>
-                                .nav-cta-main {
-                                    display: inline-flex;
-                                    align-items: center;
-                                    padding: 7px 18px;
-                                    background: linear-gradient(135deg, #C9A227, #E6B800);
-                                    color: #000 !important;
-                                    border-radius: 6px;
-                                    font-size: 0.82rem;
-                                    font-weight: 800;
-                                    text-decoration: none !important;
-                                    letter-spacing: 0.02em;
-                                    white-space: nowrap;
-                                    transition: all 0.25s ease;
-                                    box-shadow: 0 3px 12px rgba(201,162,39,0.4);
-                                }
-                                .nav-cta-main:hover {
-                                    transform: translateY(-2px);
-                                    box-shadow: 0 6px 20px rgba(230,184,0,0.55);
-                                }
-                            </style>
-                            <a class="nav-cta-main" href="crypto-trading-course.html">Membership &amp; Trading Courses</a>
+                        <div id="block-1741845168019" class="header__block header__switch-content header__block--cta">
+                            <a class="nav-cta-main" href="crypto-trading-course.html">Membership &amp; Courses</a>
                         </div>
-                        <div class="hamburger hidden--desktop"
-                            kjb-settings-id="sections_header_settings_hamburger_color">
+                        <div class="hamburger" id="hamburger">
                             <div class="hamburger__slices">
                                 <div class="hamburger__slice hamburger--slice-1"></div>
                                 <div class="hamburger__slice hamburger--slice-2"></div>
@@ -2785,18 +3278,18 @@
                 <div class="header__content header__content--mobile" id="mobileNav">
                     <div class="header__switch-content header__spacer"></div>
                     <nav class="mobile-nav-links">
-                        <a href="https://metahubacademy.com/store" target="_blank" rel="noopener noreferrer"
-                            class="mobile-nav-link">Store</a>
-                        <a href="crypto-quickstart-checklist.html" class="mobile-nav-link">Free Checklist</a>
+                        <a href="javascript:void(0)" onclick="openModal('dlModal'); closeMobileNav();" class="mobile-nav-link">Free Checklist</a>
                         <a href="trading-indicators.html" class="mobile-nav-link">Indicators</a>
+                        <a href="store.html" class="mobile-nav-link">Store</a>
                         <a href="my-library.html" class="mobile-nav-link">My Library</a>
-                        <a href="crypto-trading-course.html" class="mobile-nav-link" style="color:#E6B800 !important;">Membership &amp; Trading Courses</a>
+                        <a href="#partners" class="mobile-nav-link" style="color:#a78bfa !important;" onclick="closeMobileNav()">Partners &amp; Tools</a>
+                        <a href="crypto-trading-course.html" class="mobile-nav-link" style="color:#E6B800 !important; font-weight:600;">Membership &amp; Courses</a>
                         <div class="mobile-nav-auth" id="mobile-nav-auth">
                             <a href="#" class="mobile-nav-signup" id="mobile-signup-link"
                                 onclick="showSignupModal(); closeMobileNav(); return false;">Sign Up</a>
                             <a href="#" class="mobile-nav-login" id="mobile-login-link"
                                 onclick="showLoginModal(); closeMobileNav(); return false;">Login</a>
-                            <span id="mobile-user-greeting" style="display:none; color: #a78bfa; font-size: 0.9rem; font-weight: 600; padding: 8px 0;"></span>
+                            <span id="mobile-user-greeting" style="display:none; color:#a78bfa; font-size:0.9rem; font-weight:600; padding:8px 0;"></span>
                             <a href="#" id="mobile-logout-link" style="display:none;" class="mobile-nav-login"
                                 onclick="logoutUser(); closeMobileNav(); return false;">Logout</a>
                         </div>
@@ -2867,6 +3360,67 @@
                     <p class="bb-cta-label">READY TO START?</p>
                     <button class="bb-btn-green bb-btn-lg" onclick="showSignupModal()">YES! GET ME STARTED</button>
                     <p class="bb-no-spam">No spam. Unsubscribe anytime!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION: PARTNERS & TOOLS -->
+        <div id="partners" class="bb-section bb-partners-section">
+            <div class="bb-container">
+                <div class="bb-divider"></div>
+                <div class="bb-partners-eyebrow">&#9670; Trusted Tools &amp; Partners</div>
+                <h2>Platforms We <span class="bb-accent-purple">Recommend</span></h2>
+                <p class="bb-lead">Access the same professional-grade platforms that elite traders use to analyze markets, execute trades, and grow their portfolios — vetted and trusted by BullBear Trading.</p>
+                <div class="bb-partner-full-grid">
+
+                    <!-- TradingView Card -->
+                    <div class="bb-pfcard">
+                        <div class="bb-pfcard-header">
+                            <div class="bb-pfcard-logo bb-pfcard-logo-tv"><img src="images/tradingview-logo.webp" alt="TradingView" style="width:36px;height:36px;object-fit:contain;border-radius:6px;"></div>
+                            <div class="bb-pfcard-meta">
+                                <div class="bb-pfcard-name">TradingView</div>
+                                <div class="bb-pfcard-tag">Charts &amp; Market Analysis</div>
+                                <span class="bb-pfcard-badge bb-pfcard-badge-aff">&#9670; Official Affiliate</span>
+                            </div>
+                        </div>
+                        <div class="bb-pfcard-divider"></div>
+                        <p class="bb-pfcard-desc">The world's leading charting platform. Seth uses TradingView daily for technical analysis, chart reading, and market research. Free and pro plans available — sign up through our affiliate link to support BullBear Trading.</p>
+                        <ul class="bb-pfcard-features">
+                            <li>Real-time crypto, stocks &amp; forex charts</li>
+                            <li>100+ built-in technical indicators &amp; drawing tools</li>
+                            <li>Social trading scripts &amp; community ideas</li>
+                            <li>Multi-timeframe analysis, alerts &amp; screeners</li>
+                            <li>Free plan available — no credit card needed</li>
+                        </ul>
+                        <a class="bb-pfcard-cta bb-pfcard-cta-tv" href="https://www.tradingview.com/?aff_id=152391" target="_blank" rel="noopener noreferrer">
+                            Visit TradingView &#8594;
+                        </a>
+                    </div>
+
+                    <!-- BloFin Card -->
+                    <div class="bb-pfcard">
+                        <div class="bb-pfcard-header">
+                            <div class="bb-pfcard-logo bb-pfcard-logo-bf"><img src="images/blofin-logo.png" alt="BloFin" style="width:36px;height:36px;object-fit:contain;border-radius:6px;"></div>
+                            <div class="bb-pfcard-meta">
+                                <div class="bb-pfcard-name">BloFin</div>
+                                <div class="bb-pfcard-tag">Crypto Derivatives Exchange</div>
+                                <span class="bb-pfcard-badge bb-pfcard-badge-partner">&#9670; Official Partner</span>
+                            </div>
+                        </div>
+                        <div class="bb-pfcard-divider"></div>
+                        <p class="bb-pfcard-desc">BloFin is a professional-grade crypto derivatives exchange trusted by traders worldwide. Through our exclusive MetaHub x BloFin partnership, you gain access to reduced fees, referral bonuses, and direct support — giving you a real edge in the market from day one.</p>
+                        <ul class="bb-pfcard-features">
+                            <li>Reduced fees via Seth's exclusive referral link</li>
+                            <li>Referral bonuses for new sign-ups</li>
+                            <li>Professional-grade derivatives &amp; spot trading</li>
+                            <li>Trusted by traders worldwide</li>
+                            <li>Direct support through MetaHub community</li>
+                        </ul>
+                        <a class="bb-pfcard-cta bb-pfcard-cta-bf" href="https://partner.blofin.com/d/CryptoLord" target="_blank" rel="noopener noreferrer">
+                            Join BloFin via Seth's Link &#8594;
+                        </a>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -3004,8 +3558,8 @@
                     <input type="email" id="signupEmail" name="email" placeholder="Enter your email" required>
                 </div>
                 <div class="form-group">
-                    <label for="signupPhone">Phone Number (Optional)</label>
-                    <input type="tel" id="signupPhone" name="phone" placeholder="Enter your phone number">
+                    <label for="signupPhone">Phone Number</label>
+                    <input type="tel" id="signupPhone" name="phone" placeholder="Enter your phone number" required>
                 </div>
                 <div class="form-group">
                     <label for="signupPassword">Password</label>
@@ -3054,6 +3608,34 @@
         </div>
     </div>
 
+    <!-- Download Popup Modal -->
+    <div id="dlModal" class="auth-modal" onclick="if(event.target===this)closeModal('dlModal')">
+        <div class="auth-modal-content" style="max-width:400px;background:linear-gradient(145deg,#0d0520 0%,#120830 60%,#0a041a 100%);border:1px solid rgba(124,58,237,0.35);text-align:center;padding:40px 32px 36px;">
+            <span class="auth-modal-close" onclick="closeModal('dlModal')" style="color:rgba(167,139,250,0.7);">&times;</span>
+            <div style="width:60px;height:60px;background:linear-gradient(135deg,rgba(124,58,237,0.25),rgba(167,139,250,0.12));border:1px solid rgba(124,58,237,0.4);border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(167,139,250,0.9)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            </div>
+            <h2 style="margin:0 0 6px;font-size:1.25rem;color:#f1f5f9;font-family:'Space Grotesk',sans-serif;">Free Crypto Checklist</h2>
+            <p style="color:rgba(203,213,225,0.55);font-size:0.85rem;margin:0 0 22px;line-height:1.5;">Enter your details — we'll send the PDF to your inbox and start your download.</p>
+            <form id="dlModalForm" onsubmit="return handleDlModalSubmit(event)" style="text-align:left;">
+                <div style="margin-bottom:12px;">
+                    <input id="dlName" type="text" placeholder="Your name" required
+                        style="width:100%;padding:11px 14px;background:rgba(255,255,255,0.06);border:1px solid rgba(124,58,237,0.3);border-radius:8px;color:#f1f5f9;font-size:0.9rem;outline:none;font-family:inherit;box-sizing:border-box;">
+                </div>
+                <div style="margin-bottom:18px;">
+                    <input id="dlEmail" type="email" placeholder="Your email address" required
+                        style="width:100%;padding:11px 14px;background:rgba(255,255,255,0.06);border:1px solid rgba(124,58,237,0.3);border-radius:8px;color:#f1f5f9;font-size:0.9rem;outline:none;font-family:inherit;box-sizing:border-box;">
+                </div>
+                <div id="dlError" style="color:#f87171;font-size:0.82rem;margin-bottom:10px;display:none;"></div>
+                <button type="submit" id="dlSubmitBtn"
+                    style="display:block;width:100%;padding:13px 24px;background:linear-gradient(135deg,#7c3aed,#6d28d9);color:#fff;font-family:'Space Grotesk',sans-serif;font-size:0.95rem;font-weight:600;letter-spacing:0.02em;border-radius:10px;cursor:pointer;box-shadow:0 6px 24px rgba(124,58,237,0.45);border:none;transition:filter 0.2s,transform 0.2s;">
+                    Send to Email &amp; Download
+                </button>
+            </form>
+            <p style="margin:14px 0 0;font-size:0.78rem;color:rgba(148,163,184,0.4);">No spam. Unsubscribe anytime.</p>
+        </div>
+    </div>
+
     <div id="section-footer" data-section-id="footer">
         <style>
             #section-footer {
@@ -3073,7 +3655,7 @@
         </style>
         <style>
             .footer {
-                background: linear-gradient(135deg, #05010f 0%, #080818 100%)
+                background: linear-gradient(180deg, #04020f 0%, #06040f 40%, #08051a 100%)
             }
 
             .footer,
@@ -3107,6 +3689,21 @@
             kjb-settings-id="sections_footer_settings_background_color">
             <div class="footer__content">
                 <div class="container footer__container" style="text-align: center;">
+                    <!-- Partners Strip -->
+                    <div class="footer-partners-strip">
+                        <div class="footer-partners-eyebrow">Trusted Partners &amp; Tools</div>
+                        <div class="footer-partner-logos">
+                            <a class="fpl" href="https://www.tradingview.com/?aff_id=152391" target="_blank" rel="noopener noreferrer">
+                                <div class="fpl-icon fpl-tv"><img src="images/tradingview-logo.webp" alt="TradingView" style="width:20px;height:20px;object-fit:contain;border-radius:3px;"></div>
+                                <span class="fpl-name">TradingView</span>
+                            </a>
+                            <div style="width:1px;height:24px;background:rgba(124,58,237,0.2);"></div>
+                            <a class="fpl" href="https://partner.blofin.com/d/CryptoLord" target="_blank" rel="noopener noreferrer">
+                                <div class="fpl-icon fpl-bf"><img src="images/blofin-logo.png" alt="BloFin" style="width:20px;height:20px;object-fit:contain;border-radius:3px;"></div>
+                                <span class="fpl-name">BloFin</span>
+                            </a>
+                        </div>
+                    </div>
                     <!-- Copyright - Center -->
                     <div id="block-1555988525205" class="footer__block">
                         <span class="copyright"
@@ -3298,7 +3895,6 @@
                                         target="_blank" rel="noopener noreferrer">Contact Form</a>
                                     <a class="footer-link"
                                         href="mailto:megametahub42@gmail.com">megametahub42@gmail.com</a>
-                                    <a class="footer-link" href="tel:+19738197530">+1 (973)-8197-530</a>
                                     <a class="footer-link" href="tel:0702000987">0702000987</a>
                                 </div>
 
@@ -3580,6 +4176,23 @@
     <script
         src="https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/themes/2159953150/assets/scripts.js?1753826790533526"></script>
     <script>
+        /* ── API warmup + fetch timeout wrapper ── */
+        (function() {
+            var _API = 'https://backend-tawny-nu-33.vercel.app';
+            // Warm up the backend function as early as possible
+            fetch(_API + '/api/ping', { method: 'GET', cache: 'no-store' }).catch(function(){});
+
+            // Global fetch with timeout (10s default)
+            window.apiFetch = function(url, opts, timeoutMs) {
+                timeoutMs = timeoutMs || 10000;
+                var ctrl = new AbortController();
+                var tid = setTimeout(function(){ ctrl.abort(); }, timeoutMs);
+                return fetch(url, Object.assign({}, opts, { signal: ctrl.signal }))
+                    .then(function(r){ clearTimeout(tid); return r; })
+                    .catch(function(e){ clearTimeout(tid); throw e; });
+            };
+        })();
+
         /* Custom BullBear Trading JS */
         document.addEventListener('DOMContentLoaded', function () {
             // Add smooth scrolling for anchor links (skip bare # links)
@@ -3652,21 +4265,71 @@
                 });
             }
 
+            // Handle Partners dropdown
+            var partnersDropdown = document.querySelector('.partners-dropdown');
+            var partnersTrigger = document.querySelector('.partners-trigger');
+
+            if (partnersTrigger && partnersDropdown) {
+                var partnersContent = partnersDropdown.querySelector('.partners-dropdown-content');
+
+                partnersTrigger.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    var isOpen = partnersDropdown.classList.contains('active');
+
+                    // Close library dropdown if open
+                    if (libraryDropdown) libraryDropdown.classList.remove('active');
+
+                    if (!isOpen) {
+                        var rect = partnersTrigger.getBoundingClientRect();
+                        partnersContent.style.top = (rect.bottom + 8) + 'px';
+                        var left = rect.left - (500 / 2) + (rect.width / 2);
+                        left = Math.max(8, Math.min(left, window.innerWidth - 520));
+                        partnersContent.style.left = left + 'px';
+                    }
+
+                    partnersDropdown.classList.toggle('active');
+                });
+
+                window.addEventListener('scroll', function () {
+                    if (partnersDropdown.classList.contains('active')) {
+                        var rect = partnersTrigger.getBoundingClientRect();
+                        partnersContent.style.top = (rect.bottom + 8) + 'px';
+                        var left = rect.left - (500 / 2) + (rect.width / 2);
+                        left = Math.max(8, Math.min(left, window.innerWidth - 520));
+                        partnersContent.style.left = left + 'px';
+                    }
+                }, { passive: true });
+
+                document.addEventListener('click', function (e) {
+                    if (!partnersDropdown.contains(e.target)) {
+                        partnersDropdown.classList.remove('active');
+                    }
+                });
+            }
+
             // Dropdown Sign Up / Login — handled by onclick attributes on the links
 
             // Hamburger mobile nav toggle
-            const hamburger = document.querySelector('.hamburger');
+            const hamburger = document.getElementById('hamburger');
             const mobileNav = document.getElementById('mobileNav');
 
             if (hamburger && mobileNav) {
-                hamburger.addEventListener('click', function (e) {
-                    e.stopPropagation();
-                    this.classList.toggle('open');
+                var _navClickPending = false;
+
+                hamburger.addEventListener('click', function () {
+                    _navClickPending = true;
+                    hamburger.classList.toggle('open');
                     mobileNav.classList.toggle('open');
+                    if (partnersDropdown) partnersDropdown.classList.remove('active');
+                    if (libraryDropdown) libraryDropdown.classList.remove('active');
+                    setTimeout(function () { _navClickPending = false; }, 0);
                 });
 
                 // Close on outside click
                 document.addEventListener('click', function (e) {
+                    if (_navClickPending) return;
                     if (!hamburger.contains(e.target) && !mobileNav.contains(e.target)) {
                         hamburger.classList.remove('open');
                         mobileNav.classList.remove('open');
@@ -3701,7 +4364,7 @@
         }
 
         function closeMobileNav() {
-            const hamburger = document.querySelector('.hamburger');
+            const hamburger = document.getElementById('hamburger');
             const mobileNav = document.getElementById('mobileNav');
             if (hamburger) hamburger.classList.remove('open');
             if (mobileNav) mobileNav.classList.remove('open');
@@ -3766,11 +4429,16 @@
                 localStorage.setItem('bullbearToken', token);
                 localStorage.setItem('bullbearCurrentUser', JSON.stringify(storedUser));
 
-                // Save checklist lead
+                // Save checklist lead + send PDF via email
                 fetch('https://backend-tawny-nu-33.vercel.app/api/checklist/lead', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ name: storedUser.name, email: email, source: 'index' }),
+                }).catch(function() {});
+                fetch('https://backend-tawny-nu-33.vercel.app/api/checklist/send-email', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name: storedUser.name, email: email }),
                 }).catch(function() {});
 
                 updateAuthNav();
@@ -3797,6 +4465,49 @@
 
         function downloadChecklist(user) {
             window.location.href = 'crypto-quickstart-checklist.html';
+        }
+
+        async function handleDlModalSubmit(event) {
+            event.preventDefault();
+            var name = document.getElementById('dlName').value.trim();
+            var email = document.getElementById('dlEmail').value.trim();
+            var errDiv = document.getElementById('dlError');
+            var btn = document.getElementById('dlSubmitBtn');
+            errDiv.style.display = 'none';
+            btn.disabled = true;
+            btn.textContent = 'Sending...';
+
+            try {
+                // Send email (fire and forget)
+                fetch('https://backend-tawny-nu-33.vercel.app/api/checklist/send-email', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name: name, email: email }),
+                }).catch(function() {});
+                // Save lead
+                fetch('https://backend-tawny-nu-33.vercel.app/api/checklist/lead', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name: name, email: email, source: 'dlModal' }),
+                }).catch(function() {});
+
+                // Trigger download
+                var a = document.createElement('a');
+                a.href = 'crypto-quickstart-checklist.pdf';
+                a.download = 'BullBear-Free-Crypto-Checklist.pdf';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+
+                btn.textContent = 'Check your inbox!';
+                setTimeout(function() { closeModal('dlModal'); document.getElementById('dlModalForm').reset(); btn.disabled = false; btn.textContent = 'Send to Email & Download'; }, 2000);
+            } catch (err) {
+                errDiv.textContent = 'Something went wrong. Please try again.';
+                errDiv.style.display = 'block';
+                btn.disabled = false;
+                btn.textContent = 'Send to Email & Download';
+            }
+            return false;
         }
 
         function showToast(msg) {
@@ -4134,6 +4845,205 @@
             updateAuthNav();
         }
 
+        /* ── FRONTEND VIDEO LIBRARY — moved to my-library.html ── */
+        (function() {
+            var BB_API = 'https://backend-tawny-nu-33.vercel.app/api';
+            var bbLibraryContent = [];
+            var bbUserAccess = [];
+            var bbActiveFilter = 'all';
+
+            var CAT_LABELS = { all: 'All Modules', crypto: 'Crypto', forex: 'Forex', indicators: 'Indicators', general: 'General', defi: 'DeFi', psychology: 'Psychology' };
+            var CAT_ICONS  = { crypto: '₿', forex: '💱', indicators: '📈', general: '📚', defi: '🔗', psychology: '🧠', all: '◈' };
+            var ACCESS_LABEL = { free: 'Free', indicators: 'Indicators', 'crypto-course': 'Crypto Course', 'all-access': 'All-Access', paid: 'Premium' };
+            var ACCESS_PRICE = { indicators: '$30/mo', 'crypto-course': '$500', 'all-access': '$99/mo', paid: '$99/mo' };
+            var TYPE_ICON = { youtube: '▶', vimeo: '▶', video: '🎬', doc: '📄', link: '🔗' };
+
+            function hasAccess(lvl) {
+                if (lvl === 'free') return true;
+                if (bbUserAccess.indexOf('all-access') !== -1) return true;
+                return bbUserAccess.indexOf(lvl) !== -1;
+            }
+
+            function buildCard(item) {
+                var unlocked = hasAccess(item.accessLevel);
+                var icon = TYPE_ICON[item.type] || '📄';
+                var thumb = item.thumbnail
+                    ? '<img src="'+item.thumbnail+'" alt="" onerror="this.style.display=\'none\'">'
+                    : '<span>'+icon+'</span>';
+                var overlay = unlocked
+                    ? '<div class="bb-lib-play-icon"><span>▶</span></div>'
+                    : '<div class="bb-lib-lock"><div class="bb-lib-lock-icon">🔒</div><div class="bb-lib-lock-txt">'+(ACCESS_LABEL[item.accessLevel]||'Premium')+' only</div></div>';
+                var badge = '<span class="bb-lib-badge'+(item.accessLevel==='free'?' free':'')+'">'+
+                    (ACCESS_LABEL[item.accessLevel]||'Premium')+'</span>';
+                var safeUrl = item.url.replace(/'/g, "\\'");
+                var btn = unlocked
+                    ? '<button class="bb-lib-btn bb-lib-btn-watch" onclick="event.stopPropagation();window.open(\''+safeUrl+'\',\'_blank\',\'noopener,noreferrer\')">▶ Watch Now</button>'
+                    : '<button class="bb-lib-btn bb-lib-btn-lock" onclick="event.stopPropagation();bbLibUnlock(\''+item.accessLevel+'\')">🔒 Unlock '+(ACCESS_PRICE[item.accessLevel]||'')+'</button>';
+                return '<div class="bb-lib-card">'+
+                    '<div class="bb-lib-thumb">'+thumb+overlay+'</div>'+
+                    '<div class="bb-lib-body">'+
+                        '<div class="bb-lib-meta">'+badge+'</div>'+
+                        '<div class="bb-lib-title">'+item.title+'</div>'+
+                        (item.description ? '<div class="bb-lib-desc">'+item.description+'</div>' : '')+
+                        btn+
+                    '</div>'+
+                '</div>';
+            }
+
+            function renderModules(filter) {
+                bbActiveFilter = filter || 'all';
+                var wrap = document.getElementById('bbLibraryModules');
+                if (!wrap) return;
+
+                var items = bbLibraryContent.filter(function(i) {
+                    return bbActiveFilter === 'all' || i.category === bbActiveFilter;
+                });
+
+                if (!items.length) {
+                    wrap.innerHTML = '<div class="bb-lib-loading"><p style="color:#475569;">No content in this module yet.</p></div>';
+                    return;
+                }
+
+                // Group by category
+                var groups = {};
+                var groupOrder = [];
+                items.forEach(function(item) {
+                    var cat = item.category || 'general';
+                    if (!groups[cat]) { groups[cat] = []; groupOrder.push(cat); }
+                    groups[cat].push(item);
+                });
+
+                // Update stats
+                var total = items.length;
+                var unlocked = items.filter(function(i){ return hasAccess(i.accessLevel); }).length;
+                var el = document.getElementById('bbLibStats');
+                if (el) {
+                    el.style.display = 'flex';
+                    document.getElementById('bbStatTotal').textContent = total;
+                    document.getElementById('bbStatUnlocked').textContent = unlocked;
+                    document.getElementById('bbStatModules').textContent = groupOrder.length;
+                }
+
+                wrap.innerHTML = groupOrder.map(function(cat, idx) {
+                    var vids = groups[cat];
+                    var catLabel = CAT_LABELS[cat] || (cat.charAt(0).toUpperCase()+cat.slice(1));
+                    var catIcon  = CAT_ICONS[cat] || '📁';
+                    var allUnlocked = vids.every(function(v){ return hasAccess(v.accessLevel); });
+                    var accessLvl = vids[0] ? vids[0].accessLevel : 'paid';
+                    var statusBadge = allUnlocked
+                        ? '<span class="bb-lib-module-unlock">✓ Unlocked</span>'
+                        : '<span class="bb-lib-module-lock">🔒 Locked</span>';
+
+                    var cards = vids.map(buildCard).join('');
+
+                    var unlockCta = (!allUnlocked)
+                        ? '<div class="bb-lib-unlock-cta">'+
+                            '<div>'+
+                                '<strong>Unlock the full '+catLabel+' module</strong>'+
+                                '<p>Get access to all '+vids.length+' videos in this module.</p>'+
+                            '</div>'+
+                            '<button class="bb-lib-unlock-btn" onclick="bbLibUnlock(\''+accessLvl+'\')">'+
+                                'Unlock '+(ACCESS_PRICE[accessLvl]||'Access')+'</button>'+
+                          '</div>'
+                        : '';
+
+                    return '<div class="bb-lib-module">'+
+                        '<div class="bb-lib-module-header">'+
+                            '<div class="bb-lib-module-left">'+
+                                '<div class="bb-lib-module-num">'+(idx+1)+'</div>'+
+                                '<div>'+
+                                    '<div class="bb-lib-module-title">'+catIcon+' '+catLabel+'</div>'+
+                                    '<div class="bb-lib-module-count">'+vids.length+' video'+(vids.length!==1?'s':'')+'</div>'+
+                                '</div>'+
+                            '</div>'+
+                            statusBadge+
+                        '</div>'+
+                        '<div class="bb-lib-grid">'+cards+unlockCta+'</div>'+
+                    '</div>';
+                }).join('');
+            }
+
+            function renderFilters() {
+                var el = document.getElementById('bbLibraryFilters');
+                if (!el) return;
+                var cats = ['all'];
+                bbLibraryContent.forEach(function(i) {
+                    if (i.category && cats.indexOf(i.category) === -1) cats.push(i.category);
+                });
+                el.innerHTML = cats.map(function(cat) {
+                    var lbl = CAT_LABELS[cat] || (cat.charAt(0).toUpperCase()+cat.slice(1));
+                    return '<button class="bb-lib-filter-btn'+(cat===bbActiveFilter?' active':'')
+                        +'" onclick="bbLibFilter(\''+cat+'\')">'+lbl+'</button>';
+                }).join('');
+            }
+
+            window.bbLibFilter = function(cat) {
+                bbActiveFilter = cat;
+                document.querySelectorAll('.bb-lib-filter-btn').forEach(function(b){ b.classList.remove('active'); });
+                document.querySelectorAll('.bb-lib-filter-btn').forEach(function(b){
+                    if (b.getAttribute('onclick') === 'bbLibFilter(\''+cat+'\')') b.classList.add('active');
+                });
+                renderModules(cat);
+            };
+
+            window.bbLibUnlock = function(accessLevel) {
+                var raw = localStorage.getItem('bullbearCurrentUser');
+                if (!raw) {
+                    var m = document.getElementById('loginModal');
+                    if (m) m.style.display = 'flex';
+                    return;
+                }
+                var productMap = {
+                    'indicators':    { name: 'Trading Indicators',      price: 30,  courseId: 'indicators'    },
+                    'crypto-course': { name: 'Crypto Trading Course',   price: 500, courseId: 'crypto-course' },
+                    'all-access':    { name: 'All-Access Membership',   price: 99,  courseId: 'all-access'    },
+                    'paid':          { name: 'All-Access Membership',   price: 99,  courseId: 'all-access'    },
+                };
+                var p = productMap[accessLevel] || productMap['all-access'];
+                if (typeof window.showPaymentModal === 'function') {
+                    window.showPaymentModal(p.name, p.price, p.courseId);
+                } else {
+                    var pricing = document.querySelector('[data-section="pricing"], .bb-pricing-section, #bb-pricing');
+                    if (pricing) pricing.scrollIntoView({ behavior: 'smooth' });
+                }
+            };
+
+            function loadLibrary() {
+                fetch(BB_API + '/content')
+                .then(function(r){ return r.json(); })
+                .then(function(d) {
+                    var items = (d.data && d.data.items) || [];
+                    if (!items.length) return;
+                    bbLibraryContent = items;
+                    document.getElementById('bbLibrarySection').style.display = '';
+                    renderFilters();
+                    renderModules('all');
+                })
+                .catch(function(){});
+            }
+
+            function loadUserAccess() {
+                var raw = localStorage.getItem('bullbearCurrentUser');
+                if (!raw) return;
+                try {
+                    var user = JSON.parse(raw);
+                    if (!user.email) return;
+                    fetch(BB_API + '/purchases/user/' + encodeURIComponent(user.email))
+                    .then(function(r){ return r.json(); })
+                    .then(function(d) {
+                        var purchases = (d.data && d.data.purchases) || [];
+                        bbUserAccess = purchases.map(function(p){ return p.courseId; });
+                        if (bbLibraryContent.length) renderModules(bbActiveFilter);
+                    })
+                    .catch(function(){});
+                } catch(e){}
+            }
+
+            /* loadLibrary / loadUserAccess disabled — content library moved to my-library.html */
+        })();
+
+        /* ── END VIDEO LIBRARY ────────────────────────────────────────────── */
+
         // Check if user is logged in on page load
         document.addEventListener('DOMContentLoaded', function () {
             updateAuthNav();
@@ -4206,7 +5116,7 @@
             </div>
 
             <div class="chat-panel-body">
-                <p class="chat-panel-label">Choose an agent to chat with on WhatsApp</p>
+                <p class="chat-panel-label">Chat with us on WhatsApp</p>
 
                 <a href="https://wa.me/14155238886" target="_blank" rel="noopener" class="agent-card agent-card--bot">
                     <div class="agent-avatar agent-avatar--bot">AI</div>
@@ -4217,23 +5127,6 @@
                     <svg class="agent-arrow" width="18" height="18" viewBox="0 0 24 24" fill="#25d366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.125.557 4.126 1.528 5.858L0 24l6.335-1.505A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.93 0-3.742-.516-5.3-1.415l-.38-.225-3.761.894.953-3.672-.247-.389A9.96 9.96 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
                 </a>
 
-                <a href="https://wa.me/254797844481" target="_blank" rel="noopener" class="agent-card">
-                    <div class="agent-avatar">A1</div>
-                    <div class="agent-info">
-                        <div class="agent-name">Agent 1</div>
-                        <div class="agent-number">+254 797 844 481</div>
-                    </div>
-                    <svg class="agent-arrow" width="18" height="18" viewBox="0 0 24 24" fill="#25d366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.125.557 4.126 1.528 5.858L0 24l6.335-1.505A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.93 0-3.742-.516-5.3-1.415l-.38-.225-3.761.894.953-3.672-.247-.389A9.96 9.96 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
-                </a>
-
-                <a href="https://wa.me/254702000987" target="_blank" rel="noopener" class="agent-card">
-                    <div class="agent-avatar">A2</div>
-                    <div class="agent-info">
-                        <div class="agent-name">Agent 2</div>
-                        <div class="agent-number">+254 702 000 987</div>
-                    </div>
-                    <svg class="agent-arrow" width="18" height="18" viewBox="0 0 24 24" fill="#25d366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.125.557 4.126 1.528 5.858L0 24l6.335-1.505A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.93 0-3.742-.516-5.3-1.415l-.38-.225-3.761.894.953-3.672-.247-.389A9.96 9.96 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
-                </a>
             </div>
 
             <div class="chat-panel-footer">Typically replies within minutes</div>
@@ -4589,7 +5482,17 @@
 
             'price': 'Our course prices:\n\nCrypto Trading Video Course: $500\nCrypto Pull Profit Spreadsheet: $500\n6-Figure Affiliate Marketing: $20\n\nAll courses include lifetime access!',
 
-            'contact': 'You can reach us at:\n\nEmail: megametahub42@gmail.com\nPhone: 0702000987\nWhatsApp: Available\n\nOr use our contact form on the website!',
+            'contact': 'You can reach us at:\n\nEmail: megametahub42@gmail.com\nPhone: 0702000987\nWhatsApp: Available\nContact form: available on the website\n\nWant to speak with a live agent? Message us on WhatsApp and our AI agent will connect you!',
+
+            'technical': 'Sorry you\'re running into a technical issue! Message us on WhatsApp and our AI agent will connect you with the right support agent.',
+
+            'live agent': 'Want to speak with a live agent? Message us on WhatsApp — our AI agent there will connect you with the right person.',
+
+            'talk to agent': 'Want to speak with a live agent? Message us on WhatsApp — our AI agent there will connect you with the right person.',
+
+            'speak to agent': 'Want to speak with a live agent? Message us on WhatsApp — our AI agent there will connect you with the right person.',
+
+            'human agent': 'Want to speak with a live agent? Message us on WhatsApp — our AI agent there will connect you with the right person.',
 
             'refund': 'We have a fulfillment and refund policy. Please check our Policies section in the footer for detailed information about refunds and our purchase policy.',
 
@@ -4724,1187 +5627,53 @@
         })();
     </script>
 
-    <!-- Ctrl+Shift+A → opens realtime dashboard -->
-    <script>
-    document.addEventListener('keydown', function(e) {
-        if (e.ctrlKey && e.shiftKey && e.key === 'A') {
-            e.preventDefault();
-            window.open('/realtime-dashboard', '_blank');
-        }
-    });
-    if (window.location.hash === '#admin') window.location.href = '/realtime-dashboard';
-    </script>
     <style>
-    /* admin panel removed */
-    #adminPanel {
-        display: none; position: fixed; inset: 0; z-index: 999999;
-        background: #05070f; font-family: 'Inter', sans-serif;
-    }
-    #adminPanel.open { display: flex; flex-direction: column; }
-
-    /* Auth Screen */
-    #adminAuth {
-        flex: 1; display: flex; align-items: center; justify-content: center;
-        background: radial-gradient(ellipse at 30% 40%, rgba(124,58,237,0.15) 0%, transparent 60%),
-                    radial-gradient(ellipse at 70% 70%, rgba(217,70,239,0.1) 0%, transparent 60%),
-                    #05010f;
-    }
-    .aauth-box {
-        width: 100%; max-width: 400px; padding: 48px 40px;
-        background: rgba(8,6,20,0.95);
-        border: 1px solid rgba(124,58,237,0.25);
-        border-radius: 20px;
-        box-shadow: 0 30px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(124,58,237,0.1);
-        backdrop-filter: blur(24px);
-        text-align: center;
-    }
-    .aauth-logo { font-size: 2.5rem; margin-bottom: 6px; }
-    .aauth-title {
-        font-family: 'Poppins', sans-serif; font-size: 1.4rem; font-weight: 800;
-        background: linear-gradient(135deg, #fff 0%, #c4b5fd 100%);
-        -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-        margin-bottom: 4px;
-    }
-    .aauth-sub { color: #475569; font-size: 0.82rem; margin-bottom: 32px; }
-    .aauth-field {
-        width: 100%; padding: 13px 16px; border-radius: 10px; margin-bottom: 12px;
-        border: 1px solid rgba(124,58,237,0.3); background: rgba(8,6,20,0.7);
-        color: #fff; font-size: 0.95rem; outline: none; box-sizing: border-box;
-        transition: border-color 0.2s;
-    }
-    .aauth-field:focus { border-color: #a78bfa; box-shadow: 0 0 0 3px rgba(124,58,237,0.12); }
-    .aauth-btn {
-        width: 100%; padding: 14px; border: none; border-radius: 10px; cursor: pointer;
-        background: linear-gradient(135deg, #7c3aed 0%, #d946ef 100%);
-        color: #fff; font-weight: 700; font-size: 1rem; font-family: 'Poppins', sans-serif;
-        text-transform: uppercase; letter-spacing: 1px;
-        transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .aauth-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(124,58,237,0.5); }
-    .aauth-err { color: #f87171; font-size: 0.8rem; margin-top: 10px; display: none; }
-    .aauth-hint { color: #334155; font-size: 0.72rem; margin-top: 16px; }
-
-    /* Dashboard Layout */
-    #adminDashboard {
-        display: none; flex: 1; overflow: hidden;
-    }
-    #adminDashboard.active { display: flex; height: 100vh; }
-
-    /* Sidebar */
-    .ap-sidebar {
-        width: 220px; flex-shrink: 0;
-        background: rgba(5,1,15,0.98);
-        border-right: 1px solid rgba(124,58,237,0.12);
-        display: flex; flex-direction: column;
-        overflow-y: auto;
-    }
-    .ap-sidebar-logo {
-        padding: 24px 20px 20px;
-        border-bottom: 1px solid rgba(124,58,237,0.1);
-    }
-    .ap-sidebar-logo-text {
-        font-family: 'Poppins', sans-serif; font-size: 0.95rem; font-weight: 800;
-        background: linear-gradient(135deg, #a78bfa, #d946ef);
-        -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-    }
-    .ap-sidebar-sub { font-size: 0.68rem; color: #334155; margin-top: 2px; }
-    .ap-nav { flex: 1; padding: 12px 0; }
-    .ap-nav-item {
-        display: flex; align-items: center; gap: 10px;
-        padding: 10px 20px; cursor: pointer; border: none; background: none; width: 100%;
-        color: #475569; font-size: 0.82rem; font-family: 'Inter', sans-serif; font-weight: 500;
-        transition: all 0.15s ease; border-left: 2px solid transparent; text-align: left;
-    }
-    .ap-nav-item:hover { color: #94a3b8; background: rgba(124,58,237,0.06); }
-    .ap-nav-item.active {
-        color: #e2e8f0; background: rgba(124,58,237,0.12);
-        border-left-color: #a78bfa;
-    }
-    .ap-nav-icon { font-size: 1rem; width: 20px; text-align: center; }
-    .ap-sidebar-bottom {
-        padding: 16px 20px;
-        border-top: 1px solid rgba(124,58,237,0.1);
-    }
-    .ap-logout-btn {
-        width: 100%; padding: 9px; border-radius: 8px; border: 1px solid rgba(239,68,68,0.25);
-        background: rgba(239,68,68,0.08); color: #f87171;
-        font-size: 0.78rem; font-weight: 600; cursor: pointer; transition: all 0.2s;
-    }
-    .ap-logout-btn:hover { background: rgba(239,68,68,0.2); }
-
-    /* Main Content */
-    .ap-main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
-
-    /* Topbar */
-    .ap-topbar {
-        display: flex; align-items: center; justify-content: space-between;
-        padding: 14px 28px;
-        background: rgba(5,1,15,0.9);
-        border-bottom: 1px solid rgba(124,58,237,0.1);
-        backdrop-filter: blur(20px);
-        flex-shrink: 0;
-    }
-    .ap-topbar-left h2 {
-        font-family: 'Poppins', sans-serif; font-size: 1.05rem; font-weight: 700; color: #e2e8f0; margin: 0;
-    }
-    .ap-topbar-left p { font-size: 0.75rem; color: #475569; margin: 2px 0 0; }
-    .ap-topbar-right { display: flex; align-items: center; gap: 16px; }
-    .ap-location-badge {
-        display: flex; align-items: center; gap: 6px;
-        padding: 6px 12px; border-radius: 20px;
-        background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.2);
-        font-size: 0.75rem; color: #10b981;
-    }
-    .ap-location-dot {
-        width: 6px; height: 6px; border-radius: 50%; background: #10b981;
-        box-shadow: 0 0 6px #10b981;
-        animation: ap-blink 1.5s ease-in-out infinite;
-    }
-    @keyframes ap-blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
-    .ap-clock {
-        font-family: 'Poppins', sans-serif; font-size: 0.82rem; font-weight: 700;
-        color: #c4b5fd; letter-spacing: 1px;
-    }
-    .ap-close-btn {
-        padding: 7px 16px; border-radius: 8px; border: 1px solid rgba(124,58,237,0.3);
-        background: rgba(124,58,237,0.1); color: #94a3b8;
-        font-size: 0.78rem; cursor: pointer; transition: all 0.2s;
-    }
-    .ap-close-btn:hover { background: rgba(239,68,68,0.2); border-color: rgba(239,68,68,0.4); color: #f87171; }
-
-    /* Content area */
-    .ap-content { flex: 1; overflow-y: auto; padding: 24px 28px; }
-
-    /* Section panels */
-    .ap-section { display: none; }
-    .ap-section.active { display: block; }
-
-    /* Cards */
-    .ap-stats-grid {
-        display: grid; grid-template-columns: repeat(auto-fit, minmax(150px,1fr)); gap: 14px; margin-bottom: 24px;
-    }
-    .ap-stat-card {
-        background: rgba(8,6,20,0.8); border: 1px solid rgba(124,58,237,0.15);
-        border-radius: 14px; padding: 20px 18px;
-        backdrop-filter: blur(16px);
-        transition: border-color 0.2s, transform 0.2s;
-    }
-    .ap-stat-card:hover { border-color: rgba(167,139,250,0.35); transform: translateY(-2px); }
-    .ap-stat-icon { font-size: 1.4rem; margin-bottom: 10px; }
-    .ap-stat-val {
-        font-family: 'Poppins', sans-serif; font-size: 1.8rem; font-weight: 800; color: #c4b5fd;
-        line-height: 1;
-    }
-    .ap-stat-lbl { font-size: 0.7rem; color: #475569; text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
-
-    /* Table card */
-    .ap-card {
-        background: rgba(8,6,20,0.8); border: 1px solid rgba(124,58,237,0.12);
-        border-radius: 14px; padding: 20px; margin-bottom: 20px;
-        backdrop-filter: blur(16px);
-    }
-    .ap-card-title {
-        font-family: 'Poppins', sans-serif; font-size: 0.85rem; font-weight: 700;
-        color: #94a3b8; text-transform: uppercase; letter-spacing: 1.5px;
-        margin-bottom: 16px; padding-bottom: 10px;
-        border-bottom: 1px solid rgba(124,58,237,0.12);
-        display: flex; align-items: center; justify-content: space-between;
-    }
-    .ap-tbl { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
-    .ap-tbl th {
-        text-align: left; padding: 8px 12px;
-        color: #a78bfa; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px;
-        border-bottom: 1px solid rgba(124,58,237,0.15);
-    }
-    .ap-tbl td { padding: 10px 12px; color: #cbd5e1; border-bottom: 1px solid rgba(124,58,237,0.06); }
-    .ap-tbl tr:last-child td { border-bottom: none; }
-    .ap-tbl tr:hover td { background: rgba(124,58,237,0.04); }
-    .ap-empty { text-align: center; color: #334155; padding: 40px 0; font-size: 0.85rem; }
-
-    /* Buttons */
-    .ap-btn {
-        padding: 8px 16px; border-radius: 8px; border: none; cursor: pointer;
-        font-family: 'Poppins', sans-serif; font-size: 0.75rem; font-weight: 700;
-        text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.2s;
-    }
-    .ap-btn-primary { background: linear-gradient(135deg, #7c3aed, #d946ef); color: #fff; }
-    .ap-btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 15px rgba(124,58,237,0.4); }
-    .ap-btn-green { background: linear-gradient(135deg, #059669, #047857); color: #fff; }
-    .ap-btn-red { background: rgba(239,68,68,0.15); color: #f87171; border: 1px solid rgba(239,68,68,0.3); }
-    .ap-btn-red:hover { background: rgba(239,68,68,0.25); }
-    .ap-btn-ghost { background: rgba(124,58,237,0.1); color: #94a3b8; border: 1px solid rgba(124,58,237,0.2); }
-    .ap-btn-ghost:hover { background: rgba(124,58,237,0.2); color: #e2e8f0; }
-    .ap-btn-sm { padding: 4px 10px; font-size: 0.68rem; }
-    .ap-btn-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
-
-    /* Forms */
-    .ap-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-    .ap-form-grid.full { grid-template-columns: 1fr; }
-    .ap-label { font-size: 0.75rem; color: #64748b; font-weight: 600; display: block; margin-bottom: 5px; }
-    .ap-input, .ap-textarea, .ap-select {
-        width: 100%; padding: 10px 13px; border-radius: 8px;
-        border: 1px solid rgba(124,58,237,0.2); background: rgba(8,6,20,0.8);
-        color: #e2e8f0; font-size: 0.85rem; outline: none;
-        box-sizing: border-box; transition: border-color 0.2s;
-        font-family: 'Inter', sans-serif;
-    }
-    .ap-input:focus, .ap-textarea:focus, .ap-select:focus {
-        border-color: #a78bfa; box-shadow: 0 0 0 2px rgba(124,58,237,0.12);
-    }
-    .ap-textarea { resize: vertical; min-height: 90px; }
-    .ap-select option { background: #05010f; }
-    .ap-form-row { margin-bottom: 14px; }
-
-    /* Status badges */
-    .ap-badge {
-        display: inline-block; padding: 2px 10px; border-radius: 20px;
-        font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
-    }
-    .ap-badge-pending { background: rgba(124,58,237,0.15); color: #c4b5fd; }
-    .ap-badge-approved { background: rgba(16,185,129,0.15); color: #10b981; }
-    .ap-badge-rejected { background: rgba(239,68,68,0.15); color: #f87171; }
-    .ap-badge-sent { background: rgba(124,58,237,0.15); color: #a78bfa; }
-    .ap-badge-video { background: rgba(239,68,68,0.15); color: #f87171; }
-    .ap-badge-doc { background: rgba(167,139,250,0.15); color: #c4b5fd; }
-    .ap-badge-link { background: rgba(16,185,129,0.15); color: #10b981; }
-
-    /* Location card */
-    .ap-location-card {
-        background: linear-gradient(135deg, rgba(16,185,129,0.08), rgba(124,58,237,0.05));
-        border: 1px solid rgba(16,185,129,0.2); border-radius: 14px; padding: 18px 20px;
-        display: flex; align-items: center; gap: 16px; margin-bottom: 20px;
-    }
-    .ap-location-map-icon { font-size: 2.2rem; }
-    .ap-location-info p { margin: 0; }
-    .ap-location-info .ap-loc-label { font-size: 0.68rem; color: #475569; text-transform: uppercase; letter-spacing: 1px; }
-    .ap-location-info .ap-loc-val { font-size: 0.95rem; color: #10b981; font-weight: 600; margin-top: 2px; }
-    .ap-location-info .ap-loc-ip { font-size: 0.72rem; color: #334155; margin-top: 2px; }
-
-    /* Search */
-    .ap-search { position: relative; margin-bottom: 14px; }
-    .ap-search input {
-        width: 100%; padding: 9px 13px 9px 36px; border-radius: 8px; box-sizing: border-box;
-        border: 1px solid rgba(124,58,237,0.2); background: rgba(8,6,20,0.8);
-        color: #e2e8f0; font-size: 0.82rem; outline: none;
-    }
-    .ap-search input:focus { border-color: #a78bfa; }
-    .ap-search::before { content:''; position:absolute; left:10px; top:50%; transform:translateY(-50%); font-size:0.8rem; }
-
-    /* Message broadcast card */
-    .ap-msg-item {
-        padding: 14px 16px; border-radius: 10px; margin-bottom: 10px;
-        background: rgba(124,58,237,0.06); border: 1px solid rgba(124,58,237,0.1);
-    }
-    .ap-msg-title { font-weight: 700; color: #e2e8f0; font-size: 0.85rem; margin-bottom: 4px; }
-    .ap-msg-body { color: #94a3b8; font-size: 0.8rem; line-height: 1.5; }
-    .ap-msg-meta { font-size: 0.68rem; color: #475569; margin-top: 6px; }
-
-    /* Doc item */
-    .ap-doc-item {
-        display: flex; align-items: center; gap: 12px; padding: 12px 14px;
-        border-radius: 10px; margin-bottom: 8px;
-        background: rgba(8,6,20,0.5); border: 1px solid rgba(124,58,237,0.1);
-        transition: border-color 0.2s;
-    }
-    .ap-doc-item:hover { border-color: rgba(124,58,237,0.28); }
-    .ap-doc-icon { font-size: 1.4rem; flex-shrink: 0; }
-    .ap-doc-info { flex: 1; min-width: 0; }
-    .ap-doc-name { font-size: 0.82rem; font-weight: 600; color: #e2e8f0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .ap-doc-url { font-size: 0.7rem; color: #475569; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-    /* Meeting item */
-    .ap-meet-item {
-        padding: 14px 16px; border-radius: 12px; margin-bottom: 10px;
-        background: rgba(124,58,237,0.05); border: 1px solid rgba(124,58,237,0.12);
-        display: flex; gap: 14px; align-items: flex-start;
-    }
-    .ap-meet-date-box {
-        flex-shrink: 0; width: 48px; height: 52px; border-radius: 10px;
-        background: linear-gradient(135deg, #7c3aed, #d946ef);
-        display: flex; flex-direction: column; align-items: center; justify-content: center;
-    }
-    .ap-meet-day { font-size: 1.2rem; font-weight: 800; color: #fff; line-height: 1; }
-    .ap-meet-mon { font-size: 0.55rem; color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 1px; }
-    .ap-meet-info { flex: 1; }
-    .ap-meet-title { font-weight: 700; color: #e2e8f0; font-size: 0.88rem; }
-    .ap-meet-time { font-size: 0.75rem; color: #c4b5fd; margin-top: 2px; }
-    .ap-meet-link { font-size: 0.72rem; color: #a78bfa; margin-top: 4px; }
-    .ap-meet-notes { font-size: 0.75rem; color: #64748b; margin-top: 4px; }
-
-    /* Scrollbar */
-    .ap-content::-webkit-scrollbar,
-    .ap-sidebar::-webkit-scrollbar { width: 4px; }
-    .ap-content::-webkit-scrollbar-track,
-    .ap-sidebar::-webkit-scrollbar-track { background: transparent; }
-    .ap-content::-webkit-scrollbar-thumb { background: rgba(124,58,237,0.4); border-radius: 2px; }
-
-    /* Responsive */
-    @media (max-width: 680px) {
-        .ap-sidebar { width: 56px; }
-        .ap-nav-item span:not(.ap-nav-icon) { display: none; }
-        .ap-sidebar-logo-text, .ap-sidebar-sub, .ap-sidebar-bottom { display: none; }
-        .ap-content { padding: 16px; }
-        .ap-topbar { padding: 10px 16px; }
-        .ap-form-grid { grid-template-columns: 1fr; }
-    }
+    #adminPanel { display: none; position: fixed; inset: 0; z-index: 999999; width: 100vw; height: 100vh; }
+    #adminPanel.open { display: block; }
+    #adminPanel iframe { width: 100%; height: 100%; border: none; display: block; -webkit-overflow-scrolling: touch; overflow-y: auto; }
+    #adminPanelClose { position: fixed; top: 12px; right: 16px; z-index: 9999999; background: rgba(30,30,40,.85); color: #fff; border: none; border-radius: 50%; width: 34px; height: 34px; font-size: 18px; cursor: pointer; display: none; align-items: center; justify-content: center; }
+    #adminPanelClose.visible { display: flex; }
     </style>
 
     <div id="adminPanel">
-        <!-- Auth Screen -->
-        <div id="adminAuth">
-            <div class="aauth-box">
-                <div class="aauth-logo">BB</div>
-                <div class="aauth-title">Command Center</div>
-                <div class="aauth-sub">BullBear Blockchain · Admin Access</div>
-                <input type="password" id="adminPasswordInput" class="aauth-field"
-                    placeholder="Enter admin password"
-                    onkeydown="if(event.key==='Enter')verifyAdmin()">
-                <button class="aauth-btn" onclick="verifyAdmin()">Access Dashboard</button>
-                <p class="aauth-err" id="adminAuthError">Incorrect password. Try again.</p>
-                <p class="aauth-hint">Press Ctrl+Shift+A anytime to open this panel</p>
-            </div>
-        </div>
+        <iframe id="adminFrame" src="about:blank"></iframe>
+    </div>
+    <button id="adminPanelClose" onclick="closeAdmin()" title="Close admin panel">✕</button>
 
-        <!-- Dashboard -->
-        <div id="adminDashboard">
-            <!-- Sidebar -->
-            <aside class="ap-sidebar">
-                <div class="ap-sidebar-logo">
-                    <div class="ap-sidebar-logo-text">BullBear</div>
-                    <div class="ap-sidebar-sub">Command Center</div>
-                </div>
-                <nav class="ap-nav">
-                    <button class="ap-nav-item active" onclick="apNav('overview',this)"><span>Overview</span></button>
-                    <button class="ap-nav-item" onclick="apNav('users',this)"><span>Users</span></button>
-                    <button class="ap-nav-item" onclick="apNav('checklist',this)"><span>Checklist</span></button>
-                    <button class="ap-nav-item" onclick="apNav('purchases',this)"><span>Purchases</span></button>
-                    <button class="ap-nav-item" onclick="apNav('broadcast',this)"><span>Bulk Message</span></button>
-                    <button class="ap-nav-item" onclick="apNav('docs',this)"><span>Documents</span></button>
-                    <button class="ap-nav-item" onclick="apNav('meetings',this)"><span>Meetings</span></button>
-                    <button class="ap-nav-item" onclick="apNav('analytics',this)"><span>Analytics</span></button>
-                </nav>
-                <div class="ap-sidebar-bottom">
-                    <button class="ap-logout-btn" onclick="closeAdmin()">✕ Close Panel</button>
-                </div>
-            </aside>
-
-            <!-- Main -->
-            <div class="ap-main">
-                <!-- Topbar -->
-                <div class="ap-topbar">
-                    <div class="ap-topbar-left">
-                        <h2 id="apPageTitle">Overview</h2>
-                        <p id="apPageSub">Welcome back, Admin</p>
-                    </div>
-                    <div class="ap-topbar-right">
-                        <div class="ap-location-badge">
-                            <div class="ap-location-dot"></div>
-                            <span id="apTopLocation">Detecting...</span>
-                        </div>
-                        <div class="ap-clock" id="apClock">00:00:00</div>
-                        <button class="ap-close-btn" onclick="closeAdmin()">✕ Close</button>
-                    </div>
-                </div>
-
-                <!-- Content -->
-                <div class="ap-content">
-
-                    <!-- OVERVIEW -->
-                    <div id="apSec-overview" class="ap-section active">
-                        <div class="ap-stats-grid" id="apStatCards"></div>
-                        <div class="ap-location-card" id="apLocationCard">
-                            <div class="ap-location-map-icon">loc</div>
-                            <div class="ap-location-info">
-                                <p class="ap-loc-label">Admin Login Location</p>
-                                <p class="ap-loc-val" id="apLocCity">Detecting your location...</p>
-                                <p class="ap-loc-ip" id="apLocIP"></p>
-                            </div>
-                        </div>
-                        <div class="ap-card">
-                            <div class="ap-card-title">Recent Activity</div>
-                            <div id="apRecentActivity"><p class="ap-empty">No recent activity</p></div>
-                        </div>
-                    </div>
-
-                    <!-- USERS -->
-                    <div id="apSec-users" class="ap-section">
-                        <div class="ap-btn-row">
-                            <button class="ap-btn ap-btn-green" onclick="exportUsers()">↓ Export JSON</button>
-                            <button class="ap-btn ap-btn-red" onclick="clearAllUsers()">Clear All</button>
-                        </div>
-                        <div class="ap-card">
-                            <div class="ap-card-title">
-                                <span>Registered Users</span>
-                                <span id="apUserCount" style="color:#c4b5fd;font-size:1.1rem;font-weight:800;">0</span>
-                            </div>
-                            <div class="ap-search"><input type="text" placeholder="Search by name or email..." oninput="filterUsers(this.value)"></div>
-                            <div id="apUsersTable"></div>
-                        </div>
-                    </div>
-
-                    <!-- CHECKLIST -->
-                    <div id="apSec-checklist" class="ap-section">
-                        <div class="ap-card">
-                            <div class="ap-card-title">
-                                <span>Checklist Signups</span>
-                                <button class="ap-btn ap-btn-ghost ap-btn-sm" onclick="exportChecklistCSV()">↓ CSV</button>
-                            </div>
-                            <div id="apChecklistTable"></div>
-                        </div>
-                    </div>
-
-                    <!-- PURCHASES -->
-                    <div id="apSec-purchases" class="ap-section">
-                        <div class="ap-card">
-                            <div class="ap-card-title">
-                                <span>All Purchases</span>
-                                <span id="apRevTotal" style="color:#10b981;font-weight:800;">$0</span>
-                            </div>
-                            <div id="apPurchasesTable"></div>
-                        </div>
-                    </div>
-
-                    <!-- BULK MESSAGE -->
-                    <div id="apSec-broadcast" class="ap-section">
-                        <div class="ap-card" style="margin-bottom:20px;">
-                            <div class="ap-card-title">Compose Broadcast</div>
-                            <div class="ap-form-row">
-                                <label class="ap-label">Message Title</label>
-                                <input type="text" id="bcTitle" class="ap-input" placeholder="e.g. New Course Alert">
-                            </div>
-                            <div class="ap-form-row">
-                                <label class="ap-label">Message</label>
-                                <textarea id="bcBody" class="ap-textarea" placeholder="Write your message to all users..."></textarea>
-                            </div>
-                            <div class="ap-form-row">
-                                <label class="ap-label">Recipients</label>
-                                <select id="bcTarget" class="ap-select">
-                                    <option value="all">All Users</option>
-                                    <option value="checklist">Checklist Signups Only</option>
-                                </select>
-                            </div>
-                            <div class="ap-form-row">
-                                <label class="ap-label">Optional Link (e.g. course URL)</label>
-                                <input type="url" id="bcLink" class="ap-input" placeholder="https://...">
-                            </div>
-                            <button class="ap-btn ap-btn-primary" onclick="sendBroadcast()" style="margin-top:4px;">Send Broadcast</button>
-                        </div>
-                        <div class="ap-card">
-                            <div class="ap-card-title">
-                                <span>Sent Messages</span>
-                                <button class="ap-btn ap-btn-red ap-btn-sm" onclick="clearBroadcasts()">Clear All</button>
-                            </div>
-                            <div id="apBroadcastList"><p class="ap-empty">No messages sent yet</p></div>
-                        </div>
-                    </div>
-
-                    <!-- DOCUMENTS -->
-                    <div id="apSec-docs" class="ap-section">
-                        <div class="ap-card" style="margin-bottom:20px;">
-                            <div class="ap-card-title">Add Document / Video</div>
-                            <div class="ap-form-grid">
-                                <div class="ap-form-row">
-                                    <label class="ap-label">Title</label>
-                                    <input type="text" id="docTitle" class="ap-input" placeholder="e.g. Trading Strategy PDF">
-                                </div>
-                                <div class="ap-form-row">
-                                    <label class="ap-label">Type</label>
-                                    <select id="docType" class="ap-select">
-                                        <option value="doc">Document / PDF</option>
-                                        <option value="video">Video (YouTube/Vimeo)</option>
-                                        <option value="link">External Link</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="ap-form-row">
-                                <label class="ap-label">URL</label>
-                                <input type="url" id="docUrl" class="ap-input" placeholder="https://...">
-                            </div>
-                            <div class="ap-form-row">
-                                <label class="ap-label">Notes (optional)</label>
-                                <input type="text" id="docNotes" class="ap-input" placeholder="Brief description...">
-                            </div>
-                            <button class="ap-btn ap-btn-primary" onclick="addDoc()">+ Add</button>
-                        </div>
-                        <div class="ap-card">
-                            <div class="ap-card-title">
-                                <span>Content Library</span>
-                                <span id="apDocCount" style="color:#c4b5fd;font-weight:800;">0 items</span>
-                            </div>
-                            <div id="apDocList"><p class="ap-empty">No documents added yet</p></div>
-                        </div>
-                    </div>
-
-                    <!-- MEETINGS -->
-                    <div id="apSec-meetings" class="ap-section">
-                        <div class="ap-card" style="margin-bottom:20px;">
-                            <div class="ap-card-title">Schedule a Meeting</div>
-                            <div class="ap-form-grid">
-                                <div class="ap-form-row">
-                                    <label class="ap-label">Meeting Title</label>
-                                    <input type="text" id="mtTitle" class="ap-input" placeholder="e.g. Crypto Masterclass">
-                                </div>
-                                <div class="ap-form-row">
-                                    <label class="ap-label">Date</label>
-                                    <input type="date" id="mtDate" class="ap-input">
-                                </div>
-                                <div class="ap-form-row">
-                                    <label class="ap-label">Time</label>
-                                    <input type="time" id="mtTime" class="ap-input">
-                                </div>
-                                <div class="ap-form-row">
-                                    <label class="ap-label">Platform</label>
-                                    <select id="mtPlatform" class="ap-select">
-                                        <option value="zoom">Zoom</option>
-                                        <option value="meet">Google Meet</option>
-                                        <option value="teams">Microsoft Teams</option>
-                                        <option value="other">Other</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="ap-form-row">
-                                <label class="ap-label">Meeting Link</label>
-                                <input type="url" id="mtLink" class="ap-input" placeholder="https://zoom.us/j/...">
-                            </div>
-                            <div class="ap-form-row">
-                                <label class="ap-label">Notes / Agenda</label>
-                                <textarea id="mtNotes" class="ap-textarea" placeholder="What will be covered..."></textarea>
-                            </div>
-                            <button class="ap-btn ap-btn-primary" onclick="scheduleMeeting()">Schedule</button>
-                        </div>
-                        <div class="ap-card">
-                            <div class="ap-card-title">
-                                <span>Upcoming Meetings</span>
-                                <button class="ap-btn ap-btn-ghost ap-btn-sm" onclick="clearPastMeetings()">Clear Past</button>
-                            </div>
-                            <div id="apMeetingList"><p class="ap-empty">No meetings scheduled</p></div>
-                        </div>
-                    </div>
-
-                    <!-- ANALYTICS -->
-                    <div id="apSec-analytics" class="ap-section">
-                        <div class="ap-stats-grid" id="apAnalyticsCards"></div>
-                        <div class="ap-card">
-                            <div class="ap-card-title">Storage Usage</div>
-                            <div id="apStorageInfo"></div>
-                        </div>
-                        <div class="ap-card" style="margin-top:16px;">
-                            <div class="ap-card-title">Data Breakdown</div>
-                            <div id="apDataBreakdown"></div>
-                        </div>
-                    </div>
-
-                </div><!-- /ap-content -->
-            </div><!-- /ap-main -->
-        </div><!-- /adminDashboard -->
-    </div><!-- /adminPanel -->
-
-    <script>
+        <script>
     (function() {
-        var ADMIN_PW = 'Admin@2025!';
-        var adminAuthed = false;
-        var apClockTimer = null;
-        var allUsersCache = [];
-        var AP_API = 'https://backend-tawny-nu-33.vercel.app/api';
-        var apAdminToken = null;
-
-        /* ---- Open / Close ---- */
         window.openAdmin = function() {
-            var panel = document.getElementById('adminPanel');
-            panel.classList.add('open');
-            document.body.style.overflow = 'hidden';
-            if (!adminAuthed) {
-                document.getElementById('adminAuth').style.display = '';
-                document.getElementById('adminDashboard').classList.remove('active');
-            } else {
-                showAdminDashboard();
+            var frame = document.getElementById('adminFrame');
+            if (frame.getAttribute('data-loaded') !== '1') {
+                frame.src = './admin-pro.html';
+                frame.setAttribute('data-loaded', '1');
             }
+            document.getElementById('adminPanel').classList.add('open');
+            document.getElementById('adminPanelClose').classList.add('visible');
+            document.body.style.overflow = 'hidden';
         };
-
         window.closeAdmin = function() {
             document.getElementById('adminPanel').classList.remove('open');
+            document.getElementById('adminPanelClose').classList.remove('visible');
             document.body.style.overflow = '';
-            if (apClockTimer) { clearInterval(apClockTimer); apClockTimer = null; }
         };
-
-        window.verifyAdmin = function() {
-            var pw = document.getElementById('adminPasswordInput').value;
-            if (pw !== ADMIN_PW) {
-                var err = document.getElementById('adminAuthError');
-                err.style.display = 'block';
-                document.getElementById('adminPasswordInput').value = '';
-                setTimeout(function(){ err.style.display='none'; }, 3000);
-                return;
-            }
-            var btn = document.querySelector('#adminAuth button[onclick]');
-            if (btn) { btn.disabled = true; btn.textContent = 'Authenticating…'; }
-
-            fetch(AP_API + '/admin/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email: 'admin@bullbeartrading.com', password: pw }),
-            })
-            .then(function(r){ return r.json(); })
-            .then(function(data){
-                if (data.status === 'success' && data.data && data.data.token) {
-                    apAdminToken = data.data.token;
-                }
-            })
-            .catch(function(e){ console.warn('Admin backend login failed:', e); })
-            .finally(function(){
-                if (btn) { btn.disabled = false; btn.textContent = 'Access Dashboard'; }
-                adminAuthed = true;
-                document.getElementById('adminAuth').style.display = 'none';
-                showAdminDashboard();
+        var _clicks = 0, _timer;
+        document.addEventListener('DOMContentLoaded', function() {
+            var logo = document.querySelector('.logo');
+            if (logo) logo.addEventListener('click', function(e) {
+                e.preventDefault();
+                _clicks++;
+                clearTimeout(_timer);
+                _timer = setTimeout(function() { _clicks = 0; }, 2000);
+                if (_clicks >= 5) { _clicks = 0; openAdmin(); }
             });
-        };
-
-        function showAdminDashboard() {
-            document.getElementById('adminDashboard').classList.add('active');
-            startClock();
-            fetchAdminLocation();
-            apNav('overview', document.querySelector('.ap-nav-item'));
-        }
-
-        /* ---- Clock ---- */
-        function startClock() {
-            function tick() {
-                var now = new Date();
-                var h = String(now.getHours()).padStart(2,'0');
-                var m = String(now.getMinutes()).padStart(2,'0');
-                var s = String(now.getSeconds()).padStart(2,'0');
-                var el = document.getElementById('apClock');
-                if (el) el.textContent = h+':'+m+':'+s;
-            }
-            tick();
-            if (apClockTimer) clearInterval(apClockTimer);
-            apClockTimer = setInterval(tick, 1000);
-        }
-
-        /* ---- Live Location ---- */
-        function fetchAdminLocation() {
-            fetch('https://ipapi.co/json/')
-                .then(function(r){ return r.json(); })
-                .then(function(d) {
-                    var loc = (d.city||'') + (d.city&&d.country_name?', ':'') + (d.country_name||'');
-                    if (!loc) loc = 'Location unavailable';
-                    setLocation(loc, d.ip||'', d.timezone||'');
-                })
-                .catch(function() {
-                    fetch('http://ip-api.com/json/')
-                        .then(function(r){ return r.json(); })
-                        .then(function(d) {
-                            var loc = d.status==='success' ? d.city+', '+d.country : 'Location unavailable';
-                            setLocation(loc, d.query||'', d.timezone||'');
-                        })
-                        .catch(function() { setLocation('Location unavailable','',''); });
-                });
-        }
-
-        function setLocation(city, ip, tz) {
-            var c = document.getElementById('apLocCity');
-            var i = document.getElementById('apLocIP');
-            var t = document.getElementById('apTopLocation');
-            if (c) c.textContent = city;
-            if (i) i.textContent = (ip?'IP: '+ip:'') + (tz?' · '+tz:'');
-            if (t) t.textContent = city;
-        }
-
-        /* ---- Navigation ---- */
-        window.apNav = function(sec, btn) {
-            document.querySelectorAll('.ap-nav-item').forEach(function(b){ b.classList.remove('active'); });
-            if (btn) btn.classList.add('active');
-            document.querySelectorAll('.ap-section').forEach(function(s){ s.classList.remove('active'); });
-            var el = document.getElementById('apSec-'+sec);
-            if (el) el.classList.add('active');
-            var titles = {
-                overview:'Overview', users:'Users', checklist:'Checklist Signups',
-                purchases:'Purchases', broadcast:'Bulk Messaging',
-                docs:'Documents & Videos', meetings:'Scheduled Meetings', analytics:'Analytics'
-            };
-            var subs = {
-                overview:"Your platform at a glance", users:"Manage registered users",
-                checklist:"Track free checklist downloads", purchases:"All purchase records",
-                broadcast:"Send messages to your audience", docs:"Upload and manage content",
-                meetings:"Schedule and track meetings", analytics:"Data and storage insights"
-            };
-            var t = document.getElementById('apPageTitle');
-            var s = document.getElementById('apPageSub');
-            if (t) t.textContent = titles[sec]||sec;
-            if (s) s.textContent = subs[sec]||'';
-            if (sec==='overview') renderOverview();
-            else if (sec==='users') renderUsers();
-            else if (sec==='checklist') renderChecklist();
-            else if (sec==='purchases') renderPurchases();
-            else if (sec==='broadcast') renderBroadcasts();
-            else if (sec==='docs') renderDocs();
-            else if (sec==='meetings') renderMeetings();
-            else if (sec==='analytics') renderAnalytics();
-        };
-
-        /* ---- Data helpers ---- */
-        function apAuthHeaders() {
-            return apAdminToken ? { 'Authorization': 'Bearer ' + apAdminToken } : {};
-        }
-        function getUsers() { return allUsersCache; }
-        function getPurchases() { return JSON.parse(localStorage.getItem('bullbearPurchases')||'[]'); }
-        function getBroadcasts() { return JSON.parse(localStorage.getItem('bbBroadcasts')||'[]'); }
-        function getDocs() { return JSON.parse(localStorage.getItem('bbDocs')||'[]'); }
-        function getMeetings() { return JSON.parse(localStorage.getItem('bbMeetings')||'[]'); }
-
-        /* ---- Overview ---- */
-        function renderOverview() {
-            var msgs = getBroadcasts().length;
-            var docs = getDocs().length;
-            var ra = document.getElementById('apRecentActivity');
-
-            document.getElementById('apStatCards').innerHTML =
-                apStatCard('👥', '…', 'Total Users') +
-                apStatCard('🆕', '…', "Today's Signups") +
-                apStatCard('💳', '…', 'Purchases') +
-                apStatCard('💰', '…', 'Revenue') +
-                apStatCard('📢', msgs, 'Broadcasts') +
-                apStatCard('📄', docs, 'Documents');
-            ra.innerHTML = '<p class="ap-empty">Loading…</p>';
-
-            if (!apAdminToken) {
-                ra.innerHTML = '<p class="ap-empty" style="color:#f87171;">Not authenticated — re-enter your password</p>';
-                return;
-            }
-
-            // Fetch users + stats in parallel
-            Promise.all([
-                fetch(AP_API + '/admin/users?limit=200', { headers: apAuthHeaders() }).then(function(r){ return r.json(); }),
-                fetch(AP_API + '/admin/stats',            { headers: apAuthHeaders() }).then(function(r){ return r.json(); }),
-            ])
-            .then(function(results) {
-                var usersData = results[0];
-                var statsData = results[1];
-
-                // Populate users cache
-                if (usersData.data && usersData.data.users) {
-                    allUsersCache = usersData.data.users;
-                }
-
-                var todayStr = new Date().toDateString();
-                var todayCount = allUsersCache.filter(function(u){
-                    return u.role !== 'admin' && new Date(u.createdAt).toDateString() === todayStr;
-                }).length;
-
-                var s = (statsData.status === 'success' && statsData.data) ? statsData.data : {};
-
-                document.getElementById('apStatCards').innerHTML =
-                    apStatCard('👥', s.totalUsers || allUsersCache.filter(function(u){ return u.role!=='admin'; }).length || 0, 'Total Users') +
-                    apStatCard('🆕', todayCount, "Today's Signups") +
-                    apStatCard('💳', s.totalPurchases || 0, 'Purchases') +
-                    apStatCard('💰', '$' + (s.totalRevenue || 0).toFixed(0), 'Revenue') +
-                    apStatCard('📢', msgs, 'Broadcasts') +
-                    apStatCard('📄', docs, 'Documents');
-
-                // Recent activity feed
-                var items = [];
-                allUsersCache.filter(function(u){ return u.role!=='admin'; }).slice(0,3).forEach(function(u){
-                    var name = ((u.firstName||'')+ ' '+(u.lastName||'')).trim() || u.email || 'User';
-                    items.push({ text: '<b>'+name+'</b> signed up', time: u.createdAt });
-                });
-                (s.recentPurchases||[]).slice(0,3).forEach(function(p){
-                    var who = (p.user && p.user.email) || 'A user';
-                    var what = (p.course && p.course.title) || 'a course';
-                    items.push({ text: '<b>'+who+'</b> purchased '+what, time: p.createdAt });
-                });
-                items.sort(function(a,b){ return new Date(b.time)-new Date(a.time); });
-
-                if (items.length === 0) { ra.innerHTML='<p class="ap-empty">No recent activity yet</p>'; return; }
-                ra.innerHTML = items.slice(0,8).map(function(it){
-                    var d = it.time ? new Date(it.time).toLocaleString() : '';
-                    return '<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid rgba(124,58,237,0.08);">'+
-                        '<span style="font-size:0.82rem;color:#94a3b8;flex:1;">'+it.text+'</span>'+
-                        '<span style="font-size:0.72rem;color:#475569;white-space:nowrap;">'+d+'</span></div>';
-                }).join('');
-            })
-            .catch(function(e){
-                console.error('Overview load failed:', e);
-                ra.innerHTML = '<p class="ap-empty" style="color:#f87171;">Failed to load data — check connection</p>';
-            });
-        }
-
-        function apStatCard(icon, val, label) {
-            return '<div class="ap-stat-card">'+
-                '<div class="ap-stat-icon">'+icon+'</div>'+
-                '<div class="ap-stat-val">'+val+'</div>'+
-                '<div class="ap-stat-lbl">'+label+'</div></div>';
-        }
-
-        /* ---- Users ---- */
-        function renderUsers() {
-            var div = document.getElementById('apUsersTable');
-            div.innerHTML = '<p class="ap-empty">Loading...</p>';
-            if (!apAdminToken) { div.innerHTML='<p class="ap-empty">Not authenticated</p>'; return; }
-
-            fetch(AP_API + '/admin/users?limit=200', { headers: apAuthHeaders() })
-            .then(function(r){ return r.json(); })
-            .then(function(data){
-                allUsersCache = (data.data && data.data.users) || [];
-                var users = allUsersCache.filter(function(u){ return u.role !== 'admin'; });
-                document.getElementById('apUserCount').textContent = users.length;
-                renderUsersFiltered(users);
-            })
-            .catch(function(){ div.innerHTML='<p class="ap-empty">Failed to load users</p>'; });
-        }
-
-        function renderUsersFiltered(users) {
-            var div = document.getElementById('apUsersTable');
-            if (users.length===0){ div.innerHTML='<p class="ap-empty">No users found</p>'; return; }
-            var rows = users.map(function(u,i){
-                var name = ((u.firstName||'') + ' ' + (u.lastName||'')).trim() || '—';
-                var d = u.createdAt ? new Date(u.createdAt).toLocaleDateString() : '—';
-                return '<tr>'+
-                    '<td style="color:#475569;">'+(i+1)+'</td>'+
-                    '<td style="font-weight:600;color:#e2e8f0;">'+name+'</td>'+
-                    '<td>'+(u.email||'—')+'</td>'+
-                    '<td>'+(u.phone||'—')+'</td>'+
-                    '<td style="color:#475569;">'+d+'</td>'+
-                    '<td><span style="color:'+(u.role==='admin'?'#c4b5fd':'#10b981')+';font-size:0.75rem;font-weight:600;">'+u.role+'</span></td>'+
-                    '</tr>';
-            }).join('');
-            div.innerHTML='<table class="ap-tbl"><thead><tr><th>#</th><th>Name</th><th>Email</th><th>Phone</th><th>Joined</th><th>Role</th></tr></thead><tbody>'+rows+'</tbody></table>';
-        }
-
-        window.filterUsers = function(q) {
-            q = q.toLowerCase();
-            var filtered = allUsersCache.filter(function(u){
-                if (u.role === 'admin') return false;
-                var name = ((u.firstName||'') + ' ' + (u.lastName||'')).toLowerCase();
-                return name.includes(q) || (u.email||'').toLowerCase().includes(q);
-            });
-            renderUsersFiltered(filtered);
-        };
-
-        window.exportUsers = function() {
-            apDownload(JSON.stringify(allUsersCache,null,2),'bullbear-users-'+today()+'.json','application/json');
-        };
-
-        window.clearAllUsers = function() {
-            alert('To delete users, use the admin panel at /admin-pro.html');
-        };
-
-        /* ---- Checklist ---- */
-        function renderChecklist() {
-            var div = document.getElementById('apChecklistTable');
-            if (allUsersCache.length === 0 && apAdminToken) {
-                div.innerHTML = '<p class="ap-empty">Loading...</p>';
-                fetch(AP_API + '/admin/users?limit=200', { headers: apAuthHeaders() })
-                .then(function(r){ return r.json(); })
-                .then(function(data){
-                    allUsersCache = (data.data && data.data.users) || [];
-                    renderChecklist();
-                })
-                .catch(function(){ div.innerHTML='<p class="ap-empty">Failed to load</p>'; });
-                return;
-            }
-            var users = allUsersCache.filter(function(u){ return u.role === 'user'; });
-            if (users.length===0){ div.innerHTML='<p class="ap-empty">No signups yet</p>'; return; }
-            var rows = users.map(function(u,i){
-                var name = ((u.firstName||'') + ' ' + (u.lastName||'')).trim() || '—';
-                var d = u.createdAt ? new Date(u.createdAt).toLocaleDateString() : '—';
-                return '<tr>'+
-                    '<td style="color:#475569;">'+(i+1)+'</td>'+
-                    '<td style="font-weight:600;color:#e2e8f0;">'+name+'</td>'+
-                    '<td>'+(u.email||'—')+'</td>'+
-                    '<td>'+(u.phone||'—')+'</td>'+
-                    '<td style="color:#475569;">'+d+'</td>'+
-                    '</tr>';
-            }).join('');
-            div.innerHTML='<table class="ap-tbl"><thead><tr><th>#</th><th>Name</th><th>Email</th><th>Phone</th><th>Joined</th></tr></thead><tbody>'+rows+'</tbody></table>';
-        }
-
-        window.exportChecklistCSV = function() {
-            var users = allUsersCache.filter(function(u){ return u.role==='user'; });
-            var csv = 'Name,Email,Phone,Joined\n' + users.map(function(u){
-                return [((u.firstName||'')+' '+(u.lastName||'')).trim(), u.email, u.phone||'', u.createdAt].join(',');
-            }).join('\n');
-            apDownload(csv,'bullbear-signups-'+today()+'.csv','text/csv');
-        };
-
-        /* ---- Purchases ---- */
-        function renderPurchases() {
-            var div = document.getElementById('apPurchasesTable');
-            div.innerHTML = '<p class="ap-empty">Loading...</p>';
-            if (!apAdminToken) { div.innerHTML='<p class="ap-empty">Not authenticated</p>'; return; }
-
-            fetch(AP_API + '/admin/purchases?limit=200', { headers: apAuthHeaders() })
-            .then(function(r){ return r.json(); })
-            .then(function(data){
-                var purchases = (data.data && data.data.purchases) || [];
-                var rev = purchases.filter(function(p){ return p.status==='approved'||p.status==='completed'; })
-                    .reduce(function(s,p){ return s+(parseFloat(p.amount)||0); },0);
-                document.getElementById('apRevTotal').textContent = '$'+rev.toFixed(2);
-                if (purchases.length===0){ div.innerHTML='<p class="ap-empty">No purchases yet</p>'; return; }
-                var rows = purchases.map(function(p){
-                    var d = p.createdAt ? new Date(p.createdAt).toLocaleDateString() : '—';
-                    var st = p.status||'pending';
-                    var userLabel = (p.user&&p.user.email) || p.userEmail || '—';
-                    var courseLabel = (p.course&&p.course.title) || p.courseId || '—';
-                    return '<tr>'+
-                        '<td style="font-weight:600;color:#e2e8f0;">'+userLabel+'</td>'+
-                        '<td>'+courseLabel+'</td>'+
-                        '<td style="color:#10b981;font-weight:600;">$'+(p.amount||0)+'</td>'+
-                        '<td style="color:#475569;">'+d+'</td>'+
-                        '<td><span class="ap-badge ap-badge-'+st+'">'+st+'</span></td>'+
-                        '</tr>';
-                }).join('');
-                div.innerHTML='<table class="ap-tbl"><thead><tr><th>User</th><th>Course</th><th>Amount</th><th>Date</th><th>Status</th></tr></thead><tbody>'+rows+'</tbody></table>';
-            })
-            .catch(function(){ div.innerHTML='<p class="ap-empty">Failed to load purchases</p>'; });
-        }
-
-        /* ---- Bulk Messaging ---- */
-        window.sendBroadcast = function() {
-            var title = document.getElementById('bcTitle').value.trim();
-            var body = document.getElementById('bcBody').value.trim();
-            var target = document.getElementById('bcTarget').value;
-            var link = document.getElementById('bcLink').value.trim();
-            if (!title || !body) { alert('Please fill in the title and message.'); return; }
-            var msgs = getBroadcasts();
-            msgs.unshift({ id: Date.now(), title:title, body:body, target:target, link:link, sentAt: new Date().toISOString() });
-            localStorage.setItem('bbBroadcasts', JSON.stringify(msgs));
-            // Also save as notification for users
-            localStorage.setItem('bbLatestBroadcast', JSON.stringify(msgs[0]));
-            document.getElementById('bcTitle').value='';
-            document.getElementById('bcBody').value='';
-            document.getElementById('bcLink').value='';
-            renderBroadcasts();
-            alert('Broadcast sent to ' + (target==='all'?'all users':'checklist signups') + '!');
-        };
-
-        function renderBroadcasts() {
-            var msgs = getBroadcasts();
-            var div = document.getElementById('apBroadcastList');
-            if (msgs.length===0){ div.innerHTML='<p class="ap-empty">No messages sent yet</p>'; return; }
-            div.innerHTML = msgs.map(function(m){
-                var d = new Date(m.sentAt).toLocaleString();
-                var recipients = m.target==='all'?'All Users':'Checklist Signups';
-                return '<div class="ap-msg-item">'+
-                    '<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;">'+
-                    '<div class="ap-msg-title">'+escHtml(m.title)+'</div>'+
-                    '<span class="ap-badge ap-badge-sent">'+recipients+'</span></div>'+
-                    '<div class="ap-msg-body">'+escHtml(m.body)+'</div>'+
-                    (m.link?'<div style="margin-top:6px;"><a href="'+escHtml(m.link)+'" target="_blank" style="color:#a78bfa;font-size:0.75rem;">'+escHtml(m.link)+'</a></div>':'')+
-                    '<div class="ap-msg-meta">Sent '+d+'</div></div>';
-            }).join('');
-        }
-
-        window.clearBroadcasts = function() {
-            if (!confirm('Clear all broadcast history?')) return;
-            localStorage.removeItem('bbBroadcasts');
-            renderBroadcasts();
-        };
-
-        /* ---- Documents ---- */
-        window.addDoc = function() {
-            var title = document.getElementById('docTitle').value.trim();
-            var type = document.getElementById('docType').value;
-            var url = document.getElementById('docUrl').value.trim();
-            var notes = document.getElementById('docNotes').value.trim();
-            if (!title || !url) { alert('Title and URL are required.'); return; }
-            var docs = getDocs();
-            docs.unshift({ id:Date.now(), title:title, type:type, url:url, notes:notes, addedAt:new Date().toISOString() });
-            localStorage.setItem('bbDocs', JSON.stringify(docs));
-            document.getElementById('docTitle').value='';
-            document.getElementById('docUrl').value='';
-            document.getElementById('docNotes').value='';
-            renderDocs();
-        };
-
-        function renderDocs() {
-            var docs = getDocs();
-            document.getElementById('apDocCount').textContent = docs.length + ' item'+(docs.length!==1?'s':'');
-            var div = document.getElementById('apDocList');
-            if (docs.length===0){ div.innerHTML='<p class="ap-empty">No documents added yet</p>'; return; }
-            var icons = {doc:'[doc]', video:'[vid]', link:'[url]'};
-            div.innerHTML = docs.map(function(d,i){
-                var badge = '<span class="ap-badge ap-badge-'+d.type+'">'+d.type+'</span>';
-                return '<div class="ap-doc-item">'+
-                    '<div class="ap-doc-icon">'+(icons[d.type]||'[doc]')+'</div>'+
-                    '<div class="ap-doc-info">'+
-                    '<div class="ap-doc-name">'+escHtml(d.title)+' '+badge+'</div>'+
-                    '<div class="ap-doc-url">'+escHtml(d.url)+'</div>'+
-                    (d.notes?'<div style="font-size:0.7rem;color:#475569;margin-top:2px;">'+escHtml(d.notes)+'</div>':'')+
-                    '</div>'+
-                    '<a href="'+escHtml(d.url)+'" target="_blank" class="ap-btn ap-btn-ghost ap-btn-sm" style="text-decoration:none;white-space:nowrap;">↗ Open</a>'+
-                    '<button class="ap-btn ap-btn-red ap-btn-sm" onclick="deleteDoc('+i+')">✕</button>'+
-                    '</div>';
-            }).join('');
-        }
-
-        window.deleteDoc = function(i) {
-            var docs = getDocs(); docs.splice(i,1);
-            localStorage.setItem('bbDocs', JSON.stringify(docs));
-            renderDocs();
-        };
-
-        /* ---- Meetings ---- */
-        window.scheduleMeeting = function() {
-            var title = document.getElementById('mtTitle').value.trim();
-            var date = document.getElementById('mtDate').value;
-            var time = document.getElementById('mtTime').value;
-            var platform = document.getElementById('mtPlatform').value;
-            var link = document.getElementById('mtLink').value.trim();
-            var notes = document.getElementById('mtNotes').value.trim();
-            if (!title || !date || !time) { alert('Title, date and time are required.'); return; }
-            var meetings = getMeetings();
-            meetings.push({ id:Date.now(), title:title, date:date, time:time, platform:platform, link:link, notes:notes });
-            meetings.sort(function(a,b){ return new Date(a.date+' '+a.time)-new Date(b.date+' '+b.time); });
-            localStorage.setItem('bbMeetings', JSON.stringify(meetings));
-            document.getElementById('mtTitle').value='';
-            document.getElementById('mtDate').value='';
-            document.getElementById('mtTime').value='';
-            document.getElementById('mtLink').value='';
-            document.getElementById('mtNotes').value='';
-            renderMeetings();
-        };
-
-        function renderMeetings() {
-            var meetings = getMeetings();
-            var div = document.getElementById('apMeetingList');
-            if (meetings.length===0){ div.innerHTML='<p class="ap-empty">No meetings scheduled</p>'; return; }
-            var platformIcons = {zoom:'[zoom]',meet:'[meet]',teams:'[teams]',other:'[call]'};
-            div.innerHTML = meetings.map(function(m,i){
-                var dt = new Date(m.date);
-                var day = dt.getDate();
-                var mon = dt.toLocaleString('en',{month:'short'});
-                var isPast = new Date(m.date+' '+m.time) < new Date();
-                return '<div class="ap-meet-item" style="'+(isPast?'opacity:0.5':'')+'">'+
-                    '<div class="ap-meet-date-box"><div class="ap-meet-day">'+day+'</div><div class="ap-meet-mon">'+mon+'</div></div>'+
-                    '<div class="ap-meet-info">'+
-                    '<div class="ap-meet-title">'+(platformIcons[m.platform]||'[call]')+' '+escHtml(m.title)+'</div>'+
-                    '<div class="ap-meet-time">'+m.date+' at '+m.time+'</div>'+
-                    (m.link?'<div class="ap-meet-link"><a href="'+escHtml(m.link)+'" target="_blank" style="color:#a78bfa;">Join'+m.platform+'</a></div>':'')+
-                    (m.notes?'<div class="ap-meet-notes">'+escHtml(m.notes)+'</div>':'')+
-                    '</div>'+
-                    '<button class="ap-btn ap-btn-red ap-btn-sm" onclick="deleteMeeting('+i+')" style="flex-shrink:0;">✕</button>'+
-                    '</div>';
-            }).join('');
-        }
-
-        window.deleteMeeting = function(i) {
-            var m = getMeetings(); m.splice(i,1);
-            localStorage.setItem('bbMeetings', JSON.stringify(m));
-            renderMeetings();
-        };
-
-        window.clearPastMeetings = function() {
-            var now = new Date();
-            var m = getMeetings().filter(function(mt){ return new Date(mt.date+' '+mt.time) >= now; });
-            localStorage.setItem('bbMeetings', JSON.stringify(m));
-            renderMeetings();
-        };
-
-        /* ---- Analytics ---- */
-        function renderAnalytics() {
-            var broadcasts = getBroadcasts(), docs = getDocs(), meetings = getMeetings();
-            var cards = document.getElementById('apAnalyticsCards');
-            cards.innerHTML = apStatCard('', '...', 'Total Users') +
-                apStatCard('', '...', 'Total Revenue') +
-                apStatCard('', '...', 'Purchases') +
-                apStatCard('', '...', 'Checklist Leads') +
-                apStatCard('', broadcasts.length, 'Broadcasts Sent') +
-                apStatCard('', docs.length, 'Documents');
-
-            if (!apAdminToken) return;
-            fetch(AP_API + '/admin/stats', { headers: apAuthHeaders() })
-            .then(function(r){ return r.json(); })
-            .then(function(data){
-                if (data.status !== 'success') return;
-                var s = data.data;
-                cards.innerHTML =
-                    apStatCard('', s.totalUsers || 0, 'Total Users') +
-                    apStatCard('', '$' + (s.totalRevenue || 0).toFixed(2), 'Total Revenue') +
-                    apStatCard('', s.totalPurchases || 0, 'Purchases') +
-                    apStatCard('', s.checklistLeads || 0, 'Checklist Leads') +
-                    apStatCard('', broadcasts.length, 'Broadcasts Sent') +
-                    apStatCard('', docs.length, 'Documents');
-            })
-            .catch(function(){});
-
-            // Storage info
-            var keys = [], totalBytes = 0;
-            for (var k in localStorage) {
-                if (localStorage.hasOwnProperty(k)) {
-                    var size = ((localStorage.getItem(k)||'').length + k.length) * 2;
-                    totalBytes += size;
-                    keys.push({k:k, s:size});
-                }
-            }
-            keys.sort(function(a,b){ return b.s-a.s; });
-            var si = document.getElementById('apStorageInfo');
-            var usedKB = (totalBytes/1024).toFixed(1);
-            var maxKB = 5120;
-            var pct = Math.min(100, (totalBytes/1024/maxKB*100)).toFixed(1);
-            si.innerHTML = '<div style="margin-bottom:10px;">'+
-                '<div style="display:flex;justify-content:space-between;font-size:0.78rem;color:#64748b;margin-bottom:6px;">'+
-                '<span>Used: '+usedKB+' KB</span><span>Max: ~5 MB</span></div>'+
-                '<div style="background:rgba(124,58,237,0.12);border-radius:4px;height:6px;overflow:hidden;">'+
-                '<div style="width:'+pct+'%;height:100%;background:linear-gradient(90deg,#7c3aed,#d946ef);border-radius:4px;"></div></div>'+
-                '<div style="text-align:right;font-size:0.7rem;color:#475569;margin-top:4px;">'+pct+'% used</div></div>'+
-                '<div style="font-size:0.78rem;color:#475569;">'+localStorage.length+' keys stored</div>';
-
-            var breakdown = document.getElementById('apDataBreakdown');
-            breakdown.innerHTML = '<table class="ap-tbl" style="font-size:0.8rem;">'+
-                '<thead><tr><th>Key</th><th>Size</th></tr></thead><tbody>'+
-                keys.slice(0,10).map(function(k){
-                    return '<tr><td style="font-family:monospace;color:#a78bfa;font-size:0.75rem;">'+k.k+'</td>'+
-                        '<td style="color:#94a3b8;">'+(k.s/1024).toFixed(2)+' KB</td></tr>';
-                }).join('')+'</tbody></table>';
-        }
-
-        /* ---- Export & helpers ---- */
-        window.exportAllData = function() {
-            var data = { users:getUsers(), purchases:getPurchases(), broadcasts:getBroadcasts(),
-                docs:getDocs(), meetings:getMeetings(), exportedAt:new Date().toISOString() };
-            apDownload(JSON.stringify(data,null,2),'bullbear-data-'+today()+'.json','application/json');
-        };
-
-        function apDownload(content, filename, mime) {
-            var blob = new Blob([content], {type:mime});
-            var a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = filename;
-            a.click();
-        }
-
-        function today() { return new Date().toISOString().slice(0,10); }
-
-        function escHtml(s) {
-            return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-        }
-
-        /* ---- Secret triggers ---- */
-        // Click logo 5x
-        (function(){
-            var clicks=0, timer;
-            document.addEventListener('DOMContentLoaded', function(){
-                var logo = document.querySelector('.logo');
-                if (logo) logo.addEventListener('click', function(e){
-                    e.preventDefault();
-                    clicks++;
-                    clearTimeout(timer);
-                    timer = setTimeout(function(){ clicks=0; }, 2000);
-                    if (clicks>=5){ clicks=0; openAdmin(); }
-                });
-            });
-        })();
-
-        // URL hash
-        if (window.location.hash==='#admin') {
-            window.addEventListener('DOMContentLoaded', function(){ openAdmin(); });
-        }
-
-        // Keyboard Ctrl+Shift+A
-        document.addEventListener('keydown', function(e){
-            if (e.ctrlKey && e.shiftKey && e.key==='A'){ e.preventDefault(); openAdmin(); }
         });
-
+        if (window.location.hash === '#admin') {
+            window.addEventListener('DOMContentLoaded', function() { openAdmin(); });
+        }
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.shiftKey && e.key === 'A') { e.preventDefault(); openAdmin(); }
+        });
     })();
     </script>
 
@@ -6066,31 +5835,7 @@
         window.rtSavePurchase       = rtSavePurchase;
         window.rtLogEvent           = rtLogEvent;
 
-        // Hook into existing handleSignup — save to Firestore on success
-        const _origSignup = window.handleSignup;
-        window.handleSignup = async function (event) {
-            const name  = document.getElementById('signupName')?.value?.trim() || '';
-            const email = document.getElementById('signupEmail')?.value?.trim() || '';
-            await (_origSignup ? _origSignup(event) : false);
-            // Only save if backend accepted (no error shown)
-            const errEl = document.getElementById('signupError');
-            const errVisible = errEl && errEl.style.display !== 'none' && errEl.textContent;
-            if (email && !errVisible) {
-                rtSaveUser({ name, email, source: 'signup' }).catch(() => {});
-            }
-        };
-
-        // Hook into existing handleLogin — update last login on success
-        const _origLogin = window.handleLogin;
-        window.handleLogin = async function (event) {
-            const email = document.getElementById('loginEmail')?.value?.trim() || '';
-            await (_origLogin ? _origLogin(event) : false);
-            const errEl = document.getElementById('loginError');
-            const errVisible = errEl && errEl.style.display !== 'none' && errEl.textContent;
-            if (email && !errVisible) {
-                rtUpdateLogin(email).catch(() => {});
-            }
-        };
+        // Signup and login are handled fully by the backend API — no duplicate writes needed.
 
         // Hook into existing handleChecklistSignup — log download on success
         const _origChecklist = window.handleChecklistSignup;

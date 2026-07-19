@@ -1,701 +1,661 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Library - BullBear Blockchain</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            color: #ffffff;
-            line-height: 1.6;
-            overflow-x: hidden;
-            min-height: 100vh;
-        }
-
-        .header {
-            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-            padding: 20px 0;
-            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.3);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-        }
-
-        .logo {
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .logo:hover {
-            transform: translateY(-2px);
-        }
-
-        .logo-image {
-            height: 55px;
-            width: auto;
-            filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.15));
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .logo:hover .logo-image {
-            filter: drop-shadow(0 4px 12px rgba(255, 215, 0, 0.3));
-            transform: scale(1.02);
-        }
-
-        .logo-text {
-            font-family: 'SF Pro Display', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            font-size: 1.25rem;
-            font-weight: 800;
-            color: #ffffff;
-            letter-spacing: -0.02em;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        }
-
-        .user-info-header {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .back-button {
-            padding: 8px 20px;
-            background: rgba(255, 255, 255, 0.2);
-            color: #ffffff;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.95rem;
-        }
-
-        .back-button:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .user-email {
-            color: #ffffff;
-            font-weight: 600;
-        }
-
-        .logout-btn-header {
-            padding: 8px 20px;
-            background: rgba(255, 255, 255, 0.2);
-            color: #ffffff;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            text-decoration: none;
-        }
-
-        .logout-btn-header:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        .main-content {
-            padding: 60px 20px;
-            min-height: calc(100vh - 85px);
-            position: relative;
-        }
-
-        .main-content::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
-            border-radius: 50%;
-            filter: blur(80px);
-            z-index: 0;
-            pointer-events: none;
-        }
-
-        .page-title {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
-            font-size: 3.5rem;
-            font-weight: 800;
-            margin-bottom: 20px;
-            background: linear-gradient(135deg, #6366f1, #06b6d4, #8b5cf6, #06b6d4, #6366f1);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            letter-spacing: -2px;
-            text-align: center;
-            transform-style: preserve-3d;
-            animation: gradientShift 8s ease infinite, float3dTitle 4s ease-in-out infinite;
-            text-shadow:
-                0 10px 30px rgba(99, 102, 241, 0.4),
-                0 20px 60px rgba(6, 182, 212, 0.3);
-            filter: drop-shadow(0 0 20px rgba(99, 102, 241, 0.5));
-            line-height: 1.1;
-        }
-
-        @keyframes gradientShift {
-
-            0%,
-            100% {
-                background-position: 0% center;
-            }
-
-            50% {
-                background-position: 100% center;
-            }
-        }
-
-        @keyframes float3dTitle {
-
-            0%,
-            100% {
-                transform: perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px);
-            }
-
-            25% {
-                transform: perspective(1000px) rotateX(2deg) rotateY(-2deg) translateZ(8px);
-            }
-
-            50% {
-                transform: perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px);
-            }
-
-            75% {
-                transform: perspective(1000px) rotateX(-2deg) rotateY(2deg) translateZ(8px);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .page-title {
-                font-size: 2.5rem;
-                letter-spacing: -1px;
-            }
-
-            .page-subtitle {
-                font-size: 1rem;
-            }
-        }
-
-        .page-subtitle {
-            text-align: center;
-            color: #cbd5e1;
-            font-size: 1.2rem;
-            margin-bottom: 50px;
-            font-weight: 400;
-            letter-spacing: 0.3px;
-            line-height: 1.6;
-        }
-
-        .courses-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 25px;
-            margin-top: 40px;
-        }
-
-        .course-card {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
-            backdrop-filter: blur(20px);
-            border-radius: 20px;
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            overflow: hidden;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow:
-                0 10px 40px rgba(0, 0, 0, 0.3),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1);
-            transform-style: preserve-3d;
-            position: relative;
-            animation: float 6s ease-in-out infinite;
-        }
-
-        @keyframes float {
-
-            0%,
-            100% {
-                transform: translateY(0px) rotateX(0deg);
-            }
-
-            50% {
-                transform: translateY(-10px) rotateX(2deg);
-            }
-        }
-
-        .course-card:nth-child(1) {
-            animation-delay: 0s;
-        }
-
-        .course-card:nth-child(2) {
-            animation-delay: 0.5s;
-        }
-
-        .course-card:nth-child(3) {
-            animation-delay: 1s;
-        }
-
-        .course-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            border-radius: 20px;
-            padding: 2px;
-            background: linear-gradient(135deg, #6366f1, #06b6d4, #8b5cf6);
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            opacity: 0;
-            transition: opacity 0.5s ease;
-            z-index: 1;
-        }
-
-        .course-card:hover {
-            transform: translateY(-15px) rotateX(5deg) scale(1.02);
-            box-shadow:
-                0 25px 60px rgba(99, 102, 241, 0.4),
-                0 0 80px rgba(6, 182, 212, 0.3),
-                inset 0 1px 0 rgba(255, 255, 255, 0.2);
-            border-color: rgba(6, 182, 212, 0.5);
-            animation-play-state: paused;
-        }
-
-        .course-card:hover::before {
-            opacity: 1;
-        }
-
-        .course-card::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle, rgba(99, 102, 241, 0.2) 0%, transparent 70%);
-            transform: translate(-50%, -50%);
-            opacity: 0;
-            transition: opacity 0.5s ease;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .course-card:hover::after {
-            opacity: 1;
-        }
-
-        .course-image {
-            width: 100%;
-            height: 160px;
-            object-fit: cover;
-        }
-
-        .course-content {
-            padding: 20px;
-            position: relative;
-            z-index: 2;
-        }
-
-        .course-title {
-            font-size: 1.15rem;
-            font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 10px;
-            line-height: 1.3;
-        }
-
-        .course-description {
-            color: #cbd5e1;
-            font-size: 0.9rem;
-            margin-bottom: 16px;
-            line-height: 1.5;
-        }
-
-        .course-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-top: 12px;
-            border-top: 1px solid rgba(99, 102, 241, 0.2);
-        }
-
-        .purchase-date {
-            color: #94a3b8;
-            font-size: 0.8rem;
-        }
-
-        .access-btn {
-            padding: 10px 20px;
-            background: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%);
-            background-size: 200% 100%;
-            color: #ffffff;
-            text-decoration: none;
-            border-radius: 10px;
-            font-weight: 700;
-            font-size: 0.85rem;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            display: inline-block;
-            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
-            position: relative;
-            overflow: hidden;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .access-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s;
-        }
-
-        .access-btn:hover::before {
-            left: 100%;
-        }
-
-        .access-btn:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.6);
-            background-position: 100% 0;
-        }
-
-        .access-btn:active {
-            transform: translateY(-1px);
-        }
-
-        .empty-library {
-            text-align: center;
-            padding: 80px 20px;
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%);
-            border-radius: 20px;
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-        }
-
-        .empty-library h3 {
-            font-size: 2rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #06b6d4, #8b5cf6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 15px;
-        }
-
-        .empty-library p {
-            color: #cbd5e1;
-            font-size: 1.1rem;
-            margin-bottom: 30px;
-        }
-
-        .auth-required {
-            text-align: center;
-            padding: 80px 20px;
-        }
-
-        .auth-required h2 {
-            font-size: 2rem;
-            margin-bottom: 20px;
-            color: #06b6d4;
-        }
-
-        .auth-btn {
-            padding: 16px 40px;
-            background: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%);
-            background-size: 200% 100%;
-            color: #ffffff;
-            text-decoration: none;
-            border-radius: 12px;
-            font-size: 1.1rem;
-            font-weight: 700;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            display: inline-block;
-            margin: 0 10px;
-            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .auth-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s;
-        }
-
-        .auth-btn:hover::before {
-            left: 100%;
-        }
-
-        .auth-btn:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 12px 35px rgba(99, 102, 241, 0.6);
-            background-position: 100% 0;
-        }
-
-        .auth-btn:active {
-            transform: translateY(-1px);
-        }
-    </style>
-    <link rel="stylesheet" href="./bb-theme.css">
-    <style>
-        /* ── BullBear landing-page theme ── */
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800&display=swap');
-        body {
-            background: #05010f !important;
-            background-image: radial-gradient(ellipse at 20% 15%, rgba(124,58,237,0.14) 0%, transparent 55%),
-                              radial-gradient(ellipse at 80% 80%, rgba(217,70,239,0.09) 0%, transparent 50%) !important;
-            background-attachment: fixed !important;
-            font-family: 'Inter', system-ui, sans-serif !important;
-            -webkit-font-smoothing: antialiased !important;
-        }
-        body::before { background: none !important; filter: none !important; }
-        body::after  { display: none !important; }
-        .header {
-            background: rgba(5,1,15,0.96) !important;
-            backdrop-filter: blur(16px) !important;
-            -webkit-backdrop-filter: blur(16px) !important;
-            border-bottom: 1px solid rgba(124,58,237,0.25) !important;
-            box-shadow: 0 1px 0 rgba(124,58,237,0.12), 0 8px 40px rgba(0,0,0,0.6) !important;
-        }
-        .page-title {
-            background: linear-gradient(135deg, #a78bfa 0%, #f0abfc 100%) !important;
-            -webkit-background-clip: text !important;
-            -webkit-text-fill-color: transparent !important;
-            background-clip: text !important;
-            animation: none !important;
-            font-family: 'Space Grotesk', sans-serif !important;
-        }
-        h1, h2, h3 { font-family: 'Space Grotesk', 'Inter', sans-serif !important; }
-        .course-card {
-            background: rgba(255,255,255,0.03) !important;
-            border: 1px solid rgba(124,58,237,0.2) !important;
-            border-radius: 14px !important;
-            box-shadow: 0 4px 24px rgba(0,0,0,0.3) !important;
-            animation: none !important;
-        }
-        .course-card::before { display: none !important; }
-        .course-card:hover {
-            border-color: rgba(124,58,237,0.5) !important;
-            box-shadow: 0 12px 40px rgba(124,58,237,0.22) !important;
-            transform: translateY(-5px) !important;
-        }
-        .back-button, .logout-btn-header {
-            background: rgba(124,58,237,0.15) !important;
-            border-color: rgba(124,58,237,0.3) !important;
-        }
-        .back-button:hover, .logout-btn-header:hover {
-            background: rgba(124,58,237,0.3) !important;
-        }
-        .main-content::before { background: radial-gradient(circle, rgba(124,58,237,0.1) 0%, transparent 70%) !important; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Library — BullBear Blockchain</title>
+  <link rel="shortcut icon" href="images/bullbear-logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --p1: #7c3aed; --p2: #9333ea; --p3: #a855f7; --p4: #c4b5fd;
+      --gold: #c9a227; --gold2: #e6b800;
+      --bg: #000; --card: #111; --card2: #0f0f0f;
+      --border: rgba(255,255,255,.07); --border-p: rgba(124,58,237,.22);
+      --text: rgba(255,255,255,.88); --muted: rgba(255,255,255,.42);
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Space Grotesk', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Nav (matches store.html) ── */
+    nav {
+      position: sticky; top: 0; z-index: 900;
+      background: linear-gradient(135deg, #1a0533 0%, #2d0a5e 50%, #1a0533 100%);
+      border-bottom: 1px solid rgba(124,58,237,.35);
+      padding: 0 40px; height: 68px;
+      display: flex; align-items: center; justify-content: space-between;
+      box-shadow: 0 4px 30px rgba(124,58,237,.25), 0 1px 0 rgba(124,58,237,.2);
+    }
+    .nav-logo { display: flex; align-items: center; gap: 11px; text-decoration: none; }
+    .nav-logo img { height: 42px; filter: drop-shadow(0 0 12px rgba(196,181,253,.45)); }
+    .nav-logo-text {
+      font-size: 1.22rem; font-weight: 800; letter-spacing: -.3px;
+      background: linear-gradient(135deg, #fff 20%, var(--p4));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .nav-right { display: flex; align-items: center; gap: 8px; }
+    .nav-a {
+      color: rgba(255,255,255,.7); text-decoration: none; font-weight: 600;
+      font-size: .875rem; padding: 8px 14px; border-radius: 10px;
+      border: 1px solid transparent; transition: all .2s; letter-spacing: -.1px;
+    }
+    .nav-a:hover { color: #fff; background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.15); }
+    .nav-user-pill {
+      display: flex; align-items: center; gap: 10px;
+      background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.14);
+      border-radius: 40px; padding: 6px 14px 6px 8px;
+    }
+    .nav-avatar {
+      width: 30px; height: 30px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--p1), var(--p2));
+      display: flex; align-items: center; justify-content: center;
+      font-size: .8rem; font-weight: 800; color: #fff; flex-shrink: 0;
+    }
+    .nav-email { font-size: .82rem; font-weight: 600; color: rgba(255,255,255,.8); max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .nav-logout {
+      padding: 7px 14px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.14);
+      border-radius: 9px; color: rgba(255,255,255,.65); font-size: .8rem; font-weight: 600;
+      cursor: pointer; transition: all .2s; font-family: inherit;
+    }
+    .nav-logout:hover { background: rgba(239,68,68,.15); border-color: rgba(239,68,68,.3); color: #fca5a5; }
+
+    /* ── Page hero ── */
+    .hero {
+      padding: 64px 40px 48px; text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(124,58,237,.1); border: 1px solid rgba(124,58,237,.3);
+      color: var(--p4); padding: 5px 16px; border-radius: 40px;
+      font-size: .72rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 18px;
+    }
+    .hero-badge span { width: 6px; height: 6px; border-radius: 50%; background: var(--p3); display: inline-block; animation: dot 1.8s ease-in-out infinite; }
+    @keyframes dot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.3;transform:scale(.7)} }
+    .hero h1 {
+      font-family: 'Inter', sans-serif; font-size: clamp(2rem,5vw,3rem);
+      font-weight: 900; letter-spacing: -1.5px; margin-bottom: 12px;
+    }
+    .hero h1 .g { background: linear-gradient(135deg,var(--p4),#e879f9); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .hero p { color: var(--muted); font-size: .95rem; max-width: 420px; margin: 0 auto; line-height: 1.65; }
+
+    /* ── Section wrapper ── */
+    .page-wrap { max-width: 1200px; margin: 0 auto; padding: 48px 40px 80px; }
+
+    /* ── Section titles ── */
+    .section-head { margin-bottom: 28px; }
+    .section-label {
+      font-size: .68rem; font-weight: 800; text-transform: uppercase; letter-spacing: 2px;
+      color: var(--p3); margin-bottom: 6px; display: flex; align-items: center; gap: 8px;
+    }
+    .section-label::before { content:''; width:20px; height:2px; background:var(--p2); border-radius:2px; }
+    .section-title { font-size: 1.5rem; font-weight: 800; letter-spacing: -.4px; }
+
+    .section-divider { height: 1px; background: linear-gradient(90deg,transparent,rgba(124,58,237,.25),transparent); margin: 56px 0; }
+
+    /* ── Auth required state ── */
+    .auth-wall {
+      text-align: center; padding: 80px 24px;
+      background: rgba(124,58,237,.04); border: 1px solid var(--border-p);
+      border-radius: 20px;
+    }
+    .auth-wall-icon { font-size: 3rem; margin-bottom: 20px; opacity: .7; }
+    .auth-wall h2 { font-size: 1.6rem; font-weight: 800; margin-bottom: 10px; }
+    .auth-wall p { color: var(--muted); margin-bottom: 28px; font-size: .95rem; }
+    .auth-wall-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn-primary {
+      padding: 12px 28px; background: linear-gradient(135deg,var(--p1),var(--p2));
+      border: none; border-radius: 12px; color: #fff; font-size: .9rem; font-weight: 700;
+      cursor: pointer; font-family: inherit; text-decoration: none; display: inline-block;
+      transition: all .22s; box-shadow: 0 4px 20px rgba(124,58,237,.35);
+    }
+    .btn-primary:hover { filter: brightness(1.1); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(124,58,237,.5); }
+    .btn-outline {
+      padding: 12px 28px; background: transparent;
+      border: 1px solid rgba(124,58,237,.4); border-radius: 12px; color: var(--p4);
+      font-size: .9rem; font-weight: 700; cursor: pointer; font-family: inherit;
+      text-decoration: none; display: inline-block; transition: all .22s;
+    }
+    .btn-outline:hover { background: rgba(124,58,237,.12); transform: translateY(-2px); }
+
+    /* ── Purchases grid ── */
+    .purchases-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(300px,1fr)); gap: 20px;
+    }
+    .purchase-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 16px; overflow: hidden; transition: all .25s;
+    }
+    .purchase-card:hover { border-color: var(--border-p); transform: translateY(-4px); box-shadow: 0 16px 40px rgba(124,58,237,.15); }
+    .pc-img { width: 100%; height: 150px; object-fit: cover; display: block; }
+    .pc-img-placeholder {
+      width: 100%; height: 150px; background: linear-gradient(135deg,rgba(124,58,237,.15),rgba(147,51,234,.08));
+      display: flex; align-items: center; justify-content: center; font-size: 2.5rem;
+    }
+    .pc-body { padding: 18px; }
+    .pc-title { font-size: .98rem; font-weight: 800; color: #f1f5f9; margin-bottom: 8px; line-height: 1.35; }
+    .pc-meta { font-size: .78rem; color: var(--muted); margin-bottom: 12px; }
+    .pc-status-pending  { display:inline-flex;align-items:center;gap:5px;background:rgba(251,191,36,.12);color:#fbbf24;border:1px solid rgba(251,191,36,.25);padding:4px 12px;border-radius:20px;font-size:.72rem;font-weight:700; }
+    .pc-status-approved { display:inline-flex;align-items:center;gap:5px;background:rgba(16,185,129,.12);color:#10b981;border:1px solid rgba(16,185,129,.25);padding:4px 12px;border-radius:20px;font-size:.72rem;font-weight:700; }
+    .pc-status-rejected { display:inline-flex;align-items:center;gap:5px;background:rgba(239,68,68,.1);color:#f87171;border:1px solid rgba(239,68,68,.2);padding:4px 12px;border-radius:20px;font-size:.72rem;font-weight:700; }
+    .pc-footer { display:flex; align-items:center; justify-content:space-between; margin-top:14px; padding-top:14px; border-top:1px solid var(--border); }
+    .pc-date { font-size: .74rem; color: var(--muted); }
+    .pc-access {
+      padding: 8px 16px; background: linear-gradient(135deg,var(--p1),var(--p2));
+      border-radius: 9px; color: #fff; font-size: .78rem; font-weight: 700;
+      text-decoration: none; transition: all .2s;
+    }
+    .pc-access:hover { filter: brightness(1.1); transform: translateY(-1px); }
+
+    /* ── Empty state ── */
+    .empty-state {
+      text-align: center; padding: 60px 24px;
+      background: rgba(255,255,255,.02); border: 1px dashed var(--border-p);
+      border-radius: 16px;
+    }
+    .empty-state .icon { font-size: 2.8rem; margin-bottom: 16px; opacity: .5; }
+    .empty-state h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; }
+    .empty-state p { color: var(--muted); font-size: .88rem; margin-bottom: 20px; }
+
+    /* ── Stats bar ── */
+    .stats-bar {
+      display: flex; gap: 0; background: var(--card); border: 1px solid var(--border-p);
+      border-radius: 14px; overflow: hidden; margin-bottom: 28px;
+    }
+    .stat-item { flex: 1; padding: 18px 20px; text-align: center; border-right: 1px solid var(--border-p); }
+    .stat-item:last-child { border-right: none; }
+    .stat-num { font-size: 1.7rem; font-weight: 900; background: linear-gradient(135deg,var(--p4),#e879f9); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; line-height: 1; margin-bottom: 4px; }
+    .stat-num.green { background: linear-gradient(135deg,#6ee7b7,#10b981); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .stat-lbl { font-size: .68rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+
+    /* ── Library filters ── */
+    .lib-filter-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
+    .lib-filter-btn {
+      padding: 7px 18px; border-radius: 40px; border: 1px solid rgba(124,58,237,.25);
+      background: rgba(124,58,237,.07); color: var(--muted); font-size: .8rem;
+      font-weight: 600; cursor: pointer; transition: all .2s; font-family: inherit; letter-spacing: .2px;
+    }
+    .lib-filter-btn.active { background: linear-gradient(135deg,var(--p1),var(--p2)); color: #fff; border-color: transparent; box-shadow: 0 4px 16px rgba(124,58,237,.4); }
+    .lib-filter-btn:not(.active):hover { color: rgba(255,255,255,.8); background: rgba(124,58,237,.14); border-color: rgba(124,58,237,.4); }
+
+    /* ── Module ── */
+    .lib-module { margin-bottom: 28px; border: 1px solid var(--border-p); border-radius: 18px; overflow: hidden; background: var(--card); }
+    .lib-module-hdr {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 22px; background: rgba(124,58,237,.06);
+      border-bottom: 1px solid rgba(124,58,237,.12);
+    }
+    .lib-module-left { display: flex; align-items: center; gap: 14px; }
+    .lib-module-num {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: linear-gradient(135deg,var(--p1),var(--p2));
+      color: #fff; font-size: .82rem; font-weight: 900;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(124,58,237,.4);
+    }
+    .lib-module-title { font-size: 1rem; font-weight: 800; color: #f1f5f9; }
+    .lib-module-count { font-size: .74rem; color: var(--muted); margin-top: 3px; }
+    .lib-badge-unlock { background:rgba(16,185,129,.12);color:#10b981;border:1px solid rgba(16,185,129,.28);padding:5px 14px;border-radius:20px;font-size:.7rem;font-weight:700; }
+    .lib-badge-lock   { background:rgba(124,58,237,.1);color:var(--p4);border:1px solid rgba(124,58,237,.25);padding:5px 14px;border-radius:20px;font-size:.7rem;font-weight:700; }
+
+    /* ── Card grid ── */
+    .lib-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(270px,1fr)); gap: 16px; padding: 18px; }
+    .lib-card {
+      background: var(--card2); border: 1px solid var(--border);
+      border-radius: 13px; overflow: hidden; display: flex; flex-direction: column;
+      transition: all .25s;
+    }
+    .lib-card:hover { border-color: rgba(124,58,237,.38); transform: translateY(-3px); box-shadow: 0 12px 32px rgba(124,58,237,.18); }
+    .lib-thumb {
+      position: relative; width: 100%; aspect-ratio: 16/9;
+      background: rgba(124,58,237,.08); display: flex; align-items: center; justify-content: center;
+      font-size: 2rem; overflow: hidden;
+    }
+    .lib-thumb img { width:100%; height:100%; object-fit:cover; }
+    .lib-play {
+      position:absolute;inset:0;background:rgba(0,0,0,.35);
+      display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .22s;
+    }
+    .lib-card:hover .lib-play { opacity:1; }
+    .lib-play span {
+      width:46px;height:46px;background:rgba(124,58,237,.9);border-radius:50%;
+      display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.1rem;
+      box-shadow:0 0 0 8px rgba(124,58,237,.2);
+    }
+    .lib-lock-overlay {
+      position:absolute;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(5px);
+      display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;
+    }
+    .lib-lock-overlay .lock-icon { font-size:1.8rem; }
+    .lib-lock-overlay .lock-lbl { font-size:.75rem;color:rgba(255,255,255,.55);font-weight:600; }
+    .lib-body { padding:14px;flex:1;display:flex;flex-direction:column;gap:6px; }
+    .lib-acc-badge {
+      display:inline-block;padding:3px 10px;border-radius:20px;font-size:.65rem;
+      font-weight:700;letter-spacing:.5px;align-self:flex-start;
+      background:rgba(124,58,237,.15);color:var(--p4);border:1px solid rgba(124,58,237,.28);
+    }
+    .lib-acc-badge.free { background:rgba(16,185,129,.12);color:#6ee7b7;border-color:rgba(16,185,129,.25); }
+    .lib-title { font-size:.9rem;font-weight:700;color:#f1f5f9;line-height:1.4;flex:1; }
+    .lib-desc  { font-size:.76rem;color:#475569;line-height:1.55; }
+    .lib-btn {
+      margin-top:auto;padding:9px;border:none;border-radius:9px;font-size:.8rem;
+      font-weight:700;cursor:pointer;transition:all .2s;font-family:inherit;
+    }
+    .lib-btn-watch { background:linear-gradient(135deg,var(--p1),var(--p2));color:#fff; }
+    .lib-btn-watch:hover { filter:brightness(1.1);transform:translateY(-1px);box-shadow:0 4px 16px rgba(124,58,237,.4); }
+    .lib-btn-lock { background:rgba(255,255,255,.04);border:1px solid var(--border)!important;color:var(--muted); }
+    .lib-btn-lock:hover { background:rgba(124,58,237,.1);color:var(--p4);border-color:rgba(124,58,237,.35)!important; }
+
+    /* ── Unlock CTA banner ── */
+    .lib-unlock-cta {
+      grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;
+      gap:16px;background:rgba(124,58,237,.06);border:1px dashed rgba(124,58,237,.28);
+      border-radius:13px;padding:18px 22px;
+    }
+    .lib-unlock-cta strong { color:#f1f5f9;font-size:.9rem; }
+    .lib-unlock-cta p { color:var(--muted);font-size:.78rem;margin-top:3px; }
+    .lib-unlock-btn {
+      flex-shrink:0;padding:11px 22px;background:linear-gradient(135deg,var(--p1),var(--p2));
+      color:#fff;border:none;border-radius:11px;font-weight:700;font-size:.83rem;
+      cursor:pointer;font-family:inherit;white-space:nowrap;transition:all .2s;
+      box-shadow:0 4px 16px rgba(124,58,237,.35);
+    }
+    .lib-unlock-btn:hover { filter:brightness(1.1);transform:translateY(-1px); }
+
+    /* ── Footer (matches store.html) ── */
+    footer {
+      background: linear-gradient(135deg, #1a0533 0%, #2d0a5e 50%, #1a0533 100%);
+      border-top: 1px solid rgba(124,58,237,.35);
+      box-shadow: 0 -4px 30px rgba(124,58,237,.2);
+      padding: 36px 40px;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 16px; position: relative; z-index: 1;
+    }
+    .footer-logo { display:flex;align-items:center;gap:10px; }
+    .footer-logo img { height:32px;filter:drop-shadow(0 0 8px rgba(196,181,253,.4)); }
+    .footer-logo span { font-weight:800;font-size:1rem;background:linear-gradient(135deg,#fff 20%,var(--p4));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
+    .footer-links { display:flex;gap:24px;flex-wrap:wrap; }
+    .footer-links a { color:rgba(255,255,255,.55);text-decoration:none;font-size:.84rem;font-weight:600;transition:color .2s; }
+    .footer-links a:hover { color:#fff; }
+    .footer-links a.active { color:var(--p4); }
+    .footer-copy { color:rgba(255,255,255,.28);font-size:.76rem; }
+
+    /* ── Responsive ── */
+    @media(max-width:768px) {
+      nav { padding:0 16px; }
+      .hero { padding:50px 20px 36px; }
+      .page-wrap { padding:36px 16px 70px; }
+      .nav-a { display:none; }
+      .stats-bar { flex-direction:column; }
+      .stat-item { border-right:none;border-bottom:1px solid var(--border-p); }
+      .stat-item:last-child { border-bottom:none; }
+      footer { padding:28px 20px;flex-direction:column;text-align:center; }
+      .footer-links { justify-content:center; }
+      .lib-unlock-cta { flex-direction:column; }
+    }
+  </style>
 </head>
-
 <body>
-    <header class="header">
-        <div class="container">
-            <div class="header-content">
-                <a href="index.html" class="logo">
-                    <img src="images/bullbear-logo.png" alt="BullBear Blockchain Logo" class="logo-image">
-                    <span class="logo-text">BULLBEAR BLOCKCHAIN</span>
-                </a>
-                <div class="user-info-header" id="headerUserInfo" style="display: none;">
-                    <a href="index.html" class="back-button" style="text-decoration:none;">
-                        <span>←</span> Back
-                    </a>
-                    <span class="user-email" id="headerUserEmail"></span>
-                    <button onclick="handleLogout()" class="logout-btn-header">Logout</button>
-                </div>
-            </div>
-        </div>
-    </header>
 
-    <main class="main-content">
-        <div class="container">
-            <h1 class="page-title">My Library</h1>
-            <p class="page-subtitle">Access your purchased courses and materials</p>
-
-            <!-- Auth Required -->
-            <div class="auth-required" id="authRequired" style="display: none;">
-                <h2>🔒 Login Required</h2>
-                <p style="color: #94a3b8; margin-bottom: 30px;">Sign in to access your purchased courses</p>
-                <a href="index.html?modal=signup" class="auth-btn">Sign Up</a>
-                <a href="index.html?modal=login" class="auth-btn" style="background: transparent; border: 2px solid #06b6d4; color: #06b6d4;">Login</a>
-            </div>
-
-            <!-- Library Content -->
-            <div id="libraryContent">
-                <div class="courses-grid" id="coursesGrid"></div>
-                <div class="empty-library" id="emptyLibrary" style="display: none;">
-                    <h3>📚 Your library is empty</h3>
-                    <p>You haven't purchased any courses yet</p>
-                    <a href="index.html" class="auth-btn">Browse Courses</a>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            checkAuth();
-        });
-
-        const API_BASE = 'https://backend-tawny-nu-33.vercel.app/api';
-
-        async function checkAuth() {
-            const token = localStorage.getItem('bullbearToken');
-            if (!token) { showAuthRequired(); return; }
-
-            try {
-                const res = await fetch(API_BASE + '/auth/me', {
-                    headers: { 'Authorization': 'Bearer ' + token },
-                });
-                const data = await res.json();
-                if (!res.ok || !data.data) { showAuthRequired(); return; }
-                showLibrary(data.data);
-            } catch (err) {
-                showAuthRequired();
-            }
-        }
-
-        function showAuthRequired() {
-            document.getElementById('authRequired').style.display = 'block';
-            document.getElementById('libraryContent').style.display = 'none';
-        }
-
-        function showLibrary(user) {
-            document.getElementById('authRequired').style.display = 'none';
-            document.getElementById('libraryContent').style.display = 'block';
-            document.getElementById('headerUserInfo').style.display = 'flex';
-            document.getElementById('headerUserEmail').textContent = user.firstName || user.email;
-            loadUserCourses(user);
-        }
-
-        async function loadUserCourses(user) {
-            const coursesGrid = document.getElementById('coursesGrid');
-            const emptyLibrary = document.getElementById('emptyLibrary');
-            coursesGrid.innerHTML = '<p style="color:#94a3b8;">Loading...</p>';
-
-            try {
-                const res = await fetch(API_BASE + '/purchases/user/' + encodeURIComponent(user.email));
-                const data = await res.json();
-                const purchases = (data.data && data.data.purchases) || [];
-
-                if (purchases.length === 0) {
-                    coursesGrid.innerHTML = '';
-                    emptyLibrary.style.display = 'block';
-                    return;
-                }
-
-                emptyLibrary.style.display = 'none';
-                coursesGrid.innerHTML = '';
-                purchases.forEach(p => coursesGrid.appendChild(createPurchaseCard(p)));
-            } catch (err) {
-                coursesGrid.innerHTML = '<p style="color:#ef4444;">Failed to load purchases.</p>';
-            }
-        }
-
-        function createPurchaseCard(purchase) {
-            const card = document.createElement('div');
-            card.className = 'course-card';
-
-            const date = new Date(purchase.createdAt || purchase.purchaseDate || Date.now());
-            const formattedDate = date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-            const title = (purchase.course && purchase.course.title) || purchase.courseId || 'Course';
-            const status = purchase.status || 'pending';
-
-            const badges = {
-                pending: '<span style="background:rgba(251,191,36,0.2);color:#fbbf24;padding:4px 12px;border-radius:6px;font-size:0.8rem;font-weight:600;">⏳ Pending Approval</span>',
-                approved: '<span style="background:rgba(16,185,129,0.2);color:#10b981;padding:4px 12px;border-radius:6px;font-size:0.8rem;font-weight:600;">✅ Approved</span>',
-                completed: '<span style="background:rgba(16,185,129,0.2);color:#10b981;padding:4px 12px;border-radius:6px;font-size:0.8rem;font-weight:600;">✅ Approved</span>',
-                rejected: '<span style="background:rgba(239,68,68,0.2);color:#ef4444;padding:4px 12px;border-radius:6px;font-size:0.8rem;font-weight:600;">❌ Rejected</span>',
-            };
-
-            const isApproved = status === 'approved' || status === 'completed';
-            const accessUrl = purchase.accessUrl || 'crypto-trading-course.html';
-
-            card.innerHTML = `
-                <img src="https://images.unsplash.com/photo-1621761191319-c6fb62004040?w=400" alt="${title}" class="course-image">
-                <div class="course-content">
-                    <h3 class="course-title">${title}</h3>
-                    <p class="course-description">Order: ${purchase.orderId || 'N/A'} &nbsp;|&nbsp; $${purchase.amount || 0}</p>
-                    ${badges[status] || badges.pending}
-                    <div class="course-meta">
-                        <span class="purchase-date">${formattedDate}</span>
-                        ${isApproved ? `<a href="${accessUrl}" class="access-btn">Access Course</a>` : '<span style="color:#94a3b8;font-size:0.85rem;">Awaiting approval</span>'}
-                    </div>
-                </div>
-            `;
-            return card;
-        }
-
-        function handleLogout() {
-            localStorage.removeItem('bullbearToken');
-            localStorage.removeItem('bullbearCurrentUser');
-            window.location.href = 'index.html';
-        }
-    </script>
-
-    <!-- Footer -->
-    <div
-        style="text-align: center; padding: 40px 20px; margin-top: 60px; border-top: 1px solid rgba(99, 102, 241, 0.15); color: rgba(255, 255, 255, 0.5);">
-        <p>&copy; 2026 BullBear Blockchain. All rights reserved. | Master the Markets</p>
-        <p style="margin-top: 10px; font-size: 0.85rem;">Developed by <a href="https://twitter.com/starico"
-                target="_blank" style="color: #06b6d4; text-decoration: none; font-weight: 600;">@starico</a></p>
+  <!-- Nav -->
+  <nav>
+    <a class="nav-logo" href="index.html">
+      <img src="images/bullbear-logo.png" alt="BullBear">
+      <span class="nav-logo-text">BullBear</span>
+    </a>
+    <div class="nav-right">
+      <a href="index.html" class="nav-a">Home</a>
+      <a href="store.html" class="nav-a">Store</a>
+      <a href="trading-indicators.html" class="nav-a">Indicators</a>
+      <a href="index.html#partners" class="nav-a">Partners &amp; Tools</a>
+      <div id="navUserPill" class="nav-user-pill" style="display:none;">
+        <div class="nav-avatar" id="navAvatar">?</div>
+        <span class="nav-email" id="navEmail"></span>
+        <button class="nav-logout" onclick="handleLogout()">Logout</button>
+      </div>
     </div>
-    <script src="./bb-notifications.js"></script>
-</body>
+  </nav>
 
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-badge"><span></span>Member Area</div>
+    <h1>My <span class="g">Library</span></h1>
+    <p>Your purchased courses, videos, and trading content — all in one place.</p>
+  </div>
+
+  <!-- Main -->
+  <div class="page-wrap">
+
+    <!-- Auth wall -->
+    <div id="authWall" class="auth-wall" style="display:none;">
+      <div class="auth-wall-icon">🔒</div>
+      <h2>Login Required</h2>
+      <p>Sign in to access your purchased courses and the full content library.</p>
+      <div class="auth-wall-btns">
+        <a href="index.html?modal=signup" class="btn-primary">Create Account</a>
+        <a href="index.html?modal=login" class="btn-outline">Log In</a>
+      </div>
+    </div>
+
+    <!-- Logged-in content -->
+    <div id="libContent" style="display:none;">
+
+      <!-- My Purchases -->
+      <div class="section-head">
+        <div class="section-label">Your Courses</div>
+        <div class="section-title">My Purchases</div>
+      </div>
+      <div class="purchases-grid" id="purchasesGrid"></div>
+      <div id="emptyPurchases" class="empty-state" style="display:none;">
+        <div class="icon">📦</div>
+        <h3>No purchases yet</h3>
+        <p>You haven't bought any courses. Browse the store to get started.</p>
+        <a href="store.html" class="btn-primary" style="text-decoration:none;">Browse Store</a>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <!-- Content Library -->
+      <div id="contentLibrarySection" style="display:none;">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:28px;">
+          <div class="section-head" style="margin-bottom:0;">
+            <div class="section-label">Video Content</div>
+            <div class="section-title">Trading Courses &amp; Videos</div>
+          </div>
+          <div id="libFilters" class="lib-filter-row" style="margin-bottom:0;"></div>
+        </div>
+
+        <div id="libStats" style="display:none;">
+          <div class="stats-bar">
+            <div class="stat-item">
+              <div class="stat-num" id="libStatTotal">0</div>
+              <div class="stat-lbl">Total Videos</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-num green" id="libStatUnlocked">0</div>
+              <div class="stat-lbl">Unlocked</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-num" id="libStatModules">0</div>
+              <div class="stat-lbl">Modules</div>
+            </div>
+          </div>
+        </div>
+
+        <div id="libModules">
+          <div style="text-align:center;padding:48px 0;color:var(--muted);">
+            <div style="font-size:1.5rem;margin-bottom:10px;opacity:.4;">⟳</div>
+            Loading library…
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-logo">
+      <img src="images/bullbear-logo.png" alt="BullBear">
+      <span>BullBear Blockchain</span>
+    </div>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="my-library.html" class="active">My Library</a>
+      <a href="store.html">Store</a>
+      <a href="trading-indicators.html">Indicators</a>
+    </div>
+    <div class="footer-copy">© 2025 BullBear Blockchain. All rights reserved.</div>
+  </footer>
+
+  <script>
+    const API_BASE = 'https://backend-tawny-nu-33.vercel.app/api';
+
+    /* ── Auth ── */
+    document.addEventListener('DOMContentLoaded', checkAuth);
+
+    async function checkAuth() {
+      const token = localStorage.getItem('bullbearToken');
+      if (!token) { showAuthWall(); return; }
+      try {
+        const res = await fetch(API_BASE + '/auth/me', { headers: { Authorization: 'Bearer ' + token } });
+        const data = await res.json();
+        if (!res.ok || !data.data) { showAuthWall(); return; }
+        showLibrary(data.data.user || data.data);
+      } catch { showAuthWall(); }
+    }
+
+    function showAuthWall() {
+      document.getElementById('authWall').style.display = 'block';
+      document.getElementById('libContent').style.display = 'none';
+    }
+
+    function showLibrary(user) {
+      document.getElementById('authWall').style.display = 'none';
+      document.getElementById('libContent').style.display = 'block';
+      const pill = document.getElementById('navUserPill');
+      pill.style.display = 'flex';
+      const initials = (user.firstName || user.email || '?').charAt(0).toUpperCase();
+      document.getElementById('navAvatar').textContent = initials;
+      document.getElementById('navEmail').textContent = user.firstName || user.email;
+      loadPurchases(user);
+      loadAccessThenVideos(user);
+    }
+
+    function handleLogout() {
+      localStorage.removeItem('bullbearToken');
+      localStorage.removeItem('bullbearCurrentUser');
+      window.location.href = 'index.html';
+    }
+
+    /* ── Purchases ── */
+    async function loadPurchases(user) {
+      const grid = document.getElementById('purchasesGrid');
+      const empty = document.getElementById('emptyPurchases');
+      grid.innerHTML = '<div style="color:var(--muted);font-size:.85rem;padding:10px 0;">Loading…</div>';
+      try {
+        const res = await fetch(API_BASE + '/purchases/user/' + encodeURIComponent(user.email));
+        const data = await res.json();
+        const purchases = (data.data && data.data.purchases) || [];
+        if (!purchases.length) {
+          grid.innerHTML = '';
+          empty.style.display = 'block';
+          return;
+        }
+        empty.style.display = 'none';
+        grid.innerHTML = purchases.map(buildPurchaseCard).join('');
+      } catch {
+        grid.innerHTML = '<div style="color:#f87171;font-size:.85rem;">Failed to load purchases.</div>';
+      }
+    }
+
+    function buildPurchaseCard(p) {
+      const date = new Date(p.createdAt || p.purchaseDate || Date.now()).toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric'});
+      const title = (p.course && p.course.title) || p.courseId || 'Course';
+      const status = p.status || 'pending';
+      const statusMap = {
+        pending:  '<span class="pc-status-pending">⏳ Pending</span>',
+        approved: '<span class="pc-status-approved">✓ Approved</span>',
+        completed:'<span class="pc-status-approved">✓ Approved</span>',
+        rejected: '<span class="pc-status-rejected">✕ Rejected</span>',
+      };
+      const isApproved = status === 'approved' || status === 'completed';
+      const accessUrl = p.accessUrl || 'crypto-trading-course.html';
+      return `<div class="purchase-card">
+        <div class="pc-img-placeholder">🎓</div>
+        <div class="pc-body">
+          <div class="pc-title">${title}</div>
+          <div class="pc-meta">Order: ${p.orderId || 'N/A'} &nbsp;·&nbsp; $${p.amount || 0}</div>
+          ${statusMap[status] || statusMap.pending}
+          <div class="pc-footer">
+            <span class="pc-date">${date}</span>
+            ${isApproved
+              ? `<a href="${accessUrl}" class="pc-access">Access Course →</a>`
+              : '<span style="color:var(--muted);font-size:.78rem;">Awaiting approval</span>'}
+          </div>
+        </div>
+      </div>`;
+    }
+
+    /* ── Content Library ── */
+    let libContent = [];
+    let libUserAccess = [];
+    let libActiveFilter = 'all';
+
+    const CAT_LABELS = { all:'All Modules', crypto:'Crypto', forex:'Forex', indicators:'Indicators', general:'General', defi:'DeFi', psychology:'Psychology' };
+    const CAT_ICONS  = { crypto:'₿', forex:'💱', indicators:'📈', general:'📚', defi:'🔗', psychology:'🧠' };
+    const ACCESS_LABEL = { free:'Free', indicators:'Indicators', 'crypto-course':'Crypto Course', 'all-access':'All-Access', paid:'Premium' };
+    const ACCESS_PRICE = { indicators:'$30/mo', 'crypto-course':'$500', 'all-access':'$99/mo', paid:'$99/mo' };
+
+    function libHasAccess(lvl) {
+      if (lvl === 'free') return true;
+      if (libUserAccess.includes('all-access')) return true;
+      return libUserAccess.includes(lvl);
+    }
+
+    function getYoutubeEmbedUrl(url) {
+      if (!url) return null;
+      try {
+        let id = '';
+        if (url.includes('youtu.be/')) id = url.split('youtu.be/')[1].split(/[?&]/)[0];
+        else if (url.includes('youtube.com')) id = new URLSearchParams(url.split('?')[1] || '').get('v') || '';
+        return id ? 'https://www.youtube.com/embed/' + id : null;
+      } catch { return null; }
+    }
+
+    function libBuildCard(item) {
+      const unlocked = libHasAccess(item.accessLevel);
+      const embedUrl = getYoutubeEmbedUrl(item.url);
+      const thumb = item.thumbnail
+        ? `<img src="${item.thumbnail}" alt="" onerror="this.style.display='none'">`
+        : `<span>${embedUrl ? '▶' : '📄'}</span>`;
+      const overlay = unlocked
+        ? `<div class="lib-play"><span>▶</span></div>`
+        : `<div class="lib-lock-overlay"><div class="lock-icon">🔒</div><div class="lock-lbl">${ACCESS_LABEL[item.accessLevel] || 'Premium'} only</div></div>`;
+      const badgeCls = item.accessLevel === 'free' ? ' free' : '';
+      const safeUrl = (item.url || '').replace(/'/g, "\\'");
+      const btn = unlocked
+        ? `<button class="lib-btn lib-btn-watch" onclick="window.open('${safeUrl}','_blank','noopener,noreferrer')">▶ Watch Now</button>`
+        : `<button class="lib-btn lib-btn-lock" onclick="libUnlock('${item.accessLevel}')">🔒 Unlock Access</button>`;
+      return `<div class="lib-card">
+        <div class="lib-thumb">${thumb}${overlay}</div>
+        <div class="lib-body">
+          <span class="lib-acc-badge${badgeCls}">${ACCESS_LABEL[item.accessLevel] || 'Premium'}</span>
+          <div class="lib-title">${item.title}</div>
+          ${item.description ? `<div class="lib-desc">${item.description}</div>` : ''}
+          ${btn}
+        </div>
+      </div>`;
+    }
+
+    function libRenderModules(filter) {
+      libActiveFilter = filter || 'all';
+      const wrap = document.getElementById('libModules');
+      if (!wrap) return;
+      const items = libActiveFilter === 'all' ? libContent : libContent.filter(i => i.category === libActiveFilter);
+      if (!items.length) {
+        wrap.innerHTML = '<div class="empty-state"><div class="icon">📭</div><h3>Nothing here yet</h3><p>No content in this module.</p></div>';
+        return;
+      }
+      const groups = {}, order = [];
+      items.forEach(i => {
+        const cat = i.category || 'general';
+        if (!groups[cat]) { groups[cat] = []; order.push(cat); }
+        groups[cat].push(i);
+      });
+      const total = items.length;
+      const unlocked = items.filter(i => libHasAccess(i.accessLevel)).length;
+      const statsEl = document.getElementById('libStats');
+      if (statsEl) {
+        statsEl.style.display = 'block';
+        document.getElementById('libStatTotal').textContent = total;
+        document.getElementById('libStatUnlocked').textContent = unlocked;
+        document.getElementById('libStatModules').textContent = order.length;
+      }
+      wrap.innerHTML = order.map((cat, idx) => {
+        const vids = groups[cat];
+        const catLabel = CAT_LABELS[cat] || cat.charAt(0).toUpperCase() + cat.slice(1);
+        const catIcon  = CAT_ICONS[cat] || '📁';
+        const allUnlocked = vids.every(v => libHasAccess(v.accessLevel));
+        const accessLvl = (vids[0] && vids[0].accessLevel) || 'paid';
+        const badge = allUnlocked
+          ? `<span class="lib-badge-unlock">✓ Unlocked</span>`
+          : `<span class="lib-badge-lock">🔒 Locked</span>`;
+        const cards = vids.map(libBuildCard).join('');
+        const cta = !allUnlocked
+          ? `<div class="lib-unlock-cta">
+              <div><strong>Unlock the full ${catLabel} module</strong><p>Get access to all ${vids.length} video${vids.length !== 1 ? 's' : ''} in this module.</p></div>
+              <button class="lib-unlock-btn" onclick="libUnlock('${accessLvl}')">Unlock Access</button>
+             </div>` : '';
+        return `<div class="lib-module">
+          <div class="lib-module-hdr">
+            <div class="lib-module-left">
+              <div class="lib-module-num">${idx + 1}</div>
+              <div>
+                <div class="lib-module-title">${catIcon} ${catLabel}</div>
+                <div class="lib-module-count">${vids.length} video${vids.length !== 1 ? 's' : ''}</div>
+              </div>
+            </div>
+            ${badge}
+          </div>
+          <div class="lib-grid">${cards}${cta}</div>
+        </div>`;
+      }).join('');
+    }
+
+    function libRenderFilters() {
+      const el = document.getElementById('libFilters');
+      if (!el) return;
+      const cats = ['all'];
+      libContent.forEach(i => { if (i.category && !cats.includes(i.category)) cats.push(i.category); });
+      el.innerHTML = cats.map(cat => {
+        const lbl = CAT_LABELS[cat] || cat.charAt(0).toUpperCase() + cat.slice(1);
+        return `<button class="lib-filter-btn${cat === libActiveFilter ? ' active' : ''}" onclick="libFilter('${cat}')">${lbl}</button>`;
+      }).join('');
+    }
+
+    function libFilter(cat) {
+      libActiveFilter = cat;
+      document.querySelectorAll('.lib-filter-btn').forEach(b => {
+        const matches = (b.textContent.trim() === (CAT_LABELS[cat] || cat));
+        b.classList.toggle('active', matches);
+      });
+      libRenderModules(cat);
+    }
+
+    function libUnlock(accessLevel) {
+      window.location.href = 'index.html#pricing';
+    }
+
+    async function loadAccessThenVideos(user) {
+      try {
+        const res = await fetch(API_BASE + '/purchases/user/' + encodeURIComponent(user.email));
+        const data = await res.json();
+        libUserAccess = ((data.data && data.data.purchases) || []).map(p => p.courseId);
+      } catch (_) {}
+      try {
+        const res = await fetch(API_BASE + '/content');
+        const data = await res.json();
+        const items = (data.data && data.data.items) || [];
+        if (!items.length) return;
+        libContent = items;
+        document.getElementById('contentLibrarySection').style.display = 'block';
+        libRenderFilters();
+        libRenderModules('all');
+      } catch (e) {}
+    }
+  </script>
+  <script src="./bb-notifications.js"></script>
+</body>
 </html>

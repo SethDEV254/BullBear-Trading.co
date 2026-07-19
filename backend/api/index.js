@@ -8,20 +8,31 @@ const purchaseRoutes = require('../routes/purchases');
 const userRoutes = require('../routes/users');
 const adminRoutes = require('../routes/admin');
 const paypalRoutes = require('../routes/paypal');
+const mpesaRoutes = require('../routes/mpesa');
 const checklistRoutes = require('../routes/checklist');
+const inboundRoutes = require('../routes/inbound');
+const progressRoutes = require('../routes/progress');
+const reviewRoutes = require('../routes/reviews');
 const axios = require('axios');
 
 const app = express();
 
 app.use(compression());
-app.use(cors({
-  origin: '*',
-  credentials: true,
+const corsOptions = {
+  origin: function (origin, callback) { callback(null, true); },
+  credentials: false,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
+};
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
+app.use(express.json({
+  verify: (req, res, buf) => { req.rawBody = buf; },
 }));
-app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Fast warmup — no DB
+app.get('/api/ping', (req, res) => res.json({ ok: true, ts: Date.now() }));
 
 app.get('/api/health', (req, res) => {
   res.json({
@@ -43,7 +54,80 @@ app.use('/api/purchases', purchaseRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/paypal', paypalRoutes);
+app.use('/api/mpesa', mpesaRoutes);
 app.use('/api/checklist', checklistRoutes);
+app.use('/api/inbound', inboundRoutes);
+app.use('/api/progress', progressRoutes);
+app.use('/api/reviews', reviewRoutes);
+
+// ── Unsubscribe ───────────────────────────────────────────────────────────────
+const crypto = require('crypto');
+
+function makeUnsubToken(email) {
+  return crypto.createHmac('sha256', process.env.JWT_SECRET || 'bullbear-unsub').update(email.toLowerCase()).digest('hex');
+}
+
+app.get('/api/unsubscribe', async (req, res) => {
+  const { email, token } = req.query;
+  if (!email || !token || token !== makeUnsubToken(email)) {
+    return res.status(400).send('<h2>Invalid unsubscribe link.</h2>');
+  }
+  try {
+    const db = getDb();
+    await db.collection('email_unsubscribes').doc(email.toLowerCase()).set({ email: email.toLowerCase(), unsubscribedAt: new Date().toISOString() });
+    res.send(`<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Unsubscribed</title><style>body{font-family:Arial,sans-serif;background:#0f172a;color:#e2e8f0;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;text-align:center}.box{max-width:420px;padding:40px 32px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px}h1{font-size:1.4rem;margin-bottom:12px}p{color:#94a3b8;line-height:1.6;margin:0}a{color:#a78bfa}</style></head><body><div class="box"><h1>You've been unsubscribed</h1><p>You won't receive any more bulk emails from BullBear Trading.<br><br><a href="https://bullbearblockchain.com">Return to site</a></p></div></body></html>`);
+  } catch (e) {
+    res.status(500).send('<h2>Something went wrong. Please try again.</h2>');
+  }
+});
+
+// ── Public content library ────────────────────────────────────────────────────
+const { getDb } = require('../lib/firebase');
+
+// GET /api/content — returns all active content items
+app.get('/api/content', async (req, res) => {
+  try {
+    const db = getDb();
+    const snap = await db.collection('content').get();
+    const items = snap.docs
+      .map(d => ({ id: d.id, ...d.data() }))
+      .filter(d => d.isActive !== false)
+      .sort((a, b) => (a.order || 0) - (b.order || 0));
+    res.json({ status: 'success', data: { items } });
+  } catch (e) {
+    res.status(500).json({ status: 'error', message: e.message });
+  }
+});
+
+// GET /api/modules — returns all active course modules
+app.get('/api/modules', async (req, res) => {
+  try {
+    const db = getDb();
+    const snap = await db.collection('modules').get();
+    const modules = snap.docs
+      .map(d => ({ id: d.id, ...d.data() }))
+      .filter(d => d.isActive !== false)
+      .sort((a, b) => (a.order || 0) - (b.order || 0));
+    res.json({ status: 'success', data: { modules } });
+  } catch (e) {
+    res.status(500).json({ status: 'error', message: e.message });
+  }
+});
+
+// GET /api/purchases/user/:email — check user's approved purchases
+app.get('/api/purchases/user/:email', async (req, res) => {
+  try {
+    const db = getDb();
+    const snap = await db.collection('purchases')
+      .where('userId', '==', req.params.email.toLowerCase())
+      .where('status', '==', 'approved')
+      .get();
+    const purchases = snap.docs.map(d => ({ id: d.id, courseId: d.data().courseId, courseName: d.data().courseName }));
+    res.json({ status: 'success', data: { purchases } });
+  } catch (e) {
+    res.status(500).json({ status: 'error', message: e.message });
+  }
+});
 
 // ── WhatsApp Bot ──────────────────────────────────────────────────────────────
 let agentsOnline = false;
@@ -79,10 +163,14 @@ BULLBEAR TRADING PRODUCTS:
 
 PAYMENT: PayPal and M-Pesa. WEBSITE: bullbearblockchain.com
 
+LIVE AGENT HANDOFF:
+- If the user reports a technical issue (site not working, payment/access problems, bugs), give them Agent 2's number: 0797844481
+- Never use real staff names — always refer to them as "Agent 2"
+- Only share this number when the user actually reports a technical problem — don't volunteer it otherwise
+
 RULES:
 - Keep replies under 200 words
 - Never make up specific entry/exit prices or trade signals
-- For account, payment, or technical issues direct them to bullbearblockchain.com or say a human agent will follow up
 - Always end with something that invites a follow-up or next step`;
 
 function waTwiml(msg) {

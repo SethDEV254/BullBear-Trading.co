@@ -2663,8 +2663,8 @@
             .bb-hero-split { grid-template-columns: 1fr; text-align: center; padding-top: 40px; }
             .bb-hero-left, .bb-hero-left .bb-hero-sub { text-align: center; }
             .bb-hero-btn-row { justify-content: center; }
-            .bb-hero-right { min-height: 220px; margin-top: 10px; }
-            .bb-hud { position: static; margin-top: 10px; display: inline-block; }
+            .bb-hero-right { min-height: 0; margin-top: 10px; flex-direction: column; gap: 10px; }
+            .bb-hud { position: static; margin-top: 0; display: flex; flex-direction: column; width: 100%; max-width: 320px; box-sizing: border-box; }
             .bb-ghost-word { display: none; }
         }
 
@@ -3147,11 +3147,6 @@
     <div id="section-header" data-section-id="header">
         <style>
             /* ══ MODERN NAVBAR OVERRIDE ══ */
-            /* Mobile: hide nav links + CTA, show hamburger */
-            @media (max-width: 959px) {
-                #block-1746648689147 { display: none !important; }
-                #block-1741845168019 { display: none !important; }
-            }
             /* Desktop: hide hamburger + mobile drawer */
             @media (min-width: 960px) {
                 #mobileNav { display: none !important; }
@@ -3269,6 +3264,14 @@
             .nav-cta-main:hover {
                 transform: translateY(-2px) !important;
                 box-shadow: 0 6px 22px rgba(230,184,0,0.55) !important;
+            }
+
+            /* Mobile: hide nav links + CTA, show hamburger.
+               Must come after the unconditional #block-1746648689147 / #block-1741845168019
+               display:flex rules above — equal specificity means later wins the cascade. */
+            @media (max-width: 959px) {
+                #block-1746648689147 { display: none !important; }
+                #block-1741845168019 { display: none !important; }
             }
 
             /* Hamburger — modern pill style */

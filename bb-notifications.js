@@ -197,10 +197,10 @@
         background: rgba(10, 5, 25, 0.92);
         backdrop-filter: blur(16px);
         -webkit-backdrop-filter: blur(16px);
-        border: 1px solid rgba(124,58,237,0.3);
+        border: 1px solid rgba(16,185,129,0.3);
         border-radius: 10px;
         padding: 8px 10px;
-        box-shadow: 0 6px 24px rgba(0,0,0,0.5), 0 0 0 1px rgba(124,58,237,0.1);
+        box-shadow: 0 6px 24px rgba(0,0,0,0.5), 0 0 0 1px rgba(16,185,129,0.1);
         pointer-events: auto;
         transform: translateX(-120%);
         opacity: 0;

@@ -334,6 +334,25 @@
                 bottom: 10px !important;
                 right: 10px !important;
             }
+            .chat-toggle {
+                position: relative !important;
+                padding: 0 !important;
+                width: 46px !important;
+                height: 46px !important;
+                border-radius: 50% !important;
+                justify-content: center !important;
+            }
+            .chat-toggle span:not(.live-dot) {
+                display: none !important;
+            }
+            .chat-toggle-icon {
+                display: block !important;
+            }
+            .chat-toggle .live-dot {
+                position: absolute !important;
+                top: 6px !important;
+                right: 6px !important;
+            }
         }
 
         /* Buy Now Button Styling - Blue Theme with Better Visibility */
@@ -3715,7 +3734,7 @@
             <div class="bb-container">
                 <div class="bb-divider"></div>
                 <div class="bb-partners-eyebrow">&#9670; Trusted Tools &amp; Partners</div>
-                <h2>Platforms We <span class="bb-accent-gold">Recommend</span></h2>
+                <h2>Platforms We&nbsp;<span class="bb-accent-gold" style="margin-left:0.25em;">Recommend</span></h2>
                 <p class="bb-lead">Access the same professional-grade platforms that elite traders use to analyze markets, execute trades, and grow their portfolios — vetted and trusted by BullBear Trading.</p>
                 <div class="bb-partner-full-grid">
 
@@ -5447,6 +5466,7 @@
         <!-- Toggle button -->
         <button id="chatToggle" class="chat-toggle" onclick="toggleChatPanel()">
             <span class="live-dot"></span>
+            <i class="fab fa-whatsapp chat-toggle-icon" aria-hidden="true"></i>
             <span>Chat with us</span>
         </button>
 
@@ -5628,6 +5648,11 @@
             font-size: 13px;
             font-weight: 700;
             font-family: 'Inter', sans-serif;
+        }
+
+        .chat-toggle-icon {
+            display: none;
+            font-size: 20px;
         }
 
         .chat-toggle:hover {

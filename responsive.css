@@ -1,0 +1,43 @@
+/* ============================================================
+   BullBear Trading — Responsive Base
+   Handles: fluid type · layout guards · touch targets
+   Design system lives in design-upgrade.css
+   ============================================================ */
+
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+
+body { overflow-x: hidden !important; max-width: 100vw !important; }
+
+img, video, iframe { max-width: 100% !important; height: auto; }
+
+/* Fluid heading scale */
+h1 { font-size: clamp(1.6rem, 5.5vw, 3rem) !important; }
+h2 { font-size: clamp(1.2rem, 4vw, 2.4rem) !important; }
+h3 { font-size: clamp(1rem, 3vw, 1.6rem) !important; }
+
+/* Prevent Kajabi columns from breaking viewport */
+[class*="col-"] { min-width: 0 !important; }
+
+/* Fix fixed-width inline values common in Kajabi exports */
+@media (max-width: 640px) {
+  [style*="width: 600px"],
+  [style*="width:600px"],
+  [style*="min-width: 600px"] {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+}
+
+/* Touch targets min 44px */
+@media (max-width: 767px) {
+  button, [onclick], [role="button"] {
+    min-height: 44px !important;
+  }
+}
+
+/* Wide table overflow */
+table {
+  display: block !important;
+  overflow-x: auto !important;
+  width: 100% !important;
+}

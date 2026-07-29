@@ -14,20 +14,78 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            color: #ffffff;
+            font-family: 'Space Grotesk', -apple-system, sans-serif;
+            background: #000;
+            color: rgba(255,255,255,.88);
             line-height: 1.6;
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
 
-        .header {
-            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-            padding: 20px 0;
-            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.3);
+        nav {
             position: sticky;
             top: 0;
-            z-index: 1000;
+            z-index: 900;
+            background: linear-gradient(135deg, #060608 0%, #14100a 50%, #060608 100%);
+            border-bottom: 1px solid rgba(212,175,55,.35);
+            padding: 0 40px;
+            height: 68px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 30px rgba(212,175,55,.25), 0 1px 0 rgba(212,175,55,.2);
+        }
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            text-decoration: none;
+        }
+        .nav-logo img {
+            height: 42px;
+            filter: drop-shadow(0 0 12px rgba(212,175,55,.45));
+        }
+        .nav-logo-text {
+            font-size: 1.25rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff 20%, #F2C94C);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -.3px;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .nav-a {
+            color: rgba(255,255,255,.7);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: .875rem;
+            padding: 8px 14px;
+            border-radius: 10px;
+            border: 1px solid transparent;
+            transition: all .2s;
+            font-family: 'Space Grotesk', sans-serif;
+            cursor: pointer;
+            background: none;
+        }
+        .nav-a:hover {
+            color: #fff;
+            background: rgba(255,255,255,.1);
+            border-color: rgba(255,255,255,.15);
+        }
+        .nav-logout {
+            color: #f87171;
+            background: rgba(239,68,68,.12);
+            border-color: rgba(239,68,68,.25);
+        }
+        .nav-logout:hover {
+            background: rgba(239,68,68,.22);
+            border-color: rgba(239,68,68,.4);
+            color: #fca5a5;
         }
 
         .container {
@@ -113,7 +171,7 @@
             transform: translate(-50%, -50%);
             width: 500px;
             height: 500px;
-            background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(46,204,113, 0.1) 0%, transparent 70%);
             border-radius: 50%;
             filter: blur(60px);
             z-index: -1;
@@ -123,16 +181,13 @@
             font-size: 2.5rem;
             font-weight: 700;
             margin-bottom: 18px;
-            background: linear-gradient(90deg, #6366f1, #06b6d4, #8b5cf6, #06b6d4, #6366f1);
+            background: linear-gradient(135deg, #f1f5f9 0%, #F2C94C 55%, #2ECC71 100%);
             background-size: 200% auto;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             letter-spacing: -0.5px;
             line-height: 1.2;
-            text-shadow: 0 4px 20px rgba(99, 102, 241, 0.3);
-            transform: perspective(1000px) rotateX(0deg);
-            animation: textReveal 2s ease-out forwards, gradientShift 8s ease infinite, float3d 4s ease-in-out infinite;
             overflow: hidden;
             position: relative;
         }
@@ -232,19 +287,19 @@
         .video-container {
             max-width: 700px;
             margin: 35px auto;
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(6, 182, 212, 0.1) 50%, rgba(139, 92, 246, 0.15) 100%);
+            background: linear-gradient(135deg, rgba(46,204,113, 0.15) 0%, rgba(6, 182, 212, 0.1) 50%, rgba(139, 92, 246, 0.15) 100%);
             border-radius: 20px;
             overflow: hidden;
             box-shadow:
                 0 20px 60px rgba(0, 0, 0, 0.4),
-                0 0 80px rgba(99, 102, 241, 0.2),
+                0 0 80px rgba(46,204,113, 0.2),
                 inset 0 1px 0 rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(20px);
             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             animation: fadeInUp 0.8s ease 0.6s both;
             transform-style: preserve-3d;
             position: relative;
-            border: 1px solid rgba(99, 102, 241, 0.3);
+            border: 1px solid rgba(46,204,113, 0.3);
         }
 
         .video-container::before {
@@ -256,7 +311,7 @@
             bottom: 0;
             border-radius: 20px;
             padding: 2px;
-            background: linear-gradient(135deg, #6366f1, #06b6d4, #8b5cf6);
+            background: linear-gradient(135deg, #2ECC71, #06b6d4, #D4AF37);
             -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
             -webkit-mask-composite: xor;
             mask-composite: exclude;
@@ -269,7 +324,7 @@
         .video-container:hover {
             transform: translateY(-8px) rotateX(2deg) scale(1.01);
             box-shadow:
-                0 30px 80px rgba(99, 102, 241, 0.5),
+                0 30px 80px rgba(46,204,113, 0.5),
                 0 0 100px rgba(6, 182, 212, 0.3),
                 inset 0 1px 0 rgba(255, 255, 255, 0.2);
             border-color: rgba(6, 182, 212, 0.5);
@@ -286,7 +341,7 @@
             left: 50%;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle, rgba(99, 102, 241, 0.2) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(46,204,113, 0.2) 0%, transparent 70%);
             transform: translate(-50%, -50%);
             opacity: 0;
             transition: opacity 0.5s ease;
@@ -303,7 +358,7 @@
             aspect-ratio: 16/9;
             background:
                 linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(51, 65, 85, 0.9) 100%),
-                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(99,102,241,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(46,204,113,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -323,7 +378,7 @@
         .video-placeholder::before {
             content: '▶';
             font-size: 3rem;
-            background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+            background: linear-gradient(135deg, #06b6d4, #D4AF37);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -354,7 +409,7 @@
 
         .course-content {
             padding: 60px 20px;
-            background: linear-gradient(135deg, #1e293b 0%, #334155 50%, #475569 100%);
+            background: #000;
             position: relative;
         }
 
@@ -368,7 +423,7 @@
             font-size: 2.2rem;
             font-weight: 800;
             margin-bottom: 25px;
-            background: linear-gradient(135deg, #6366f1, #06b6d4, #8b5cf6, #06b6d4, #6366f1);
+            background: linear-gradient(135deg, #f1f5f9 0%, #F2C94C 55%, #2ECC71 100%);
             background-size: 200% auto;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -378,12 +433,6 @@
             position: relative;
             padding-bottom: 15px;
             text-transform: uppercase;
-            transform-style: preserve-3d;
-            animation: gradientShift 8s ease infinite, float3dSection 4s ease-in-out infinite;
-            text-shadow:
-                0 8px 25px rgba(99, 102, 241, 0.4),
-                0 15px 50px rgba(6, 182, 212, 0.3);
-            filter: drop-shadow(0 0 15px rgba(99, 102, 241, 0.5));
         }
 
         @keyframes float3dSection {
@@ -413,7 +462,7 @@
             left: 50%;
             transform: translateX(-50%);
             z-index: -1;
-            background: linear-gradient(135deg, #6366f1, #06b6d4);
+            background: linear-gradient(135deg, #2ECC71, #06b6d4);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -429,7 +478,7 @@
             transform: translateX(-50%);
             width: 120px;
             height: 4px;
-            background: linear-gradient(90deg, transparent, #06b6d4, #8b5cf6, transparent);
+            background: linear-gradient(90deg, transparent, #06b6d4, #D4AF37, transparent);
             border-radius: 2px;
             box-shadow: 0 0 20px rgba(6, 182, 212, 0.6);
             animation: pulseGlow 2s ease-in-out infinite;
@@ -447,7 +496,7 @@
             backdrop-filter: blur(20px);
             padding: 30px;
             border-radius: 20px;
-            border: 1px solid rgba(99, 102, 241, 0.2);
+            border: 1px solid rgba(46,204,113, 0.2);
             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             box-shadow:
@@ -502,7 +551,7 @@
             bottom: 0;
             border-radius: 20px;
             padding: 2px;
-            background: linear-gradient(135deg, #6366f1, #06b6d4, #8b5cf6);
+            background: linear-gradient(135deg, #2ECC71, #06b6d4, #D4AF37);
             -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
             -webkit-mask-composite: xor;
             mask-composite: exclude;
@@ -513,7 +562,7 @@
         .feature-card:hover {
             transform: translateY(-15px) rotateX(5deg) scale(1.02);
             box-shadow:
-                0 25px 60px rgba(99, 102, 241, 0.4),
+                0 25px 60px rgba(46,204,113, 0.4),
                 0 0 80px rgba(6, 182, 212, 0.3),
                 inset 0 1px 0 rgba(255, 255, 255, 0.2);
             border-color: rgba(6, 182, 212, 0.5);
@@ -531,7 +580,7 @@
             left: 50%;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle, rgba(99, 102, 241, 0.2) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(46,204,113, 0.2) 0%, transparent 70%);
             transform: translate(-50%, -50%);
             opacity: 0;
             transition: opacity 0.5s ease;
@@ -575,7 +624,7 @@
             pointer-events: none;
             z-index: 0;
             background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-                    rgba(99, 102, 241, 0.15),
+                    rgba(46,204,113, 0.15),
                     rgba(6, 182, 212, 0.1),
                     transparent 40%);
         }
@@ -587,28 +636,28 @@
         .cta-button {
             display: inline-block;
             padding: 20px 50px;
-            background: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%);
+            background: linear-gradient(135deg, #D4AF37 0%, #2ECC71 100%);
             color: #ffffff;
             text-decoration: none;
             border-radius: 12px;
             font-size: 1.2rem;
             font-weight: 700;
             transition: all 0.3s ease;
-            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
+            box-shadow: 0 8px 25px rgba(212,175,55,.4);
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
         .cta-button:hover {
             transform: translateY(-3px);
-            box-shadow: 0 12px 35px rgba(99, 102, 241, 0.6);
+            box-shadow: 0 12px 35px rgba(212,175,55,.6);
         }
 
         .cta-section {
             text-align: center;
             padding: 70px 20px;
             background:
-                linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(6, 182, 212, 0.15) 50%, rgba(139, 92, 246, 0.15) 100%);
+                linear-gradient(135deg, rgba(46,204,113, 0.15) 0%, rgba(6, 182, 212, 0.15) 50%, rgba(139, 92, 246, 0.15) 100%);
             position: relative;
             overflow: hidden;
         }
@@ -620,7 +669,7 @@
             left: 0;
             right: 0;
             height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.5), transparent);
+            background: linear-gradient(90deg, transparent, rgba(46,204,113, 0.5), transparent);
         }
 
         .cta-section h2 {
@@ -639,7 +688,7 @@
             font-size: 2.8rem;
             font-weight: 900;
             margin-bottom: 25px;
-            background: linear-gradient(135deg, #6366f1, #06b6d4, #8b5cf6, #06b6d4, #6366f1);
+            background: linear-gradient(135deg, #2ECC71, #06b6d4, #D4AF37, #06b6d4, #2ECC71);
             background-size: 200% auto;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -651,9 +700,9 @@
             transform-style: preserve-3d;
             animation: gradientShift 8s ease infinite, float3dTitle 4s ease-in-out infinite;
             text-shadow:
-                0 10px 30px rgba(99, 102, 241, 0.4),
+                0 10px 30px rgba(46,204,113, 0.4),
                 0 20px 60px rgba(6, 182, 212, 0.3);
-            filter: drop-shadow(0 0 20px rgba(99, 102, 241, 0.5));
+            filter: drop-shadow(0 0 20px rgba(46,204,113, 0.5));
         }
 
         .purchase-title::before {
@@ -662,7 +711,7 @@
             top: 0;
             left: 0;
             z-index: -1;
-            background: linear-gradient(135deg, #6366f1, #06b6d4);
+            background: linear-gradient(135deg, #2ECC71, #06b6d4);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -678,7 +727,7 @@
             transform: translateX(-50%);
             width: 120px;
             height: 4px;
-            background: linear-gradient(90deg, transparent, #06b6d4, #8b5cf6, transparent);
+            background: linear-gradient(90deg, transparent, #06b6d4, #D4AF37, transparent);
             border-radius: 2px;
             box-shadow: 0 0 20px rgba(6, 182, 212, 0.6);
             animation: pulseGlow 2s ease-in-out infinite;
@@ -736,7 +785,7 @@
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%);
             backdrop-filter: blur(10px);
             border-radius: 10px;
-            border: 1px solid rgba(99, 102, 241, 0.2);
+            border: 1px solid rgba(46,204,113, 0.2);
             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             transform-style: preserve-3d;
             animation: floatList 5s ease-in-out infinite;
@@ -797,7 +846,7 @@
             right: 0;
             bottom: 0;
             border-radius: 12px;
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(6, 182, 212, 0.2));
+            background: linear-gradient(135deg, rgba(46,204,113, 0.2), rgba(6, 182, 212, 0.2));
             opacity: 0;
             transition: opacity 0.5s ease;
             pointer-events: none;
@@ -806,7 +855,7 @@
         ul li:hover {
             transform: translateX(10px) rotateY(2deg) scale(1.02);
             box-shadow:
-                0 15px 40px rgba(99, 102, 241, 0.3),
+                0 15px 40px rgba(46,204,113, 0.3),
                 0 0 60px rgba(6, 182, 212, 0.2),
                 inset 0 1px 0 rgba(255, 255, 255, 0.2);
             border-color: rgba(6, 182, 212, 0.5);
@@ -826,7 +875,7 @@
             color: #06b6d4;
             font-weight: bold;
             font-size: 1.2rem;
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(6, 182, 212, 0.2));
+            background: linear-gradient(135deg, rgba(46,204,113, 0.2), rgba(6, 182, 212, 0.2));
             width: 24px;
             height: 24px;
             display: flex;
@@ -842,6 +891,9 @@
             transform: translateY(-50%) scale(1.1);
             box-shadow: 0 0 30px rgba(6, 182, 212, 0.6);
         }
+
+        /* Suppress double tick on payment modal feature list */
+        .bb-feats li::before { content: none !important; display: none !important; }
 
         /* Scroll animations */
         .section {
@@ -883,12 +935,34 @@
 
         /* Locked Content Overlay Styles */
         .course-purchase-section {
+            position: relative;
+            overflow: hidden;
             padding: 80px 20px;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
         }
+        .bb-ghost-word {
+            position: absolute; top: 6%; left: 4%;
+            font-family: 'Space Grotesk', sans-serif; font-weight: 800;
+            font-size: clamp(3.5rem, 14vw, 11rem); letter-spacing: -0.02em;
+            color: rgba(255,255,255,0.045); line-height: 1; white-space: nowrap;
+            pointer-events: none; z-index: 0; user-select: none;
+        }
+        @media (max-width: 900px) { .bb-ghost-word { display: none; } }
+        .course-purchase-section > .container { position: relative; z-index: 1; }
+
+        .bb-network-strip { position: relative; background: #06080a; border-top: 1px solid rgba(61,255,110,0.14); border-bottom: 1px solid rgba(61,255,110,0.14); overflow: hidden; }
+        .bb-network-canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+        .bb-trust-row { position: relative; z-index: 1; display: flex; align-items: center; justify-content: center; gap: 24px; flex-wrap: wrap; padding: 22px 20px; }
+        .bb-trust-row span { color: rgba(124,255,160,0.75); font-size: 0.82rem; font-family: 'Space Grotesk', monospace; letter-spacing: 0.04em; }
+
+        .bb-ticker { position: relative; z-index: 2; overflow: hidden; background: #050505; border-bottom: 1px solid rgba(61,255,110,0.16); padding: 10px 0; }
+        .bb-ticker-track { display: flex; width: max-content; animation: bbTickerScroll 24s linear infinite; }
+        .bb-ticker-track span { font-family: 'Space Grotesk', monospace; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.14em; color: rgba(124,255,160,0.55); padding: 0 18px; white-space: nowrap; }
+        @keyframes bbTickerScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        @media (prefers-reduced-motion: reduce) { .bb-ticker-track { animation: none; } }
 
         .course-purchase-section .container {
             max-width: 550px;
@@ -897,15 +971,11 @@
 
         /* Locked Course Card - Compact & Centered */
         .locked-course-card {
-            background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(20px);
-            border: 2px solid rgba(99, 102, 241, 0.3);
+            background: #111;
+            border: 1px solid rgba(212,175,55,.25);
             border-radius: 20px;
             padding: 35px;
-            box-shadow:
-                0 20px 60px rgba(0, 0, 0, 0.5),
-                0 0 80px rgba(99, 102, 241, 0.3),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 60px rgba(0,0,0,.5), 0 0 40px rgba(212,175,55,.12);
             margin-bottom: 25px;
             text-align: center;
         }
@@ -917,7 +987,7 @@
         .locked-course-card .lock-icon {
             font-size: 3.5rem;
             margin-bottom: 15px;
-            filter: drop-shadow(0 0 20px rgba(99, 102, 241, 0.6));
+            filter: drop-shadow(0 0 20px rgba(46,204,113, 0.6));
             animation: lockPulse 2s ease-in-out infinite;
         }
 
@@ -946,7 +1016,7 @@
         .price-tag {
             font-size: 2.5rem;
             font-weight: 900;
-            color: #06b6d4;
+            color: #F2C94C;
             margin-top: 10px;
         }
 
@@ -968,22 +1038,18 @@
             color: rgba(255, 255, 255, 0.85);
             font-size: 0.9rem;
             padding: 8px 12px;
-            background: rgba(99, 102, 241, 0.1);
+            background: rgba(46,204,113, 0.1);
             border-radius: 8px;
-            border: 1px solid rgba(99, 102, 241, 0.2);
+            border: 1px solid rgba(46,204,113, 0.2);
         }
 
         /* Payment Section - Compact */
         .payment-section-compact {
-            background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(20px);
-            border: 2px solid rgba(99, 102, 241, 0.3);
+            background: #111;
+            border: 1px solid rgba(212,175,55,.25);
             border-radius: 20px;
             padding: 30px;
-            box-shadow:
-                0 20px 60px rgba(0, 0, 0, 0.5),
-                0 0 80px rgba(99, 102, 241, 0.3),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 60px rgba(0,0,0,.5), 0 0 40px rgba(212,175,55,.12);
         }
 
         .payment-section-compact h3 {
@@ -1010,7 +1076,7 @@
             width: 100%;
             padding: 12px 16px;
             background: rgba(15, 23, 42, 0.6);
-            border: 1px solid rgba(99, 102, 241, 0.3);
+            border: 1px solid rgba(46,204,113, 0.3);
             border-radius: 10px;
             color: #ffffff;
             font-size: 0.95rem;
@@ -1045,7 +1111,7 @@
             display: block;
             padding: 12px;
             background: rgba(15, 23, 42, 0.6);
-            border: 2px solid rgba(99, 102, 241, 0.2);
+            border: 2px solid rgba(46,204,113, 0.2);
             border-radius: 10px;
             text-align: center;
             transition: all 0.3s ease;
@@ -1104,7 +1170,7 @@
         .complete-payment-btn-compact {
             width: 100%;
             padding: 16px;
-            background: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%);
+            background: linear-gradient(135deg, #2ECC71 0%, #06b6d4 100%);
             color: #ffffff;
             border: none;
             border-radius: 12px;
@@ -1114,13 +1180,13 @@
             transition: all 0.3s ease;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+            box-shadow: 0 6px 20px rgba(46,204,113, 0.4);
             margin-top: 10px;
         }
 
         .complete-payment-btn-compact:hover {
             transform: translateY(-3px);
-            box-shadow: 0 12px 35px rgba(99, 102, 241, 0.6);
+            box-shadow: 0 12px 35px rgba(46,204,113, 0.6);
         }
 
         .secure-notice-compact {
@@ -1130,33 +1196,131 @@
             margin-top: 15px;
         }
 
+        .course-modules-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 44px;
+        }
+
+        .course-module-head {
+            margin-bottom: 18px;
+        }
+
+        .course-module-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 999px;
+            background: linear-gradient(135deg, rgba(212,175,55, .25), rgba(6, 182, 212, .2));
+            border: 1px solid rgba(212,175,55, .4);
+            color: #F2C94C;
+            font-size: .72rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .course-module-head h3 {
+            font-size: 1.4rem;
+            font-weight: 800;
+            letter-spacing: -.3px;
+            background: linear-gradient(135deg, #f1f5f9 0%, #F2C94C 60%, #2ECC71 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .course-module-head p {
+            color: #94a3b8;
+            font-size: .88rem;
+            margin-top: 6px;
+            max-width: 640px;
+        }
+
+        .course-module-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .reviews-section {
+            padding: 70px 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .reviews-summary {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .reviews-summary .stars {
+            font-size: 1.8rem;
+            letter-spacing: 4px;
+            color: #fbbf24;
+        }
+
+        .reviews-summary .avg-text {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+            margin-top: 6px;
+        }
+
+        .review-card {
+            position: relative;
+            background: rgba(10,10,13,0.85);
+            border: 1px solid rgba(61,255,110,0.16);
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 14px;
+            overflow: hidden;
+            transition: box-shadow .25s ease, transform .25s ease, border-color .25s ease;
+        }
+        .review-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+            background: linear-gradient(90deg, transparent, #3DFF6E, transparent);
+            opacity: 0; transition: opacity .25s ease;
+        }
+        .review-card:hover {
+            border-color: rgba(61,255,110,.5);
+            box-shadow: 0 12px 40px rgba(61,255,110,.18), 0 2px 8px rgba(0,0,0,.5);
+            transform: translateY(-3px);
+        }
+        .review-card:hover::before { opacity: 1; }
+
+        .review-card .stars {
+            color: #fbbf24;
+            font-size: 1rem;
+            letter-spacing: 2px;
+        }
+
+        .star-picker {
+            display: inline-flex;
+            gap: 4px;
+            font-size: 1.8rem;
+            cursor: pointer;
+        }
+
+        .star-picker span {
+            color: rgba(255, 255, 255, 0.25);
+            transition: color .15s;
+        }
+
+        .star-picker span.active {
+            color: #fbbf24;
+        }
+
         @media (max-width: 768px) {
+            nav { padding: 0 16px !important; height: 60px !important; overflow: hidden !important; }
+            .nav-logo-text { display: none !important; }
+            .nav-a { font-size: .78rem !important; padding: 6px 10px !important; }
+
             .course-purchase-section {
                 padding: 40px 15px;
             }
 
             .course-purchase-section .container {
                 max-width: 100%;
-            }
-
-            .locked-course-card {
-                padding: 25px;
-            }
-
-            .locked-course-card .lock-icon {
-                font-size: 2.5rem;
-            }
-
-            .locked-course-card h2 {
-                font-size: 1.5rem;
-            }
-
-            .price-tag {
-                font-size: 2rem;
-            }
-
-            .course-features-compact {
-                grid-template-columns: 1fr;
             }
 
             .payment-section-compact {
@@ -1174,311 +1338,28 @@
             .form-row-compact {
                 grid-template-columns: 1fr;
             }
-
-            .header .container>div {
-                gap: 10px !important;
-            }
-
-            a[href="my-library.html"],
-            button[onclick="logout()"] {
-                padding: 10px 16px !important;
-                font-size: 0.85rem !important;
-            }
-
-            button[onclick="logout()"] span {
-                gap: 6px !important;
-            }
-
-            button[onclick="logout()"] svg {
-                width: 14px !important;
-                height: 14px !important;
-            }
         }
     </style>
-    <link rel="stylesheet" href="./bb-theme.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        /* ── BullBear landing-page theme ── */
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800&display=swap');
-        body {
-            background: #05010f !important;
-            background-image: radial-gradient(ellipse at 20% 15%, rgba(124,58,237,0.14) 0%, transparent 55%),
-                              radial-gradient(ellipse at 80% 80%, rgba(217,70,239,0.09) 0%, transparent 50%) !important;
-            background-attachment: fixed !important;
-            font-family: 'Inter', system-ui, sans-serif !important;
-            -webkit-font-smoothing: antialiased !important;
-        }
-        body::before { background: none !important; }
-        .header {
-            background: rgba(5,1,15,0.96) !important;
-            backdrop-filter: blur(16px) !important;
-            -webkit-backdrop-filter: blur(16px) !important;
-            border-bottom: 1px solid rgba(124,58,237,0.25) !important;
-            box-shadow: 0 1px 0 rgba(124,58,237,0.12), 0 8px 40px rgba(0,0,0,0.6) !important;
-        }
-        h1, h2, h3 { font-family: 'Space Grotesk', 'Inter', sans-serif !important; }
-        .course-hero h1,
-        .course-hero h2,
-        [class*="title"],
-        [class*="heading"] {
-            background: linear-gradient(135deg, #a78bfa 0%, #f0abfc 100%) !important;
-            -webkit-background-clip: text !important;
-            -webkit-text-fill-color: transparent !important;
-            background-clip: text !important;
-            animation: none !important;
-            font-family: 'Space Grotesk', sans-serif !important;
-        }
-        .course-hero::before {
-            background: radial-gradient(circle, rgba(124,58,237,0.12) 0%, transparent 70%) !important;
-        }
-        /* cards / modules / sections */
-        [class*="card"], [class*="module"], [class*="section-box"],
-        [class*="feature"], [class*="pricing"], [class*="lesson"] {
-            background: rgba(255,255,255,0.03) !important;
-            border-color: rgba(124,58,237,0.2) !important;
-        }
-        [class*="card"]:hover {
-            border-color: rgba(124,58,237,0.45) !important;
-            box-shadow: 0 12px 40px rgba(124,58,237,0.2) !important;
-        }
-        /* buttons */
-        [class*="btn-"]:not(.back-button):not(.logout-btn-header),
-        [class*="enroll"], [class*="cta"], [class*="purchase"] {
-            background: linear-gradient(135deg, #7c3aed, #6d28d9) !important;
-            border-color: transparent !important;
-        }
-        /* gradient shimmer lines */
-        [class*="shimmer"], [class*="divider"], hr {
-            background: linear-gradient(90deg, transparent, rgba(124,58,237,0.5), transparent) !important;
-        }
-        .back-button, .logout-btn-header {
-            background: rgba(124,58,237,0.15) !important;
-            border-color: rgba(124,58,237,0.3) !important;
-        }
-
-        /* ── Membership Banner ── */
-        .bb-membership-banner {
-            margin: 28px 0;
-            background: linear-gradient(135deg, rgba(124,58,237,0.12), rgba(217,70,239,0.08));
-            border: 1px solid rgba(124,58,237,0.4);
-            border-radius: 16px;
-            padding: 28px 28px 18px;
-            position: relative;
-            overflow: hidden;
-        }
-        .bb-membership-banner::before {
-            content: '';
-            position: absolute;
-            top: -40px; right: -40px;
-            width: 180px; height: 180px;
-            background: radial-gradient(circle, rgba(217,70,239,0.18) 0%, transparent 70%);
-            pointer-events: none;
-        }
-        .bb-membership-badge {
-            display: inline-block;
-            background: linear-gradient(135deg, #7c3aed, #d946ef);
-            color: #fff;
-            font-family: 'Inter', sans-serif;
-            font-size: 0.68rem;
-            font-weight: 700;
-            letter-spacing: 0.1em;
-            padding: 4px 14px;
-            border-radius: 50px;
-            margin-bottom: 16px;
-        }
-        .bb-membership-inner {
-            display: flex;
-            align-items: flex-start;
-            gap: 24px;
-            flex-wrap: wrap;
-        }
-        .bb-membership-left { flex: 1; min-width: 220px; }
-        .bb-membership-title {
-            font-family: 'Space Grotesk', sans-serif !important;
-            font-size: 1.25rem !important;
-            font-weight: 700 !important;
-            color: #f1f5f9 !important;
-            -webkit-text-fill-color: #f1f5f9 !important;
-            background: none !important;
-            margin: 0 0 8px !important;
-            letter-spacing: -0.02em !important;
-        }
-        .bb-membership-sub {
-            font-size: 0.9rem;
-            color: rgba(203,213,225,0.8) !important;
-            margin: 0 0 14px !important;
-            -webkit-text-fill-color: unset !important;
-        }
-        .bb-membership-sub strong { color: #e2e8f0 !important; font-weight: 600; }
-        .bb-membership-perks {
-            list-style: none;
-            padding: 0; margin: 0;
-        }
-        .bb-membership-perks li {
-            font-family: 'Inter', sans-serif;
-            font-size: 0.85rem;
-            color: rgba(203,213,225,0.9) !important;
-            padding: 4px 0;
-        }
-        .bb-membership-right {
-            text-align: center;
-            min-width: 160px;
-        }
-        .bb-membership-price {
-            display: flex;
-            align-items: baseline;
-            justify-content: center;
-            gap: 4px;
-            margin-bottom: 4px;
-        }
-        .bb-mem-amount {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 2.8rem;
-            font-weight: 800;
-            letter-spacing: -0.04em;
-            background: linear-gradient(135deg, #a78bfa, #f0abfc);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        .bb-mem-period {
-            font-size: 1rem;
-            color: rgba(148,163,184,0.8);
-            font-family: 'Inter', sans-serif;
-        }
-        .bb-mem-save {
-            font-size: 0.72rem;
-            color: #86efac;
-            font-weight: 600;
-            margin-bottom: 14px;
-            letter-spacing: 0.02em;
-        }
-        .bb-mem-btn {
-            display: block;
-            width: 100%;
-            padding: 13px 0;
-            background: linear-gradient(135deg, #7c3aed, #6d28d9) !important;
-            color: #fff !important;
-            border: none !important;
-            border-radius: 8px;
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 0.95rem;
-            font-weight: 700;
-            cursor: pointer;
-            box-shadow: 0 4px 16px rgba(124,58,237,0.4);
-            transition: all 0.2s ease;
-        }
-        .bb-mem-btn:hover {
-            background: linear-gradient(135deg, #6d28d9, #5b21b6) !important;
-            box-shadow: 0 6px 24px rgba(124,58,237,0.55);
-            transform: translateY(-2px);
-        }
-        .bb-mem-note {
-            font-size: 0.7rem;
-            color: rgba(148,163,184,0.6) !important;
-            margin-top: 8px !important;
-            -webkit-text-fill-color: unset !important;
-        }
-        .bb-membership-divider {
-            text-align: center;
-            font-size: 0.78rem;
-            color: rgba(148,163,184,0.5);
-            margin-top: 20px;
-            font-style: italic;
-        }
-        @media (max-width: 600px) {
-            .bb-membership-inner { flex-direction: column; }
-            .bb-membership-right { width: 100%; }
-        }
     </style>
+    <link rel="stylesheet" href="bb-theme.css">
 </head>
 
 <body>
-    <header class="header">
-        <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
-            <a href="index.html" class="logo">
-                <img src="./images/bullbear-logo.png" alt="Bull Bear Trading Logo" class="logo-image">
-                <span class="logo-text">BULL BEAR <span>TRADING</span></span>
-            </a>
-            <div style="display: flex; gap: 15px; align-items: center;">
-                <button onclick="history.back()"
-                    style="color: #ffffff; background: rgba(99, 102, 241, 0.2); border: 1px solid rgba(99, 102, 241, 0.4); font-weight: 600; padding: 12px 24px; border-radius: 12px; cursor: pointer; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); font-size: 0.95rem; backdrop-filter: blur(10px); box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3); display: flex; align-items: center; gap: 8px;">
-                    <span>←</span> Back
-                </button>
-                <a href="my-library.html"
-                    style="color: #ffffff; text-decoration: none; font-weight: 600; padding: 12px 24px; background: rgba(255, 255, 255, 0.1); border-radius: 12px; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); font-size: 0.95rem; backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);">
-                    📚 My Library
-                </a>
-                <button onclick="logout(this)"
-                    style="color: #ffffff; background: linear-gradient(135deg, rgba(239, 68, 68, 0.3) 0%, rgba(220, 38, 38, 0.3) 100%); border: 1px solid rgba(239, 68, 68, 0.4); font-weight: 700; padding: 12px 24px; border-radius: 12px; cursor: pointer; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); font-size: 0.95rem; backdrop-filter: blur(10px); box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1); position: relative; overflow: hidden; letter-spacing: 0.5px; text-transform: uppercase;">
-                    <span style="position: relative; z-index: 1; display: flex; align-items: center; gap: 8px;">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                            <polyline points="16 17 21 12 16 7"></polyline>
-                            <line x1="21" y1="12" x2="9" y2="12"></line>
-                        </svg>
-                        Logout
-                    </span>
-                </button>
-            </div>
+    <nav>
+        <a class="nav-logo" href="index.html">
+            <img src="./images/bullbear-logo.png" alt="BullBear Blockchain">
+            <span class="nav-logo-text">BullBear Blockchain</span>
+        </a>
+        <div class="nav-links">
+            <button onclick="history.back()" class="nav-a">← Back</button>
+            <a href="my-library.html" class="nav-a">My Library</a>
+            <a href="store.html" class="nav-a">Store</a>
+            <button onclick="logout(this)" class="nav-a nav-logout">Logout</button>
         </div>
-    </header>
-
-    <style>
-        a[href="my-library.html"]:hover {
-            background: rgba(255, 255, 255, 0.15) !important;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.3) !important;
-            border-color: rgba(99, 102, 241, 0.3) !important;
-        }
-
-        button[onclick="logout()"]::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.6s;
-        }
-
-        button[onclick="logout()"]:hover::before {
-            left: 100%;
-        }
-
-        button[onclick="logout()"]:hover {
-            transform: translateY(-2px) scale(1.02);
-            box-shadow: 0 8px 25px rgba(239, 68, 68, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
-            border-color: rgba(239, 68, 68, 0.6) !important;
-            background: linear-gradient(135deg, rgba(239, 68, 68, 0.4) 0%, rgba(220, 38, 38, 0.4) 100%) !important;
-        }
-
-        button[onclick="logout()"]:active {
-            transform: translateY(0) scale(0.98);
-        }
-
-        @media (max-width: 768px) {
-            .header .container>div {
-                gap: 10px !important;
-            }
-
-            a[href="my-library.html"],
-            button[onclick="logout()"] {
-                padding: 10px 16px !important;
-                font-size: 0.85rem !important;
-            }
-
-            button[onclick="logout()"] span {
-                gap: 6px !important;
-            }
-
-            button[onclick="logout()"] svg {
-                width: 14px !important;
-                height: 14px !important;
-            }
-        }
-    </style>
+    </nav>
 
     <script>
         function logout(btn) {
@@ -1509,59 +1390,12 @@
 
     <!-- Centered Course Card & Payment Section -->
     <section class="course-purchase-section">
+        <div class="bb-ghost-word" aria-hidden="true">BULLBEAR</div>
         <div class="container">
-            <!-- Locked Course Card -->
-            <div id="lockedCourseCard" class="locked-course-card">
-                <div class="course-card-header">
-                    <div class="lock-icon">🔒</div>
-                    <h2>Crypto Trading Video Course</h2>
-                    <div class="price-tag">$500</div>
-                </div>
-
-                <div class="course-card-body">
-                    <p class="course-description">Master cryptocurrency trading with our comprehensive video course</p>
-
-                    <div class="course-features-compact">
-                        <div class="feature-item">✓ 50+ Video Lessons</div>
-                        <div class="feature-item">✓ Lifetime Access</div>
-                        <div class="feature-item">✓ Trading Tools</div>
-                        <div class="feature-item">✓ Community Support</div>
-                        <div class="feature-item">✓ Live Sessions</div>
-                        <div class="feature-item">✓ Certificate</div>
-                    </div>
-                </div>
+            <div style="text-align:center;margin-bottom:28px;">
+                <h2 style="font-family:'Space Grotesk',sans-serif;font-size:1.75rem;font-weight:800;color:#f1f5f9;margin:0 0 8px;letter-spacing:-0.03em;">Crypto Trading Courses &amp; Membership</h2>
+                <p style="color:rgba(148,163,184,0.65);font-size:0.9rem;margin:0;">Choose your path to financial freedom</p>
             </div>
-
-            <!-- Membership Upsell -->
-            <div class="bb-membership-banner">
-                <div class="bb-membership-badge">⭐ ALL-ACCESS MEMBERSHIP</div>
-                <div class="bb-membership-inner">
-                    <div class="bb-membership-left">
-                        <h3 class="bb-membership-title">Get Everything with BullBear Membership</h3>
-                        <p class="bb-membership-sub">Unlock this course <strong>plus all future content</strong> for one low monthly price</p>
-                        <ul class="bb-membership-perks">
-                            <li>This course + all other courses (worth $1,649+)</li>
-                            <li>Live trading indicators &amp; real-time signals</li>
-                            <li>Priority community &amp; 1-on-1 support sessions</li>
-                            <li>New content added every month</li>
-                            <li>Cancel anytime — no lock-in</li>
-                        </ul>
-                    </div>
-                    <div class="bb-membership-right">
-                        <div class="bb-membership-price">
-                            <span class="bb-mem-amount">$99</span>
-                            <span class="bb-mem-period">/month</span>
-                        </div>
-                        <div class="bb-mem-save">Save vs buying separately</div>
-                        <button class="bb-mem-btn" onclick="showSignupModal ? showSignupModal() : window.location.href='/'">
-                            Join Membership
-                        </button>
-                        <p class="bb-mem-note">30-day money-back guarantee</p>
-                    </div>
-                </div>
-                <div class="bb-membership-divider">— or purchase this course only for $500 below —</div>
-            </div>
-
             <!-- Payment Section -->
             <div id="paymentSection" class="payment-section-compact">
                 <div style="text-align:center;max-width:480px;margin:0 auto;">
@@ -1577,7 +1411,7 @@
                         <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:12px 14px;color:rgba(255,255,255,.75);font-size:.85rem;display:flex;align-items:center;gap:8px;"><span style="color:#10b981;font-weight:700;">✓</span>Live Sessions</div>
                         <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:12px 14px;color:rgba(255,255,255,.75);font-size:.85rem;display:flex;align-items:center;gap:8px;"><span style="color:#10b981;font-weight:700;">✓</span>Certificate</div>
                     </div>
-                    <button onclick="showCoursePaymentModal()" style="width:100%;padding:18px;background:linear-gradient(135deg,#7c3aed,#d946ef);color:#fff;border:none;border-radius:14px;font-size:1.05rem;font-weight:800;cursor:pointer;letter-spacing:.3px;box-shadow:0 8px 28px rgba(124,58,237,.45);transition:all .25s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 12px 36px rgba(124,58,237,.55)'" onmouseout="this.style.transform='';this.style.boxShadow='0 8px 28px rgba(124,58,237,.45)'">
+                    <button onclick="showCoursePaymentModal()" style="width:100%;padding:18px;background:linear-gradient(135deg,#D4AF37,#2ECC71);color:#fff;border:none;border-radius:14px;font-size:1.05rem;font-weight:800;cursor:pointer;letter-spacing:.3px;box-shadow:0 8px 28px rgba(212,175,55,.45);transition:all .25s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 12px 36px rgba(212,175,55,.55)'" onmouseout="this.style.transform='';this.style.boxShadow='0 8px 28px rgba(212,175,55,.45)'">
                         Get Instant Access — $500
                     </button>
                     <div style="display:flex;align-items:center;justify-content:center;gap:18px;margin-top:16px;flex-wrap:wrap;">
@@ -1704,6 +1538,103 @@
         </div>
     </section>
 
+    <!-- TICKER TAPE -->
+    <div class="bb-ticker" aria-hidden="true">
+        <div class="bb-ticker-track">
+            <span>BULLISH&middot;</span><span>BEARISH&middot;</span><span>BREAKOUT&middot;</span><span>SUPPORT&middot;</span><span>RESISTANCE&middot;</span><span>MOMENTUM&middot;</span><span>LEVERAGE&middot;</span><span>LIQUIDITY&middot;</span>
+            <span>BULLISH&middot;</span><span>BEARISH&middot;</span><span>BREAKOUT&middot;</span><span>SUPPORT&middot;</span><span>RESISTANCE&middot;</span><span>MOMENTUM&middot;</span><span>LEVERAGE&middot;</span><span>LIQUIDITY&middot;</span>
+        </div>
+    </div>
+
+    <!-- NETWORK-NODE TRUST STRIP -->
+    <div class="bb-network-strip" id="bb-network-zone">
+        <canvas id="bb-network-canvas" class="bb-network-canvas"></canvas>
+        <div class="bb-trust-row">
+            <span>🔒 256-bit SSL</span>
+            <span>⚡ Instant Access</span>
+            <span>💳 PayPal &middot; M-Pesa &middot; Crypto</span>
+            <span>🎓 Lifetime Access</span>
+        </div>
+    </div>
+    <script>
+    (function () {
+        var canvas = document.getElementById('bb-network-canvas');
+        var zone = document.getElementById('bb-network-zone');
+        if (!canvas || !zone) return;
+        var ctx = canvas.getContext('2d');
+        var wrap = zone;
+        var DPR = Math.min(window.devicePixelRatio || 1, 2);
+        var points = [];
+        var linkDist = 130;
+        var NODE_R = 2;
+        var mouse = { x: -9999, y: -9999, active: false };
+        var repelRadius = 110;
+        zone.addEventListener('mousemove', function (e) {
+            var rect = zone.getBoundingClientRect();
+            mouse.x = e.clientX - rect.left; mouse.y = e.clientY - rect.top; mouse.active = true;
+        });
+        zone.addEventListener('mouseleave', function () { mouse.active = false; });
+        function resize() {
+            var rect = wrap.getBoundingClientRect();
+            canvas.width = rect.width * DPR; canvas.height = rect.height * DPR;
+            ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+            var count = Math.min(150, Math.max(30, Math.round((rect.width * rect.height) / 45000)));
+            points = [];
+            for (var i = 0; i < count; i++) {
+                points.push({ x: Math.random() * rect.width, y: Math.random() * rect.height,
+                    vx: (Math.random() - 0.5) * 0.25, vy: (Math.random() - 0.5) * 0.25 });
+            }
+        }
+        function draw() {
+            var rect = wrap.getBoundingClientRect();
+            ctx.clearRect(0, 0, rect.width, rect.height);
+            for (var i = 0; i < points.length; i++) {
+                var p = points[i];
+                p.x += p.vx; p.y += p.vy;
+                if (p.x < 0 || p.x > rect.width) p.vx *= -1;
+                if (p.y < 0 || p.y > rect.height) p.vy *= -1;
+                if (mouse.active) {
+                    var mdx = p.x - mouse.x, mdy = p.y - mouse.y;
+                    var mdist = Math.sqrt(mdx * mdx + mdy * mdy);
+                    if (mdist < repelRadius && mdist > 0.01) {
+                        var force = (1 - mdist / repelRadius) * 2.4;
+                        p.x += (mdx / mdist) * force; p.y += (mdy / mdist) * force;
+                    }
+                }
+            }
+            for (var i = 0; i < points.length; i++) {
+                for (var j = i + 1; j < points.length; j++) {
+                    var a = points[i], b = points[j];
+                    var dx = a.x - b.x, dy = a.y - b.y;
+                    var dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < linkDist) {
+                        ctx.strokeStyle = 'rgba(61,255,110,' + (0.35 * (1 - dist / linkDist)) + ')';
+                        ctx.lineWidth = 1;
+                        ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+                    }
+                }
+            }
+            for (var i = 0; i < points.length; i++) {
+                var p = points[i];
+                ctx.beginPath(); ctx.arc(p.x, p.y, NODE_R, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(61,255,110,0.9)'; ctx.shadowColor = 'rgba(61,255,110,0.8)'; ctx.shadowBlur = 6;
+                ctx.fill();
+            }
+            ctx.shadowBlur = 0;
+            requestAnimationFrame(draw);
+        }
+        resize(); draw();
+        window.addEventListener('resize', resize);
+        window.addEventListener('load', resize);
+    })();
+    </script>
+
+    <!-- Reviews -->
+    <section class="reviews-section">
+        <div class="reviews-summary" id="reviewsSummary"></div>
+        <div id="reviewFormWrap"></div>
+        <div id="reviewsList"></div>
+    </section>
 
     <script>
         const API_BASE = 'https://backend-tawny-nu-33.vercel.app/api';
@@ -1715,15 +1646,17 @@
                 fetch(API_BASE + '/auth/me', { headers: { 'Authorization': 'Bearer ' + token } })
                     .then(r => r.json())
                     .then(data => {
-                        if (data.data && data.data.email) {
+                        const u = data.data && (data.data.user || data.data);
+                        if (u && u.email) {
                             const emailInput = document.getElementById('checkoutEmail');
-                            if (emailInput) emailInput.value = data.data.email;
+                            if (emailInput) emailInput.value = u.email;
                         }
                     }).catch(() => {});
             }
 
             // Check access
             checkCourseAccess();
+            loadReviews();
 
             // Payment method toggle
             const paymentRadios = document.querySelectorAll('input[name="paymentMethod"]');
@@ -1760,6 +1693,8 @@
             }
         });
 
+        let currentUserEmail = null;
+
         async function checkCourseAccess() {
             const token = localStorage.getItem('bullbearToken');
             if (!token) return;
@@ -1769,7 +1704,8 @@
                 const meData = await meRes.json();
                 if (!meRes.ok || !meData.data) return;
 
-                const email = meData.data.email;
+                const email = (meData.data.user || meData.data).email;
+                currentUserEmail = email;
                 const purchaseRes = await fetch(API_BASE + '/purchases/user/' + encodeURIComponent(email));
                 const purchaseData = await purchaseRes.json();
                 const purchases = (purchaseData.data && purchaseData.data.purchases) || [];
@@ -1782,14 +1718,19 @@
                     const checkoutSection = document.querySelector('.checkout-section') || document.querySelector('.course-purchase-section');
                     if (checkoutSection) {
                         checkoutSection.innerHTML = `
-                            <div class="container" style="text-align:center;padding:60px 20px;">
-                                <div style="background:linear-gradient(135deg,rgba(16,185,129,0.2),rgba(5,150,105,0.2));border:2px solid #10b981;border-radius:20px;padding:40px;max-width:600px;margin:0 auto;">
+                            <div class="container" style="padding:60px 20px;">
+                                <div style="text-align:center;background:linear-gradient(135deg,rgba(16,185,129,0.2),rgba(5,150,105,0.2));border:2px solid #10b981;border-radius:20px;padding:40px;max-width:600px;margin:0 auto 50px;">
                                     <div style="font-size:4rem;margin-bottom:20px;">✅</div>
                                     <h2 style="color:#10b981;font-size:2rem;margin-bottom:15px;">Access Granted!</h2>
                                     <p style="color:#cbd5e1;font-size:1.1rem;margin-bottom:25px;">You have full access to all course materials.</p>
                                     <a href="my-library.html" style="display:inline-block;padding:16px 40px;background:linear-gradient(135deg,#10b981,#059669);color:white;text-decoration:none;border-radius:12px;font-weight:700;font-size:1.1rem;">📚 Go to My Library</a>
                                 </div>
+                                <h2 style="color:#f1f5f9;font-size:1.8rem;font-weight:700;text-align:center;margin-bottom:10px;font-family:'Space Grotesk',sans-serif;">Course Content</h2>
+                                <p style="text-align:center;color:#94a3b8;font-size:0.95rem;margin-bottom:30px;">All your video lessons</p>
+                                <div id="courseVideosGrid" class="course-modules-wrap"></div>
                             </div>`;
+                        loadCourseVideos();
+                        loadReviews();
                     }
                 } else if (pending) {
                     const checkoutSection = document.querySelector('.checkout-section') || document.querySelector('.course-purchase-section');
@@ -1923,6 +1864,246 @@
             });
         }
 
+        let watchedContentIds = new Set();
+
+        function renderCourseVideoCard(v) {
+            const embedUrl = getYoutubeEmbedUrl(v.url);
+            const isWatched = watchedContentIds.has(v.id);
+            return `
+                <div id="video-card-${v.id}" style="background:rgba(255,255,255,0.03);border:1px solid ${isWatched ? 'rgba(16,185,129,0.4)' : 'rgba(212,175,55,0.2)'};border-radius:14px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.3);">
+                    ${embedUrl
+                        ? `<iframe src="${embedUrl}" style="width:100%;aspect-ratio:16/9;border:none;display:block;" allowfullscreen loading="lazy"></iframe>`
+                        : `<div style="width:100%;aspect-ratio:16/9;background:rgba(212,175,55,0.1);display:flex;align-items:center;justify-content:center;font-size:2.5rem;">🎥</div>`
+                    }
+                    <div style="padding:16px;">
+                        <h3 style="color:#f1f5f9;font-size:1rem;font-weight:700;margin-bottom:6px;line-height:1.4;">${v.title}</h3>
+                        ${v.description ? `<p style="color:#94a3b8;font-size:0.83rem;margin-bottom:8px;line-height:1.5;">${v.description}</p>` : ''}
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
+                            ${v.category ? `<span style="color:#F2C94C;font-size:0.76rem;font-weight:600;text-transform:uppercase;">${v.category}</span>` : '<span></span>'}
+                            ${v.duration ? `<span style="color:#475569;font-size:0.76rem;">${v.duration}</span>` : ''}
+                        </div>
+                        <div style="display:flex;gap:10px;align-items:center;margin-top:12px;">
+                            ${!embedUrl ? `<a href="${v.url}" target="_blank" rel="noopener noreferrer" style="display:inline-block;padding:8px 18px;background:linear-gradient(135deg,#D4AF37,#2ECC71);color:#fff;text-decoration:none;border-radius:8px;font-size:0.83rem;font-weight:600;">Watch Video</a>` : ''}
+                            <button onclick="toggleWatched('${v.id}','${v.moduleId || ''}',this)" data-watched="${isWatched}" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:8px;font-size:0.8rem;font-weight:700;cursor:pointer;border:1px solid ${isWatched ? 'rgba(16,185,129,0.4)' : 'rgba(255,255,255,0.15)'};background:${isWatched ? 'rgba(16,185,129,0.15)' : 'rgba(255,255,255,0.04)'};color:${isWatched ? '#10b981' : 'rgba(255,255,255,0.6)'};">${isWatched ? '✓ Watched' : 'Mark as Watched'}</button>
+                        </div>
+                    </div>
+                </div>`;
+        }
+
+        async function toggleWatched(contentId, moduleId, btn) {
+            if (!currentUserEmail) { alert('Please log in to track your progress.'); return; }
+            const nowWatched = btn.dataset.watched !== 'true';
+            btn.disabled = true;
+            try {
+                const res = await fetch(API_BASE + '/progress', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userEmail: currentUserEmail, contentId, moduleId: moduleId || null, watched: nowWatched }),
+                });
+                const data = await res.json();
+                if (data.status === 'success') {
+                    btn.dataset.watched = String(nowWatched);
+                    btn.textContent = nowWatched ? '✓ Watched' : 'Mark as Watched';
+                    btn.style.borderColor = nowWatched ? 'rgba(16,185,129,0.4)' : 'rgba(255,255,255,0.15)';
+                    btn.style.background = nowWatched ? 'rgba(16,185,129,0.15)' : 'rgba(255,255,255,0.04)';
+                    btn.style.color = nowWatched ? '#10b981' : 'rgba(255,255,255,0.6)';
+                    const card = document.getElementById('video-card-' + contentId);
+                    if (card) card.style.borderColor = nowWatched ? 'rgba(16,185,129,0.4)' : 'rgba(212,175,55,0.2)';
+                    if (nowWatched) watchedContentIds.add(contentId); else watchedContentIds.delete(contentId);
+                    updateModuleProgressBadge(moduleId);
+                }
+            } catch (e) {}
+            btn.disabled = false;
+        }
+
+        function updateModuleProgressBadge(moduleId) {
+            if (!moduleId) return;
+            const badge = document.getElementById('module-progress-' + moduleId);
+            if (!badge) return;
+            const total = parseInt(badge.dataset.total, 10) || 0;
+            const ids = (badge.dataset.contentIds || '').split(',').filter(Boolean);
+            const watchedCount = ids.filter(id => watchedContentIds.has(id)).length;
+            badge.textContent = `${watchedCount}/${total} watched`;
+        }
+
+        async function loadCourseVideos() {
+            const grid = document.getElementById('courseVideosGrid');
+            if (!grid) return;
+            try {
+                const fetches = [
+                    fetch(API_BASE + '/modules'),
+                    fetch(API_BASE + '/content'),
+                ];
+                if (currentUserEmail) fetches.push(fetch(API_BASE + '/progress/user/' + encodeURIComponent(currentUserEmail)));
+                const [modulesRes, contentRes, progressRes] = await Promise.all(fetches);
+                const modulesData = await modulesRes.json();
+                const contentData = await contentRes.json();
+                const modules = (modulesData.data && modulesData.data.modules) || [];
+                const items = (contentData.data && contentData.data.items) || [];
+                if (progressRes) {
+                    const progressData = await progressRes.json();
+                    const watchedItems = (progressData.data && progressData.data.items) || [];
+                    watchedContentIds = new Set(watchedItems.map(p => p.contentId));
+                }
+                const videos = items.filter(i => i.isActive !== false && (i.type === 'video' || i.type === 'youtube'));
+
+                if (!videos.length) { grid.innerHTML = '<p style="color:#94a3b8;text-align:center;">No videos added yet. Check back soon.</p>'; return; }
+
+                const byModule = new Map();
+                const unassigned = [];
+                videos.forEach(v => {
+                    if (v.moduleId && modules.some(m => m.id === v.moduleId)) {
+                        if (!byModule.has(v.moduleId)) byModule.set(v.moduleId, []);
+                        byModule.get(v.moduleId).push(v);
+                    } else {
+                        unassigned.push(v);
+                    }
+                });
+
+                let html = '';
+                modules.forEach((m, idx) => {
+                    const vids = (byModule.get(m.id) || []).sort((a, b) => (a.order || 0) - (b.order || 0));
+                    if (!vids.length) return;
+                    const watchedCount = vids.filter(v => watchedContentIds.has(v.id)).length;
+                    html += `
+                        <div class="course-module">
+                            <div class="course-module-head" style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+                                <div>
+                                    <span class="course-module-badge">Module ${idx + 1}</span>
+                                    <h3>${m.name}</h3>
+                                    ${m.description ? `<p>${m.description}</p>` : ''}
+                                </div>
+                                <span id="module-progress-${m.id}" data-total="${vids.length}" data-content-ids="${vids.map(v => v.id).join(',')}" style="flex-shrink:0;padding:6px 12px;border-radius:999px;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.25);color:#10b981;font-size:.78rem;font-weight:700;">${watchedCount}/${vids.length} watched</span>
+                            </div>
+                            <div class="course-module-grid">
+                                ${vids.map(renderCourseVideoCard).join('')}
+                            </div>
+                        </div>`;
+                });
+                if (unassigned.length) {
+                    html += `
+                        <div class="course-module">
+                            <div class="course-module-head"><h3>More Lessons</h3></div>
+                            <div class="course-module-grid">
+                                ${unassigned.sort((a, b) => (a.order || 0) - (b.order || 0)).map(renderCourseVideoCard).join('')}
+                            </div>
+                        </div>`;
+                }
+                grid.innerHTML = html;
+            } catch (e) {
+                if (grid) grid.innerHTML = '<p style="color:#ef4444;text-align:center;">Failed to load videos.</p>';
+            }
+        }
+
+        function getYoutubeEmbedUrl(url) {
+            if (!url) return null;
+            try {
+                let id = '';
+                if (url.includes('youtu.be/')) id = url.split('youtu.be/')[1].split(/[?&]/)[0];
+                else if (url.includes('youtube.com')) id = new URLSearchParams(url.split('?')[1] || '').get('v') || '';
+                return id ? 'https://www.youtube.com/embed/' + id : null;
+            } catch { return null; }
+        }
+
+        const REVIEW_COURSE_ID = 'crypto-trading-course';
+        let selectedRating = 0;
+
+        async function loadReviews() {
+            try {
+                const res = await fetch(API_BASE + '/reviews/' + REVIEW_COURSE_ID);
+                const data = await res.json();
+                const reviews = (data.data && data.data.reviews) || [];
+                const average = (data.data && data.data.average) || 0;
+                const count = (data.data && data.data.count) || 0;
+
+                const summary = document.getElementById('reviewsSummary');
+                if (summary) {
+                    summary.innerHTML = count
+                        ? `<div class="stars">${'★'.repeat(Math.round(average))}${'☆'.repeat(5 - Math.round(average))}</div>
+                           <div class="avg-text">${average} out of 5 · ${count} review${count !== 1 ? 's' : ''}</div>`
+                        : `<h2 style="color:#f1f5f9;font-size:1.6rem;font-weight:800;">Student Reviews</h2>
+                           <div class="avg-text">No reviews yet — be the first to share your experience.</div>`;
+                }
+
+                const list = document.getElementById('reviewsList');
+                if (list) {
+                    list.innerHTML = reviews.map(r => `
+                        <div class="review-card">
+                            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                                <strong style="color:#f1f5f9;">${r.userName}</strong>
+                                <span style="color:rgba(255,255,255,.4);font-size:.78rem;">${r.createdAt ? new Date(r.createdAt).toLocaleDateString() : ''}</span>
+                            </div>
+                            <div class="stars">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</div>
+                            ${r.text ? `<p style="color:#cbd5e1;font-size:.9rem;margin-top:8px;line-height:1.6;">${r.text}</p>` : ''}
+                        </div>`).join('');
+                }
+
+                if (document.body.classList.contains('content-unlocked') && currentUserEmail) {
+                    const mine = reviews.find(r => r.userEmail === currentUserEmail.toLowerCase());
+                    renderReviewForm(mine);
+                }
+            } catch (e) {}
+        }
+
+        function renderReviewForm(existing) {
+            const wrap = document.getElementById('reviewFormWrap');
+            if (!wrap) return;
+            selectedRating = existing ? existing.rating : 0;
+            wrap.innerHTML = `
+                <div class="review-card" style="margin-bottom:30px;">
+                    <h3 style="color:#f1f5f9;font-size:1.1rem;margin-bottom:12px;">${existing ? 'Update your review' : 'Leave a review'}</h3>
+                    <div class="star-picker" id="starPicker">
+                        ${[1, 2, 3, 4, 5].map(n => `<span data-star="${n}" onclick="selectStars(${n})">★</span>`).join('')}
+                    </div>
+                    <textarea id="reviewText" placeholder="Share your experience with this course..." style="width:100%;margin-top:12px;padding:12px 14px;background:rgba(15,23,42,0.6);border:1px solid rgba(46,204,113,0.3);border-radius:10px;color:#fff;font-family:inherit;font-size:.9rem;min-height:80px;resize:vertical;">${existing ? existing.text : ''}</textarea>
+                    <button onclick="submitReview(this)" style="margin-top:12px;padding:10px 24px;background:linear-gradient(135deg,#D4AF37,#2ECC71);color:#fff;border:none;border-radius:10px;font-weight:700;font-size:.9rem;cursor:pointer;">${existing ? 'Update Review' : 'Submit Review'}</button>
+                </div>`;
+            paintStars();
+        }
+
+        function selectStars(n) {
+            selectedRating = n;
+            paintStars();
+        }
+
+        function paintStars() {
+            document.querySelectorAll('#starPicker span').forEach(s => {
+                s.classList.toggle('active', parseInt(s.dataset.star, 10) <= selectedRating);
+            });
+        }
+
+        async function submitReview(btn) {
+            if (!selectedRating) { alert('Please select a star rating.'); return; }
+            const text = document.getElementById('reviewText').value.trim();
+            btn.disabled = true;
+            btn.textContent = 'Submitting...';
+            try {
+                const res = await fetch(API_BASE + '/reviews', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        userEmail: currentUserEmail,
+                        userName: (currentUserEmail || '').split('@')[0],
+                        courseId: REVIEW_COURSE_ID,
+                        rating: selectedRating,
+                        text,
+                    }),
+                });
+                const data = await res.json();
+                if (data.status === 'success') {
+                    loadReviews();
+                } else {
+                    alert(data.message || 'Failed to submit review');
+                    btn.disabled = false;
+                    btn.textContent = 'Submit Review';
+                }
+            } catch (e) {
+                alert('Network error. Please try again.');
+                btn.disabled = false;
+                btn.textContent = 'Submit Review';
+            }
+        }
+
         let paypalCourseRendered = false;
 
         function loadPayPalSDK(callback) {
@@ -2005,12 +2186,19 @@
     </script>
 
     <!-- Footer -->
-    <div
-        style="text-align: center; padding: 40px 20px; margin-top: 60px; border-top: 1px solid rgba(99, 102, 241, 0.15); color: rgba(255, 255, 255, 0.5); background: rgba(10, 14, 26, 0.95);">
-        <p>&copy; 2026 BullBear Blockchain. All rights reserved. | Master the Markets</p>
-        <p style="margin-top: 10px; font-size: 0.85rem;">Developed by <a href="https://twitter.com/starico"
-                target="_blank" style="color: #06b6d4; text-decoration: none; font-weight: 600;">@starico</a></p>
-    </div>
+    <footer style="background:linear-gradient(135deg,#060608 0%,#14100a 50%,#060608 100%);border-top:1px solid rgba(212,175,55,.35);box-shadow:0 -4px 30px rgba(212,175,55,.2);padding:36px 40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+            <img src="./images/bullbear-logo.png" alt="BullBear" style="height:34px;filter:drop-shadow(0 0 10px rgba(242,201,76,.4));">
+            <span style="font-weight:800;font-size:1.05rem;background:linear-gradient(135deg,#fff 20%,#F2C94C);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">BullBear Blockchain</span>
+        </div>
+        <div style="display:flex;gap:24px;flex-wrap:wrap;">
+            <a href="index.html" style="color:rgba(255,255,255,.6);text-decoration:none;font-size:.85rem;font-weight:600;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.6)'">Home</a>
+            <a href="store.html" style="color:rgba(255,255,255,.6);text-decoration:none;font-size:.85rem;font-weight:600;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.6)'">Store</a>
+            <a href="my-library.html" style="color:rgba(255,255,255,.6);text-decoration:none;font-size:.85rem;font-weight:600;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.6)'">My Library</a>
+            <a href="trading-indicators.html" style="color:rgba(255,255,255,.6);text-decoration:none;font-size:.85rem;font-weight:600;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.6)'">Indicators</a>
+        </div>
+        <div style="color:rgba(255,255,255,.3);font-size:.78rem;">© 2026 BullBear Blockchain. All rights reserved.</div>
+    </footer>
     <script src="./bb-payment.js"></script>
     <script src="./bb-notifications.js"></script>
 </body>

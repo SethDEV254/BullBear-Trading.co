@@ -61,9 +61,9 @@ router.post('/', async (req, res) => {
 router.get('/user/:email', async (req, res) => {
   try {
     const db = getDb();
+    const email = req.params.email.toLowerCase();
     const snap = await db.collection('purchases')
-      .where('userEmail', '==', req.params.email.toLowerCase())
-      .orderBy('createdAt', 'desc')
+      .where('userEmail', '==', email)
       .get();
     const purchases = snap.docs.map(d => ({ id: d.id, ...d.data() }));
     res.json({ status: 'success', count: purchases.length, data: { purchases } });

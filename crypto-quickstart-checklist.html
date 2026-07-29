@@ -1,814 +1,1129 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>5-Step Crypto Quickstart Checklist - BullBear Blockchain</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>5-Step Crypto Quickstart Checklist — BullBear Blockchain</title>
+  <link rel="shortcut icon" href="images/bullbear-logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            color: #fff;
-            min-height: 100vh;
-        }
+    :root {
+      --p1: #D4AF37;
+      --p2: #8a6d1f;
+      --p3: #F2C94C;
+      --p4: #F2C94C;
+      --bg: #000000;
+      --bg3: #111111;
+      --border: rgba(255,255,255,.07);
+      --text: rgba(255,255,255,.88);
+      --muted: rgba(255,255,255,.42);
+    }
 
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
+    html { scroll-behavior: smooth; }
 
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
+    body {
+      font-family: 'Space Grotesk', -apple-system, sans-serif;
+      background: #000;
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
 
-        .header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 15px;
-            background: linear-gradient(135deg, #6366f1, #06b6d4);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 20%, rgba(212,175,55,.1) 0%, transparent 55%),
+        radial-gradient(ellipse at 80% 75%, rgba(46,204,113,.07) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
 
-        .header p {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 1.1rem;
-            max-width: 600px;
-            margin: 0 auto;
-        }
+    /* ── Nav ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 900;
+      background: linear-gradient(135deg, #0a0a0d 0%, #1a1408 50%, #0a0a0d 100%);
+      border-bottom: 1px solid rgba(212,175,55,.35);
+      padding: 0 40px;
+      height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 4px 30px rgba(212,175,55,.25), 0 1px 0 rgba(212,175,55,.2);
+    }
 
-        .card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(99, 102, 241, 0.3);
-            border-radius: 20px;
-            padding: 40px;
-            margin-bottom: 30px;
-        }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      text-decoration: none;
+    }
+    .nav-logo img {
+      height: 42px;
+      filter: drop-shadow(0 0 12px rgba(212,175,55,.45));
+    }
+    .nav-logo-text {
+      font-size: 1.25rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #fff 20%, var(--p4));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -.3px;
+    }
 
-        .badge {
-            display: inline-block;
-            background: linear-gradient(135deg, #22c55e, #10b981);
-            color: #fff;
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-bottom: 20px;
-        }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
 
-        .features {
-            list-style: none;
-            margin: 25px 0;
-        }
+    .nav-a {
+      color: rgba(255,255,255,.7);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: .875rem;
+      padding: 8px 14px;
+      border-radius: 10px;
+      border: 1px solid transparent;
+      transition: all .2s;
+      letter-spacing: -.1px;
+    }
+    .nav-a:hover {
+      color: #fff;
+      background: rgba(255,255,255,.1);
+      border-color: rgba(255,255,255,.15);
+    }
 
-        .features li {
-            padding: 12px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+    /* ── Page ── */
+    .page-wrap {
+      position: relative;
+      z-index: 1;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 60px 24px 80px;
+    }
 
-        .features li:last-child {
-            border-bottom: none;
-        }
+    /* ── Hero ── */
+    .page-hero {
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .bb-ghost-word {
+      position: absolute; top: -6%; left: 2%;
+      font-family: 'Space Grotesk', sans-serif; font-weight: 800;
+      font-size: clamp(3.5rem, 14vw, 9rem); letter-spacing: -0.02em;
+      color: rgba(255,255,255,0.045); line-height: 1; white-space: nowrap;
+      pointer-events: none; z-index: 0; user-select: none;
+    }
+    @media (max-width: 900px) { .bb-ghost-word { display: none; } }
 
-        .features li::before {
-            content: '✓';
-            background: linear-gradient(135deg, #6366f1, #06b6d4);
-            color: #fff;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.8rem;
-            flex-shrink: 0;
-        }
+    /* ── Ticker tape ── */
+    .bb-ticker {
+      position: relative; z-index: 1; overflow: hidden;
+      background: #050505;
+      border-top: 1px solid rgba(61,255,110,0.16);
+      border-bottom: 1px solid rgba(61,255,110,0.16);
+      padding: 10px 0;
+      margin-bottom: 48px;
+    }
+    .bb-ticker-track { display: flex; width: max-content; animation: bbTickerScroll 22s linear infinite; }
+    .bb-ticker-track span {
+      font-family: 'Space Grotesk', monospace; font-size: 0.78rem; font-weight: 700;
+      letter-spacing: 0.14em; color: rgba(124,255,160,0.55); padding: 0 18px; white-space: nowrap;
+    }
+    @keyframes bbTickerScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+    @media (prefers-reduced-motion: reduce) { .bb-ticker-track { animation: none; } }
 
-        .download-btn {
-            display: inline-block;
-            background: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%);
-            color: #fff;
-            padding: 18px 40px;
-            border-radius: 12px;
-            text-decoration: none;
-            font-size: 1.2rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
-        }
+    /* ── Network-node strip (trust badges) ── */
+    .bb-network-strip {
+      position: relative;
+      background: #06080a;
+      border: 1px solid rgba(61,255,110,0.14);
+      border-radius: 20px;
+      overflow: hidden;
+      margin-bottom: 24px;
+      padding: 28px 24px;
+    }
+    .bb-network-canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+    .bb-trust-row {
+      position: relative; z-index: 1;
+      display: flex; justify-content: center; flex-wrap: wrap; gap: 28px;
+    }
+    .bb-trust-row span {
+      font-family: 'Space Grotesk', sans-serif; font-size: 0.85rem; font-weight: 700;
+      color: #7CFFA0; letter-spacing: 0.02em;
+    }
 
-        .download-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(99, 102, 241, 0.4);
-        }
+    .free-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: linear-gradient(135deg, #166534, #15803d);
+      color: #fff;
+      padding: 6px 18px;
+      border-radius: 50px;
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
 
-        .cta-section {
-            text-align: center;
-            margin-top: 30px;
-        }
+    .page-hero h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 3rem;
+      font-weight: 900;
+      letter-spacing: -1.5px;
+      line-height: 1.1;
+      background: linear-gradient(135deg, #f1f5f9 0%, #F2C94C 55%, #2ECC71 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 18px;
+    }
 
-        .back-link {
-            display: inline-block;
-            color: #06b6d4;
-            text-decoration: none;
-            margin-top: 20px;
-            font-size: 0.95rem;
-        }
+    .page-hero p {
+      color: var(--muted);
+      font-size: 1.05rem;
+      line-height: 1.7;
+      max-width: 580px;
+      margin: 0 auto;
+    }
 
-        .back-link:hover {
-            text-decoration: underline;
-        }
+    /* ── Cards ── */
+    .card {
+      position: relative;
+      background: #111;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 36px;
+      margin-bottom: 24px;
+      overflow: hidden;
+      transition: border-color .25s, box-shadow .25s, transform .25s;
+    }
 
-        .preview {
-            background: rgba(99, 102, 241, 0.1);
-            border: 2px dashed rgba(99, 102, 241, 0.3);
-            border-radius: 15px;
-            padding: 30px;
-            text-align: center;
-            margin: 30px 0;
-        }
+    .card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, #3DFF6E, transparent);
+      opacity: 0; transition: opacity .25s ease;
+    }
 
-        .preview h3 {
-            color: #fbbf24;
-            margin-bottom: 15px;
-        }
+    .card:hover {
+      border-color: rgba(61,255,110,.4);
+      box-shadow: 0 16px 48px rgba(0,0,0,.5), 0 0 0 1px rgba(61,255,110,.14);
+      transform: translateY(-3px);
+    }
 
-        .steps {
-            display: grid;
-            gap: 15px;
-            margin: 30px 0;
-        }
+    .card:hover::before { opacity: 1; }
 
-        .step {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            border-radius: 12px;
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
+    .card-label {
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--p4);
+      margin-bottom: 16px;
+    }
 
-        .step-num {
-            background: linear-gradient(135deg, #6366f1, #8b5cf6);
-            color: #fff;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            flex-shrink: 0;
-        }
+    .card h2 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #f1f5f9;
+      letter-spacing: -.4px;
+      margin-bottom: 10px;
+    }
 
-        .step-text h4 {
-            color: #fff;
-            margin-bottom: 5px;
-        }
+    .card > p {
+      color: var(--muted);
+      font-size: .95rem;
+      line-height: 1.65;
+      margin-bottom: 20px;
+    }
 
-        .step-text p {
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 0.9rem;
-        }
-    </style>
-    <link rel="stylesheet" href="./bb-theme.css">
-    <style>
-        /* ── BullBear landing-page theme ── */
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800&display=swap');
-        body {
-            background: #05010f !important;
-            font-family: 'Inter', system-ui, sans-serif !important;
-            -webkit-font-smoothing: antialiased !important;
-        }
-        body::before, body::after { display: none !important; }
-        h1, h2, h3 {
-            font-family: 'Space Grotesk', 'Inter', sans-serif !important;
-            background: linear-gradient(135deg, #a78bfa 0%, #f0abfc 100%) !important;
-            -webkit-background-clip: text !important;
-            -webkit-text-fill-color: transparent !important;
-            background-clip: text !important;
-        }
-        .header, header {
-            background: rgba(5,1,15,0.96) !important;
-            backdrop-filter: blur(16px) !important;
-            -webkit-backdrop-filter: blur(16px) !important;
-            border-bottom: 1px solid rgba(124,58,237,0.25) !important;
-            box-shadow: 0 1px 0 rgba(124,58,237,0.12), 0 8px 40px rgba(0,0,0,0.6) !important;
-        }
-        .card, [class*="card"],
-        [class*="checklist-card"],
-        [class*="step"], [class*="box"] {
-            background: rgba(255,255,255,0.03) !important;
-            border: 1px solid rgba(124,58,237,0.2) !important;
-            border-radius: 14px !important;
-        }
-        .card:hover, [class*="card"]:hover {
-            border-color: rgba(124,58,237,0.45) !important;
-            box-shadow: 0 12px 40px rgba(124,58,237,0.2) !important;
-        }
-        button[type="submit"], [class*="btn"], [class*="cta"], [class*="submit"] {
-            background: linear-gradient(135deg, #7c3aed, #6d28d9) !important;
-            border: none !important;
-        }
-        [class*="badge"] {
-            background: linear-gradient(135deg, #16a34a, #15803d) !important;
-        }
-    </style>
+    /* ── Feature list ── */
+    .feature-list {
+      list-style: none;
+      display: grid;
+      gap: 4px;
+    }
+
+    .feature-list li {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 0;
+      border-bottom: 1px solid rgba(255,255,255,.05);
+      font-size: .9rem;
+      color: var(--text);
+      line-height: 1.4;
+    }
+
+    .feature-list li:last-child { border-bottom: none; }
+
+    .check-icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--p1), var(--p2));
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .65rem;
+      color: #fff;
+      font-weight: 900;
+    }
+
+    /* ── Steps ── */
+    .card h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #f1f5f9;
+      letter-spacing: -.2px;
+      margin-bottom: 20px;
+    }
+
+    .steps-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .step {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(61,255,110,.15);
+      border-radius: 14px;
+      padding: 18px;
+      transition: border-color .2s, background .2s, transform .2s;
+    }
+
+    .step:hover {
+      background: rgba(61,255,110,.06);
+      border-color: rgba(61,255,110,.4);
+      transform: translateY(-2px);
+    }
+
+    .step-num {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--p1), var(--p2));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: .95rem;
+      color: #fff;
+      flex-shrink: 0;
+      box-shadow: 0 4px 14px rgba(212,175,55,.4);
+    }
+
+    .step-text { flex: 1; }
+
+    .step-text h4 {
+      font-size: .95rem;
+      font-weight: 700;
+      color: #f1f5f9;
+      margin-bottom: 4px;
+    }
+
+    .step-text p {
+      font-size: .82rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    /* ── CTA ── */
+    .cta-card {
+      position: relative;
+      background: linear-gradient(135deg, rgba(212,175,55,.12), rgba(61,255,110,.08));
+      border: 1px solid rgba(61,255,110,.3);
+      border-radius: 20px;
+      padding: 48px 36px;
+      text-align: center;
+      margin-bottom: 24px;
+      overflow: hidden;
+      transition: border-color .25s, box-shadow .25s;
+    }
+
+    .cta-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, #3DFF6E, transparent);
+    }
+
+    .cta-card:hover {
+      border-color: rgba(61,255,110,.5);
+      box-shadow: 0 16px 48px rgba(61,255,110,.12);
+    }
+
+    .cta-card h2 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #f1f5f9 0%, #F2C94C 60%, #2ECC71 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -.4px;
+      margin-bottom: 10px;
+    }
+
+    .cta-card p {
+      color: var(--muted);
+      font-size: .9rem;
+      margin-bottom: 28px;
+    }
+
+    .download-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 40px;
+      background: linear-gradient(135deg, #D4AF37, #8a6d1f);
+      color: #fff;
+      border: none;
+      border-radius: 14px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all .25s;
+      box-shadow: 0 8px 28px rgba(212,175,55,.45);
+      text-decoration: none;
+    }
+
+    .download-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 14px 40px rgba(212,175,55,.6);
+      background: linear-gradient(135deg, #F2C94C, #D4AF37);
+    }
+
+    .back-link {
+      display: inline-block;
+      color: rgba(242,201,76,.6);
+      text-decoration: none;
+      font-size: .85rem;
+      font-weight: 600;
+      margin-top: 16px;
+      transition: color .2s;
+    }
+    .back-link:hover { color: var(--p4); }
+
+    /* ── Auth Overlay ── */
+    .auth-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.75);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 10000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .auth-overlay.open { display: flex; }
+
+    .auth-modal {
+      background: #111;
+      border: 1px solid rgba(212,175,55,.35);
+      border-radius: 20px;
+      padding: 40px;
+      width: 100%;
+      max-width: 440px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 30px 80px rgba(0,0,0,.6), 0 0 0 1px rgba(212,175,55,.2);
+      animation: modalIn .3s cubic-bezier(.34,1.2,.64,1);
+      position: relative;
+    }
+
+    @keyframes modalIn {
+      from { opacity: 0; transform: scale(.94) translateY(20px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      background: none;
+      border: none;
+      color: rgba(255,255,255,.4);
+      font-size: 1.6rem;
+      cursor: pointer;
+      line-height: 1;
+      transition: color .2s;
+      font-family: inherit;
+    }
+    .modal-close:hover { color: #fff; }
+
+    .auth-modal h2 {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #f1f5f9;
+      text-align: center;
+      margin-bottom: 6px;
+      letter-spacing: -.3px;
+    }
+
+    .modal-sub {
+      color: var(--muted);
+      font-size: .875rem;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      color: rgba(255,255,255,.6);
+      font-size: .8rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      letter-spacing: .02em;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px 14px;
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 10px;
+      color: #fff;
+      font-size: .9rem;
+      font-family: 'Space Grotesk', sans-serif;
+      transition: border-color .2s, box-shadow .2s;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: rgba(212,175,55,.6);
+      box-shadow: 0 0 0 3px rgba(212,175,55,.15);
+    }
+
+    .form-group input::placeholder { color: rgba(255,255,255,.25); }
+
+    .req { color: #f87171; }
+
+    .error-msg {
+      color: #f87171;
+      font-size: .82rem;
+      margin-bottom: 10px;
+      display: none;
+    }
+
+    .success-msg {
+      color: #4ade80;
+      font-size: .82rem;
+      margin-bottom: 10px;
+      display: none;
+    }
+
+    .auth-btn {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #D4AF37, #8a6d1f);
+      color: #fff;
+      border: none;
+      border-radius: 11px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all .22s;
+      box-shadow: 0 6px 22px rgba(212,175,55,.4);
+      margin-top: 6px;
+    }
+    .auth-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(212,175,55,.55);
+      background: linear-gradient(135deg, #F2C94C, #D4AF37);
+    }
+
+    .auth-switch {
+      text-align: center;
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: .82rem;
+    }
+    .auth-switch a {
+      color: var(--p4);
+      text-decoration: none;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .auth-switch a:hover { color: #fff; }
+
+    /* ── Toast ── */
+    .bb-toast {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      padding: 14px 22px;
+      border-radius: 12px;
+      color: #fff;
+      font-weight: 600;
+      font-size: .9rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      z-index: 99999;
+      box-shadow: 0 10px 30px rgba(0,0,0,.4);
+      animation: toastIn .3s ease;
+    }
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateX(60px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    /* ── Footer ── */
+    footer {
+      background: linear-gradient(135deg, #0a0a0d 0%, #1a1408 50%, #0a0a0d 100%);
+      border-top: 1px solid rgba(212,175,55,.35);
+      box-shadow: 0 -4px 30px rgba(212,175,55,.2);
+      padding: 36px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      .page-hero h1 { font-size: 2rem; }
+      .card { padding: 24px 18px; }
+      .cta-card { padding: 32px 18px; }
+      nav { padding: 0 16px; height: auto; min-height: 60px; flex-wrap: wrap; gap: 10px; padding-top: 10px; padding-bottom: 10px; }
+      .nav-links { flex-wrap: wrap; gap: 4px; }
+      .nav-a { font-size: .78rem; padding: 6px 10px; }
+      footer { flex-direction: column; text-align: center; }
+    }
+  </style>
+    <link rel="stylesheet" href="bb-theme.css">
 </head>
 
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>📋 5-Step Crypto Quickstart Checklist</h1>
-            <p>Your essential guide to start trading cryptocurrency the right way - in just 5 simple steps!</p>
-        </div>
 
-        <div class="card">
-            <span class="badge">🎁 FREE DOWNLOAD</span>
-            <h2 style="font-size: 1.8rem; margin-bottom: 15px;">What You'll Learn</h2>
-            <p style="color: rgba(255,255,255,0.7); margin-bottom: 20px;">This comprehensive PDF checklist covers
-                everything beginners need to know to start their crypto journey safely and profitably.</p>
+  <!-- Nav -->
+  <nav>
+    <a class="nav-logo" href="index.html">
+      <img src="images/bullbear-logo.png" alt="BullBear">
+      <span class="nav-logo-text">BullBear Blockchain</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html" class="nav-a">Home</a>
+      <a href="store.html" class="nav-a">Store</a>
+      <a href="my-library.html" class="nav-a">My Library</a>
+      <a href="trading-indicators.html" class="nav-a">Indicators</a>
+    </div>
+  </nav>
 
-            <ul class="features">
-                <li>How to choose the right cryptocurrency exchange</li>
-                <li>Setting up secure wallets for your assets</li>
-                <li>Understanding market basics and terminology</li>
-                <li>Risk management strategies for beginners</li>
-                <li>Your first trade - step by step walkthrough</li>
-                <li>Common mistakes to avoid as a new trader</li>
-            </ul>
-        </div>
+  <div class="page-wrap">
 
-        <div class="card">
-            <h3 style="color: #fbbf24; margin-bottom: 20px;">📖 The 5 Steps Inside</h3>
-            <div class="steps">
-                <div class="step">
-                    <div class="step-num">1</div>
-                    <div class="step-text">
-                        <h4>Choose Your Exchange</h4>
-                        <p>Learn which platforms are safest and best for beginners</p>
-                    </div>
-                </div>
-                <div class="step">
-                    <div class="step-num">2</div>
-                    <div class="step-text">
-                        <h4>Secure Your Wallet</h4>
-                        <p>Set up proper security to protect your investments</p>
-                    </div>
-                </div>
-                <div class="step">
-                    <div class="step-num">3</div>
-                    <div class="step-text">
-                        <h4>Fund Your Account</h4>
-                        <p>The safest ways to deposit and start trading</p>
-                    </div>
-                </div>
-                <div class="step">
-                    <div class="step-num">4</div>
-                    <div class="step-text">
-                        <h4>Make Your First Trade</h4>
-                        <p>Step-by-step guide to buying your first crypto</p>
-                    </div>
-                </div>
-                <div class="step">
-                    <div class="step-num">5</div>
-                    <div class="step-text">
-                        <h4>Manage & Grow</h4>
-                        <p>Strategies to protect and grow your portfolio</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="cta-section">
-            <button onclick="checkLoginAndDownload()" class="download-btn">
-                📥 Download Free PDF
-            </button>
-            <p style="color: rgba(255,255,255,0.5); margin-top: 15px; font-size: 0.9rem;">Sign up for free to download
-            </p>
-            <br>
-            <a href="index.html" class="back-link">← Back to BullBear Blockchain</a>
-        </div>
+    <!-- Hero -->
+    <div class="page-hero">
+      <div class="bb-ghost-word" aria-hidden="true">BULLBEAR</div>
+      <div class="free-badge">🎁 Free Download</div>
+      <h1>5-Step Crypto Quickstart Checklist</h1>
+      <p>Your essential guide to start trading cryptocurrency the right way — in just 5 simple steps.</p>
     </div>
 
-    <!-- Sign Up Modal for PDF Download -->
-    <div id="pdfSignupModal" class="auth-modal">
-        <div class="auth-modal-content">
-            <span class="auth-modal-close" onclick="closeModal('pdfSignupModal')">&times;</span>
-            <h2>Sign Up to Download</h2>
-            <p style="color: rgba(255,255,255,0.7); margin-bottom: 20px; text-align: center;">Create a free account to
-                access your PDF</p>
-            <form id="pdfSignupForm" onsubmit="return handlePdfSignup(event)">
-                <div class="form-group">
-                    <label for="signupName">Full Name <span style="color: #ef4444;">*</span></label>
-                    <input type="text" id="signupName" name="name" placeholder="Enter your full name" required>
-                </div>
-                <div class="form-group">
-                    <label for="signupEmail">Email <span style="color: #ef4444;">*</span></label>
-                    <input type="email" id="signupEmail" name="email" placeholder="Enter your email" required>
-                </div>
-                <div class="form-group">
-                    <label for="signupPhone">Phone Number <span style="color: #ef4444;">*</span></label>
-                    <input type="tel" id="signupPhone" name="phone" placeholder="Enter your phone number" required
-                        pattern="[0-9+\-\s\(\)]{7,20}" title="Please enter a valid phone number">
-                </div>
-                <div class="form-group">
-                    <label for="signupPassword">Password <span style="color: #ef4444;">*</span></label>
-                    <input type="password" id="signupPassword" name="password" placeholder="Create a password" required
-                        minlength="6">
-                </div>
-                <div class="form-group">
-                    <label for="signupConfirmPassword">Confirm Password <span style="color: #ef4444;">*</span></label>
-                    <input type="password" id="signupConfirmPassword" name="confirm_password"
-                        placeholder="Confirm your password" required>
-                </div>
-                <div id="signupError" style="color: #ef4444; font-size: 0.9rem; margin-bottom: 10px; display: none;">
-                </div>
-                <div id="signupSuccess" style="color: #10b981; font-size: 0.9rem; margin-bottom: 10px; display: none;">
-                </div>
-                <button type="submit" class="auth-btn">Sign Up & Download</button>
-                <p class="auth-switch">Already have an account? <a href="javascript:void(0)"
-                        onclick="switchToLogin()">Login</a></p>
-            </form>
-        </div>
+    <div class="bb-ticker" aria-hidden="true">
+      <div class="bb-ticker-track">
+        <span>EXCHANGES&middot;</span><span>WALLETS&middot;</span><span>SECURITY&middot;</span><span>RISK MANAGEMENT&middot;</span><span>FIRST TRADE&middot;</span><span>CRYPTO BASICS&middot;</span><span>PORTFOLIO&middot;</span><span>BEGINNERS&middot;</span>
+        <span>EXCHANGES&middot;</span><span>WALLETS&middot;</span><span>SECURITY&middot;</span><span>RISK MANAGEMENT&middot;</span><span>FIRST TRADE&middot;</span><span>CRYPTO BASICS&middot;</span><span>PORTFOLIO&middot;</span><span>BEGINNERS&middot;</span>
+      </div>
     </div>
 
-    <!-- Login Modal for PDF Download -->
-    <div id="pdfLoginModal" class="auth-modal">
-        <div class="auth-modal-content">
-            <span class="auth-modal-close" onclick="closeModal('pdfLoginModal')">&times;</span>
-            <h2>Login to Download</h2>
-            <p style="color: rgba(255,255,255,0.7); margin-bottom: 20px; text-align: center;">Login to access your free
-                PDF</p>
-            <form id="pdfLoginForm" onsubmit="return handlePdfLogin(event)">
-                <div class="form-group">
-                    <label for="loginEmail">Email or Phone</label>
-                    <input type="text" id="loginEmail" name="email" placeholder="Enter your email or phone" required>
-                </div>
-                <div class="form-group">
-                    <label for="loginPassword">Password</label>
-                    <input type="password" id="loginPassword" name="password" placeholder="Enter your password"
-                        required>
-                </div>
-                <div id="loginError" style="color: #ef4444; font-size: 0.9rem; margin-bottom: 10px; display: none;">
-                </div>
-                <button type="submit" class="auth-btn">Login & Download</button>
-                <p class="auth-switch">Don't have an account? <a href="javascript:void(0)"
-                        onclick="switchToSignup()">Sign Up</a></p>
-            </form>
-        </div>
+    <div class="bb-network-strip" id="bb-network-zone">
+      <canvas id="bb-network-canvas" class="bb-network-canvas"></canvas>
+      <div class="bb-trust-row">
+        <span>&#9670; 100% Free</span>
+        <span>&#9670; No Credit Card Required</span>
+        <span>&#9670; Instant Access</span>
+        <span>&#9670; 5-Minute Read</span>
+      </div>
     </div>
 
-    <style>
-        .auth-modal {
-            display: none;
-            position: fixed;
-            z-index: 10000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(5px);
+    <!-- What you'll learn -->
+    <div class="card">
+      <div class="card-label">📋 What You'll Learn</div>
+      <h2>Everything Beginners Need</h2>
+      <p>This comprehensive PDF checklist covers everything you need to start your crypto journey safely and profitably.</p>
+      <ul class="feature-list">
+        <li><span class="check-icon">✓</span>How to choose the right cryptocurrency exchange</li>
+        <li><span class="check-icon">✓</span>Setting up secure wallets for your assets</li>
+        <li><span class="check-icon">✓</span>Understanding market basics and terminology</li>
+        <li><span class="check-icon">✓</span>Risk management strategies for beginners</li>
+        <li><span class="check-icon">✓</span>Your first trade — step by step walkthrough</li>
+        <li><span class="check-icon">✓</span>Common mistakes to avoid as a new trader</li>
+      </ul>
+    </div>
+
+    <!-- Steps -->
+    <div class="card">
+      <h3>📖 The 5 Steps Inside</h3>
+      <div class="steps-grid">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-text">
+            <h4>Choose Your Exchange</h4>
+            <p>Learn which platforms are safest and best for beginners</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-text">
+            <h4>Secure Your Wallet</h4>
+            <p>Set up proper security to protect your investments</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-text">
+            <h4>Fund Your Account</h4>
+            <p>The safest ways to deposit and start trading</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-text">
+            <h4>Make Your First Trade</h4>
+            <p>Step-by-step guide to buying your first crypto</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-text">
+            <h4>Manage &amp; Grow</h4>
+            <p>Strategies to protect and grow your portfolio</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-card">
+      <h2>Download Your Free PDF</h2>
+      <p>Sign up for free to get instant access to the checklist &amp; we'll send it to your email.</p>
+      <button onclick="checkLoginAndDownload()" class="download-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download Free PDF
+      </button>
+      <br>
+      <a href="index.html" class="back-link">← Back to BullBear Blockchain</a>
+    </div>
+
+  </div>
+
+  <!-- Sign Up Modal -->
+  <div id="pdfSignupModal" class="auth-overlay">
+    <div class="auth-modal">
+      <button class="modal-close" onclick="closeModal('pdfSignupModal')">&times;</button>
+      <h2>Sign Up to Download</h2>
+      <p class="modal-sub">Create a free account to access your PDF</p>
+      <form id="pdfSignupForm" onsubmit="return handlePdfSignup(event)">
+        <div class="form-group">
+          <label>Full Name <span class="req">*</span></label>
+          <input type="text" id="signupName" placeholder="Enter your full name" required>
+        </div>
+        <div class="form-group">
+          <label>Email <span class="req">*</span></label>
+          <input type="email" id="signupEmail" placeholder="Enter your email" required>
+        </div>
+        <div class="form-group">
+          <label>Phone Number <span class="req">*</span></label>
+          <input type="tel" id="signupPhone" placeholder="Enter your phone number" required pattern="[0-9+\-\s\(\)]{7,20}">
+        </div>
+        <div class="form-group">
+          <label>Password <span class="req">*</span></label>
+          <input type="password" id="signupPassword" placeholder="Create a password" required minlength="6">
+        </div>
+        <div class="form-group">
+          <label>Confirm Password <span class="req">*</span></label>
+          <input type="password" id="signupConfirmPassword" placeholder="Confirm your password" required>
+        </div>
+        <div id="signupError" class="error-msg"></div>
+        <div id="signupSuccess" class="success-msg"></div>
+        <button type="submit" class="auth-btn">Sign Up &amp; Download</button>
+        <p class="auth-switch">Already have an account? <a onclick="switchToLogin()">Login</a></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- Login Modal -->
+  <div id="pdfLoginModal" class="auth-overlay">
+    <div class="auth-modal">
+      <button class="modal-close" onclick="closeModal('pdfLoginModal')">&times;</button>
+      <h2>Login to Download</h2>
+      <p class="modal-sub">Login to access your free PDF</p>
+      <form id="pdfLoginForm" onsubmit="return handlePdfLogin(event)">
+        <div class="form-group">
+          <label>Email or Phone</label>
+          <input type="text" id="loginEmail" placeholder="Enter your email or phone" required>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="loginPassword" placeholder="Enter your password" required>
+        </div>
+        <div id="loginError" class="error-msg"></div>
+        <button type="submit" class="auth-btn">Login &amp; Download</button>
+        <p class="auth-switch">Don't have an account? <a onclick="switchToSignup()">Sign Up</a></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <img src="images/bullbear-logo.png" alt="BullBear" style="height:34px;filter:drop-shadow(0 0 10px rgba(242,201,76,.4));">
+      <span style="font-weight:800;font-size:1.05rem;background:linear-gradient(135deg,#fff 20%,#F2C94C);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">BullBear Blockchain</span>
+    </div>
+    <div style="display:flex;gap:24px;flex-wrap:wrap;">
+      <a href="index.html" style="color:rgba(255,255,255,.6);text-decoration:none;font-size:.85rem;font-weight:600;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.6)'">Home</a>
+      <a href="store.html" style="color:rgba(255,255,255,.6);text-decoration:none;font-size:.85rem;font-weight:600;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.6)'">Store</a>
+      <a href="my-library.html" style="color:rgba(255,255,255,.6);text-decoration:none;font-size:.85rem;font-weight:600;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.6)'">My Library</a>
+      <a href="trading-indicators.html" style="color:rgba(255,255,255,.6);text-decoration:none;font-size:.85rem;font-weight:600;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.6)'">Indicators</a>
+    </div>
+    <div style="color:rgba(255,255,255,.3);font-size:.78rem;">© 2026 BullBear Blockchain. All rights reserved.</div>
+  </footer>
+
+  <script>
+    const API_BASE_URL = 'https://backend-tawny-nu-33.vercel.app/api';
+
+    function checkLoginAndDownload() {
+      const currentUser = localStorage.getItem('bullbearCurrentUser');
+      if (currentUser) {
+        const user = JSON.parse(currentUser);
+        downloadPdfAndSendEmail(user.email, user.name);
+      } else {
+        openModal('pdfSignupModal');
+      }
+    }
+
+    function downloadPdf() {
+      const link = document.createElement('a');
+      link.href = 'crypto-quickstart-checklist.pdf';
+      link.download = '5-Step-Crypto-Quickstart-Checklist.pdf';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    async function sendPdfToEmail(email, name) {
+      try {
+        const response = await fetch(`${API_BASE_URL}/auth/send-free-pdf`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, name }),
+        });
+        const data = await response.json();
+        if (data.status === 'success') {
+          showNotification('PDF also sent to your email!', 'success');
+        }
+      } catch (error) {
+        console.log('Email sending skipped (backend not available)');
+      }
+    }
+
+    function downloadPdfAndSendEmail(email, name) {
+      downloadPdf();
+      sendPdfToEmail(email, name);
+      showNotification('Download started! Check your email too.', 'success');
+    }
+
+    function showNotification(message, type) {
+      const existing = document.querySelector('.bb-toast');
+      if (existing) existing.remove();
+      const toast = document.createElement('div');
+      toast.className = 'bb-toast';
+      toast.style.background = type === 'success'
+        ? 'linear-gradient(135deg,#16a34a,#15803d)'
+        : 'linear-gradient(135deg,#dc2626,#b91c1c)';
+      toast.innerHTML = `<span>${type === 'success' ? '✓' : '✕'}</span><span>${message}</span>`;
+      document.body.appendChild(toast);
+      setTimeout(() => {
+        toast.style.transition = 'opacity .3s, transform .3s';
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateX(60px)';
+        setTimeout(() => toast.remove(), 300);
+      }, 4000);
+    }
+
+    function openModal(id) {
+      document.getElementById(id).classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function switchToLogin() {
+      closeModal('pdfSignupModal');
+      openModal('pdfLoginModal');
+    }
+
+    function switchToSignup() {
+      closeModal('pdfLoginModal');
+      openModal('pdfSignupModal');
+    }
+
+    window.addEventListener('click', (e) => {
+      if (e.target.classList.contains('auth-overlay')) {
+        e.target.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+    });
+
+    async function handlePdfSignup(event) {
+      event.preventDefault();
+
+      const name = document.getElementById('signupName').value.trim();
+      const email = document.getElementById('signupEmail').value.trim();
+      const phone = document.getElementById('signupPhone').value.trim();
+      const password = document.getElementById('signupPassword').value;
+      const confirmPassword = document.getElementById('signupConfirmPassword').value;
+      const errorDiv = document.getElementById('signupError');
+      const successDiv = document.getElementById('signupSuccess');
+
+      errorDiv.style.display = 'none';
+      successDiv.style.display = 'none';
+
+      if (password !== confirmPassword) {
+        errorDiv.textContent = 'Passwords do not match!';
+        errorDiv.style.display = 'block';
+        return false;
+      }
+      if (password.length < 6) {
+        errorDiv.textContent = 'Password must be at least 6 characters!';
+        errorDiv.style.display = 'block';
+        return false;
+      }
+      if (!phone || phone.trim().length < 7) {
+        errorDiv.textContent = 'Please enter a valid phone number!';
+        errorDiv.style.display = 'block';
+        return false;
+      }
+
+      try {
+        const nameParts = name.trim().split(' ');
+        const res = await fetch('https://backend-tawny-nu-33.vercel.app/api/auth/signup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email,
+            password,
+            firstName: nameParts[0] || name,
+            lastName: nameParts.slice(1).join(' ') || '',
+            phone,
+          }),
+        });
+
+        const data = await res.json();
+        if (!res.ok) {
+          errorDiv.textContent = data.message || 'Signup failed. Please try again.';
+          errorDiv.style.display = 'block';
+          return false;
         }
 
-        .auth-modal-content {
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            margin: 5% auto;
-            padding: 40px;
-            border: 1px solid rgba(99, 102, 241, 0.3);
-            border-radius: 20px;
-            width: 90%;
-            max-width: 450px;
-            max-height: 85vh;
-            overflow-y: auto;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-            animation: slideIn 0.3s ease;
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-50px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .auth-modal-close {
-            color: #94a3b8;
-            float: right;
-            font-size: 32px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: color 0.3s;
-        }
-
-        .auth-modal-close:hover {
-            color: #06b6d4;
-        }
-
-        .auth-modal-content h2 {
-            color: #ffffff;
-            margin-bottom: 15px;
-            font-size: 1.8rem;
-            text-align: center;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            color: #94a3b8;
-            margin-bottom: 8px;
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 14px 16px;
-            border: 1px solid rgba(99, 102, 241, 0.3);
-            border-radius: 10px;
-            background: rgba(15, 23, 42, 0.5);
-            color: #ffffff;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            box-sizing: border-box;
-        }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: #06b6d4;
-            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
-        }
-
-        .form-group input::placeholder {
-            color: #64748b;
-        }
-
-        .auth-btn {
-            width: 100%;
-            padding: 16px;
-            background: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%);
-            color: #ffffff;
-            border: none;
-            border-radius: 10px;
-            font-size: 1.1rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-top: 10px;
-        }
-
-        .auth-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.5);
-        }
-
-        .auth-switch {
-            text-align: center;
-            margin-top: 20px;
-            color: #94a3b8;
-            font-size: 0.9rem;
-        }
-
-        .auth-switch a {
-            color: #06b6d4;
-            text-decoration: none;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        .auth-switch a:hover {
-            color: #8b5cf6;
-        }
-    </style>
-
-    <script>
-        const API_BASE_URL = 'https://backend-tawny-nu-33.vercel.app/api';
-
-        function checkLoginAndDownload() {
-            const currentUser = localStorage.getItem('bullbearCurrentUser');
-            if (currentUser) {
-                // User is logged in, download the PDF and send email
-                const user = JSON.parse(currentUser);
-                downloadPdfAndSendEmail(user.email, user.name);
-            } else {
-                // Show signup modal
-                openModal('pdfSignupModal');
-            }
-        }
-
-        function downloadPdf() {
-            const link = document.createElement('a');
-            link.href = 'crypto-quickstart-checklist.pdf';
-            link.download = '5-Step-Crypto-Quickstart-Checklist.pdf';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
-
-        async function sendPdfToEmail(email, name) {
-            try {
-                const response = await fetch(`${API_BASE_URL}/auth/send-free-pdf`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ email, name })
-                });
-
-                const data = await response.json();
-
-                if (data.status === 'success') {
-                    showNotification('PDF also sent to your email!', 'success');
-                }
-            } catch (error) {
-                console.log('Email sending skipped (backend not available)');
-            }
-        }
-
-        function downloadPdfAndSendEmail(email, name) {
-            downloadPdf();
-            sendPdfToEmail(email, name);
-            showNotification('Download started! Check your email too.', 'success');
-        }
-
-        function showNotification(message, type) {
-            // Remove existing notification
-            const existing = document.querySelector('.notification-toast');
-            if (existing) existing.remove();
-
-            const notification = document.createElement('div');
-            notification.className = 'notification-toast';
-            notification.innerHTML = `
-                <span>${type === 'success' ? '✅' : '❌'}</span>
-                <span>${message}</span>
-            `;
-            notification.style.cssText = `
-                position: fixed;
-                bottom: 30px;
-                right: 30px;
-                background: ${type === 'success' ? 'linear-gradient(135deg, #22c55e, #10b981)' : 'linear-gradient(135deg, #ef4444, #dc2626)'};
-                color: white;
-                padding: 15px 25px;
-                border-radius: 10px;
-                box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-                z-index: 10001;
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                font-weight: 600;
-                animation: slideInRight 0.3s ease;
-            `;
-            document.body.appendChild(notification);
-
-            setTimeout(() => {
-                notification.style.animation = 'slideOutRight 0.3s ease';
-                setTimeout(() => notification.remove(), 300);
-            }, 4000);
-        }
-
-        function openModal(modalId) {
-            document.getElementById(modalId).style.display = 'block';
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-
-        function switchToLogin() {
-            closeModal('pdfSignupModal');
-            openModal('pdfLoginModal');
-        }
-
-        function switchToSignup() {
-            closeModal('pdfLoginModal');
-            openModal('pdfSignupModal');
-        }
-
-        async function handlePdfSignup(event) {
-            event.preventDefault();
-
-            const name = document.getElementById('signupName').value.trim();
-            const email = document.getElementById('signupEmail').value.trim();
-            const phone = document.getElementById('signupPhone').value.trim();
-            const password = document.getElementById('signupPassword').value;
-            const confirmPassword = document.getElementById('signupConfirmPassword').value;
-
-            const errorDiv = document.getElementById('signupError');
-            const successDiv = document.getElementById('signupSuccess');
-
-            if (password !== confirmPassword) {
-                errorDiv.textContent = 'Passwords do not match!';
-                errorDiv.style.display = 'block';
-                successDiv.style.display = 'none';
-                return false;
-            }
-
-            if (password.length < 6) {
-                errorDiv.textContent = 'Password must be at least 6 characters!';
-                errorDiv.style.display = 'block';
-                successDiv.style.display = 'none';
-                return false;
-            }
-
-            if (!phone || phone.trim().length < 7) {
-                errorDiv.textContent = 'Please enter a valid phone number!';
-                errorDiv.style.display = 'block';
-                successDiv.style.display = 'none';
-                return false;
-            }
-
-            errorDiv.style.display = 'none';
-
-            try {
-                var nameParts = name.trim().split(' ');
-                var res = await fetch('https://backend-tawny-nu-33.vercel.app/api/auth/signup', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        email: email,
-                        password: password,
-                        firstName: nameParts[0] || name,
-                        lastName: nameParts.slice(1).join(' ') || '',
-                        phone: phone,
-                    }),
-                });
-
-                var data = await res.json();
-
-                if (!res.ok) {
-                    errorDiv.textContent = data.message || 'Signup failed. Please try again.';
-                    errorDiv.style.display = 'block';
-                    successDiv.style.display = 'none';
-                    return false;
-                }
-
-                var user = data.data.user;
-                var token = data.data.token;
-                var storedUser = { name: (user.firstName + ' ' + (user.lastName || '')).trim() || name, email: user.email, id: user._id, token: token };
-                localStorage.setItem('bullbearToken', token);
-                localStorage.setItem('bullbearCurrentUser', JSON.stringify(storedUser));
-
-                // Save checklist lead
-                fetch('https://backend-tawny-nu-33.vercel.app/api/checklist/lead', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name: storedUser.name, email: email, phone: phone, source: 'checklist-page' }),
-                }).catch(function() {});
-
-                errorDiv.style.display = 'none';
-                successDiv.textContent = 'Account created! Starting download & sending to email...';
-                successDiv.style.display = 'block';
-
-                setTimeout(function () {
-                    closeModal('pdfSignupModal');
-                    downloadPdfAndSendEmail(email, storedUser.name);
-                    document.getElementById('pdfSignupForm').reset();
-                    successDiv.style.display = 'none';
-                }, 1500);
-            } catch (err) {
-                errorDiv.textContent = 'Network error. Please try again.';
-                errorDiv.style.display = 'block';
-                successDiv.style.display = 'none';
-            }
-
-            return false;
-        }
-
-        async function handlePdfLogin(event) {
-            event.preventDefault();
-
-            const email = document.getElementById('loginEmail').value.trim();
-            const password = document.getElementById('loginPassword').value;
-            const errorDiv = document.getElementById('loginError');
-
-            errorDiv.style.display = 'none';
-
-            try {
-                var res = await fetch('https://backend-tawny-nu-33.vercel.app/api/auth/login', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email: email, password: password }),
-                });
-
-                var data = await res.json();
-
-                if (!res.ok) {
-                    errorDiv.textContent = data.message || 'Invalid email or password!';
-                    errorDiv.style.display = 'block';
-                    return false;
-                }
-
-                var user = data.data.user;
-                var token = data.data.token;
-                var storedUser = { name: (user.firstName + ' ' + (user.lastName || '')).trim() || email, email: user.email, id: user._id, token: token };
-                localStorage.setItem('bullbearToken', token);
-                localStorage.setItem('bullbearCurrentUser', JSON.stringify(storedUser));
-
-                closeModal('pdfLoginModal');
-                downloadPdfAndSendEmail(storedUser.email, storedUser.name);
-            } catch (err) {
-                errorDiv.textContent = 'Network error. Please try again.';
-                errorDiv.style.display = 'block';
-            }
-
-            return false;
-        }
-
-        // Close modal when clicking outside
-        window.onclick = function (event) {
-            if (event.target.classList.contains('auth-modal')) {
-                event.target.style.display = 'none';
-                document.body.style.overflow = 'auto';
-            }
-        }
-    </script>
-
-    <style>
-        @keyframes slideInRight {
-            from {
-                opacity: 0;
-                transform: translateX(100px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        @keyframes slideOutRight {
-            from {
-                opacity: 1;
-                transform: translateX(0);
-            }
-
-            to {
-                opacity: 0;
-                transform: translateX(100px);
-            }
-        }
-    </style>
-
-    <script type="module">
-        import { rtSaveUser, rtLogChecklistDownload, rtLogEvent } from './firebase-realtime.js';
-
-        rtLogEvent('page_view', { page: 'checklist', url: window.location.href }).catch(() => {});
-
-        // Wrap PDF signup to also save to Firestore
-        const _origPdfSignup = window.handlePdfSignup;
-        window.handlePdfSignup = async function(event) {
-            const name  = document.getElementById('signupName')?.value?.trim() || '';
-            const email = document.getElementById('signupEmail')?.value?.trim() || '';
-            const phone = document.getElementById('signupPhone')?.value?.trim() || '';
-            await (_origPdfSignup ? _origPdfSignup(event) : false);
-            const errEl = document.getElementById('signupError');
-            const errVisible = errEl && errEl.style.display !== 'none' && errEl.textContent;
-            if (email && !errVisible) {
-                rtSaveUser({ name, email, source: 'checklist-page' }).catch(() => {});
-                rtLogChecklistDownload(email, name).catch(() => {});
-            }
+        const user = data.data.user;
+        const token = data.data.token;
+        const storedUser = {
+          name: (user.firstName + ' ' + (user.lastName || '')).trim() || name,
+          email: user.email,
+          id: user._id,
+          token,
         };
+        localStorage.setItem('bullbearToken', token);
+        localStorage.setItem('bullbearCurrentUser', JSON.stringify(storedUser));
 
-        // Wrap PDF login to log to Firestore
-        const _origPdfLogin = window.handlePdfLogin;
-        window.handlePdfLogin = async function(event) {
-            const email = document.getElementById('loginEmail')?.value?.trim() || '';
-            await (_origPdfLogin ? _origPdfLogin(event) : false);
-            const errEl = document.getElementById('loginError');
-            const errVisible = errEl && errEl.style.display !== 'none' && errEl.textContent;
-            if (email && !errVisible) {
-                rtLogChecklistDownload(email, '').catch(() => {});
-            }
+        fetch('https://backend-tawny-nu-33.vercel.app/api/checklist/lead', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name: storedUser.name, email, phone, source: 'checklist-page' }),
+        }).catch(() => {});
+
+        successDiv.textContent = 'Account created! Starting download & sending to email...';
+        successDiv.style.display = 'block';
+
+        setTimeout(() => {
+          closeModal('pdfSignupModal');
+          downloadPdfAndSendEmail(email, storedUser.name);
+          document.getElementById('pdfSignupForm').reset();
+          successDiv.style.display = 'none';
+        }, 1500);
+      } catch (err) {
+        errorDiv.textContent = 'Network error. Please try again.';
+        errorDiv.style.display = 'block';
+      }
+      return false;
+    }
+
+    async function handlePdfLogin(event) {
+      event.preventDefault();
+
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
+      const errorDiv = document.getElementById('loginError');
+      errorDiv.style.display = 'none';
+
+      try {
+        const res = await fetch('https://backend-tawny-nu-33.vercel.app/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password }),
+        });
+
+        const data = await res.json();
+        if (!res.ok) {
+          errorDiv.textContent = data.message || 'Invalid email or password!';
+          errorDiv.style.display = 'block';
+          return false;
+        }
+
+        const user = data.data.user;
+        const token = data.data.token;
+        const storedUser = {
+          name: (user.firstName + ' ' + (user.lastName || '')).trim() || email,
+          email: user.email,
+          id: user._id,
+          token,
         };
-    </script>
-    <script src="./bb-notifications.js"></script>
+        localStorage.setItem('bullbearToken', token);
+        localStorage.setItem('bullbearCurrentUser', JSON.stringify(storedUser));
+
+        closeModal('pdfLoginModal');
+        downloadPdfAndSendEmail(storedUser.email, storedUser.name);
+      } catch (err) {
+        errorDiv.textContent = 'Network error. Please try again.';
+        errorDiv.style.display = 'block';
+      }
+      return false;
+    }
+  </script>
+
+  <script type="module">
+    import { rtSaveUser, rtLogChecklistDownload, rtLogEvent } from './firebase-realtime.js';
+
+    rtLogEvent('page_view', { page: 'checklist', url: window.location.href }).catch(() => {});
+
+    const _origPdfSignup = window.handlePdfSignup;
+    window.handlePdfSignup = async function(event) {
+      const name  = document.getElementById('signupName')?.value?.trim() || '';
+      const email = document.getElementById('signupEmail')?.value?.trim() || '';
+      const phone = document.getElementById('signupPhone')?.value?.trim() || '';
+      await (_origPdfSignup ? _origPdfSignup(event) : false);
+      const errEl = document.getElementById('signupError');
+      const errVisible = errEl && errEl.style.display !== 'none' && errEl.textContent;
+      if (email && !errVisible) {
+        rtSaveUser({ name, email, source: 'checklist-page' }).catch(() => {});
+        rtLogChecklistDownload(email, name).catch(() => {});
+      }
+    };
+
+    const _origPdfLogin = window.handlePdfLogin;
+    window.handlePdfLogin = async function(event) {
+      const email = document.getElementById('loginEmail')?.value?.trim() || '';
+      await (_origPdfLogin ? _origPdfLogin(event) : false);
+      const errEl = document.getElementById('loginError');
+      const errVisible = errEl && errEl.style.display !== 'none' && errEl.textContent;
+      if (email && !errVisible) {
+        rtLogChecklistDownload(email, '').catch(() => {});
+      }
+    };
+  </script>
+  <script src="./bb-notifications.js"></script>
+  <script>
+    (function () {
+        var canvas = document.getElementById('bb-network-canvas');
+        var zone = document.getElementById('bb-network-zone');
+        if (!canvas || !zone) return;
+        var ctx = canvas.getContext('2d');
+        var wrap = zone;
+        var DPR = Math.min(window.devicePixelRatio || 1, 2);
+        var points = [];
+        var linkDist = 130;
+        var NODE_R = 2;
+        var mouse = { x: -9999, y: -9999, active: false };
+        var repelRadius = 110;
+        zone.addEventListener('mousemove', function (e) {
+            var rect = zone.getBoundingClientRect();
+            mouse.x = e.clientX - rect.left; mouse.y = e.clientY - rect.top; mouse.active = true;
+        });
+        zone.addEventListener('mouseleave', function () { mouse.active = false; });
+        function resize() {
+            var rect = wrap.getBoundingClientRect();
+            canvas.width = rect.width * DPR; canvas.height = rect.height * DPR;
+            ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+            var count = Math.min(150, Math.max(30, Math.round((rect.width * rect.height) / 45000)));
+            points = [];
+            for (var i = 0; i < count; i++) {
+                points.push({ x: Math.random() * rect.width, y: Math.random() * rect.height,
+                    vx: (Math.random() - 0.5) * 0.25, vy: (Math.random() - 0.5) * 0.25 });
+            }
+        }
+        function draw() {
+            var rect = wrap.getBoundingClientRect();
+            ctx.clearRect(0, 0, rect.width, rect.height);
+            for (var i = 0; i < points.length; i++) {
+                var p = points[i];
+                p.x += p.vx; p.y += p.vy;
+                if (p.x < 0 || p.x > rect.width) p.vx *= -1;
+                if (p.y < 0 || p.y > rect.height) p.vy *= -1;
+                if (mouse.active) {
+                    var mdx = p.x - mouse.x, mdy = p.y - mouse.y;
+                    var mdist = Math.sqrt(mdx * mdx + mdy * mdy);
+                    if (mdist < repelRadius && mdist > 0.01) {
+                        var force = (1 - mdist / repelRadius) * 2.4;
+                        p.x += (mdx / mdist) * force; p.y += (mdy / mdist) * force;
+                    }
+                }
+            }
+            for (var i = 0; i < points.length; i++) {
+                for (var j = i + 1; j < points.length; j++) {
+                    var a = points[i], b = points[j];
+                    var dx = a.x - b.x, dy = a.y - b.y;
+                    var dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < linkDist) {
+                        ctx.strokeStyle = 'rgba(61,255,110,' + (0.35 * (1 - dist / linkDist)) + ')';
+                        ctx.lineWidth = 1;
+                        ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+                    }
+                }
+            }
+            for (var i = 0; i < points.length; i++) {
+                var p = points[i];
+                ctx.beginPath(); ctx.arc(p.x, p.y, NODE_R, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(61,255,110,0.9)'; ctx.shadowColor = 'rgba(61,255,110,0.8)'; ctx.shadowBlur = 6;
+                ctx.fill();
+            }
+            ctx.shadowBlur = 0;
+            requestAnimationFrame(draw);
+        }
+        resize(); draw();
+        window.addEventListener('resize', resize);
+        window.addEventListener('load', resize);
+    })();
+  </script>
 </body>
-
 </html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>BullBear — Test Data Injector</title>
+  <style>
+    body { background: #000; color: #FFD700; font-family: monospace; padding: 30px; }
+    button { background: #C9A227; color: #000; font-weight: 700; border: none; padding: 10px 20px; margin: 8px 4px; border-radius: 6px; cursor: pointer; font-size: 0.9rem; }
+    button:hover { background: #FFD700; }
+    #log { margin-top: 20px; background: #0d0900; border: 1px solid rgba(201,162,39,0.3); border-radius: 8px; padding: 16px; font-size: 0.8rem; white-space: pre-wrap; min-height: 200px; }
+    h1 { margin-bottom: 16px; }
+    .ok  { color: #22c55e; }
+    .err { color: #ef4444; }
+  </style>
+</head>
+<body>
+  <h1>Test Data Injector</h1>
+  <button onclick="injectUser()">Inject Test User</button>
+  <button onclick="injectLogin()">Inject Test Login</button>
+  <button onclick="injectPurchase()">Inject Test Purchase</button>
+  <button onclick="injectChecklist()">Inject Checklist Download</button>
+  <button onclick="injectPageView()">Inject Page View</button>
+  <button onclick="injectAll()">Inject ALL</button>
+  <div id="log">Waiting for actions…\n</div>
+
+<script type="module">
+  import {
+    rtSaveUser,
+    rtUpdateLogin,
+    rtSavePurchase,
+    rtLogChecklistDownload,
+    rtLogEvent,
+  } from './firebase-realtime.js';
+
+  const log = (msg, ok = true) => {
+    const el = document.getElementById('log');
+    const cls = ok ? 'ok' : 'err';
+    el.innerHTML += `<span class="${cls}">${new Date().toLocaleTimeString()} — ${msg}</span>\n`;
+  };
+
+  window.injectUser = async () => {
+    try {
+      await rtSaveUser({ email: 'testuser@example.com', name: 'Test User', source: 'test' });
+      log('rtSaveUser OK → testuser@example.com');
+    } catch (e) { log('rtSaveUser FAIL: ' + e.message, false); }
+  };
+
+  window.injectLogin = async () => {
+    try {
+      await rtUpdateLogin('testuser@example.com');
+      log('rtUpdateLogin OK → testuser@example.com');
+    } catch (e) { log('rtUpdateLogin FAIL: ' + e.message, false); }
+  };
+
+  window.injectPurchase = async () => {
+    try {
+      await rtSavePurchase({
+        email: 'testuser@example.com',
+        productId: 'crypto-mastery',
+        productName: 'Crypto Mastery Bundle',
+        amount: 97,
+        currency: 'USD',
+        paymentMethod: 'paypal',
+        status: 'completed',
+      });
+      log('rtSavePurchase OK → Crypto Mastery Bundle $97');
+    } catch (e) { log('rtSavePurchase FAIL: ' + e.message, false); }
+  };
+
+  window.injectChecklist = async () => {
+    try {
+      await rtLogChecklistDownload('lead@example.com', 'Free Lead');
+      log('rtLogChecklistDownload OK → lead@example.com');
+    } catch (e) { log('rtLogChecklistDownload FAIL: ' + e.message, false); }
+  };
+
+  window.injectPageView = async () => {
+    try {
+      await rtLogEvent('page_view', { page: '/test', source: 'injector' });
+      log('rtLogEvent page_view OK');
+    } catch (e) { log('rtLogEvent FAIL: ' + e.message, false); }
+  };
+
+  window.injectAll = async () => {
+    await window.injectUser();
+    await window.injectLogin();
+    await window.injectChecklist();
+    await window.injectPurchase();
+    await window.injectPageView();
+    log('All test data injected!');
+  };
+
+  log('Firebase module loaded. Ready to inject.');
+</script>
+</body>
+</html>

@@ -1,249 +1,139 @@
 const express = require('express');
 const router = express.Router();
 const axios = require('axios');
+const { getDb } = require('../lib/firebase');
 
-// M-Pesa Configuration
-const MPESA_CONFIG = {
-    consumerKey: process.env.MPESA_CONSUMER_KEY || 'YOUR_CONSUMER_KEY',
-    consumerSecret: process.env.MPESA_CONSUMER_SECRET || 'YOUR_CONSUMER_SECRET',
-    businessShortCode: process.env.MPESA_SHORTCODE || '174379',
-    passkey: process.env.MPESA_PASSKEY || 'YOUR_PASSKEY',
-    callbackURL: process.env.MPESA_CALLBACK_URL || 'https://yourdomain.com/api/mpesa/callback',
-    environment: process.env.MPESA_ENV || 'sandbox' // 'sandbox' or 'production'
-};
+const MPESA_BASE = (process.env.MPESA_ENV || 'sandbox') === 'live'
+  ? 'https://api.safaricom.co.ke'
+  : 'https://sandbox.safaricom.co.ke';
 
-// Get base URL based on environment
-const getBaseURL = () => {
-    return MPESA_CONFIG.environment === 'production'
-        ? 'https://api.safaricom.co.ke'
-        : 'https://sandbox.safaricom.co.ke';
-};
+const CONSUMER_KEY    = (process.env.MPESA_CONSUMER_KEY || '').trim();
+const CONSUMER_SECRET = (process.env.MPESA_CONSUMER_SECRET || '').trim();
+const SHORTCODE       = (process.env.MPESA_SHORTCODE || '174379').trim();
+const PASSKEY         = (process.env.MPESA_PASSKEY || 'bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919').trim();
+const CALLBACK_URL    = (process.env.MPESA_CALLBACK_URL || 'https://backend-tawny-nu-33.vercel.app/api/mpesa/callback').trim();
 
-// Generate M-Pesa Access Token
 async function getAccessToken() {
-    try {
-        const auth = Buffer.from(
-            `${MPESA_CONFIG.consumerKey}:${MPESA_CONFIG.consumerSecret}`
-        ).toString('base64');
-
-        const response = await axios.get(
-            `${getBaseURL()}/oauth/v1/generate?grant_type=client_credentials`,
-            {
-                headers: {
-                    Authorization: `Basic ${auth}`
-                }
-            }
-        );
-
-        return response.data.access_token;
-    } catch (error) {
-        console.error('Error getting access token:', error.response?.data || error.message);
-        throw new Error('Failed to get M-Pesa access token');
-    }
+  const creds = Buffer.from(`${CONSUMER_KEY}:${CONSUMER_SECRET}`).toString('base64');
+  const res = await axios.get(`${MPESA_BASE}/oauth/v1/generate?grant_type=client_credentials`, {
+    headers: { Authorization: `Basic ${creds}` },
+    timeout: 10000,
+  });
+  return res.data.access_token;
 }
 
-// Generate Password for STK Push
-function generatePassword(timestamp) {
-    const data = MPESA_CONFIG.businessShortCode + MPESA_CONFIG.passkey + timestamp;
-    return Buffer.from(data).toString('base64');
+function getTimestamp() {
+  const d = new Date();
+  const p = n => String(n).padStart(2, '0');
+  return `${d.getFullYear()}${p(d.getMonth()+1)}${p(d.getDate())}${p(d.getHours())}${p(d.getMinutes())}${p(d.getSeconds())}`;
 }
 
-// Generate Timestamp (YYYYMMDDHHmmss)
-function generateTimestamp() {
-    const date = new Date();
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    const hours = String(date.getHours()).padStart(2, '0');
-    const minutes = String(date.getMinutes()).padStart(2, '0');
-    const seconds = String(date.getSeconds()).padStart(2, '0');
-    return `${year}${month}${day}${hours}${minutes}${seconds}`;
+function formatPhone(raw) {
+  let p = String(raw).replace(/\D/g, '');
+  if (p.startsWith('0'))    p = '254' + p.slice(1);
+  if (p.startsWith('+'))    p = p.slice(1);
+  if (!p.startsWith('254')) p = '254' + p;
+  return p;
 }
 
-// Initiate STK Push
+/* POST /api/mpesa/stkpush */
 router.post('/stkpush', async (req, res) => {
-    try {
-        const { phoneNumber, amount, accountReference, transactionDesc } = req.body;
-
-        // Validate input
-        if (!phoneNumber || !amount) {
-            return res.status(400).json({
-                success: false,
-                message: 'Phone number and amount are required'
-            });
-        }
-
-        // Format phone number (remove leading 0, add 254)
-        let formattedPhone = phoneNumber.toString().trim();
-        if (formattedPhone.startsWith('0')) {
-            formattedPhone = '254' + formattedPhone.substring(1);
-        } else if (!formattedPhone.startsWith('254')) {
-            formattedPhone = '254' + formattedPhone;
-        }
-
-        // Get access token
-        const accessToken = await getAccessToken();
-        
-        // Generate timestamp and password
-        const timestamp = generateTimestamp();
-        const password = generatePassword(timestamp);
-
-        // STK Push request payload
-        const stkPushData = {
-            BusinessShortCode: MPESA_CONFIG.businessShortCode,
-            Password: password,
-            Timestamp: timestamp,
-            TransactionType: 'CustomerPayBillOnline',
-            Amount: Math.round(amount),
-            PartyA: formattedPhone,
-            PartyB: MPESA_CONFIG.businessShortCode,
-            PhoneNumber: formattedPhone,
-            CallBackURL: MPESA_CONFIG.callbackURL,
-            AccountReference: accountReference || 'BullBear Subscription',
-            TransactionDesc: transactionDesc || 'Indicators Subscription Payment'
-        };
-
-        console.log('Initiating STK Push:', {
-            phone: formattedPhone,
-            amount: amount,
-            timestamp: timestamp
-        });
-
-        // Make STK Push request
-        const response = await axios.post(
-            `${getBaseURL()}/mpesa/stkpush/v1/processrequest`,
-            stkPushData,
-            {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                    'Content-Type': 'application/json'
-                }
-            }
-        );
-
-        console.log('STK Push Response:', response.data);
-
-        res.json({
-            success: true,
-            message: 'STK Push sent successfully',
-            data: {
-                MerchantRequestID: response.data.MerchantRequestID,
-                CheckoutRequestID: response.data.CheckoutRequestID,
-                ResponseCode: response.data.ResponseCode,
-                ResponseDescription: response.data.ResponseDescription,
-                CustomerMessage: response.data.CustomerMessage
-            }
-        });
-
-    } catch (error) {
-        console.error('STK Push Error:', error.response?.data || error.message);
-        res.status(500).json({
-            success: false,
-            message: 'Failed to initiate STK Push',
-            error: error.response?.data || error.message
-        });
+  try {
+    const { phoneNumber, amount, accountReference, transactionDesc } = req.body;
+    if (!phoneNumber || !amount) {
+      return res.status(400).json({ success: false, message: 'phoneNumber and amount required' });
     }
+
+    const phone  = formatPhone(phoneNumber);
+    const ts     = getTimestamp();
+    const token  = await getAccessToken();
+    const password = Buffer.from(`${SHORTCODE}${PASSKEY}${ts}`).toString('base64');
+
+    const mpesaRes = await axios.post(
+      `${MPESA_BASE}/mpesa/stkpush/v1/processrequest`,
+      {
+        BusinessShortCode: SHORTCODE,
+        Password: password,
+        Timestamp: ts,
+        TransactionType: 'CustomerPayBillOnline',
+        Amount: Math.ceil(Number(amount)),
+        PartyA: phone,
+        PartyB: SHORTCODE,
+        PhoneNumber: phone,
+        CallBackURL: CALLBACK_URL,
+        AccountReference: accountReference || 'BullBear',
+        TransactionDesc: transactionDesc || 'BullBear Trading Payment',
+      },
+      {
+        headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+        timeout: 20000,
+      }
+    );
+
+    const { CheckoutRequestID, ResponseCode, ResponseDescription } = mpesaRes.data;
+
+    if (ResponseCode !== '0') {
+      return res.status(400).json({ success: false, message: ResponseDescription });
+    }
+
+    res.json({ success: true, data: { CheckoutRequestID, ResponseDescription } });
+  } catch (err) {
+    console.error('STK Push error:', err.response?.data || err.message);
+    res.status(500).json({ success: false, message: 'Failed to initiate M-Pesa payment. Please try again.' });
+  }
 });
 
-// M-Pesa Callback URL
+/* POST /api/mpesa/callback — Safaricom calls this after payment */
 router.post('/callback', async (req, res) => {
-    try {
-        console.log('M-Pesa Callback Received:', JSON.stringify(req.body, null, 2));
+  res.json({ ResultCode: 0, ResultDesc: 'Accepted' });
 
-        const { Body } = req.body;
-        
-        if (Body && Body.stkCallback) {
-            const { MerchantRequestID, CheckoutRequestID, ResultCode, ResultDesc } = Body.stkCallback;
+  try {
+    const cb = req.body?.Body?.stkCallback;
+    if (!cb) return;
 
-            if (ResultCode === 0) {
-                // Payment successful
-                const callbackMetadata = Body.stkCallback.CallbackMetadata?.Item || [];
-                
-                const amount = callbackMetadata.find(item => item.Name === 'Amount')?.Value;
-                const mpesaReceiptNumber = callbackMetadata.find(item => item.Name === 'MpesaReceiptNumber')?.Value;
-                const phoneNumber = callbackMetadata.find(item => item.Name === 'PhoneNumber')?.Value;
-                const transactionDate = callbackMetadata.find(item => item.Name === 'TransactionDate')?.Value;
-
-                console.log('Payment Successful:', {
-                    MerchantRequestID,
-                    CheckoutRequestID,
-                    Amount: amount,
-                    Receipt: mpesaReceiptNumber,
-                    Phone: phoneNumber,
-                    Date: transactionDate
-                });
-
-                // TODO: Update database with successful payment
-                // TODO: Activate user subscription
-                // TODO: Send confirmation email
-
-            } else {
-                // Payment failed
-                console.log('Payment Failed:', {
-                    MerchantRequestID,
-                    CheckoutRequestID,
-                    ResultCode,
-                    ResultDesc
-                });
-            }
-        }
-
-        // Always respond with success to M-Pesa
-        res.json({ ResultCode: 0, ResultDesc: 'Success' });
-
-    } catch (error) {
-        console.error('Callback Error:', error);
-        res.json({ ResultCode: 0, ResultDesc: 'Success' });
+    const { ResultCode, CheckoutRequestID } = cb;
+    if (ResultCode !== 0) {
+      console.log('M-Pesa payment failed/cancelled:', CheckoutRequestID, ResultCode);
+      return;
     }
+
+    const items   = cb.CallbackMetadata?.Item || [];
+    const get     = name => items.find(i => i.Name === name)?.Value;
+    const receipt = get('MpesaReceiptNumber');
+    const phone   = get('PhoneNumber');
+
+    const db   = getDb();
+    const snap = await db.collection('purchases')
+      .where('orderId', '==', CheckoutRequestID)
+      .limit(1).get();
+
+    if (!snap.empty) {
+      await snap.docs[0].ref.update({
+        status: 'approved',
+        verifiedAt: new Date().toISOString(),
+        transactionId: receipt || CheckoutRequestID,
+        mpesaPhone: String(phone || ''),
+      });
+      console.log('Purchase approved:', CheckoutRequestID, receipt);
+    }
+  } catch (err) {
+    console.error('M-Pesa callback error:', err.message);
+  }
 });
 
-// Query STK Push Status
-router.post('/stkquery', async (req, res) => {
-    try {
-        const { checkoutRequestID } = req.body;
+/* GET /api/mpesa/status/:checkoutRequestId — frontend polls for completion */
+router.get('/status/:checkoutRequestId', async (req, res) => {
+  try {
+    const db   = getDb();
+    const snap = await db.collection('purchases')
+      .where('orderId', '==', req.params.checkoutRequestId)
+      .limit(1).get();
 
-        if (!checkoutRequestID) {
-            return res.status(400).json({
-                success: false,
-                message: 'CheckoutRequestID is required'
-            });
-        }
-
-        const accessToken = await getAccessToken();
-        const timestamp = generateTimestamp();
-        const password = generatePassword(timestamp);
-
-        const queryData = {
-            BusinessShortCode: MPESA_CONFIG.businessShortCode,
-            Password: password,
-            Timestamp: timestamp,
-            CheckoutRequestID: checkoutRequestID
-        };
-
-        const response = await axios.post(
-            `${getBaseURL()}/mpesa/stkpushquery/v1/query`,
-            queryData,
-            {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                    'Content-Type': 'application/json'
-                }
-            }
-        );
-
-        res.json({
-            success: true,
-            data: response.data
-        });
-
-    } catch (error) {
-        console.error('STK Query Error:', error.response?.data || error.message);
-        res.status(500).json({
-            success: false,
-            message: 'Failed to query STK Push status',
-            error: error.response?.data || error.message
-        });
-    }
+    if (snap.empty) return res.json({ status: 'pending' });
+    res.json({ status: snap.docs[0].data().status });
+  } catch (err) {
+    res.status(500).json({ status: 'error', message: err.message });
+  }
 });
 
 module.exports = router;

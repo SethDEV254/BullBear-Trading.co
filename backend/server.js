@@ -4,7 +4,6 @@ const dotenv = require('dotenv');
 const compression = require('compression');
 const rateLimit = require('express-rate-limit');
 const path = require('path');
-const connectDB = require('./utils/database');
 
 // Load environment variables
 dotenv.config();
@@ -18,50 +17,33 @@ const adminRoutes = require('./routes/admin');
 const paypalRoutes = require('./routes/paypal');
 const checklistRoutes = require('./routes/checklist');
 const mpesaRoutes = require('./routes/mpesa');
+const inboundRoutes = require('./routes/inbound');
 
 // Initialize Express app
 const app = express();
 
 // Rate limiting
 const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100, // limit each IP to 100 requests per windowMs
+    windowMs: 15 * 60 * 1000,
+    max: 200,
     message: 'Too many requests from this IP, please try again later.'
 });
 
-// Middleware
-app.use(compression()); // Enable gzip compression
+// CORS — allow all origins (auth is JWT-based, not cookie-based)
 app.use(cors({
-    origin: process.env.FRONTEND_URL || '*',
-    credentials: true,
+    origin: function (origin, callback) {
+        callback(null, true);
+    },
+    credentials: false,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
+app.options('*', cors());
+
+app.use(compression());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use('/api/', limiter); // Apply rate limiting to API routes
-
-// Serve static files from parent directory (frontend)
-app.use(express.static(path.join(__dirname, '..')));
-
-// Database connection with clean messaging
-const initializeDatabase = async () => {
-    if (process.env.USE_MOCK_DB === 'true') {
-        console.log('📦 Using in-memory database for development');
-    } else {
-        try {
-            console.log('🔗 Connecting to MongoDB...');
-            await connectDB();
-            console.log('✅ MongoDB connected successfully!');
-        } catch (err) {
-            console.log('📦 Using in-memory database (MongoDB unavailable)');
-            process.env.USE_MOCK_DB = 'true';
-        }
-    }
-};
-
-// Initialize database
-initializeDatabase();
+app.use('/api/', limiter);
 
 // Routes
 app.use('/api/auth', authRoutes);
@@ -72,8 +54,12 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/paypal', paypalRoutes);
 app.use('/api/checklist', checklistRoutes);
 app.use('/api/mpesa', mpesaRoutes);
+app.use('/api/inbound', inboundRoutes);
 
-// Health check endpoint
+// Fast ping — no DB, used by frontend to warm up function
+app.get('/api/ping', (req, res) => res.json({ ok: true, ts: Date.now() }));
+
+// Health check
 app.get('/api/health', (req, res) => {
     res.json({
         status: 'success',

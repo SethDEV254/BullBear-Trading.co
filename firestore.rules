@@ -1,0 +1,42 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    match /stats/{doc} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    match /users/{userId} {
+      allow create: if true;
+      allow update: if true;
+      allow read:   if true;
+      allow delete: if false;
+    }
+
+    match /events/{eventId} {
+      allow create: if true;
+      allow read:   if true;
+      allow update, delete: if false;
+    }
+
+    match /purchases/{purchaseId} {
+      allow create: if true;
+      allow read:   if true;
+      allow update: if true;
+      allow delete: if false;
+    }
+
+    match /checklist_leads/{leadId} {
+      allow create: if true;
+      allow read:   if true;
+      allow update: if false;
+      allow delete: if false;
+    }
+
+    match /courses/{courseId} {
+      allow read: if true;
+      allow write: if false;
+    }
+  }
+}

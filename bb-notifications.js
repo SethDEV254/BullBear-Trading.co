@@ -184,23 +184,23 @@
     s.textContent = `
       #bbsn-widget {
         position: fixed;
-        bottom: 90px;
+        bottom: 20px;
         left: 20px;
         z-index: 99999;
-        width: 300px;
+        width: 230px;
         pointer-events: none;
       }
       .bbsn-card {
         display: flex;
         align-items: flex-start;
-        gap: 12px;
+        gap: 8px;
         background: rgba(10, 5, 25, 0.92);
         backdrop-filter: blur(16px);
         -webkit-backdrop-filter: blur(16px);
         border: 1px solid rgba(124,58,237,0.3);
-        border-radius: 12px;
-        padding: 12px 14px;
-        box-shadow: 0 8px 32px rgba(0,0,0,0.5), 0 0 0 1px rgba(124,58,237,0.1);
+        border-radius: 10px;
+        padding: 8px 10px;
+        box-shadow: 0 6px 24px rgba(0,0,0,0.5), 0 0 0 1px rgba(124,58,237,0.1);
         pointer-events: auto;
         transform: translateX(-120%);
         opacity: 0;
@@ -217,14 +217,14 @@
       }
       .bbsn-avatar {
         flex-shrink: 0;
-        width: 38px;
-        height: 38px;
+        width: 28px;
+        height: 28px;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
         font-family: 'Space Grotesk', 'Inter', sans-serif;
-        font-size: 0.8rem;
+        font-size: 0.62rem;
         font-weight: 700;
         color: #fff;
         letter-spacing: 0;
@@ -234,12 +234,12 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 6px;
-        margin-bottom: 3px;
+        gap: 4px;
+        margin-bottom: 2px;
       }
       .bbsn-name {
         font-family: 'Space Grotesk', 'Inter', sans-serif;
-        font-size: 0.82rem;
+        font-size: 0.7rem;
         font-weight: 700;
         color: #f1f5f9;
         white-space: nowrap;
@@ -249,54 +249,54 @@
       .bbsn-label {
         flex-shrink: 0;
         font-family: 'Inter', sans-serif;
-        font-size: 0.6rem;
+        font-size: 0.5rem;
         font-weight: 700;
         letter-spacing: 0.08em;
         text-transform: uppercase;
-        padding: 2px 7px;
+        padding: 1px 5px;
         border-radius: 50px;
         border: 1px solid;
         white-space: nowrap;
       }
       .bbsn-action {
         font-family: 'Inter', sans-serif;
-        font-size: 0.78rem;
+        font-size: 0.66rem;
         color: rgba(203,213,225,0.85);
-        line-height: 1.4;
-        margin-bottom: 5px;
+        line-height: 1.35;
+        margin-bottom: 3px;
       }
       .bbsn-action strong {
         color: #e2e8f0;
         font-weight: 600;
         display: block;
-        font-size: 0.8rem;
+        font-size: 0.66rem;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
       }
       .bbsn-meta {
         display: flex;
-        gap: 10px;
+        gap: 6px;
         font-family: 'Inter', sans-serif;
-        font-size: 0.68rem;
+        font-size: 0.58rem;
         color: rgba(148,163,184,0.7);
       }
       #bbsn-close {
         position: absolute;
-        top: 8px;
-        right: 8px;
+        top: 5px;
+        right: 6px;
         background: none;
         border: none;
         color: rgba(148,163,184,0.5);
-        font-size: 14px;
+        font-size: 11px;
         cursor: pointer;
         line-height: 1;
         padding: 0;
         transition: color 0.2s;
       }
       #bbsn-close:hover { color: #e2e8f0; }
-      @media (max-width: 480px) {
-        #bbsn-widget { width: 260px; bottom: 80px; left: 12px; }
+      @media (max-width: 767px) {
+        #bbsn-widget { display: none !important; }
       }
     `;
     document.head.appendChild(s);

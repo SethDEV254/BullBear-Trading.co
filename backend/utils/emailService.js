@@ -1,19 +1,21 @@
 // Email Service for Purchase Notifications
 const nodemailer = require('nodemailer');
-const path = require('path');
 
 // Create transporter
 const createTransporter = () => {
+  const port = parseInt(process.env.EMAIL_PORT) || 465;
   return nodemailer.createTransport({
-    host: process.env.EMAIL_HOST || 'smtp.gmail.com',
-    port: process.env.EMAIL_PORT || 587,
-    secure: false,
+    host: process.env.EMAIL_HOST || 'smtp.resend.com',
+    port,
+    secure: port === 465,
     auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASSWORD
-    }
+      user: process.env.EMAIL_USER || 'resend',
+      pass: process.env.EMAIL_PASSWORD || process.env.RESEND_API_KEY,
+    },
   });
 };
+
+const FROM = `"BullBear Trading" <${process.env.EMAIL_FROM || 'info@bullbearblockchain.com'}>`;
 
 // Send free PDF to user email
 const sendFreePdfEmail = async (userEmail, userName) => {
@@ -21,7 +23,7 @@ const sendFreePdfEmail = async (userEmail, userName) => {
     const transporter = createTransporter();
     
     const mailOptions = {
-      from: `"BullBear Trading" <${process.env.EMAIL_USER}>`,
+      from: FROM,
       to: userEmail,
       subject: `Your Free PDF: 5-Step Crypto Quickstart Checklist`,
       html: `
@@ -31,19 +33,20 @@ const sendFreePdfEmail = async (userEmail, userName) => {
           <style>
             body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
             .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-            .header { background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
+            .header { background: linear-gradient(135deg, #D4AF37 0%, #8a6d1f 100%); color: #04140a; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
             .content { background: #f8fafc; padding: 30px; border-radius: 0 0 10px 10px; }
-            .highlight { background: linear-gradient(135deg, #06b6d4 0%, #22c55e 100%); color: white; padding: 20px; border-radius: 10px; margin: 20px 0; text-align: center; }
-            .button { display: inline-block; padding: 15px 30px; background: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%); color: white; text-decoration: none; border-radius: 8px; margin: 20px 0; }
+            .highlight { background: linear-gradient(135deg, #3DFF6E 0%, #1FAE4B 100%); color: #04140a; padding: 20px; border-radius: 10px; margin: 20px 0; text-align: center; }
+            .button { display: inline-block; padding: 15px 30px; background: linear-gradient(135deg, #3DFF6E 0%, #1FAE4B 100%); color: #04140a; text-decoration: none; border-radius: 8px; margin: 20px 0; font-weight: 700; }
             .footer { text-align: center; margin-top: 30px; color: #64748b; font-size: 14px; }
             .steps { background: #fff; padding: 20px; border-radius: 10px; margin: 20px 0; }
             .step { display: flex; align-items: center; margin: 10px 0; }
-            .step-num { background: linear-gradient(135deg, #6366f1, #8b5cf6); color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px; font-weight: bold; }
+            .step-num { background: linear-gradient(135deg, #D4AF37, #8a6d1f); color: #fff; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px; font-weight: bold; }
           </style>
         </head>
         <body>
           <div class="container">
             <div class="header">
+              <img src="https://bullbearblockchain.com/images/bullbear-logo.png" alt="BullBear Trading" style="height:52px;width:auto;display:block;margin:0 auto 12px;">
               <h1>📋 Your Free PDF is Here!</h1>
             </div>
             <div class="content">
@@ -52,7 +55,7 @@ const sendFreePdfEmail = async (userEmail, userName) => {
               
               <div class="highlight">
                 <h3>🎁 Check Your Attachment!</h3>
-                <p>The PDF is attached below. Save it for future reference!</p>
+                <p>Click the button below to download your checklist instantly!</p>
               </div>
               
               <div class="steps">
@@ -79,12 +82,7 @@ const sendFreePdfEmail = async (userEmail, userName) => {
         </body>
         </html>
       `,
-      attachments: [
-        {
-          filename: '5-Step-Crypto-Quickstart-Checklist.pdf',
-          path: path.join(__dirname, '../../crypto-quickstart-checklist.pdf')
-        }
-      ]
+      attachments: []
     };
 
     await transporter.sendMail(mailOptions);
@@ -102,7 +100,7 @@ const sendPurchaseConfirmation = async (userEmail, userName, courseName, orderId
     const transporter = createTransporter();
     
     const mailOptions = {
-      from: `"BullBear Trading" <${process.env.EMAIL_USER}>`,
+      from: FROM,
       to: userEmail,
       subject: `Purchase Confirmation - ${courseName}`,
       html: `
@@ -112,15 +110,16 @@ const sendPurchaseConfirmation = async (userEmail, userName, courseName, orderId
           <style>
             body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
             .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-            .header { background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
+            .header { background: linear-gradient(135deg, #D4AF37 0%, #8a6d1f 100%); color: #04140a; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
             .content { background: #f8fafc; padding: 30px; border-radius: 0 0 10px 10px; }
-            .button { display: inline-block; padding: 15px 30px; background: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%); color: white; text-decoration: none; border-radius: 8px; margin: 20px 0; }
+            .button { display: inline-block; padding: 15px 30px; background: linear-gradient(135deg, #3DFF6E 0%, #1FAE4B 100%); color: #04140a; text-decoration: none; border-radius: 8px; margin: 20px 0; font-weight: 700; }
             .footer { text-align: center; margin-top: 30px; color: #64748b; font-size: 14px; }
           </style>
         </head>
         <body>
           <div class="container">
             <div class="header">
+              <img src="https://bullbearblockchain.com/images/bullbear-logo.png" alt="BullBear Trading" style="height:52px;width:auto;display:block;margin:0 auto 12px;">
               <h1>🎉 Purchase Confirmed!</h1>
             </div>
             <div class="content">
@@ -143,7 +142,7 @@ const sendPurchaseConfirmation = async (userEmail, userName, courseName, orderId
             </div>
             <div class="footer">
               <p>© 2026 Bull Bear Trading. All rights reserved.</p>
-              <p>Contact: support@metahubvoice.com</p>
+              <p>Contact: megametahub42@gmail.com</p>
             </div>
           </div>
         </body>
@@ -166,9 +165,11 @@ const sendPasswordResetEmail = async (userEmail, userName, resetUrl) => {
     const transporter = createTransporter();
 
     const mailOptions = {
-      from: `"BullBear Trading" <${process.env.EMAIL_USER}>`,
+      from: FROM,
       to: userEmail,
+      replyTo: process.env.EMAIL_FROM || 'info@bullbearblockchain.com',
       subject: 'Reset Your BullBear Trading Password',
+      text: `Hi ${userName || 'there'},\n\nWe received a request to reset your BullBear Trading password. Open this link to set a new one:\n\n${resetUrl}\n\nThis link expires in 1 hour. If you didn't request this, you can safely ignore this email — your password won't change.\n\n© 2026 BullBear Trading. All rights reserved.`,
       html: `
         <!DOCTYPE html>
         <html>
@@ -176,15 +177,16 @@ const sendPasswordResetEmail = async (userEmail, userName, resetUrl) => {
           <style>
             body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
             .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-            .header { background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
+            .header { background: linear-gradient(135deg, #D4AF37 0%, #8a6d1f 100%); color: #04140a; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
             .content { background: #f8fafc; padding: 30px; border-radius: 0 0 10px 10px; }
-            .button { display: inline-block; padding: 15px 30px; background: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%); color: white; text-decoration: none; border-radius: 8px; margin: 20px 0; }
+            .button { display: inline-block; padding: 15px 30px; background: linear-gradient(135deg, #3DFF6E 0%, #1FAE4B 100%); color: #04140a; text-decoration: none; border-radius: 8px; margin: 20px 0; font-weight: 700; }
             .footer { text-align: center; margin-top: 30px; color: #64748b; font-size: 14px; }
           </style>
         </head>
         <body>
           <div class="container">
             <div class="header">
+              <img src="https://bullbearblockchain.com/images/bullbear-logo.png" alt="BullBear Trading" style="height:52px;width:auto;display:block;margin:0 auto 12px;">
               <h1>🔑 Reset Your Password</h1>
             </div>
             <div class="content">
@@ -220,7 +222,7 @@ const sendAdminNotification = async (userName, userEmail, courseName, amount, or
     const transporter = createTransporter();
     
     const mailOptions = {
-      from: `"BullBear Trading System" <${process.env.EMAIL_USER}>`,
+      from: FROM,
       to: process.env.ADMIN_EMAIL || process.env.EMAIL_USER,
       subject: `New Purchase Alert - ${courseName}`,
       html: `

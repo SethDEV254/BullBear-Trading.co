@@ -197,4 +197,465 @@ router.put('/users/:id/role', adminAuth, async (req, res) => {
   }
 });
 
+// DELETE /api/admin/users/:id
+router.delete('/users/:id', adminAuth, async (req, res) => {
+  try {
+    const db = getDb();
+    const ref = db.collection('users').doc(req.params.id);
+    const snap = await ref.get();
+    if (!snap.exists) return res.status(404).json({ status: 'error', message: 'User not found' });
+    if (snap.data().role === 'admin') return res.status(403).json({ status: 'error', message: 'Cannot delete admin accounts' });
+    await ref.delete();
+    res.json({ status: 'success', message: 'User deleted' });
+  } catch (e) {
+    res.status(500).json({ status: 'error', message: e.message });
+  }
+});
+
+// ── Content / Video management ────────────────────────────────────────────────
+
+// GET /api/admin/content
+router.get('/content', adminAuth, async (req, res) => {
+  try {
+    const db = getDb();
+    const snap = await db.collection('content').get();
+    const items = snap.docs
+      .map(d => ({ id: d.id, ...d.data() }))
+      .sort((a, b) => (a.order || 0) - (b.order || 0));
+    res.json({ status: 'success', data: { items } });
+  } catch (e) {
+    res.status(500).json({ status: 'error', message: e.message });
+  }
+});
+
+// POST /api/admin/content
+router.post('/content', adminAuth, async (req, res) => {
+  try {
+    const { title, description, url, thumbnail, type, category, accessLevel, order, duration, moduleId } = req.body;
+    if (!title || !url) return res.status(400).json({ status: 'error', message: 'title and url are required' });
+    const db = getDb();
+    const countSnap = await db.collection('content').get();
+    const ref = await db.collection('content').add({
+      title: title.trim(),
+      description: (description || '').trim(),
+      url: url.trim(),
+      thumbnail: (thumbnail || '').trim(),
+      type: type || 'video',
+      category: category || 'general',
+      accessLevel: accessLevel || 'paid',
+      duration: (duration || '').trim(),
+      order: parseInt(order) || countSnap.size + 1,
+      moduleId: moduleId || null,
+      isActive: true,
+      createdAt: new Date().toISOString(),
+      createdBy: req.user && req.user.email ? req.user.email : 'admin',
+    });
+    res.json({ status: 'success', data: { id: ref.id } });
+  } catch (e) {
+    res.status(500).json({ status: 'error', message: e.message });
+  }
+});
+
+// PUT /api/admin/content/:id
+router.put('/content/:id', adminAuth, async (req, res) => {
+  try {
+    const db = getDb();
+    const { id } = req.params;
+    const allowed = ['title', 'description', 'url', 'thumbnail', 'type', 'category', 'accessLevel', 'order', 'isActive', 'moduleId'];
+    const update = {};
+    allowed.forEach(k => { if (req.body[k] !== undefined) update[k] = req.body[k]; });
+    update.updatedAt = new Date().toISOString();
+    await db.collection('content').doc(id).update(update);
+    res.json({ status: 'success' });
+  } catch (e) {
+    res.status(500).json({ status: 'error', message: e.message });
+  }
+});
+
+// DELETE /api/admin/content/:id
+router.delete('/content/:id', adminAuth, async (req, res) => {
+  try {
+    const db = getDb();
+    await db.collection('content').doc(req.params.id).delete();
+    res.json({ status: 'success' });
+  } catch (e) {
+    res.status(500).json({ status: 'error', message: e.message });
+  }
+});
+
+// ── Course Modules management ─────────────────────────────────────────────────
+
+// GET /api/admin/modules
+router.get('/modules', adminAuth, async (req, res) => {
+  try {
+    const db = getDb();
+    const snap = await db.collection('modules').get();
+    const modules = snap.docs
+      .map(d => ({ id: d.id, ...d.data() }))
+      .sort((a, b) => (a.order || 0) - (b.order || 0));
+    res.json({ status: 'success', data: { modules } });
+  } catch (e) {
+    res.status(500).json({ status: 'error', message: e.message });
+  }
+});
+
+// POST /api/admin/modules
+router.post('/modules', adminAuth, async (req, res) => {
+  try {
+    const { name, description, order, imageUrl } = req.body;
+    if (!name) return res.status(400).json({ status: 'error', message: 'name is required' });
+    if (imageUrl && !/^https?:\/\//i.test(imageUrl)) {
+      return res.status(400).json({ status: 'error', message: 'imageUrl must be a valid http(s) URL' });
+    }
+    const db = getDb();
+    const countSnap = await db.collection('modules').get();
+    const ref = await db.collection('modules').add({
+      name: name.trim(),
+      description: (description || '').trim(),
+      imageUrl: (imageUrl || '').trim(),
+      order: parseInt(order) || countSnap.size + 1,
+      isActive: true,
+      createdAt: new Date().toISOString(),
+      createdBy: req.user && req.user.email ? req.user.email : 'admin',
+    });
+    res.json({ status: 'success', data: { id: ref.id } });
+  } catch (e) {
+    res.status(500).json({ status: 'error', message: e.message });
+  }
+});
+
+// PUT /api/admin/modules/:id
+router.put('/modules/:id', adminAuth, async (req, res) => {
+  try {
+    const db = getDb();
+    const { id } = req.params;
+    const allowed = ['name', 'description', 'order', 'isActive', 'imageUrl'];
+    if (req.body.imageUrl && !/^https?:\/\//i.test(req.body.imageUrl)) {
+      return res.status(400).json({ status: 'error', message: 'imageUrl must be a valid http(s) URL' });
+    }
+    const update = {};
+    allowed.forEach(k => { if (req.body[k] !== undefined) update[k] = req.body[k]; });
+    update.updatedAt = new Date().toISOString();
+    await db.collection('modules').doc(id).update(update);
+    res.json({ status: 'success' });
+  } catch (e) {
+    res.status(500).json({ status: 'error', message: e.message });
+  }
+});
+
+// DELETE /api/admin/modules/:id
+router.delete('/modules/:id', adminAuth, async (req, res) => {
+  try {
+    const db = getDb();
+    await db.collection('modules').doc(req.params.id).delete();
+    res.json({ status: 'success' });
+  } catch (e) {
+    res.status(500).json({ status: 'error', message: e.message });
+  }
+});
+
+// ── Grant / Revoke access ─────────────────────────────────────────────────────
+
+// POST /api/admin/users/:userId/grant-access
+router.post('/users/:userId/grant-access', adminAuth, async (req, res) => {
+  try {
+    const { productId, productName, amount } = req.body;
+    if (!productId) return res.status(400).json({ status: 'error', message: 'productId required' });
+    const db = getDb();
+    const userRef = db.collection('users').doc(req.params.userId);
+    const userSnap = await userRef.get();
+    if (!userSnap.exists) return res.status(404).json({ status: 'error', message: 'User not found' });
+    const user = userSnap.data();
+
+    const purchaseRef = await db.collection('purchases').add({
+      userId: req.params.userId,
+      userEmail: (user.email || req.params.userId).toLowerCase(),
+      courseId: productId,
+      courseName: productName || productId,
+      amount: parseFloat(amount) || 0,
+      paymentMethod: 'admin-grant',
+      orderId: 'admin-' + Date.now(),
+      status: 'approved',
+      grantedByAdmin: true,
+      grantedBy: req.user.email,
+      createdAt: new Date().toISOString(),
+      verifiedAt: new Date().toISOString(),
+    });
+    res.json({ status: 'success', data: { purchaseId: purchaseRef.id } });
+  } catch (e) {
+    res.status(500).json({ status: 'error', message: e.message });
+  }
+});
+
+// DELETE /api/admin/users/:userId/revoke-access/:productId
+router.delete('/users/:userId/revoke-access/:productId', adminAuth, async (req, res) => {
+  try {
+    const db = getDb();
+    const snap = await db.collection('purchases')
+      .where('userId', '==', req.params.userId)
+      .where('courseId', '==', req.params.productId)
+      .get();
+    const batch = db.batch();
+    snap.docs.forEach(d => batch.delete(d.ref));
+    await batch.commit();
+    res.json({ status: 'success', message: `Revoked ${snap.size} access record(s)` });
+  } catch (e) {
+    res.status(500).json({ status: 'error', message: e.message });
+  }
+});
+
+// POST /api/admin/bulk-email
+router.post('/bulk-email', adminAuth, async (req, res) => {
+  const { subject, message, recipients, customEmails } = req.body;
+  if (!subject || !message) {
+    return res.status(400).json({ status: 'error', message: 'Subject and message are required' });
+  }
+
+  try {
+    const db = getDb();
+    const { sendEmail } = require('../utils/resendEmail');
+
+    let emailList = [];
+
+    if (recipients === 'custom') {
+      emailList = (customEmails || '').split(',').map(e => ({ email: e.trim(), name: '' })).filter(e => e.email);
+    } else {
+      const [usersSnap, leadsSnap, purchasesSnap] = await Promise.all([
+        db.collection('users').where('role', '!=', 'admin').get(),
+        db.collection('checklist_leads').get(),
+        db.collection('purchases').where('status', 'in', ['approved', 'completed']).get(),
+      ]);
+
+      // Registered users (signed up via the site)
+      if (recipients === 'all' || recipients === 'users') {
+        usersSnap.docs.forEach(d => {
+          const data = d.data();
+          if (data.email) emailList.push({ email: data.email, name: data.firstName || data.name || '' });
+        });
+      }
+
+      // Checklist subscribers
+      if (recipients === 'all' || recipients === 'checklist') {
+        leadsSnap.docs.forEach(d => {
+          const data = d.data();
+          if (data.email && !emailList.find(e => e.email === data.email)) {
+            emailList.push({ email: data.email, name: data.name || '' });
+          }
+        });
+      }
+
+      // Buyers only
+      if (recipients === 'buyers') {
+        const buyerEmails = new Set(purchasesSnap.docs.map(d => d.data().userEmail).filter(Boolean));
+        usersSnap.docs.forEach(d => {
+          const data = d.data();
+          if (data.email && buyerEmails.has(data.email) && !emailList.find(e => e.email === data.email)) {
+            emailList.push({ email: data.email, name: data.firstName || data.name || '' });
+          }
+        });
+      }
+    }
+
+    // Deduplicate
+    const seen = new Set();
+    emailList = emailList.filter(e => {
+      if (seen.has(e.email)) return false;
+      seen.add(e.email);
+      return true;
+    });
+
+    if (!emailList.length) {
+      return res.status(400).json({ status: 'error', message: 'No recipients found' });
+    }
+
+    // Filter unsubscribed
+    const crypto = require('crypto');
+    const unsubSnap = await db.collection('email_unsubscribes').get();
+    const unsubSet = new Set(unsubSnap.docs.map(d => d.id.toLowerCase()));
+    emailList = emailList.filter(e => !unsubSet.has(e.email.toLowerCase()));
+
+    if (!emailList.length) {
+      return res.status(400).json({ status: 'error', message: 'All recipients have unsubscribed' });
+    }
+
+    const year = new Date().getFullYear();
+    const bodyLines = message.split('\n').map(line => `<p style="margin:0 0 12px;line-height:1.6;">${line}</p>`).join('');
+
+    const makeUnsubToken = (email) =>
+      crypto.createHmac('sha256', process.env.JWT_SECRET || 'bullbear-unsub').update(email.toLowerCase()).digest('hex');
+
+    const plainBody = message.split('\n').join('\n');
+
+    const buildHtml = (name, email, unsubUrl) => {
+      const firstName = (name || '').split(' ')[0] || 'Trader';
+      return `
+      <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;background:#0a0a0d;color:#e2e8f0;border-radius:12px;overflow:hidden;">
+        <div style="background:linear-gradient(135deg,#D4AF37,#8a6d1f);padding:28px 32px;text-align:center;">
+          <img src="https://bullbearblockchain.com/images/bullbear-logo.png" alt="BullBear Trading" style="height:48px;width:auto;display:block;margin:0 auto 10px;">
+          <h1 style="margin:0;color:#04140a;font-size:1.4rem;">BullBear Trading</h1>
+        </div>
+        <div style="padding:32px;">
+          <p style="margin:0 0 20px;font-size:1rem;font-weight:600;color:#e2e8f0;">Hello ${firstName},</p>
+          ${bodyLines}
+          <p style="margin:20px 0 0;line-height:1.6;">Warm regards,<br><strong style="color:#3DFF6E;">BullBear Trading Team</strong></p>
+        </div>
+        <div style="padding:24px 32px;border-top:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.02);">
+          <p style="margin:0 0 16px;font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#64748b;text-align:center;">Get Started With Seth's Links</p>
+          <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+            <a href="https://www.tradingview.com/?aff_id=152391" style="display:inline-block;padding:12px 22px;background:linear-gradient(135deg,#1e3a5f,#2563eb);color:#fff;text-decoration:none;border-radius:8px;font-size:.84rem;font-weight:700;">📈 TradingView</a>
+            <a href="https://partner.blofin.com/d/CryptoLord" style="display:inline-block;padding:12px 22px;background:linear-gradient(135deg,#064e3b,#059669);color:#fff;text-decoration:none;border-radius:8px;font-size:.84rem;font-weight:700;">🔗 Join BloFin</a>
+          </div>
+        </div>
+        <div style="padding:16px 32px;border-top:1px solid rgba(255,255,255,.08);text-align:center;font-size:.78rem;color:#64748b;">
+          © ${year} BullBear Trading · <a href="https://bullbearblockchain.com" style="color:#3DFF6E;">bullbearblockchain.com</a>
+          <br><br><a href="${unsubUrl}" style="color:#64748b;text-decoration:underline;">Unsubscribe</a>
+        </div>
+      </div>`;
+    };
+
+    const buildText = (name, unsubUrl) => {
+      const firstName = (name || '').split(' ')[0] || 'Trader';
+      return `Hello ${firstName},\n\n${plainBody}\n\nWarm regards,\nBullBear Trading Team\n\n© ${year} BullBear Trading · https://bullbearblockchain.com\nUnsubscribe: ${unsubUrl}`;
+    };
+
+    let sent = 0;
+    const errors = [];
+    for (const recipient of emailList) {
+      try {
+        const unsubUrl = `https://backend-tawny-nu-33.vercel.app/api/unsubscribe?email=${encodeURIComponent(recipient.email)}&token=${makeUnsubToken(recipient.email)}`;
+        await sendEmail({
+          to: recipient.email,
+          subject,
+          html: buildHtml(recipient.name, recipient.email, unsubUrl),
+          text: buildText(recipient.name, unsubUrl),
+          headers: {
+            'List-Unsubscribe': `<mailto:info@bullbearblockchain.com?subject=unsubscribe>, <${unsubUrl}>`,
+            'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+          },
+        });
+        sent++;
+        // Small delay between sends so this reads as normal transactional
+        // traffic to receiving mail servers, not a burst/blast pattern.
+        await new Promise((r) => setTimeout(r, 200));
+      } catch (err) {
+        errors.push(recipient.email);
+      }
+    }
+
+    // Save campaign to Firestore
+    await db.collection('email_campaigns').add({
+      subject,
+      message,
+      recipients,
+      totalSent: sent,
+      errors: errors.length,
+      sentBy: req.user.email,
+      sentAt: new Date().toISOString(),
+    });
+
+    res.json({ status: 'success', message: `Email sent to ${sent} recipient(s)`, sent, errors: errors.length });
+  } catch (error) {
+    res.status(500).json({ status: 'error', message: error.message });
+  }
+});
+
+// GET /api/admin/email-campaigns
+router.get('/email-campaigns', adminAuth, async (req, res) => {
+  try {
+    const db = getDb();
+    const snap = await db.collection('email_campaigns').orderBy('sentAt', 'desc').limit(20).get();
+    const campaigns = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    res.json({ status: 'success', data: campaigns });
+  } catch (e) {
+    res.status(500).json({ status: 'error', message: e.message });
+  }
+});
+
+// GET /api/admin/recipient-counts
+router.get('/recipient-counts', adminAuth, async (req, res) => {
+  try {
+    const db = getDb();
+    const [usersSnap, leadsSnap, purchasesSnap] = await Promise.all([
+      db.collection('users').where('role', '!=', 'admin').get(),
+      db.collection('checklist_leads').get(),
+      db.collection('purchases').where('status', 'in', ['approved', 'completed']).get(),
+    ]);
+    const userEmails = new Set(usersSnap.docs.map(d => d.data().email).filter(Boolean));
+    const leadEmails = new Set(leadsSnap.docs.map(d => d.data().email).filter(Boolean));
+    const buyerEmails = new Set(purchasesSnap.docs.map(d => d.data().userEmail).filter(Boolean));
+    // all = union of registered users + checklist leads (no double count)
+    const allEmails = new Set([...userEmails, ...leadEmails]);
+    res.json({
+      status: 'success',
+      data: {
+        all: allEmails.size,
+        users: userEmails.size,
+        buyers: buyerEmails.size,
+        checklist: leadEmails.size,
+      },
+    });
+  } catch (e) {
+    res.status(500).json({ status: 'error', message: e.message });
+  }
+});
+
+// GET /api/admin/email-replies
+router.get('/email-replies', adminAuth, async (req, res) => {
+  try {
+    const db = getDb();
+    const snap = await db.collection('email_replies').orderBy('receivedAt', 'desc').limit(50).get();
+    const replies = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    res.json({ status: 'success', data: replies, unread: replies.filter(r => !r.read).length });
+  } catch (e) {
+    res.status(500).json({ status: 'error', message: e.message });
+  }
+});
+
+// PUT /api/admin/email-replies/:id/read
+router.put('/email-replies/:id/read', adminAuth, async (req, res) => {
+  try {
+    const db = getDb();
+    await db.collection('email_replies').doc(req.params.id).update({ read: true });
+    res.json({ status: 'success' });
+  } catch (e) {
+    res.status(500).json({ status: 'error', message: e.message });
+  }
+});
+
+// DELETE /api/admin/email-replies/:id
+router.delete('/email-replies/:id', adminAuth, async (req, res) => {
+  try {
+    const db = getDb();
+    await db.collection('email_replies').doc(req.params.id).delete();
+    res.json({ status: 'success' });
+  } catch (e) {
+    res.status(500).json({ status: 'error', message: e.message });
+  }
+});
+
+// GET /api/admin/reviews
+router.get('/reviews', adminAuth, async (req, res) => {
+  try {
+    const db = getDb();
+    const snap = await db.collection('reviews').get();
+    const reviews = snap.docs
+      .map(d => ({ id: d.id, ...d.data() }))
+      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    res.json({ status: 'success', data: reviews });
+  } catch (e) {
+    res.status(500).json({ status: 'error', message: e.message });
+  }
+});
+
+// DELETE /api/admin/reviews/:id
+router.delete('/reviews/:id', adminAuth, async (req, res) => {
+  try {
+    const db = getDb();
+    await db.collection('reviews').doc(req.params.id).delete();
+    res.json({ status: 'success' });
+  } catch (e) {
+    res.status(500).json({ status: 'error', message: e.message });
+  }
+});
+
 module.exports = router;

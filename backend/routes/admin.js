@@ -7,6 +7,7 @@ const multer = require('multer');
 const { getDb, getBucket } = require('../lib/firebase');
 const { adminAuth } = require('../middleware/auth');
 const { sendPurchaseFulfillment } = require('../utils/purchaseFulfillment');
+const { sendPasswordResetEmail } = require('../utils/emailService');
 
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -387,6 +388,31 @@ router.delete('/modules/:id', adminAuth, async (req, res) => {
     const db = getDb();
     await db.collection('modules').doc(req.params.id).delete();
     res.json({ status: 'success' });
+  } catch (e) {
+    res.status(500).json({ status: 'error', message: e.message });
+  }
+});
+
+// POST /api/admin/users/:userId/reset-password — sends the user a reset link
+router.post('/users/:userId/reset-password', adminAuth, async (req, res) => {
+  try {
+    const db = getDb();
+    const userRef = db.collection('users').doc(req.params.userId);
+    const userSnap = await userRef.get();
+    if (!userSnap.exists) return res.status(404).json({ status: 'error', message: 'User not found' });
+    const user = userSnap.data();
+
+    const resetToken = crypto.randomBytes(32).toString('hex');
+    const resetTokenHash = crypto.createHash('sha256').update(resetToken).digest('hex');
+    const resetTokenExpiry = Date.now() + 60 * 60 * 1000;
+    await userRef.update({ resetTokenHash, resetTokenExpiry });
+
+    const resetUrl = `${process.env.FRONTEND_URL || 'https://bullbearblockchain.com'}/index.html?resetToken=${resetToken}&email=${encodeURIComponent(user.email)}`;
+    const result = await sendPasswordResetEmail(user.email, user.firstName, resetUrl);
+    if (!result || result.success === false) {
+      return res.status(500).json({ status: 'error', message: 'Failed to send reset email' + (result && result.error ? ': ' + result.error : '') });
+    }
+    res.json({ status: 'success', message: 'Password reset link sent to ' + user.email });
   } catch (e) {
     res.status(500).json({ status: 'error', message: e.message });
   }

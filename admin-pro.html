@@ -1163,6 +1163,7 @@ function loadUsers() {
           <td style="display:flex;gap:6px;flex-wrap:wrap;">
             <button class="btn btn-primary btn-xs" onclick="openGrantModal('${uid}','${emailEsc}','${nameEsc}')">Grant Access</button>
             <button class="btn btn-ghost btn-xs" onclick="openProgressModal('${emailEsc}','${nameEsc}')">Progress</button>
+            <button class="btn btn-ghost btn-xs" onclick="resetUserPassword('${uid}','${emailEsc}')">Reset Password</button>
             ${u.role !== 'admin' ? `<button class="btn btn-ghost btn-xs" onclick="promoteUser('${uid}')">Make admin</button>` : '<span style="color:var(--muted);font-size:.76rem">admin</span>'}
             ${u.role !== 'admin' ? `<button class="btn btn-red btn-xs" onclick="deleteUser('${uid}')">Delete</button>` : ''}
           </td>
@@ -1240,6 +1241,18 @@ async function promoteUser(id) {
     body: JSON.stringify({ role:'admin' }),
   }).then(r => r.json()).then(d => {
     if (d.status === 'success') { toast('User promoted to admin', 'green'); loadUsers(); }
+    else toast(d.message || 'Error', 'red');
+  }).catch(() => toast('Request failed', 'red'));
+}
+
+async function resetUserPassword(id, emailEnc) {
+  const email = decodeURIComponent(emailEnc);
+  const ok = await confirm2('Send password reset link?', `A password reset email will be sent to ${email}.`);
+  if (!ok) return;
+  fetch(`${API}/admin/users/${encodeURIComponent(id)}/reset-password`, {
+    method: 'POST', headers: { Authorization: 'Bearer ' + token },
+  }).then(r => r.json()).then(d => {
+    if (d.status === 'success') toast(d.message || 'Reset link sent', 'green');
     else toast(d.message || 'Error', 'red');
   }).catch(() => toast('Request failed', 'red'));
 }

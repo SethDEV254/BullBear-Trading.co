@@ -3,6 +3,7 @@ const router = express.Router();
 const axios = require('axios');
 const crypto = require('crypto');
 const { getDb } = require('../lib/firebase');
+const { sendPurchaseFulfillment } = require('../utils/purchaseFulfillment');
 
 const API_KEY = (process.env.PAYWAVE_API_KEY || '').trim();
 const ACCOUNT_EMAIL = (process.env.PAYWAVE_EMAIL || '').trim();
@@ -89,13 +90,15 @@ router.post('/webhook', async (req, res) => {
     }
 
     if (Number(ResponseCode) === 0) {
+      const verifiedAt = new Date().toISOString();
       await snap.docs[0].ref.update({
         status: 'approved',
-        verifiedAt: new Date().toISOString(),
+        verifiedAt,
         transactionId: TransactionID || TransactionReference,
         mpesaReceipt: TransactionReceipt || '',
         mpesaPhone: String(Msisdn || ''),
       });
+      sendPurchaseFulfillment({ ...snap.docs[0].data(), verifiedAt });
       console.log('Paywave purchase approved:', TransactionReference, TransactionReceipt);
     } else {
       await snap.docs[0].ref.update({
@@ -136,13 +139,15 @@ router.get('/status/:orderId', async (req, res) => {
 
     const { TransactionStatus, TransactionCode, TransactionReceipt, Msisdn } = pwRes.data;
     if (TransactionStatus === 'Completed' && String(TransactionCode) === '0') {
+      const verifiedAt = new Date().toISOString();
       await purchaseDoc.ref.update({
         status: 'approved',
-        verifiedAt: new Date().toISOString(),
+        verifiedAt,
         transactionId: transaction_request_id,
         mpesaReceipt: TransactionReceipt || '',
         mpesaPhone: String(Msisdn || ''),
       });
+      sendPurchaseFulfillment({ ...purchaseDoc.data(), verifiedAt });
       return res.json({ status: 'approved' });
     }
     if (TransactionStatus === 'Failed' || TransactionStatus === 'Cancelled') {

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const axios = require('axios');
 const { getDb } = require('../lib/firebase');
+const { sendPurchaseFulfillment } = require('../utils/purchaseFulfillment');
 
 const MPESA_BASE = (process.env.MPESA_ENV || 'sandbox') === 'live'
   ? 'https://api.safaricom.co.ke'
@@ -108,12 +109,15 @@ router.post('/callback', async (req, res) => {
       .limit(1).get();
 
     if (!snap.empty) {
-      await snap.docs[0].ref.update({
+      const doc = snap.docs[0];
+      const verifiedAt = new Date().toISOString();
+      await doc.ref.update({
         status: 'approved',
-        verifiedAt: new Date().toISOString(),
+        verifiedAt,
         transactionId: receipt || CheckoutRequestID,
         mpesaPhone: String(phone || ''),
       });
+      sendPurchaseFulfillment({ ...doc.data(), verifiedAt });
       console.log('Purchase approved:', CheckoutRequestID, receipt);
     }
   } catch (err) {

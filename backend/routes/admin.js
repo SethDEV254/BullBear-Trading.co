@@ -6,6 +6,7 @@ const crypto = require('crypto');
 const multer = require('multer');
 const { getDb, getBucket } = require('../lib/firebase');
 const { adminAuth } = require('../middleware/auth');
+const { sendPurchaseFulfillment } = require('../utils/purchaseFulfillment');
 
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -191,7 +192,9 @@ router.put('/purchases/:id/approve', adminAuth, async (req, res) => {
     const ref = db.collection('purchases').doc(req.params.id);
     const snap = await ref.get();
     if (!snap.exists) return res.status(404).json({ status: 'error', message: 'Purchase not found' });
-    await ref.update({ status: 'approved', verifiedAt: new Date().toISOString(), verifiedBy: req.user.email });
+    const verifiedAt = new Date().toISOString();
+    await ref.update({ status: 'approved', verifiedAt, verifiedBy: req.user.email });
+    sendPurchaseFulfillment({ ...snap.data(), verifiedAt });
     res.json({ status: 'success', message: 'Purchase approved successfully', data: { purchase: { id: ref.id, ...snap.data(), status: 'approved' } } });
   } catch (error) {
     res.status(500).json({ status: 'error', message: error.message });
@@ -402,7 +405,7 @@ router.post('/users/:userId/grant-access', adminAuth, async (req, res) => {
     if (!userSnap.exists) return res.status(404).json({ status: 'error', message: 'User not found' });
     const user = userSnap.data();
 
-    const purchaseRef = await db.collection('purchases').add({
+    const purchaseData = {
       userId: req.params.userId,
       userEmail: (user.email || req.params.userId).toLowerCase(),
       courseId: productId,
@@ -415,7 +418,9 @@ router.post('/users/:userId/grant-access', adminAuth, async (req, res) => {
       grantedBy: req.user.email,
       createdAt: new Date().toISOString(),
       verifiedAt: new Date().toISOString(),
-    });
+    };
+    const purchaseRef = await db.collection('purchases').add(purchaseData);
+    sendPurchaseFulfillment(purchaseData);
     res.json({ status: 'success', data: { purchaseId: purchaseRef.id } });
   } catch (e) {
     res.status(500).json({ status: 'error', message: e.message });

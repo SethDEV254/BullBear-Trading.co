@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const axios = require('axios');
 const { getDb } = require('../lib/firebase');
+const { sendPurchaseFulfillment } = require('../utils/purchaseFulfillment');
 
 const PAYPAL_CLIENT_ID = (process.env.PAYPAL_CLIENT_ID || '').trim();
 const PAYPAL_CLIENT_SECRET = (process.env.PAYPAL_CLIENT_SECRET || '').trim();
@@ -78,7 +79,7 @@ router.post('/capture-order/:orderId', async (req, res) => {
       const courseSnap = await db.collection('courses').doc(courseId).get();
       const courseName = courseSnap.exists ? (courseSnap.data().title || courseId) : courseId;
 
-      await db.collection('purchases').add({
+      const purchaseData = {
         userId: userEmail.toLowerCase(),
         userEmail: userEmail.toLowerCase(),
         courseId,
@@ -90,7 +91,9 @@ router.post('/capture-order/:orderId', async (req, res) => {
         status: 'approved',
         createdAt: new Date().toISOString(),
         verifiedAt: new Date().toISOString(),
-      });
+      };
+      await db.collection('purchases').add(purchaseData);
+      sendPurchaseFulfillment(purchaseData);
 
       if (courseSnap.exists) {
         const d = courseSnap.data();

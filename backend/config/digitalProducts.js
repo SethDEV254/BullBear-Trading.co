@@ -14,6 +14,6 @@ module.exports = {
   },
   'crypto-truth-guide': {
     name: 'Crypto Truth Guide',
-    fileUrl: null,
+    fileUrl: 'https://bullbearblockchain.com/crypto-truth-guide.pdf',
   },
 };

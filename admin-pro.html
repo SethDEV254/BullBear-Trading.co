@@ -377,6 +377,7 @@ textarea.inp{min-height:120px;resize:vertical}
     <div class="sidebar-section">Content</div>
     <ul class="sidebar-nav">
       <li><a href="#" onclick="nav('content',this)"><span class="nav-icon">📚</span> Content</a></li>
+      <li><a href="#" onclick="nav('prices',this)"><span class="nav-icon">💲</span> Prices</a></li>
       <li><a href="#" onclick="nav('emails',this)"><span class="nav-icon">✉️</span> Bulk Email</a></li>
       <li><a href="#" onclick="nav('inbox',this)" id="nav-inbox"><span class="nav-icon">📥</span> Inbox <span class="nav-badge" id="badge-inbox" style="display:none">0</span></a></li>
       <li><a href="#" onclick="nav('checklist',this)"><span class="nav-icon">📋</span> Checklist</a></li>
@@ -675,6 +676,20 @@ textarea.inp{min-height:120px;resize:vertical}
       </div>
     </div>
 
+    <!-- ═══ PRICES ═══ -->
+    <div class="page section" id="sec-prices">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <div>
+          <h2 style="margin:0;font-size:1.1rem;">Store Product Prices</h2>
+          <p style="margin:4px 0 0;font-size:.82rem;color:var(--muted)">Changes apply immediately on the live store.</p>
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="savePrices()">💾 Save Changes</button>
+      </div>
+      <div class="card" style="padding:16px">
+        <div id="pricesList"><div class="empty"><div class="empty-icon">💲</div><p>Loading...</p></div></div>
+      </div>
+    </div>
+
     <!-- ═══ INBOX ═══ -->
     <div class="page section" id="sec-inbox">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
@@ -915,6 +930,7 @@ function nav(name, el) {
     purchases:  ['Purchases', 'Manage all course purchases and approvals.'],
     users:      ['Users', 'View and manage registered users.'],
     content:    ['Content Library', 'Manage videos, ebooks, and documents.'],
+    prices:     ['Store Prices', 'Edit prices for store products.'],
     emails:     ['Bulk Email', 'Send campaigns to your users.'],
     inbox:      ['Inbox', 'Email replies from your users.'],
     checklist:  ['Checklist Leads', 'Track free checklist downloads.'],
@@ -930,6 +946,7 @@ function nav(name, el) {
   if (name === 'purchases')  loadPurchases();
   if (name === 'users')      loadUsers();
   if (name === 'content')    { loadModules(); loadContent(); }
+  if (name === 'prices')     loadPrices();
   if (name === 'emails')     loadEmailHistory();
   if (name === 'inbox')      loadInbox();
   if (name === 'checklist')  loadChecklist();
@@ -1179,6 +1196,56 @@ const PRODUCTS = [
   { id: 'crypto-quickstart-checklist', name: 'Crypto Quickstart Checklist (Free)' },
   { id: 'membership-coaching',       name: 'Membership & Online Coaching ($500)' },
 ];
+
+/* ── Store price overrides ── */
+const STORE_PRODUCTS = [
+  { id: 'affiliate-guide',      name: '7 Proven Steps to $1M Affiliate Marketing', defaultPrice: 20 },
+  { id: 'crypto-spreadsheet',   name: 'Crypto Profit Spreadsheet',                 defaultPrice: 40 },
+  { id: 'crypto-truth-guide',   name: 'Crypto Truth Guide',                        defaultPrice: 30 },
+  { id: 'ledger-nano-s',        name: 'Ledger Nano S',                             defaultPrice: 250 },
+  { id: 'ledger-nano-x',        name: 'Ledger Nano X',                             defaultPrice: 400 },
+  { id: 'membership-coaching',  name: 'Membership & Online Coaching',              defaultPrice: 500 },
+];
+
+function loadPrices() {
+  const box = document.getElementById('pricesList');
+  box.innerHTML = '<div class="empty"><div class="empty-icon">⏳</div><p>Loading...</p></div>';
+  fetch(API + '/products/prices').then(r => r.json()).then(d => {
+    const overrides = (d.data && d.data.prices) || {};
+    box.innerHTML = `
+      <table style="width:100%;border-collapse:collapse;">
+        <thead><tr>
+          <th style="text-align:left;padding:10px 8px;color:var(--muted);font-size:.78rem;">Product</th>
+          <th style="text-align:left;padding:10px 8px;color:var(--muted);font-size:.78rem;">Price (USD)</th>
+        </tr></thead>
+        <tbody>
+          ${STORE_PRODUCTS.map(p => `
+            <tr>
+              <td style="padding:10px 8px;">${p.name}</td>
+              <td style="padding:10px 8px;">
+                <input type="number" min="0" step="0.01" class="inp price-input" data-id="${p.id}"
+                  value="${overrides[p.id] != null ? overrides[p.id] : p.defaultPrice}" style="width:120px;">
+              </td>
+            </tr>`).join('')}
+        </tbody>
+      </table>`;
+  }).catch(() => { box.innerHTML = '<div class="empty"><div class="empty-icon">❌</div><p>Failed to load prices</p></div>'; });
+}
+
+function savePrices() {
+  const prices = {};
+  document.querySelectorAll('.price-input').forEach(inp => {
+    prices[inp.dataset.id] = parseFloat(inp.value) || 0;
+  });
+  fetch(API + '/admin/product-prices', {
+    method: 'PUT',
+    headers: { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ prices }),
+  }).then(r => r.json()).then(d => {
+    if (d.status === 'success') toast('Prices updated', 'green');
+    else toast(d.message || 'Error', 'red');
+  }).catch(() => toast('Request failed', 'red'));
+}
 
 function openGrantModal(userId, emailEnc, nameEnc) {
   const email = decodeURIComponent(emailEnc);

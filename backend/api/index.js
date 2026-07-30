@@ -152,6 +152,17 @@ app.get('/api/modules', async (req, res) => {
   }
 });
 
+// GET /api/products/prices — admin-editable price overrides for store products
+app.get('/api/products/prices', async (req, res) => {
+  try {
+    const db = getDb();
+    const snap = await db.collection('settings').doc('productPrices').get();
+    res.json({ status: 'success', data: { prices: snap.exists ? snap.data() : {} } });
+  } catch (e) {
+    res.status(500).json({ status: 'error', message: e.message });
+  }
+});
+
 // GET /api/purchases/user/:email — check user's approved purchases
 app.get('/api/purchases/user/:email', async (req, res) => {
   try {

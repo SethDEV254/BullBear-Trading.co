@@ -418,6 +418,29 @@ router.post('/users/:userId/reset-password', adminAuth, async (req, res) => {
   }
 });
 
+// PUT /api/admin/product-prices — { prices: { [productId]: number } }
+router.put('/product-prices', adminAuth, async (req, res) => {
+  try {
+    const { prices } = req.body;
+    if (!prices || typeof prices !== 'object') {
+      return res.status(400).json({ status: 'error', message: 'prices object required' });
+    }
+    const clean = {};
+    for (const [id, price] of Object.entries(prices)) {
+      const n = parseFloat(price);
+      if (!Number.isFinite(n) || n < 0) {
+        return res.status(400).json({ status: 'error', message: `Invalid price for ${id}` });
+      }
+      clean[id] = n;
+    }
+    const db = getDb();
+    await db.collection('settings').doc('productPrices').set(clean, { merge: true });
+    res.json({ status: 'success', data: { prices: clean } });
+  } catch (e) {
+    res.status(500).json({ status: 'error', message: e.message });
+  }
+});
+
 // ── Grant / Revoke access ─────────────────────────────────────────────────────
 
 // POST /api/admin/users/:userId/grant-access

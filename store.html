@@ -1245,7 +1245,16 @@
       card.style.setProperty('--my', y);
     }
 
-    renderProducts();
+    (async function applyPriceOverrides() {
+      try {
+        const base = window.API_BASE || 'https://backend-tawny-nu-33.vercel.app/api';
+        const res = await fetch(base + '/products/prices');
+        const data = await res.json();
+        const prices = (data.data && data.data.prices) || {};
+        PRODUCTS.forEach(p => { if (prices[p.id] != null) p.price = prices[p.id]; });
+      } catch (e) { /* fall back to hardcoded prices */ }
+      renderProducts();
+    })();
     updateCartCount();
   </script>
   <script>

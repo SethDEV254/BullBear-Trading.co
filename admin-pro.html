@@ -1414,36 +1414,53 @@ function renderModulesTable() {
       <tr>
         <td>${idx + 1}</td>
         <td><strong>${m.name}</strong></td>
-        <td>${thumb}<button class="btn btn-xs" onclick="setModuleImage('${m.id}', '${escAttr(m.imageUrl || '')}')">${m.imageUrl ? 'Change' : '+ Set Image'}</button></td>
+        <td>${thumb}<button class="btn btn-xs" onclick="setModuleImage('${m.id}')">${m.imageUrl ? 'Change' : '+ Set Image'}</button></td>
         <td style="color:var(--muted)">${count}</td>
         <td><button class="btn btn-red btn-xs" onclick="deleteModule('${m.id}')">Delete</button></td>
       </tr>`;
   }).join('');
 }
 
-async function setModuleImage(id, current) {
-  const url = prompt('Background image URL for this module (https://...):', current || '');
-  if (url === null) return; /* cancelled */
-  if (url && !/^https?:\/\//i.test(url)) {
-    toast('Please enter a valid http(s) URL', 'red');
-    return;
-  }
-  try {
-    const res = await fetch(API + '/admin/modules/' + id, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
-      body: JSON.stringify({ imageUrl: url }),
-    });
-    const data = await res.json();
-    if (data.status === 'success') {
-      toast('Background image updated', 'green');
-      loadModules();
-    } else {
-      toast(data.message || 'Failed to update image', 'red');
+function setModuleImage(id) {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = 'image/jpeg,image/png,image/webp,image/gif';
+  input.onchange = async () => {
+    const file = input.files[0];
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) { toast('Image must be under 5MB', 'red'); return; }
+
+    const formData = new FormData();
+    formData.append('file', file);
+    toast('Uploading image…', 'green');
+    try {
+      const uploadRes = await fetch(API + '/admin/upload-image', {
+        method: 'POST',
+        headers: { Authorization: 'Bearer ' + token },
+        body: formData,
+      });
+      const uploadData = await uploadRes.json();
+      if (uploadData.status !== 'success') {
+        toast(uploadData.message || 'Upload failed', 'red');
+        return;
+      }
+      const res = await fetch(API + '/admin/modules/' + id, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
+        body: JSON.stringify({ imageUrl: uploadData.data.url }),
+      });
+      const data = await res.json();
+      if (data.status === 'success') {
+        toast('Background image updated', 'green');
+        loadModules();
+      } else {
+        toast(data.message || 'Failed to update image', 'red');
+      }
+    } catch (err) {
+      toast('Upload failed', 'red');
     }
-  } catch (err) {
-    toast('Request failed', 'red');
-  }
+  };
+  input.click();
 }
 
 async function addModule(e) {

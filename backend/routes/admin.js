@@ -2,8 +2,43 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const { getDb } = require('../lib/firebase');
+const crypto = require('crypto');
+const multer = require('multer');
+const { getDb, getBucket } = require('../lib/firebase');
 const { adminAuth } = require('../middleware/auth');
+
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 5 * 1024 * 1024 },
+  fileFilter: (req, file, cb) => {
+    if (!/^image\/(jpeg|png|webp|gif)$/.test(file.mimetype)) {
+      return cb(new Error('Only JPEG, PNG, WEBP, or GIF images are allowed'));
+    }
+    cb(null, true);
+  },
+});
+
+// POST /api/admin/upload-image
+router.post('/upload-image', adminAuth, (req, res) => {
+  upload.single('file')(req, res, async (err) => {
+    if (err) return res.status(400).json({ status: 'error', message: err.message });
+    if (!req.file) return res.status(400).json({ status: 'error', message: 'No file provided' });
+    try {
+      const bucket = getBucket();
+      const ext = (req.file.originalname.split('.').pop() || 'jpg').toLowerCase();
+      const filename = `module-backgrounds/${Date.now()}-${crypto.randomBytes(6).toString('hex')}.${ext}`;
+      const fileRef = bucket.file(filename);
+      await fileRef.save(req.file.buffer, {
+        metadata: { contentType: req.file.mimetype },
+        public: true,
+      });
+      await fileRef.makePublic();
+      res.json({ status: 'success', data: { url: `https://storage.googleapis.com/${bucket.name}/${filename}` } });
+    } catch (e) {
+      res.status(500).json({ status: 'error', message: e.message });
+    }
+  });
+});
 
 const generateToken = (email) =>
   jwt.sign({ id: email }, process.env.JWT_SECRET, { expiresIn: '7d' });

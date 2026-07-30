@@ -47,7 +47,7 @@ router.post('/', async (req, res) => {
       await sendAdminNotification(
         userEmail.split('@')[0],
         userEmail,
-        course.title,
+        purchaseData.courseName,
         amount,
         orderId
       ).catch(() => {});

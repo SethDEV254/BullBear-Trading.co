@@ -1,6 +1,8 @@
 const express = require('express');
 const cors = require('cors');
+const helmet = require('helmet');
 const compression = require('compression');
+const rateLimit = require('express-rate-limit');
 
 const authRoutes = require('../routes/auth');
 const courseRoutes = require('../routes/courses');
@@ -18,9 +20,22 @@ const axios = require('axios');
 
 const app = express();
 
+app.set('trust proxy', 1);
+app.use(helmet());
 app.use(compression());
+
+const ALLOWED_ORIGINS = [
+  'https://bullbearblockchain.com',
+  'https://www.bullbearblockchain.com',
+  'http://localhost:8843',
+  'http://localhost:3000',
+];
 const corsOptions = {
-  origin: function (origin, callback) { callback(null, true); },
+  origin: function (origin, callback) {
+    // Allow no-origin requests (curl, server-to-server, Postman) and known site origins
+    if (!origin || ALLOWED_ORIGINS.includes(origin)) return callback(null, true);
+    callback(new Error('Not allowed by CORS'));
+  },
   credentials: false,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
@@ -31,6 +46,27 @@ app.use(express.json({
   verify: (req, res, buf) => { req.rawBody = buf; },
 }));
 app.use(express.urlencoded({ extended: true }));
+
+const globalLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 300,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { status: 'error', message: 'Too many requests. Please try again later.' },
+});
+app.use('/api/', globalLimiter);
+
+const strictLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 6,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { status: 'error', message: 'Too many attempts. Please try again later.' },
+});
+app.use('/api/admin/login', strictLimiter);
+app.use('/api/auth/forgot-password', strictLimiter);
+app.use('/api/mpesa/stkpush', strictLimiter);
+app.use('/api/paywave/stkpush', strictLimiter);
 
 // Fast warmup — no DB
 app.get('/api/ping', (req, res) => res.json({ ok: true, ts: Date.now() }));

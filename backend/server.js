@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const helmet = require('helmet');
 const dotenv = require('dotenv');
 const compression = require('compression');
 const rateLimit = require('express-rate-limit');
@@ -23,17 +24,33 @@ const inboundRoutes = require('./routes/inbound');
 // Initialize Express app
 const app = express();
 
+app.set('trust proxy', 1);
+app.use(helmet());
+
 // Rate limiting
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000,
-    max: 200,
-    message: 'Too many requests from this IP, please try again later.'
+    max: 300,
+    message: { status: 'error', message: 'Too many requests. Please try again later.' },
+});
+const strictLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 6,
+    message: { status: 'error', message: 'Too many attempts. Please try again later.' },
 });
 
-// CORS — allow all origins (auth is JWT-based, not cookie-based)
+const ALLOWED_ORIGINS = [
+  'https://bullbearblockchain.com',
+  'https://www.bullbearblockchain.com',
+  'http://localhost:8843',
+  'http://localhost:3000',
+];
+
+// CORS — restricted to known site origins (auth is JWT-based, not cookie-based)
 app.use(cors({
     origin: function (origin, callback) {
-        callback(null, true);
+        if (!origin || ALLOWED_ORIGINS.includes(origin)) return callback(null, true);
+        callback(new Error('Not allowed by CORS'));
     },
     credentials: false,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -45,6 +62,10 @@ app.use(compression());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/api/', limiter);
+app.use('/api/admin/login', strictLimiter);
+app.use('/api/auth/forgot-password', strictLimiter);
+app.use('/api/mpesa/stkpush', strictLimiter);
+app.use('/api/paywave/stkpush', strictLimiter);
 
 // Routes
 app.use('/api/auth', authRoutes);

@@ -28,6 +28,30 @@ function verifyResendSignature(req) {
   });
 }
 
+const STATUS_MAP = { 'email.opened': 'opened', 'email.delivered': 'delivered', 'email.bounced': 'bounced' };
+
+async function updateCampaignRecipientStatus(emailId, eventType) {
+  if (!emailId) return;
+  try {
+    const db = getDb();
+    const snap = await db.collection('email_campaign_recipients')
+      .where('resendEmailId', '==', emailId).limit(1).get();
+    if (snap.empty) return; // not a tracked bulk-email send
+
+    const doc = snap.docs[0];
+    const newStatus = STATUS_MAP[eventType];
+    // Don't downgrade an 'opened' status back to 'delivered' if a delayed
+    // delivered event arrives after the open event.
+    if (doc.data().status === 'opened' && newStatus === 'delivered') return;
+
+    const update = { status: newStatus };
+    if (newStatus === 'opened' && !doc.data().openedAt) update.openedAt = new Date().toISOString();
+    await doc.ref.update(update);
+  } catch (err) {
+    console.error('Failed to update campaign recipient status:', err.message);
+  }
+}
+
 // POST /api/inbound/email — Resend inbound webhook or Google Apps Script
 router.post('/email', async (req, res) => {
   const appScriptSecret = process.env.INBOUND_SECRET || 'bb-inbound-2026';
@@ -42,10 +66,13 @@ router.post('/email', async (req, res) => {
   try {
     const body = req.body || {};
     // Resend sends every email lifecycle event (sent/delivered/bounced/opened/...) to this
-    // same webhook URL, enveloped as { type, data }. We only care about received replies.
+    // same webhook URL, enveloped as { type, data }. We only build a reply record for
+    // email.received; a couple of other event types update bulk-email read tracking.
     const isResendEnvelope = typeof body.type === 'string' && body.data;
     if (isResendEnvelope && body.type !== 'email.received') {
-      console.log('Ignoring non-reply Resend event:', body.type);
+      if (body.type === 'email.opened' || body.type === 'email.delivered' || body.type === 'email.bounced') {
+        await updateCampaignRecipientStatus(body.data.email_id, body.type);
+      }
       return res.json({ success: true, ignored: body.type });
     }
     const payload = isResendEnvelope ? body.data : body;

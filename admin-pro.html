@@ -668,7 +668,7 @@ textarea.inp{min-height:120px;resize:vertical}
           <div class="card-head"><h3>Email History</h3><button class="btn btn-ghost btn-sm" onclick="loadEmailHistory()">↺</button></div>
           <div class="table-wrap">
             <table>
-              <thead><tr><th>Date</th><th>Subject</th><th>Sent to</th><th>Actions</th></tr></thead>
+              <thead><tr><th>Date</th><th>Subject</th><th>Sent to</th><th>Read Status</th></tr></thead>
               <tbody id="emailHistoryTable"><tr><td colspan="4"><div class="empty"><div class="empty-icon">✉️</div><p>No emails sent yet</p></div></td></tr></tbody>
             </table>
           </div>
@@ -1832,13 +1832,33 @@ async function loadEmailHistory() {
           <td style="color:var(--muted)">${new Date(h.sentAt).toLocaleString()}</td>
           <td><strong>${h.subject}</strong></td>
           <td style="color:var(--muted)">${h.totalSent} sent · ${h.errors} failed</td>
-          <td style="color:var(--muted)">${h.recipients}</td>
+          <td>
+            <span id="read-status-${h.id}" style="color:var(--muted);font-size:.8rem;">—</span>
+            <button class="btn btn-ghost btn-xs" onclick="loadCampaignReadStatus('${h.id}')">Check</button>
+          </td>
         </tr>`).join('');
     } else {
       tb.innerHTML = '<tr><td colspan="4"><div class="empty"><div class="empty-icon">✉️</div><p>No campaigns yet</p></div></td></tr>';
     }
   } catch {
     tb.innerHTML = '<tr><td colspan="4"><div class="empty"><div class="empty-icon">✉️</div><p>No campaigns yet</p></div></td></tr>';
+  }
+}
+
+async function loadCampaignReadStatus(campaignId) {
+  const el = document.getElementById('read-status-' + campaignId);
+  el.textContent = 'Loading…';
+  try {
+    const token = JSON.parse(localStorage.getItem('bbAdmin') || 'null')?.token;
+    const res = await fetch(`${API}/admin/email-campaigns/${campaignId}/recipients`, { headers: { Authorization: `Bearer ${token}` } });
+    const data = await res.json();
+    if (data.status !== 'success') { el.textContent = 'Failed to load'; return; }
+    const { total, opened, notOpened } = data.data;
+    el.innerHTML = total
+      ? `<span style="color:#3DFF6E;">✓ ${opened} read</span> · <span style="color:var(--muted)">${notOpened} unread</span>`
+      : '<span style="color:var(--muted)">No tracking data</span>';
+  } catch {
+    el.textContent = 'Failed to load';
   }
 }
 

@@ -607,12 +607,25 @@ router.post('/bulk-email', adminAuth, async (req, res) => {
       return `Hello ${firstName},\n\n${plainBody}\n\nWarm regards,\nBullBear Trading Team\n\n© ${year} BullBear Trading · https://bullbearblockchain.com\nUnsubscribe: ${unsubUrl}`;
     };
 
+    // Create the campaign doc up front so recipient tracking records can
+    // reference its id, and so read status is visible mid-send if needed.
+    const campaignRef = await db.collection('email_campaigns').add({
+      subject,
+      message,
+      recipients,
+      totalSent: 0,
+      errors: 0,
+      sentBy: req.user.email,
+      sentAt: new Date().toISOString(),
+    });
+
     let sent = 0;
     const errors = [];
+    const recipientBatch = db.batch();
     for (const recipient of emailList) {
       try {
         const unsubUrl = `https://backend-tawny-nu-33.vercel.app/api/unsubscribe?email=${encodeURIComponent(recipient.email)}&token=${makeUnsubToken(recipient.email)}`;
-        await sendEmail({
+        const result = await sendEmail({
           to: recipient.email,
           subject,
           html: buildHtml(recipient.name, recipient.email, unsubUrl),
@@ -623,6 +636,17 @@ router.post('/bulk-email', adminAuth, async (req, res) => {
           },
         });
         sent++;
+        if (result && result.id) {
+          const recRef = db.collection('email_campaign_recipients').doc();
+          recipientBatch.set(recRef, {
+            campaignId: campaignRef.id,
+            resendEmailId: result.id,
+            email: recipient.email,
+            status: 'sent',
+            sentAt: new Date().toISOString(),
+            openedAt: null,
+          });
+        }
         // Small delay between sends so this reads as normal transactional
         // traffic to receiving mail servers, not a burst/blast pattern.
         await new Promise((r) => setTimeout(r, 200));
@@ -630,17 +654,9 @@ router.post('/bulk-email', adminAuth, async (req, res) => {
         errors.push(recipient.email);
       }
     }
+    await recipientBatch.commit();
 
-    // Save campaign to Firestore
-    await db.collection('email_campaigns').add({
-      subject,
-      message,
-      recipients,
-      totalSent: sent,
-      errors: errors.length,
-      sentBy: req.user.email,
-      sentAt: new Date().toISOString(),
-    });
+    await campaignRef.update({ totalSent: sent, errors: errors.length });
 
     res.json({ status: 'success', message: `Email sent to ${sent} recipient(s)`, sent, errors: errors.length });
   } catch (error) {
@@ -655,6 +671,23 @@ router.get('/email-campaigns', adminAuth, async (req, res) => {
     const snap = await db.collection('email_campaigns').orderBy('sentAt', 'desc').limit(20).get();
     const campaigns = snap.docs.map(d => ({ id: d.id, ...d.data() }));
     res.json({ status: 'success', data: campaigns });
+  } catch (e) {
+    res.status(500).json({ status: 'error', message: e.message });
+  }
+});
+
+// GET /api/admin/email-campaigns/:id/recipients — read/unread breakdown
+router.get('/email-campaigns/:id/recipients', adminAuth, async (req, res) => {
+  try {
+    const db = getDb();
+    const snap = await db.collection('email_campaign_recipients')
+      .where('campaignId', '==', req.params.id).get();
+    const recipients = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    const opened = recipients.filter(r => r.status === 'opened').length;
+    res.json({
+      status: 'success',
+      data: { recipients, total: recipients.length, opened, notOpened: recipients.length - opened },
+    });
   } catch (e) {
     res.status(500).json({ status: 'error', message: e.message });
   }

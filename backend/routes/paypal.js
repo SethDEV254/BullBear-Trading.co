@@ -59,7 +59,7 @@ router.post('/create-order', async (req, res) => {
 router.post('/capture-order/:orderId', async (req, res) => {
   try {
     const { orderId } = req.params;
-    const { userEmail, courseId, amount } = req.body;
+    const { userEmail, courseId, amount, shippingName, shippingPhone, shippingAddress, shippingCity } = req.body;
 
     const token = await getAccessToken();
     const capture = await axios.post(
@@ -91,6 +91,7 @@ router.post('/capture-order/:orderId', async (req, res) => {
         status: 'approved',
         createdAt: new Date().toISOString(),
         verifiedAt: new Date().toISOString(),
+        ...(shippingName ? { shippingName, shippingPhone, shippingAddress, shippingCity } : {}),
       };
       await db.collection('purchases').add(purchaseData);
       sendPurchaseFulfillment(purchaseData);

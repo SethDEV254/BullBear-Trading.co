@@ -19,13 +19,27 @@ function formatDate(iso) {
  */
 async function sendPurchaseFulfillment(purchase) {
   try {
-    const { userEmail, courseId, courseName, amount, orderId, paymentMethod, verifiedAt } = purchase;
+    const {
+      userEmail, courseId, courseName, amount, orderId, paymentMethod, verifiedAt,
+      shippingName, shippingPhone, shippingAddress, shippingCity,
+    } = purchase;
     if (!userEmail) return;
 
     const digital = DIGITAL_PRODUCTS[courseId];
     const downloadSection = (digital && digital.fileUrl)
       ? `<div style="text-align:center;margin:28px 0;">
            <a href="${digital.fileUrl}" style="display:inline-block;padding:14px 36px;background:linear-gradient(135deg,#3DFF6E,#1FAE4B);color:#04140a;text-decoration:none;border-radius:10px;font-weight:800;font-size:1rem;letter-spacing:.3px;">Download Now</a>
+         </div>`
+      : '';
+
+    const shippingSection = shippingAddress
+      ? `<div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px 24px;margin-top:16px;">
+           <p style="color:#7CFFA0;font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;margin:0 0 12px;">Delivery Details</p>
+           <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.06);"><span style="color:#64748b;font-size:.85rem;">Name</span><span style="color:#e2e8f0;font-size:.85rem;font-weight:700;">${shippingName || ''}</span></div>
+           <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.06);"><span style="color:#64748b;font-size:.85rem;">Phone</span><span style="color:#e2e8f0;font-size:.85rem;font-weight:700;">${shippingPhone || ''}</span></div>
+           <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.06);"><span style="color:#64748b;font-size:.85rem;">Address</span><span style="color:#e2e8f0;font-size:.85rem;font-weight:700;">${shippingAddress || ''}</span></div>
+           <div style="display:flex;justify-content:space-between;padding:6px 0;"><span style="color:#64748b;font-size:.85rem;">City</span><span style="color:#e2e8f0;font-size:.85rem;font-weight:700;">${shippingCity || ''}</span></div>
+           <p style="color:#64748b;font-size:.78rem;margin:12px 0 0;">We'll ship your order to this address shortly.</p>
          </div>`
       : '';
 
@@ -47,6 +61,7 @@ async function sendPurchaseFulfillment(purchase) {
             <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.06);"><span style="color:#64748b;font-size:.85rem;">Payment Method</span><span style="color:#e2e8f0;font-size:.85rem;font-weight:700;text-transform:capitalize;">${paymentMethod || 'N/A'}</span></div>
             <div style="display:flex;justify-content:space-between;padding:6px 0;"><span style="color:#64748b;font-size:.85rem;">Date</span><span style="color:#e2e8f0;font-size:.85rem;font-weight:700;">${formatDate(verifiedAt)}</span></div>
           </div>
+          ${shippingSection}
           <p style="color:#64748b;font-size:.8rem;line-height:1.6;margin:24px 0 0;">Keep this email as your receipt. Questions? Just reply to this email or reach us at info@bullbearblockchain.com.</p>
         </div>
         <div style="padding:20px 32px;border-top:1px solid rgba(255,255,255,.06);text-align:center;">

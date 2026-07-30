@@ -226,6 +226,16 @@
             <input id="bb-email" class="bb-inp" type="email" placeholder="your@email.com" />
           </div>
 
+          ${config.requiresShipping ? `
+          <div class="bb-shipping-wrap" style="margin-bottom:16px;">
+            <p style="font-size:.7rem;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:1.2px;margin:0 0 10px;">Delivery Details</p>
+            <input id="bb-ship-name" class="bb-inp plain" type="text" placeholder="Full name" style="margin-bottom:10px;" />
+            <input id="bb-ship-phone" class="bb-inp plain" type="tel" placeholder="Phone number" style="margin-bottom:10px;" />
+            <input id="bb-ship-address" class="bb-inp plain" type="text" placeholder="Delivery point / address" style="margin-bottom:10px;" />
+            <input id="bb-ship-city" class="bb-inp plain" type="text" placeholder="City / Town" />
+          </div>
+          ` : ''}
+
           <!-- Method tabs -->
           <div class="bb-tabs">
             <button class="bb-tb active" onclick="switchBBTab('paypal')">
@@ -368,10 +378,12 @@
         onApprove: async (data) => {
           const email = document.getElementById('bb-email')?.value?.trim();
           if (!email) { alert('Please enter your email address.'); return; }
+          const shipping = getBBShipping();
+          if (shipping === false) return;
           const res = await fetch(base + '/paypal/capture-order/' + data.orderID, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ userEmail: email, courseId: _config.courseId, amount: _config.amount }),
+            body: JSON.stringify({ userEmail: email, courseId: _config.courseId, amount: _config.amount, ...(shipping || {}) }),
           });
           const result = await res.json();
           if (result.status === 'success') {
@@ -389,6 +401,21 @@
       }).render('#bb-paypal-container');
     });
   };
+
+  /* Returns shipping details object, or false + alert if required fields are missing.
+     Returns null when shipping isn't required for this purchase. */
+  function getBBShipping() {
+    if (!_config.requiresShipping) return null;
+    const name = document.getElementById('bb-ship-name')?.value?.trim();
+    const phone = document.getElementById('bb-ship-phone')?.value?.trim();
+    const address = document.getElementById('bb-ship-address')?.value?.trim();
+    const city = document.getElementById('bb-ship-city')?.value?.trim();
+    if (!name || !phone || !address || !city) {
+      alert('Please fill in all delivery details (name, phone, address, city) before paying.');
+      return false;
+    }
+    return { shippingName: name, shippingPhone: phone, shippingAddress: address, shippingCity: city };
+  }
 
   window.closeBBModal = function () {
     document.getElementById('bb-overlay')?.remove();
@@ -457,6 +484,8 @@
     const email = document.getElementById('bb-email')?.value?.trim();
     if (!email) { alert('Enter your email address first.'); return; }
     if (!phone || phone.length < 9) { alert('Enter a valid Safaricom number.'); return; }
+    const shipping = getBBShipping();
+    if (shipping === false) return;
 
     const btn = document.getElementById('bb-mpesa-btn');
     btn.innerHTML = '<span class="bb-spinner"></span> Sending prompt…';
@@ -488,6 +517,7 @@
           orderId: checkoutId,
           transactionId: checkoutId,
           status: 'pending',
+          ...(shipping || {}),
         }),
       });
 
@@ -526,6 +556,8 @@
     const txHash = document.getElementById('bb-tx-hash')?.value?.trim();
     if (!email) { alert('Enter your email address first.'); return; }
     if (!txHash) { alert('Paste your transaction hash after sending payment.'); return; }
+    const shipping = getBBShipping();
+    if (shipping === false) return;
 
     const btn = document.querySelector('#bb-pane-crypto .bb-btn');
     btn.innerHTML = '<span class="bb-spinner"></span> Submitting…';
@@ -543,6 +575,7 @@
           paymentMethod: 'crypto_' + _activeCoin,
           orderId: txHash,
           transactionId: txHash,
+          ...(shipping || {}),
         }),
       });
       const data = await res.json();

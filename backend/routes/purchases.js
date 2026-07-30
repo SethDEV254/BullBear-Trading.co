@@ -6,36 +6,42 @@ const { sendPurchaseConfirmation, sendAdminNotification } = require('../utils/em
 // POST /api/purchases
 router.post('/', async (req, res) => {
   try {
-    const { userEmail, courseId, amount, paymentMethod, orderId, transactionId } = req.body;
+    const {
+      userEmail, courseId, amount, paymentMethod, orderId, transactionId, status,
+      shippingName, shippingPhone, shippingAddress, shippingCity,
+    } = req.body;
     if (!userEmail || !courseId || !orderId) {
       return res.status(400).json({ status: 'error', message: 'userEmail, courseId, and orderId are required' });
     }
 
     const db = getDb();
 
+    // courseId may reference a store product (not every product has a
+    // 'courses' doc) — use the title if one exists, otherwise fall back
+    // to the id itself rather than 404ing and silently dropping the purchase.
     const courseSnap = await db.collection('courses').doc(courseId).get();
-    if (!courseSnap.exists) {
-      return res.status(404).json({ status: 'error', message: 'Course not found' });
-    }
-    const course = courseSnap.data();
+    const course = courseSnap.exists ? courseSnap.data() : null;
 
     const purchaseData = {
       userId: userEmail.toLowerCase(),
       userEmail: userEmail.toLowerCase(),
       courseId,
-      courseName: course.title || courseId,
+      courseName: (course && course.title) || courseId,
       amount: parseFloat(amount) || 0,
       paymentMethod: paymentMethod || 'manual',
       orderId,
       transactionId: transactionId || '',
-      status: 'pending',
+      status: status || 'pending',
       createdAt: new Date().toISOString(),
       verifiedAt: null,
+      ...(shippingName ? { shippingName, shippingPhone, shippingAddress, shippingCity } : {}),
     };
 
     const docRef = await db.collection('purchases').add(purchaseData);
 
-    await courseSnap.ref.update({ totalPurchases: (course.totalPurchases || 0) + 1 });
+    if (course) {
+      await courseSnap.ref.update({ totalPurchases: (course.totalPurchases || 0) + 1 });
+    }
 
     if (process.env.EMAIL_USER) {
       await sendAdminNotification(

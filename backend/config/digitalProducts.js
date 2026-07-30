@@ -6,7 +6,7 @@
 module.exports = {
   'affiliate-guide': {
     name: '7 Proven Steps to $1M Affiliate Marketing',
-    fileUrl: null,
+    fileUrl: 'https://bullbearblockchain.com/affiliate-marketing-guide.pdf',
   },
   'crypto-spreadsheet': {
     name: 'Crypto Profit Spreadsheet',

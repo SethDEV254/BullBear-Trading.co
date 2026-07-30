@@ -1147,6 +1147,10 @@
       closeCart();
       const total = getTotal();
       const itemLines = cart.map(i => `${i.name}${i.qty > 1 ? ' ×' + i.qty : ''}`);
+      const cartHasHardware = cart.some(i => {
+        const p = PRODUCTS.find(x => x.id === i.id);
+        return p && p.category === 'hardware';
+      });
       openBBPaymentModal({
         icon: '🛒',
         tag: 'Store Order',
@@ -1156,6 +1160,7 @@
         mpesaAmount: Math.round(total * 130),
         courseId: 'store-order',
         features: itemLines,
+        requiresShipping: cartHasHardware,
         onSuccess: () => {
           cart = [];
           saveCart();
@@ -1177,6 +1182,7 @@
         mpesaAmount: Math.round(p.price * 130),
         courseId: p.id,
         features: p.features,
+        requiresShipping: p.category === 'hardware',
         onSuccess: () => { showToast(p.name + ' — payment received!'); },
       });
     }

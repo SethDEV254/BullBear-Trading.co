@@ -17,6 +17,7 @@ const adminRoutes = require('./routes/admin');
 const paypalRoutes = require('./routes/paypal');
 const checklistRoutes = require('./routes/checklist');
 const mpesaRoutes = require('./routes/mpesa');
+const paywaveRoutes = require('./routes/paywave');
 const inboundRoutes = require('./routes/inbound');
 
 // Initialize Express app
@@ -54,6 +55,7 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/paypal', paypalRoutes);
 app.use('/api/checklist', checklistRoutes);
 app.use('/api/mpesa', mpesaRoutes);
+app.use('/api/paywave', paywaveRoutes);
 app.use('/api/inbound', inboundRoutes);
 
 // Fast ping — no DB, used by frontend to warm up function

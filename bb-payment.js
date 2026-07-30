@@ -464,20 +464,18 @@
 
     const base = window.API_BASE || 'https://backend-tawny-nu-33.vercel.app/api';
     try {
-      const res = await fetch(base + '/mpesa/stkpush', {
+      const res = await fetch(base + '/paywave/stkpush', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           phoneNumber: phone,
           amount: _config.mpesaAmount,
-          accountReference: email,
-          transactionDesc: 'BullBear - ' + _config.name,
         }),
       });
       const data = await res.json();
       if (!data.success) throw new Error(data.message || 'Failed to send prompt');
 
-      const checkoutId = data.data?.CheckoutRequestID || ('MPESA-' + Date.now());
+      const checkoutId = data.data?.orderId || ('MPESA-' + Date.now());
 
       await fetch(base + '/purchases', {
         method: 'POST',
@@ -500,7 +498,7 @@
       const iv = setInterval(async () => {
         polls++;
         try {
-          const sr = await fetch(`${base}/mpesa/status/${encodeURIComponent(checkoutId)}`);
+          const sr = await fetch(`${base}/paywave/status/${encodeURIComponent(checkoutId)}`);
           const sd = await sr.json();
           if (sd.status === 'approved') {
             clearInterval(iv);

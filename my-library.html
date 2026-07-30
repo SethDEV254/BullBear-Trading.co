@@ -544,10 +544,23 @@
     const ACCESS_LABEL = { free:'Free', indicators:'Indicators', 'crypto-course':'Crypto Course', 'all-access':'All-Access', paid:'Premium' };
     const ACCESS_PRICE = { indicators:'$30/mo', 'crypto-course':'$500', 'all-access':'$99/mo', paid:'$99/mo' };
 
+    // Purchases/admin-grants store the product id (e.g. 'trading-indicators',
+    // 'crypto-trading-course'); library content is tagged with the shorter
+    // access-tier name. Map one to the other so ownership actually unlocks.
+    const PRODUCT_TO_ACCESS_LEVEL = {
+      'trading-indicators': 'indicators',
+      'crypto-trading-course': 'crypto-course',
+    };
+    const ACCESS_LEVEL_TO_PAGE = {
+      indicators: 'trading-indicators.html',
+      'crypto-course': 'crypto-trading-course.html',
+    };
+
     function libHasAccess(lvl) {
       if (lvl === 'free') return true;
-      if (libUserAccess.includes('all-access')) return true;
-      return libUserAccess.includes(lvl);
+      const owned = libUserAccess.map(id => PRODUCT_TO_ACCESS_LEVEL[id] || id);
+      if (owned.includes('all-access')) return true;
+      return owned.includes(lvl);
     }
 
     function getYoutubeEmbedUrl(url) {
@@ -661,14 +674,17 @@
     }
 
     function libUnlock(accessLevel) {
-      window.location.href = 'index.html#pricing';
+      window.location.href = ACCESS_LEVEL_TO_PAGE[accessLevel] || 'index.html#pricing';
     }
 
     async function loadAccessThenVideos(user) {
       try {
         const res = await fetch(API_BASE + '/purchases/user/' + encodeURIComponent(user.email));
         const data = await res.json();
-        libUserAccess = ((data.data && data.data.purchases) || []).map(p => p.courseId);
+        const purchases = (data.data && data.data.purchases) || [];
+        libUserAccess = purchases
+          .filter(p => p.status === 'approved' || p.status === 'completed')
+          .map(p => p.courseId);
       } catch (_) {}
       try {
         const res = await fetch(API_BASE + '/content');

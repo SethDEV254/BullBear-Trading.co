@@ -59,6 +59,9 @@ router.post('/stkpush', async (req, res) => {
   }
 });
 
+/* GET /api/paywave/webhook — respond OK to any dashboard verification ping */
+router.get('/webhook', (req, res) => res.json({ status: 'ok' }));
+
 /* POST /api/paywave/webhook — Paywave Express calls this on completion/failure */
 router.post('/webhook', async (req, res) => {
   res.json({ status: 'success' });

@@ -47,7 +47,8 @@
 @keyframes bbFadeIn{from{opacity:0}to{opacity:1}}
 
 /* Modal shell */
-.bb-modal{background:linear-gradient(160deg,#0d1117 0%,#111827 100%);border:1px solid rgba(255,255,255,.07);border-radius:24px;width:100%;max-width:860px;display:grid;grid-template-columns:300px 1fr;overflow:hidden;box-shadow:0 60px 140px rgba(0,0,0,.95),0 0 0 1px rgba(255,255,255,.04),inset 0 1px 0 rgba(255,255,255,.05);position:relative;animation:bbSlideUp .24s cubic-bezier(.4,0,.2,1)}
+.bb-modal{background:linear-gradient(160deg,#0d1117 0%,#111827 100%);border:1px solid rgba(61,255,110,.18);border-radius:22px;width:100%;max-width:860px;display:grid;grid-template-columns:300px 1fr;overflow:hidden;box-shadow:0 60px 140px rgba(0,0,0,.95),0 0 0 1px rgba(255,255,255,.04),inset 0 1px 0 rgba(255,255,255,.05);position:relative;animation:bbSlideUp .24s cubic-bezier(.4,0,.2,1)}
+.bb-modal::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(61,255,110,.55),transparent);z-index:1}
 @keyframes bbSlideUp{from{transform:translateY(24px);opacity:0}to{transform:translateY(0);opacity:1}}
 
 /* Close */
@@ -55,17 +56,17 @@
 .bb-close:hover{background:rgba(255,255,255,.14);color:#fff;transform:rotate(90deg)}
 
 /* Left panel */
-.bb-left{background:linear-gradient(165deg,rgba(16,185,129,.18) 0%,rgba(0,0,0,0) 60%);border-right:1px solid rgba(255,255,255,.06);padding:36px 28px;display:flex;flex-direction:column;position:relative;overflow:hidden}
-.bb-left::before{content:'';position:absolute;top:-60px;left:-60px;width:200px;height:200px;background:radial-gradient(circle,rgba(16,185,129,.25) 0%,transparent 70%);pointer-events:none}
-.bb-icon-wrap{width:56px;height:56px;background:linear-gradient(135deg,#10b981,#059669);border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;margin-bottom:20px;box-shadow:0 8px 30px rgba(16,185,129,.45),inset 0 1px 0 rgba(255,255,255,.2)}
-.bb-tag{display:inline-block;background:rgba(16,185,129,.2);border:1px solid rgba(16,185,129,.4);color:#6ee7b7;font-size:.67rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:12px}
+.bb-left{background:linear-gradient(165deg,rgba(61,255,110,.18) 0%,rgba(0,0,0,0) 60%);border-right:1px solid rgba(255,255,255,.06);padding:36px 28px;display:flex;flex-direction:column;position:relative;overflow:hidden}
+.bb-left::before{content:'';position:absolute;top:-60px;left:-60px;width:200px;height:200px;background:radial-gradient(circle,rgba(61,255,110,.25) 0%,transparent 70%);pointer-events:none}
+.bb-icon-wrap{width:56px;height:56px;background:linear-gradient(135deg,#3DFF6E,#1FAE4B);border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;margin-bottom:20px;box-shadow:0 8px 30px rgba(61,255,110,.45),inset 0 1px 0 rgba(255,255,255,.2)}
+.bb-tag{display:inline-block;background:rgba(61,255,110,.2);border:1px solid rgba(61,255,110,.4);color:#7CFFA0;font-size:.67rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:12px}
 .bb-pname{font-size:1.2rem;font-weight:800;color:#fff;margin:0 0 4px;line-height:1.3;letter-spacing:-.2px}
 .bb-price-row{margin:16px 0 22px;display:flex;align-items:baseline;gap:4px}
 .bb-price-main{font-size:3rem;font-weight:900;color:#fff;line-height:1;letter-spacing:-2px;background:linear-gradient(135deg,#fff 40%,rgba(255,255,255,.7));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .bb-price-per{font-size:.85rem;color:rgba(255,255,255,.35);font-weight:500}
 .bb-feats{list-style:none;padding:0;margin:0 0 24px;flex:1;border-top:1px solid rgba(255,255,255,.06);padding-top:18px}
 .bb-feats li{padding:8px 0;color:rgba(255,255,255,.65);font-size:.845rem;display:flex;align-items:flex-start;gap:10px;border-bottom:1px solid rgba(255,255,255,.04);line-height:1.4}
-.bb-feats li .ck{width:18px;height:18px;background:rgba(16,185,129,.18);border:1px solid rgba(16,185,129,.3);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:#10b981;font-weight:800;font-size:.66rem;flex-shrink:0;margin-top:1px}
+.bb-feats li .ck{width:18px;height:18px;background:rgba(61,255,110,.18);border:1px solid rgba(61,255,110,.3);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:#3DFF6E;font-weight:800;font-size:.66rem;flex-shrink:0;margin-top:1px}
 .bb-trust{display:flex;flex-direction:column;gap:8px;margin-top:auto;padding-top:20px;border-top:1px solid rgba(255,255,255,.05)}
 .bb-trust-row{display:flex;align-items:center;gap:8px;color:rgba(255,255,255,.3);font-size:.75rem}
 .bb-trust-row svg{flex-shrink:0;opacity:.5}
@@ -78,14 +79,14 @@
 .bb-email-wrap{position:relative;margin-bottom:20px}
 .bb-email-wrap svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);opacity:.35;pointer-events:none}
 .bb-inp{width:100%;padding:13px 15px 13px 42px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:12px;color:#fff;font-size:.9rem;outline:none;box-sizing:border-box;transition:border-color .2s,background .2s;font-family:inherit}
-.bb-inp:focus{border-color:rgba(16,185,129,.6);background:rgba(16,185,129,.05)}
+.bb-inp:focus{border-color:rgba(61,255,110,.6);background:rgba(61,255,110,.05)}
 .bb-inp::placeholder{color:rgba(255,255,255,.25)}
 .bb-inp.plain{padding-left:15px}
 
 /* Method tabs */
 .bb-tabs{display:flex;gap:0;padding:4px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:14px;margin-bottom:24px}
 .bb-tb{flex:1;padding:10px 8px;border:none;border-radius:11px;background:transparent;color:rgba(255,255,255,.38);font-weight:600;font-size:.8rem;cursor:pointer;transition:all .22s;display:flex;align-items:center;justify-content:center;gap:6px;font-family:inherit;letter-spacing:.1px}
-.bb-tb.active{background:rgba(16,185,129,.75);color:#fff;box-shadow:0 4px 18px rgba(16,185,129,.45),inset 0 1px 0 rgba(255,255,255,.15)}
+.bb-tb.active{background:rgba(61,255,110,.75);color:#fff;box-shadow:0 4px 18px rgba(61,255,110,.45),inset 0 1px 0 rgba(255,255,255,.15)}
 .bb-tb:not(.active):hover{color:rgba(255,255,255,.7);background:rgba(255,255,255,.05)}
 .bb-pane{display:none}.bb-pane.active{display:block}
 
@@ -93,19 +94,19 @@
 .bb-paypal-note{font-size:.77rem;color:rgba(255,255,255,.28);text-align:center;margin-top:12px;line-height:1.5}
 
 /* M-Pesa pane */
-.bb-mpesa-amount{background:linear-gradient(135deg,rgba(16,185,129,.12),rgba(5,150,105,.06));border:1px solid rgba(16,185,129,.2);border-radius:14px;padding:20px;text-align:center;margin-bottom:16px}
-.bb-mpesa-kes{font-size:2.4rem;font-weight:900;color:#10b981;letter-spacing:-1px;line-height:1}
+.bb-mpesa-amount{background:linear-gradient(135deg,rgba(61,255,110,.12),rgba(5,150,105,.06));border:1px solid rgba(61,255,110,.2);border-radius:14px;padding:20px;text-align:center;margin-bottom:16px}
+.bb-mpesa-kes{font-size:2.4rem;font-weight:900;color:#3DFF6E;letter-spacing:-1px;line-height:1}
 .bb-mpesa-usd{font-size:.8rem;color:rgba(255,255,255,.3);margin-top:4px}
 .bb-mpesa-steps{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:14px 16px;margin-bottom:16px}
 .bb-mpesa-step{display:flex;align-items:center;gap:10px;padding:6px 0;color:rgba(255,255,255,.5);font-size:.8rem}
 .bb-mpesa-step:not(:last-child){border-bottom:1px solid rgba(255,255,255,.04)}
-.bb-step-num{width:22px;height:22px;border-radius:50%;background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.3);color:#10b981;font-size:.7rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.bb-step-num{width:22px;height:22px;border-radius:50%;background:rgba(61,255,110,.15);border:1px solid rgba(61,255,110,.3);color:#3DFF6E;font-size:.7rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .bb-btn-green-wrap{position:relative;margin-bottom:8px}
 .bb-btn{width:100%;padding:14px;border:none;border-radius:12px;font-size:.92rem;font-weight:700;cursor:pointer;transition:all .25s;font-family:inherit;letter-spacing:.2px}
-.bb-btn-purple{background:linear-gradient(135deg,#10b981,#059669);color:#fff;box-shadow:0 4px 20px rgba(16,185,129,.35)}
-.bb-btn-purple:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(16,185,129,.5)}
-.bb-btn-green{background:linear-gradient(135deg,#10b981,#059669);color:#fff;box-shadow:0 4px 20px rgba(16,185,129,.3)}
-.bb-btn-green:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(16,185,129,.45)}
+.bb-btn-purple{background:linear-gradient(135deg,#3DFF6E,#1FAE4B);color:#fff;box-shadow:0 4px 20px rgba(61,255,110,.35)}
+.bb-btn-purple:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(61,255,110,.5)}
+.bb-btn-green{background:linear-gradient(135deg,#3DFF6E,#1FAE4B);color:#fff;box-shadow:0 4px 20px rgba(61,255,110,.3)}
+.bb-btn-green:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(61,255,110,.45)}
 .bb-btn:disabled{opacity:.5;cursor:not-allowed;transform:none !important}
 
 /* Crypto pane */
@@ -134,9 +135,9 @@
 .bb-net-pill{display:inline-flex;align-items:center;gap:6px;font-size:.7rem;font-weight:700;padding:5px 12px;border-radius:20px;margin-bottom:12px;letter-spacing:.5px;border:1px solid;transition:all .2s}
 .bb-addr-lbl{font-size:.68rem;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:6px}
 .bb-addr-box{background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:10px 12px;font-family:'Courier New',monospace;font-size:.7rem;color:rgba(255,255,255,.65);word-break:break-all;line-height:1.65;margin-bottom:10px;position:relative}
-.bb-copy-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;background:rgba(16,185,129,.14);border:1px solid rgba(16,185,129,.3);border-radius:9px;color:#6ee7b7;font-size:.76rem;font-weight:600;cursor:pointer;transition:all .2s;font-family:inherit}
-.bb-copy-btn:hover{background:rgba(16,185,129,.28);transform:translateY(-1px)}
-.bb-copy-btn.copied{background:rgba(16,185,129,.14);border-color:rgba(16,185,129,.3);color:#6ee7b7}
+.bb-copy-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;background:rgba(61,255,110,.14);border:1px solid rgba(61,255,110,.3);border-radius:9px;color:#7CFFA0;font-size:.76rem;font-weight:600;cursor:pointer;transition:all .2s;font-family:inherit}
+.bb-copy-btn:hover{background:rgba(61,255,110,.28);transform:translateY(-1px)}
+.bb-copy-btn.copied{background:rgba(61,255,110,.14);border-color:rgba(61,255,110,.3);color:#7CFFA0}
 
 /* Warning */
 .bb-warn{display:flex;gap:10px;align-items:flex-start;background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.18);border-radius:10px;padding:12px 14px;margin-bottom:14px;font-size:.77rem;color:rgba(245,158,11,.85);line-height:1.55}
@@ -202,7 +203,7 @@
           <ul class="bb-feats">${feats}</ul>
           <div class="bb-trust">
             <div class="bb-trust-row">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3DFF6E" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
               256-bit SSL encryption
             </div>
             <div class="bb-trust-row">
@@ -561,7 +562,7 @@
   };
 
   window.showBBToast = function (msg, color) {
-    const cols = { green: 'linear-gradient(135deg,#059669,#10b981)', purple: 'linear-gradient(135deg,#10b981,#059669)', blue: 'linear-gradient(135deg,#2563eb,#3b82f6)' };
+    const cols = { green: 'linear-gradient(135deg,#1FAE4B,#3DFF6E)', purple: 'linear-gradient(135deg,#3DFF6E,#1FAE4B)', blue: 'linear-gradient(135deg,#2563eb,#3b82f6)' };
     const t = document.createElement('div');
     t.style.cssText = `position:fixed;top:20px;right:20px;background:${cols[color] || cols.green};color:#fff;padding:14px 20px;border-radius:14px;font-weight:700;font-size:.875rem;z-index:99999;box-shadow:0 12px 36px rgba(0,0,0,.45);max-width:340px;line-height:1.5;animation:bbFadeIn .2s ease;border:1px solid rgba(255,255,255,.15);`;
     t.textContent = msg;

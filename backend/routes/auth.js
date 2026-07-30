@@ -132,7 +132,13 @@ router.post('/forgot-password', async (req, res) => {
 
     const user = snap.data();
     const resetUrl = `${process.env.FRONTEND_URL || 'https://bullbearblockchain.com'}/index.html?resetToken=${resetToken}&email=${encodeURIComponent(user.email)}`;
-    await sendPasswordResetEmail(user.email, user.firstName, resetUrl);
+    const emailResult = await sendPasswordResetEmail(user.email, user.firstName, resetUrl);
+    if (!emailResult || emailResult.success === false) {
+      // Don't leak the failure to the client (would defeat the anti-enumeration
+      // response above) — but make it loud in logs since this means the user
+      // never actually got their reset link.
+      console.error('PASSWORD RESET EMAIL FAILED TO SEND for', user.email, emailResult && emailResult.error);
+    }
 
     res.json({ status: 'success', message: genericMessage });
   } catch (error) {

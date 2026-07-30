@@ -1,5 +1,6 @@
 const express = require('express');
 const crypto = require('crypto');
+const axios = require('axios');
 const router = express.Router();
 const { getDb } = require('../lib/firebase');
 
@@ -48,10 +49,28 @@ router.post('/email', async (req, res) => {
       return res.json({ success: true, ignored: body.type });
     }
     const payload = isResendEnvelope ? body.data : body;
-    const { from, to, subject, text, html, inReplyTo } = payload;
+    const { from, to, subject, inReplyTo } = payload;
     const messageId = payload.messageId || payload.message_id;
 
     if (!from) return res.status(400).json({ success: false, message: 'No sender' });
+
+    // Resend's webhook is metadata-only (no body/headers/attachments) by
+    // design — the actual text/html must be fetched separately.
+    let text = payload.text || '';
+    let html = payload.html || '';
+    const emailId = payload.email_id;
+    if (isResendEnvelope && emailId && process.env.RESEND_API_KEY) {
+      try {
+        const full = await axios.get(`https://api.resend.com/emails/receiving/${emailId}`, {
+          headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}` },
+          timeout: 10000,
+        });
+        text = full.data.text || text;
+        html = full.data.html || html;
+      } catch (err) {
+        console.error('Failed to fetch full inbound email body:', err.response?.data || err.message);
+      }
+    }
 
     const db = getDb();
     await db.collection('email_replies').add({

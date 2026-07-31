@@ -1866,14 +1866,26 @@
 
         let watchedContentIds = new Set();
 
-        function renderCourseVideoCard(v) {
+        function escAttrHtml(s) {
+            return String(s || '')
+                .replace(/&/g, '&amp;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;');
+        }
+
+        function renderCourseVideoCard(v, moduleImageUrl) {
             const embedUrl = getYoutubeEmbedUrl(v.url);
             const isWatched = watchedContentIds.has(v.id);
+            const placeholderBg = moduleImageUrl
+                ? `background-image:linear-gradient(rgba(10,10,10,0.4),rgba(10,10,10,0.4)),url('${escAttrHtml(moduleImageUrl)}');background-size:cover;background-position:center;`
+                : `background:rgba(212,175,55,0.1);`;
             return `
                 <div id="video-card-${v.id}" style="background:rgba(255,255,255,0.03);border:1px solid ${isWatched ? 'rgba(16,185,129,0.4)' : 'rgba(212,175,55,0.2)'};border-radius:14px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.3);">
                     ${embedUrl
                         ? `<iframe src="${embedUrl}" style="width:100%;aspect-ratio:16/9;border:none;display:block;" allowfullscreen loading="lazy"></iframe>`
-                        : `<div style="width:100%;aspect-ratio:16/9;background:rgba(212,175,55,0.1);display:flex;align-items:center;justify-content:center;font-size:2.5rem;">🎥</div>`
+                        : `<div style="width:100%;aspect-ratio:16/9;${placeholderBg}display:flex;align-items:center;justify-content:center;font-size:2.5rem;">🎥</div>`
                     }
                     <div style="padding:16px;">
                         <h3 style="color:#f1f5f9;font-size:1rem;font-weight:700;margin-bottom:6px;line-height:1.4;">${v.title}</h3>
@@ -1976,7 +1988,7 @@
                                 <span id="module-progress-${m.id}" data-total="${vids.length}" data-content-ids="${vids.map(v => v.id).join(',')}" style="flex-shrink:0;padding:6px 12px;border-radius:999px;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.25);color:#10b981;font-size:.78rem;font-weight:700;">${watchedCount}/${vids.length} watched</span>
                             </div>
                             <div class="course-module-grid">
-                                ${vids.map(renderCourseVideoCard).join('')}
+                                ${vids.map(v => renderCourseVideoCard(v, m.imageUrl)).join('')}
                             </div>
                         </div>`;
                 });
